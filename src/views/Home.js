@@ -1,12 +1,9 @@
 import React from 'react';
+import Banner from '../templates/Banner'
 
 function Home(){
     return(
-        <div class="container">
-            <h1>
-                Welcome to My Site
-            </h1>
-        </div>
+        <Banner />
     )
 }
 

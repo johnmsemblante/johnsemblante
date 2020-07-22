@@ -1,0 +1,85 @@
+.header{
+    padding: 10px;
+
+    &__inner{
+        max-width: 1200px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.logo{
+    width: 30%;
+    display: inline-block;
+
+    &__link{
+        max-width: 200px;
+        display: block;
+    }
+
+    &__img{
+        max-width: 100%;
+    }
+}
+
+.menu{
+    width: 70%;
+    display: inline-block;
+
+    &__list{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: right;
+    }
+
+    &__item{
+        display: inline-block;
+        padding: 5px 30px;
+
+        &:last-child{
+            padding-right: 0;
+        }
+    }
+
+    &__link{
+        display: block;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: $black;
+        position: relative;
+        padding: 2px;
+
+        &:before,
+        &:after{
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 0;
+            height: 1px;
+            background: $black;
+            margin: auto;
+            transition: width .2s;
+        }
+
+        &:before{
+            top: 0;
+        }
+
+        &:after{
+            bottom: 0;
+        }
+
+        &:hover,
+        &.active{
+            &:before,
+            &:after{
+                width: 100%;
+            }
+        }
+    }
+}
