@@ -1,0 +1,100 @@
+.about{
+    max-width: 1200px;
+    margin: auto;
+  
+    &__name{
+      font-family: 'Yatra One', cursive;
+
+        &-lg{
+            font-size: 65px;
+            line-height: 56px;
+        }
+
+        &-sm{
+            font-size: 42px;
+            color: $maroon;
+        }
+    }
+  
+    &__sidebar{
+      display: inline-block;
+      width: 30%;
+      border-right: 1px solid $grey;
+      padding: 0 30px 0 0;
+      vertical-align: top;
+    }
+  
+    &__img{
+        width: 300px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: auto;
+        background: url('../images/about/me.jpg');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 300px;
+    }
+
+    &__details{
+        padding: 20px 0 0;
+    }
+
+    &__title{
+        font-family: 'Yatra One', cursive;
+        font-size: 34px;
+        margin: 20px 0 0;
+        padding: 0 0 5px;
+        position: relative;
+
+        &:after{
+            content: '';
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: $maroon;
+            display: block;
+            position: absolute;
+        }
+    }
+
+    &__social{
+        padding: 20px 0 0;
+        margin: 0;
+        list-style: none;
+
+        &-media{
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+            color: $black;
+            font-size: 13px;
+
+            svg{
+                display: inline-block;
+                vertical-align: middle;
+                fill: #6f2232;
+                height: 20px;
+                width: 20px;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &__main{
+        padding: 0 0 0 30px;
+        width: 70%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    &__tag{
+        padding: 2px 10px;
+        border-radius: 2px;
+        margin: 2px;
+        display: inline-block;
+        font-weight: 600;
+        color: $white;
+    }
+}

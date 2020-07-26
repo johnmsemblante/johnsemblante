@@ -1,6 +1,11 @@
 @import './scss/variable.scss';
 @import './scss/header.scss';
 @import './scss/banner.scss';
+@import './scss/about.entry.scss';
+
+*{
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;

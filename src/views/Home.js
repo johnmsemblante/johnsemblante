@@ -1,9 +1,9 @@
 import React from 'react';
-import Banner from '../templates/Banner'
+import Leadins from '../templates/Leadins'
 
 function Home(){
     return(
-        <Banner />
+        <Leadins />
     )
 }
 
