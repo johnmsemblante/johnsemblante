@@ -98,3 +98,64 @@
         color: $white;
     }
 }
+
+.work-experience{
+    max-width: 1200px;
+    margin: auto;
+
+    &__header{
+        font-family: 'Yatra One', cursive;
+        font-size: 34px;
+        margin: 20px 0 0;
+        padding: 0 0 5px;
+        position: relative;
+
+        &:after{
+            content: '';
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: $maroon;
+            display: block;
+            position: absolute;
+        }
+    }
+
+    &__list{
+        margin: 0;
+    }
+
+    &__item{
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ededed;
+    }
+
+    .job{
+        &__location,
+        &__date{
+            margin: 0;
+        }
+
+        &__responsibilities{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        &__responsibilities-list{
+            display: inline-block;
+
+            &:before{
+                content: ',';
+                display: inline-block;
+                margin-right: 2px;
+            }
+
+            &:first-child:before{
+                display: none;
+            }
+        }
+    }
+}

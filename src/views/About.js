@@ -31,6 +31,68 @@ const AboutList = (props) => {
     )
 } 
 
+const workExperienceData = {
+    "data": [
+        {
+            description: "Front End Developer (LegalMatch PH)",
+            location: "9th Floor, FLB Corporate Center, Cebu City, 6000 Cebu",
+            date: "(March 2019 – Present)",
+            responsibilities: [
+                'WordPress Support',
+                'Implement designs from scratch',
+                'Fix website issues'
+            ]
+        },
+        {
+            description: "Front End Developer (LegalMatch PH)",
+            location: "9th Floor, FLB Corporate Center, Cebu City, 6000 Cebu",
+            date: "(March 2019 – Present)",
+            responsibilities: [
+                'WordPress Support',
+                'Implement designs from scratch',
+                'Fix website issues'
+            ]
+        },
+        {
+            description: "Front End Developer (LegalMatch PH)",
+            location: "9th Floor, FLB Corporate Center, Cebu City, 6000 Cebu",
+            date: "(March 2019 – Present)",
+            responsibilities: [
+                'WordPress Support',
+                'Implement designs from scratch',
+                'Fix website issues'
+            ]
+        }
+    ]
+}
+
+const WorkExperience = (props) => {
+    return (
+        <div className="work-experience">
+            <h2 className="work-experience__header">{props.header}</h2>
+            <ul className="work-experience__list">
+                {
+                    workExperienceData.data.map((el) => {
+                        return <li classsName="work-experience__item">
+                            <h3 className="job__description">{el.description}</h3>
+                            <p className="job__location">{el.location}</p>
+                            <p className="job__date">{el.date}</p>
+                            <p className="job__responsibilities-title">Responsibilities:</p>
+                            <ul className="job__responsibilities">
+                                { 
+                                    el.responsibilities.map(
+                                        (t,i) => <li key={i} className="job__responsibilities-list"> {t}{ el.responsibilities.length - 1 === i ? '' : '' } </li>
+                                    )
+                                }
+                            </ul>
+                        </li>
+                    })
+                }
+            </ul>
+        </div>
+    )
+}
+
 function About(){
     return(
         <div className="about">
@@ -120,6 +182,7 @@ function About(){
                         'Javascript',
                         'jQuery',
                         'ReactJs',
+                        'Svelte',
                         'PHP'
                     ]} 
                 />
@@ -137,9 +200,12 @@ function About(){
                         'Adobe Lightroom',
                         'Adobe Premier',
                         'VideoScribe',
-                        'Sony Vegas'
+                        'Sony Vegas',
+                        'Workbench'
                     ]} 
                 />
+
+                <WorkExperience header="Work Experience"/>
             </div>
         </div>
     )
