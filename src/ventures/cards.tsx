@@ -6,7 +6,7 @@ export function VentureCards({ headingLevel = 3, compact = false }: { headingLev
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return <div className={`card-grid ${compact ? "compact-ventures" : ""}`}>{ventures.map(v =>
     <Link key={v.slug} href={`/ventures/${v.slug}/`} className={`venture-card ${v.theme}`}>
-      <div className="venture-visual" aria-hidden="true">{v.theme === "coffee" ? <div className="coffee-symbol">lb<span>⌁</span></div> : <div className="travel-symbol"><span>G</span><i /></div>}</div>
+      <div className="venture-visual" aria-hidden="true">{v.logo ? <img className="venture-card-logo" src={v.logo.src} alt="" width={v.logo.width} height={v.logo.height} loading="lazy" /> : null}</div>
       <div className="venture-info"><p className="eyebrow">{v.category} / Independent venture</p><Heading className="venture-card-title">{v.name} <Arrow /></Heading><p>Discover the venture</p></div>
     </Link>
   )}</div>;

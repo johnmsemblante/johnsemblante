@@ -1,0 +1,50 @@
+[
+  {
+    "asset": "/ventures/lazy-barista/logo.webp",
+    "source": "Lazy Barista/Facebook Profile Picture.png",
+    "width": 1280,
+    "height": 1280
+  },
+  {
+    "asset": "/ventures/lazy-barista/cover.webp",
+    "source": "Lazy Barista/Facebook Cover.png",
+    "width": 3280,
+    "height": 1248
+  },
+  {
+    "asset": "/ventures/lazy-barista/menu.webp",
+    "source": "Lazy Barista/Menu.png",
+    "width": 2448,
+    "height": 3168
+  },
+  {
+    "asset": "/ventures/lazy-barista/new-drinks.webp",
+    "source": "Lazy Barista/Fresh Menu.png",
+    "width": 2448,
+    "height": 3168
+  },
+  {
+    "asset": "/ventures/golden-travel-and-tours/logo.webp",
+    "source": "Golden Travel and Tours/assets/logo/light-logo.png",
+    "width": 1024,
+    "height": 824
+  },
+  {
+    "asset": "/ventures/golden-travel-and-tours/sedan.webp",
+    "source": "Golden Travel and Tours/assets/site/rent/fleet/cebu-travel-and-tours-sedan.png",
+    "width": 413,
+    "height": 270
+  },
+  {
+    "asset": "/ventures/golden-travel-and-tours/suv.webp",
+    "source": "Golden Travel and Tours/assets/site/rent/fleet/cebu-travel-and-tours-suv.png",
+    "width": 413,
+    "height": 270
+  },
+  {
+    "asset": "/ventures/golden-travel-and-tours/van.webp",
+    "source": "Golden Travel and Tours/assets/site/rent/fleet/cebu-travel-and-tours-van.png",
+    "width": 413,
+    "height": 270
+  }
+]

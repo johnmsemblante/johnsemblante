@@ -1,0 +1,62 @@
+[
+  {
+    "drink": "Huwat Sa",
+    "source": "Menu.png",
+    "crop": [
+      391,
+      587,
+      1094,
+      1241
+    ]
+  },
+  {
+    "drink": "Kapoya",
+    "source": "Menu.png",
+    "crop": [
+      1370,
+      587,
+      2082,
+      1241
+    ]
+  },
+  {
+    "drink": "Hahay",
+    "source": "Menu.png",
+    "crop": [
+      391,
+      1664,
+      1094,
+      2314
+    ]
+  },
+  {
+    "drink": "Taymsa",
+    "source": "Menu.png",
+    "crop": [
+      1370,
+      1673,
+      2082,
+      2314
+    ]
+  },
+  {
+    "drink": "Unya Sa",
+    "source": "Fresh Menu.png",
+    "crop": [
+      267,
+      1103,
+      1121,
+      1967
+    ]
+  },
+  {
+    "drink": "Kana Nlng",
+    "source": "Fresh Menu.png",
+    "crop": [
+      1370,
+      1103,
+      2188,
+      1967
+    ]
+  }
+]

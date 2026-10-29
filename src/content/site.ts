@@ -1,7 +1,7 @@
 import { portfolioProjects } from "./projects";
 export const site = {
   name: "John Semblante",
-  url: "https://johnsemblante.com",
+  url: "https://johnmsemblanteapp.web.app",
   description: "John Semblante’s web development portfolio and independent ventures.",
   email: "johnmsemblante@gmail.com",
   phone: "+639770928769",
