@@ -6,4 +6,4 @@ Set a unique lowercase URL slug with hyphens, title, excerpt, category, and publ
 
 Change status to `published` when ready. The article appears at `/blog/your-slug/` and in the Blog list. With `npm run dev`, refresh the page to see your edits. For a hosted site, run `npm run build` and redeploy the static export. Keep published slugs stable so existing links continue to work.
 
-The site-wide noindex setting still applies until the portfolio is ready for launch. No new dependency or database is needed.
+The live site allows search indexing. Published posts enter the generated sitemap; drafts remain excluded from the website but are visible in repository source if committed publicly. Publication dates do not schedule posts: status controls publication. No new dependency or database is needed.
