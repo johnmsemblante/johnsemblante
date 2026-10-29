@@ -1,0 +1,4 @@
+/** Decorative layout study, never presented as a real portfolio project. */
+export function BrowserIllustration() {
+  return <div className="browser-study" aria-hidden="true"><div className="study-window"><div className="study-toolbar"><i /><i /><i /><span /></div><div className="study-content"><div className="study-sidebar"><b>js.</b><i /><i /><i /></div><div className="study-canvas"><div className="study-label">IDEA → EXPERIENCE</div><div className="study-headline" /><div className="study-headline short" /><div className="study-line" /><div className="study-line short" /><div className="study-button" /><div className="study-tiles"><span /><span /><span /></div></div></div></div><div className="study-phone"><span /><b>js.</b><div /><i /><i /><em /></div><p>Thoughtful interfaces. Built for every screen.</p></div>;
+}

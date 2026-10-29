@@ -1,0 +1,9 @@
+import { PageIntro, Button } from "@/components/ui";
+import { BrowserIllustration } from "@/components/browser-illustration";
+import { VentureCards } from "@/ventures/cards";
+import { pageMetadata } from "@/lib/metadata";
+export const metadata = pageMetadata("Ventures", "Discover Lazy Barista and Golden Travel and Tours, independent ventures by John Semblante.", "/ventures/");
+const principles = [["Independent identity", "Each business has its own name, content, and visual direction."], ["Room to experiment", "A space to explore ideas beyond web development."], ["Built to grow", "Dedicated landing pages today, with room for independent websites later."], ["Connected by a founder", "A place to discover the ventures alongside the person behind them."]];
+export default function Ventures() {
+  return <><div className="route-hero"><PageIntro eyebrow="Developer / Builder / Entrepreneur" title="Ventures."><p>Independent ideas, beyond the screen. Discover Lazy Barista and Golden Travel and Tours.</p></PageIntro><BrowserIllustration /></div><section className="section"><VentureCards headingLevel={2} compact /><p className="section-note">These ventures are independently branded, with their own space to grow.</p></section><section className="section"><div className="section-heading"><div><p className="eyebrow">The thinking behind them</p><h2>More than a side project.</h2></div></div><div className="process-grid">{principles.map(([title, description], i) => <article key={title}><span className="step-number">0{i + 1}</span><h3>{title}</h3><p>{description}</p></article>)}</div></section><section className="contact-band"><div><p className="eyebrow">Let’s explore possibilities</p><h2>Start a conversation.</h2><p className="body-copy">For questions about a venture or an idea for collaboration.</p></div><Button href="/contact/">Get in touch</Button></section></>;
+}
