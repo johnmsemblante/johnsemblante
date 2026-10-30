@@ -10,6 +10,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <SiteNavigation />
     </header>
     <main id="main" tabIndex={-1}>{children}</main>
-    <footer className="site-footer"><Link href="/">John Semblante<span className="muted"> / Development & ventures</span></Link><span>Thoughtfully built for the web.</span></footer>
+    <footer className="site-footer"><Link href="/">John Semblante<span className="muted"> / Development & ventures</span></Link><span>WordPress & front-end development · Cebu, Philippines</span></footer>
   </div>;
 }

@@ -1,6 +1,6 @@
 # John Semblante — Portfolio & Ventures
 
-A personal portfolio focused on web development, with independent pages for Lazy Barista and Golden Travel and Tours, plus a blog for writing practice.
+A client-focused portfolio for John Semblante's WordPress and front-end development services, with public projects, confidential experience summaries, independent pages for Lazy Barista and Golden Travel and Tours, and a blog for development notes.
 
 - **Live website:** https://johnmsemblanteapp.web.app/
 - **Repository:** https://github.com/johnmsemblante/johnsemblante
@@ -15,7 +15,7 @@ The website is live and search indexing is enabled. `johnsemblante.com` is the i
 Run commands from the `johnsemblante` project folder. On John's current Windows machine:
 
 ```powershell
-cd "C:\Users\John Clark Semblante\Documents\ChatGPT\johnsemblante"
+cd "D:\Personal\Sites\johnsemblante"
 npm ci
 npm run dev
 ```
@@ -77,13 +77,16 @@ Content lives in TypeScript files; there is no CMS or database. Preserve the sur
 | Business logos, artwork and drink photos | `public/ventures/` |
 | Shared styling, colors, typography and responsive layouts | `src/app/globals.css` |
 | Navigation and footer | `src/components/site-navigation.tsx`, `src/components/site-shell.tsx` |
-| Contact form behavior | `src/components/inquiry-form.tsx` |
+| Contact form UI and delivery handling | `src/components/inquiry-form.tsx`, `src/lib/submit-inquiry.ts` |
+| Homepage service offers | `src/components/development-services.tsx` |
+| Skills descriptions, categories and icons | `src/content/skill-details.ts`, `public/icons/skills/` |
+| Confidential experience overview | `src/components/experience-spotlight.tsx` |
 
 ### About and experience
 
 Edit the `experience` array in `profile.ts`. Each company has `company`, `role`, `dates`, and a `responsibilities` list. Each list item becomes a bullet. Entries appear in array order, so keep the most recent job first.
 
-The current bullets come from John's updated resume. Update the source file when the resume changes; the website does not automatically read the PDF. The full resume is not published because it contains reference contacts and a residential address.
+The current bullets are based on John's supplied resume and edited for clarity without adding unverified results. Update the source file when the resume changes; the website does not automatically read the PDF. The full resume is not published because it contains reference contacts and a residential address.
 
 ### Portfolio projects and case studies
 
@@ -127,7 +130,7 @@ Edit `offerings` in the Lazy Barista content file. Each drink has a title, descr
 
 The six individual drink photos were cropped from the supplied menu artwork. Crop source coordinates are recorded in [drink-photo-crops.json](docs/review/drink-photo-crops.json). Their original price badges remain visible. **When changing prices, update both the text price and any artwork/photo showing the old price.** Update the full menu artwork too if it changes.
 
-Phone and social links are managed independently for each venture. Confirm ordering information before publishing. Golden Travel does not currently publish package prices or guaranteed vehicle availability. Its vehicle section currently names Sedan, SUV and Van in `landing.tsx`; changing those cards requires updating that renderer as well as the content module.
+Phone and social links are managed independently for each venture. Confirm ordering information before publishing. Golden Travel does not currently publish package prices or guaranteed vehicle availability. Edit its `vehicles` array in `src/ventures/golden-travel-and-tours/content.ts` to change vehicle names and images; the shared renderer builds the cards and image gallery from that data.
 
 ### Images
 
@@ -166,24 +169,21 @@ Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/blog/`, `/blo
 
 The `(portfolio)` directory is a layout group and does not appear in URLs. Venture pages have separate presentation from the portfolio shell. Most components render at build time; navigation, filtering and the inquiry form use client components for interaction.
 
-## 5. Contact form: email delivery
+## 5. Contact form: Formspree email delivery
 
-The contact form posts directly to FormSubmit, which forwards inquiries to `site.email` in `src/content/site.ts` (currently `johnmsemblante@gmail.com`). Visitors do not need an email app. Their email field becomes the Reply-To address. FormSubmit handles spam verification and its hosted confirmation/error pages; the site does not claim delivery before the provider processes the submission. A direct email link is also available.
+The contact form uses the public endpoint in `site.contactFormEndpoint` in `src/content/site.ts`. The current endpoint is `https://formspree.io/f/xwllnvev`. Formspree controls the notification recipient; the intended inbox is `johnmsemblante@gmail.com`.
 
-### Activate before launch
+With JavaScript enabled, the form submits in place and shows success only after Formspree acknowledges the submission. Fields and the submit button are disabled while sending. Failed requests preserve the input and show retry/direct-email guidance. A 20-second timeout prevents an indefinite loading state; no request is automatically retried. Native POST remains as a no-JavaScript fallback. The email field supplies Reply-To. The honeypot uses Formspree's `_gotcha` field; additional spam settings are managed in Formspree.
 
-1. Build and preview the form, then deploy the reviewed site.
-2. Submit a clearly labeled test inquiry from the live Contact page and complete any CAPTCHA.
-3. Open the activation email in the recipient inbox (check spam) and confirm the form.
-4. Submit another test and verify it arrives with name, sender email, topic, and message; check that Reply addresses the sender.
+### Verify delivery
 
-Delivery is not verified until these steps succeed. No activation or test email has been sent automatically during development.
+Check the form's Email workflow in Formspree and confirm the intended inbox is verified. After deploying, submit a clearly labeled test, confirm the on-page success message and dashboard entry, then verify the inbox notification and Reply-To. API acceptance does not prove inbox delivery. If Formspree imposes a CAPTCHA, domain restriction, or quota, resolve it in the dashboard; do not disable protections blindly.
 
 ### Change the recipient
 
-Edit only `site.email`, rebuild, and deploy. This changes both the public email link and the delivery destination. Confirm the new address through FormSubmit and repeat the delivery test. Never put an email password or SMTP credentials in source code. Email changes require a deployment; there is no admin settings screen.
+Update and verify the notification address in the Formspree dashboard (form Workflow → Email settings). Also edit `site.email` and redeploy to update the website's visible address and direct-email links. Changing `site.email` alone does **not** change the Formspree recipient. The endpoint can remain the same when only the recipient changes. Never put email passwords or private API keys in source code.
 
-The form discloses its third-party processing and links to FormSubmit's privacy policy. CAPTCHA remains enabled and a honeypot is included. See https://formsubmit.co/documentation and https://formsubmit.co/help for service behavior and activation.
+FormSubmit is no longer used. Reference: https://help.formspree.io/articles/form-and-project-settings/changing-a-form-email-address/
 
 ### Typography
 
@@ -288,3 +288,29 @@ The About page groups all entries from `profile.skills`, `profile.languages`, an
 ### Confidential experience spotlight
 
 The Work page includes a general experience spotlight above the public project list. Edit its public copy in `src/components/experience-spotlight.tsx`. Its contact link selects the “Discuss relevant experience” topic without submitting anything. It does not expose or unlock private case studies. Do not add client identities, URLs, screenshots, source files, or project-specific claims without appropriate disclosure permission. Protected material must not be placed in the static export or public repository.
+
+## 10. Updates — 30 October 2026
+
+### Interface and navigation
+
+- Modern image lightbox with a frameless presentation, captions, related-image thumbnails, previous/next navigation, and keyboard controls. Venture drink photos, menu artwork, and vehicle images use appropriate groups.
+- Sticky portfolio and venture headers keep navigation available while scrolling. Mobile menus start closed and use an animated hamburger-to-X button to open and close the links.
+- Montserrat is used across the website through bundled font files.
+- The About page groups skills and technologies with local icons and accessible tooltips. John's manual restyling places the rounded tooltip above its card with a small pointer; that styling is preserved in this release.
+- The Work page includes an Experience spotlight that describes capabilities without publishing confidential client identities or assets.
+
+### Content and inquiries
+
+- Refreshed homepage, About, Work, Contact, Blog, venture pages, shared calls to action, and metadata to make services and next steps clearer.
+- Added three homepage service offers: Figma to WordPress, WooCommerce development, and website fixes and improvements.
+- Kept historical project dates, supplied experience, and venture prices/contact information. Removed unsupported promotional claims and kept unpublished articles as drafts. See [the content review](docs/review/content-review-2026-10-30.md) for scope and facts still needing owner confirmation.
+- Replaced FormSubmit after its host error with Formspree endpoint `https://formspree.io/f/xwllnvev`. Visitors receive inline sending, success, or error feedback. Failed submissions retain their message, and the form includes a direct-email alternative.
+- Documented how to change the Formspree recipient separately from the website's public email address, and corrected local setup and vehicle-editing instructions.
+
+### Verification and release notes
+
+John manually committed and published earlier changes today. This release builds on those commits and includes the remaining content refresh, Formspree integration, documentation, and his tooltip styling.
+
+One owner-authorized inquiry from the local browser preview was accepted by Formspree on 30 October 2026. Sending/success feedback and form reset were verified. Simulated host errors, rate limiting, validation rejection, network interruption, and missing/invalid acknowledgements were also checked. **Inbox notification receipt and Reply-To still require owner confirmation**; an accepted submission alone does not prove email delivery.
+
+Use the release steps above to type-check, build, commit, push, and deploy. GitHub and Firebase Hosting are separate steps; a Git push does not publish the website.

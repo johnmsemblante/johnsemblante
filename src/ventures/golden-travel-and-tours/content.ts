@@ -16,7 +16,7 @@ export const goldenTravel: Venture = {
 
   storyImage: { src: `${base}/suv.webp`, alt: "Representative SUV graphic from Golden Travel’s materials", width: 413, height: 270 },
 
-  story: "Golden Travel and Tours brings together travel, tours, and rentals in Cebu. The venture’s materials feature sedan, SUV, and van options alongside transfers, sightseeing, personal tours, and wedding or honeymoon transport. Tell the team about your itinerary to discuss suitable arrangements.",
+  story: "From an airport pickup to a day of exploring Cebu, your trip starts with the right transport plan. Share your itinerary with Golden Travel and Tours to discuss rentals, transfers, sightseeing, or transport for a special occasion. The team will confirm suitable options and a quote for your plans.",
 
   offerings: [
 
@@ -30,7 +30,7 @@ export const goldenTravel: Venture = {
 
   ],
 
-  offeringsNote: "Rates and vehicle availability are quoted directly. The vehicle graphics are representative images from the supplied brand materials, not a guarantee of a specific model.",
+  offeringsNote: "Share your dates, route, and group size for a quote. Vehicle images are representative; the team will confirm the model and availability.",
 
   vehicles: [
 
@@ -52,11 +52,11 @@ export const goldenTravel: Venture = {
 
   questions: [
 
-    { question: "What vehicle options can I ask about?", answer: "The supplied materials feature sedan, SUV, and van options. Confirm the specific model, capacity, and availability with the team." },
+    { question: "What vehicle options can I ask about?", answer: "Ask about sedan, SUV, and van options. Send your group size and itinerary so the team can confirm the model, seating, and availability." },
 
-    { question: "Can I request airport or pier transfers?", answer: "Airport and pier transfers are among the services in the venture’s materials. Send your schedule and pickup or drop-off points for a quote." },
+    { question: "Can I request airport or pier transfers?", answer: "Yes. Send your arrival or departure schedule, pickup and drop-off locations, and group size to request a transfer quote." },
 
-    { question: "Where can I find rates?", answer: "Contact Golden Travel and Tours with your itinerary for a quote. No sample rates or unconfirmed package prices are published here." },
+    { question: "Where can I find rates?", answer: "Message the team with your dates, destinations, and group size. Confirm the total, what is included, and booking terms before making arrangements." },
 
   ],
 

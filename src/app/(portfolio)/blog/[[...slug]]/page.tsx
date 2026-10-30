@@ -12,7 +12,7 @@ export function generateStaticParams() {
 }
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  if (!slug?.length) return pageMetadata("Blog", "Writing, ideas, and learning notes from John Semblante.", "/blog/");
+  if (!slug?.length) return pageMetadata("Blog", "Notes on web development, building businesses, and lessons from the work by John Semblante.", "/blog/");
   const post = publishedPosts().find(post => slug.length === 1 && post.slug === slug[0]);
   if (!post) notFound();
   const metadata = pageMetadata(post.title, post.excerpt, `/blog/${post.slug}/`);
@@ -22,8 +22,8 @@ export default async function Blog({ params }: Props) {
   const { slug } = await params;
   const posts = publishedPosts();
   if (!slug?.length) return <>
-    <PageIntro eyebrow="The writing playground" title="Notes, ideas, and things I’m learning."><p>A space to practice writing, explore ideas, and share along the way.</p></PageIntro>
-    <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <article className="blog-preview" key={post.slug}><div className="blog-meta"><span>{post.category}</span><time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time></div><h2><Link href={`/blog/${post.slug}/`}>{post.title} <Arrow /></Link></h2><p>{post.excerpt}</p><Link className="text-link" href={`/blog/${post.slug}/`} aria-label={`Read ${post.title}`}>Read article <Arrow /></Link></article>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first post is still in the notebook.</h2><p>This is where I’ll share my writing as it takes shape. Check back for the first entry.</p></div>}</section>
+    <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>
+    <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <article className="blog-preview" key={post.slug}><div className="blog-meta"><span>{post.category}</span><time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time></div><h2><Link href={`/blog/${post.slug}/`}>{post.title} <Arrow /></Link></h2><p>{post.excerpt}</p><Link className="text-link" href={`/blog/${post.slug}/`} aria-label={`Read ${post.title}`}>Read article <Arrow /></Link></article>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first article is in progress.</h2><p>In the meantime, explore my projects or get in touch about a website you want to build or improve.</p></div>}</section>
   </>;
   const post = posts.find(post => slug.length === 1 && post.slug === slug[0]);
   if (!post) notFound();
