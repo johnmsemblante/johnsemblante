@@ -36,3 +36,24 @@ a:focus-visible,button:focus-visible{outline-color:#32766c}.site-header{padding-
 @media(max-width:620px){.vehicle-grid,.venture-offerings,.menu-artwork>div{grid-template-columns:1fr}.menu-artwork{padding:15px}.vehicle-grid img{height:170px}.venture-header-logo{width:42px;height:42px}.venture-header nav{font-size:11px;gap:8px}.venture-name{font-size:20px}.venture-header nav a{min-height:44px}.venture-offerings>article{padding:24px}.profile-portrait{justify-self:start}.travel .supplied-brand{padding:10px}.venture-story{gap:30px}.venture-contact-links{flex-direction:column;gap:5px}.venture-contact-links a{font-size:13px;overflow-wrap:anywhere}.offering-heading h3{font-size:23px}.offering-price{font-size:19px}}
 
 .offering-photo{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:3px;margin-bottom:22px}
+
+/* Detail images open in a native modal; navigation thumbnails remain links. */
+.zoom-image-trigger{position:relative;display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;cursor:zoom-in;text-align:inherit;font:inherit;min-width:0}
+.zoom-image-trigger>img{display:block;width:100%;height:auto;object-fit:contain}
+.zoom-image-hint{position:absolute;right:10px;bottom:10px;padding:6px 10px;border-radius:3px;background:#202323;color:#fff;font:12px/1.5 Arial,sans-serif;box-shadow:0 1px 5px #0003}
+.zoom-image-trigger.offering-photo{background:#fff}
+.zoom-image-trigger.offering-photo>img{aspect-ratio:1/1;object-fit:contain}
+.zoom-image-trigger.venture-story-image{max-height:none}
+.zoom-image-trigger.venture-story-image>img{max-height:350px}
+.image-viewer{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:24px;border:0;background:transparent;color:#202323;overflow:hidden}
+.image-viewer::backdrop{background:rgb(15 20 20 / .82)}
+.image-viewer-panel{display:flex;flex-direction:column;width:100%;height:100%;max-width:1600px;margin:auto;background:#fafaf8;border-radius:8px;overflow:hidden;box-shadow:0 12px 60px #0005}
+.image-viewer-toolbar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #dedfdb;flex-shrink:0}
+.image-viewer-toolbar p{flex:1;min-width:0;margin:0;font:14px/1.5 Arial,sans-serif;max-height:4.5em;overflow:auto}
+.image-viewer-toolbar button{min-height:44px;padding:8px 14px;border:1px solid #606666;border-radius:4px;font:14px/1.4 Arial,sans-serif;background:#fff;color:#202323;cursor:pointer;white-space:nowrap}
+.image-viewer-toolbar button:disabled{opacity:.5;cursor:default}
+.image-viewer-stage{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:16px;text-align:center;background:#e9edeb}
+.image-viewer-stage>img{display:block;width:100%;height:100%;object-fit:contain;margin:auto;max-width:none}
+.image-viewer-stage.is-zoomed>img{width:auto;height:auto;max-width:none;max-height:none;margin:0 auto}
+.image-viewer-help{flex-shrink:0;margin:0;padding:10px 16px;font:12px/1.5 Arial,sans-serif;color:#606666}
+@media(max-width:620px){.image-viewer{padding:8px}.image-viewer-toolbar{flex-wrap:wrap;gap:8px;padding:10px}.image-viewer-toolbar p{flex-basis:100%}.image-viewer-toolbar button{flex:1}.image-viewer-stage{padding:8px}.image-viewer-help{padding:8px 10px}}
