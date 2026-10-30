@@ -166,11 +166,28 @@ Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/blog/`, `/blo
 
 The `(portfolio)` directory is a layout group and does not appear in URLs. Venture pages have separate presentation from the portfolio shell. Most components render at build time; navigation, filtering and the inquiry form use client components for interaction.
 
-## 5. Contact form: current behavior
+## 5. Contact form: email delivery
 
-The form validates required fields and prepares a reviewable email draft. Visitors open their email app or copy the message, then send it themselves. The website does not send, store, or confirm delivery of messages.
+The contact form posts directly to FormSubmit, which forwards inquiries to `site.email` in `src/content/site.ts` (currently `johnmsemblante@gmail.com`). Visitors do not need an email app. Their email field becomes the Reply-To address. FormSubmit handles spam verification and its hosted confirmation/error pages; the site does not claim delivery before the provider processes the submission. A direct email link is also available.
 
-Update the receiving address in `src/content/site.ts`. Direct delivery would require adding a form provider or backend, its validation/spam controls, and delivery feedback. There are currently no Firebase SDK, Functions, Firestore, authentication, or analytics integrations.
+### Activate before launch
+
+1. Build and preview the form, then deploy the reviewed site.
+2. Submit a clearly labeled test inquiry from the live Contact page and complete any CAPTCHA.
+3. Open the activation email in the recipient inbox (check spam) and confirm the form.
+4. Submit another test and verify it arrives with name, sender email, topic, and message; check that Reply addresses the sender.
+
+Delivery is not verified until these steps succeed. No activation or test email has been sent automatically during development.
+
+### Change the recipient
+
+Edit only `site.email`, rebuild, and deploy. This changes both the public email link and the delivery destination. Confirm the new address through FormSubmit and repeat the delivery test. Never put an email password or SMTP credentials in source code. Email changes require a deployment; there is no admin settings screen.
+
+The form discloses its third-party processing and links to FormSubmit's privacy policy. CAPTCHA remains enabled and a honeypot is included. See https://formsubmit.co/documentation and https://formsubmit.co/help for service behavior and activation.
+
+### Typography
+
+Montserrat is loaded through `next/font/google` and self-hosted in the exported build. The build needs network access to download the font; visitors receive the bundled files from this website. Body text, headings, navigation, and controls use Montserrat. Decorative monograms and code-style illustrations retain their artwork styling.
 
 ## 6. Deploy to the live Firebase site
 
@@ -196,7 +213,7 @@ npm run build
 npm run preview
 ```
 
-Review the production preview, then stop it with Ctrl+C. Check mobile and desktop layouts, navigation, keyboard focus, images, contact draft behavior, the modified content, and an invalid URL's 404 page.
+Review the production preview, then stop it with Ctrl+C. Check mobile and desktop layouts, navigation, keyboard focus, images, contact form validation and delivery, the modified content, and an invalid URL's 404 page.
 
 Save the reviewed changes to GitHub:
 
@@ -263,3 +280,11 @@ Each venture's content and assets are grouped together, but the shared renderer,
 Keep `package-lock.json` committed. Package declarations currently use broad ranges, including `latest` for Next.js and React; dependency updates should be intentional and followed by build and browser checks. Keep `.env` files, credentials, `node_modules/`, `.next/`, `out/`, and Firebase local caches out of Git as configured in `.gitignore`.
 
 Regularly verify external portfolio links, business contact information, prices and image licenses. Add only confirmed experience, projects and business information. Keep the source notes in `docs/review/` aligned with meaningful asset/content changes.
+
+### Skills toolkit
+
+The About page groups all entries from `profile.skills`, `profile.languages`, and `profile.tools`. Edit descriptions, category, and icon keys in `src/content/skill-details.ts` when adding or changing an item. Local SVGs live in `public/icons/skills/`; their provenance is recorded in `docs/review/skill-icon-sources.json`. Broader skills and unavailable brand icons use original generic symbols, with visible text labels. Tooltips support hover, keyboard focus, tap, and Escape.
+
+### Confidential experience spotlight
+
+The Work page includes a general experience spotlight above the public project list. Edit its public copy in `src/components/experience-spotlight.tsx`. Its contact link selects the “Discuss relevant experience” topic without submitting anything. It does not expose or unlock private case studies. Do not add client identities, URLs, screenshots, source files, or project-specific claims without appropriate disclosure permission. Protected material must not be placed in the static export or public repository.

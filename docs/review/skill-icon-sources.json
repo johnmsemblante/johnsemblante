@@ -1,0 +1,128 @@
+{
+  "package": "16.36.0",
+  "sources": [
+    {
+      "slug": "wordpress",
+      "source": "https://wordpress.org/about/logos",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "woocommerce",
+      "source": "https://woocommerce.com/style-guide",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "prestashop",
+      "source": "https://prestashop.com/brand-book",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "html5",
+      "source": "https://www.w3.org/html/logo/",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "css",
+      "source": "https://github.com/CSS-Next/logo.css/blob/bacc20878227204b283c68a6b935f8279e06b0cd/css.svg",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "javascript",
+      "source": "https://github.com/voodootikigod/logo.js/blob/1544bdeed6d618a6cfe4f0650d04ab8d9cfa76d9/js.svg",
+      "license": {
+        "type": "MIT",
+        "url": "https://spdx.org/licenses/MIT"
+      },
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "php",
+      "source": "https://php.net/download-logos.php",
+      "license": {
+        "type": "CC-BY-SA-4.0",
+        "url": "https://spdx.org/licenses/CC-BY-SA-4.0"
+      },
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "tailwindcss",
+      "source": "https://tailwindcss.com/brand",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "bootstrap",
+      "source": "https://getbootstrap.com/docs/5.3/about/brand",
+      "license": {
+        "type": "MIT",
+        "url": "https://spdx.org/licenses/MIT"
+      },
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "figma",
+      "source": "https://www.figma.com/using-the-figma-brand/",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "devices",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "globe",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "speed",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "search",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "bug",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "connect",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "mail",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "zendesk",
+      "source": "https://brandland.zendesk.com",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "git",
+      "source": "https://git-scm.com/community/logos",
+      "license": {
+        "type": "CC-BY-3.0",
+        "url": "https://spdx.org/licenses/CC-BY-3.0"
+      },
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "docker",
+      "source": "https://www.docker.com/company/newsroom/media-resources",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "test",
+      "kind": "Original generic symbol; not a brand logo"
+    },
+    {
+      "slug": "cursor",
+      "source": "https://cursor.com/brand",
+      "kind": "Simple Icons"
+    },
+    {
+      "slug": "claude",
+      "source": "https://claude.ai",
+      "kind": "Simple Icons"
+    }
+  ]
+}

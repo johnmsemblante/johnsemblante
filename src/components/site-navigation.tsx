@@ -1,20 +1,13 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { HeaderNavigation } from "./header-navigation";
 
 const links = [
-  ["Work", "/work/"],
-  ["About", "/about/"],
-  ["Ventures", "/ventures/"],
-  ["Blog", "/blog/"],
-  ["Contact", "/contact/"],
+  { label: "Work", href: "/work/" },
+  { label: "About", href: "/about/" },
+  { label: "Ventures", href: "/ventures/" },
+  { label: "Blog", href: "/blog/" },
+  { label: "Contact", href: "/contact/" },
 ];
 
 export function SiteNavigation() {
-  const pathname = usePathname();
-  return <nav aria-label="Main navigation">{links.map(([label, href]) => {
-    const active = `${pathname.replace(/\/$/, "")}/`.startsWith(href);
-    return <Link key={href} href={href} aria-current={active ? "page" : undefined}>{label}</Link>;
-  })}</nav>;
+  return <HeaderNavigation links={links} />;
 }

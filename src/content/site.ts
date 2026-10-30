@@ -3,6 +3,7 @@ export const site = {
   name: "John Semblante",
   url: "https://johnmsemblanteapp.web.app",
   description: "John Semblante’s web development portfolio and independent ventures.",
+  // Public contact and form recipient. After changing, confirm the new FormSubmit activation email and redeploy.
   email: "johnmsemblante@gmail.com",
   phone: "+639770928769",
   phoneDisplay: "0977 092 8769",
