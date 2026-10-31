@@ -149,3 +149,18 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .service-copy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.service-copy-grid article{padding:28px;background:#f0f4f1;border-top:2px solid #b7cfc2}.service-copy-grid h3{font-size:24px;line-height:1.25;margin-bottom:18px}.service-copy-grid p{font-size:14px;color:var(--muted)}.service-copy-grid .service-scope{font-size:11px;color:#426257;margin-bottom:0}.service-copy-cta{font-size:14px;margin-top:26px}.service-copy-cta a{margin-left:8px;white-space:normal}@media(max-width:850px){.service-copy-grid{grid-template-columns:1fr}.service-copy-cta a{margin:12px 0 0;display:flex}}
 
 .inquiry-fields{border:0;padding:0;margin:0;min-width:0}.inquiry-panel button:disabled{opacity:.65;cursor:wait}.inquiry-status:not(:empty){margin-top:18px;padding:16px;background:#e7efec;color:#234c43;font-size:14px;line-height:1.7}
+
+/* Homepage ownership card shares the About portrait without changing other illustrations. */
+.personal-study .study-canvas{padding:26px 20px}
+.personal-study .study-label{font-size:8px;letter-spacing:.1em;line-height:1.6;margin-bottom:20px}
+.study-introduction{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:14px}
+.study-person-copy{min-width:0}
+.study-person-copy>span{display:block;font-size:10px;line-height:1.7;color:var(--muted)}
+.study-person-copy>strong{display:block;font-size:clamp(16px,1.8vw,24px);font-weight:600;line-height:1.2;letter-spacing:-.045em;margin:7px 0 10px}
+.study-person-copy>.study-person-role{font-size:9px;line-height:1.7}
+.study-person-copy .study-button{width:54px;height:14px;margin-top:14px;background:#32766c}
+.study-portrait-frame{padding:7px 7px 0;background:#dce9e5;border:1px solid #b9c9c1;border-radius:60px 60px 6px 6px;overflow:hidden;max-width:140px;justify-self:end}
+.study-portrait-frame img{display:block;width:100%;height:auto;border-radius:55px 55px 0 0}
+.personal-study .study-tiles{margin-top:22px;gap:8px}
+.personal-study .study-tiles span{height:35px}
+@media(max-width:620px){.personal-study .study-canvas{padding:20px 14px}.personal-study .study-label{font-size:7px;margin-bottom:14px}.study-introduction{gap:10px}.study-person-copy>strong{font-size:17px}.study-person-copy>span{font-size:9px}.study-person-copy>.study-person-role{font-size:8px}.study-portrait-frame{padding:5px 5px 0}.personal-study .study-phone{bottom:18px}.personal-study>p{max-width:calc(100% - 70px);line-height:1.7}}
