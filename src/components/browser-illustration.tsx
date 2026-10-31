@@ -10,8 +10,8 @@ export function BrowserIllustration({ portrait }: { portrait?: Portrait }) {
         <div className="study-canvas">
           <div className="study-label">{portrait ? "THE PERSON BEHIND THE PIXELS" : "IDEA → EXPERIENCE"}</div>
           {portrait ? <div className="study-introduction">
-            <div className="study-person-copy"><span>Hello, I’m</span><strong>{portrait.name}</strong><span className="study-person-role">WordPress &amp;<br />front-end developer</span><div className="study-button" /></div>
-            <div className="study-portrait-frame"><img src={portrait.src} alt="" width={247} height={319} /></div>
+            <div className="study-person-copy"><span>Hello, I’m</span><strong>{portrait.name}</strong><span className="study-person-role">Full Stack Developer</span><div className="study-button" /></div>
+            <div className="study-portrait-frame"><img src={portrait.src} alt="" width={1103} height={1426} /></div>
           </div> : <><div className="study-headline" /><div className="study-headline short" /><div className="study-line" /><div className="study-line short" /><div className="study-button" /></>}
           <div className="study-tiles"><span /><span /><span /></div>
         </div>

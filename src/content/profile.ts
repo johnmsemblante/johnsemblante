@@ -6,7 +6,7 @@ export const profile = {
   headline: "Full Stack Developer",
   homeSummary: "I help businesses and teams build custom WordPress websites, improve WooCommerce stores, and fix front-end problems. Over 10 years of experience, with a focus on responsive interfaces, performance, and maintainable code.",
   resumePortrait: "/images/profile/john-resume.jpg",
-  portrait: "/images/profile/john-resume.jpg",
+  portrait: "/images/profile/john-enhanced.webp",
   introduction: "I’m John, a senior front-end and WordPress developer based in Cebu, Philippines. I bring over 10 years of experience building and improving websites across SaaS, ecommerce, and enterprise environments.",
   biography: "My work connects design with the details that make a website usable: responsive layouts, clear interactions, and reliable functionality. I turn Figma designs into WordPress and WooCommerce websites using PHP, JavaScript, and CSS, and help resolve the technical issues that get in the way of a good customer experience.",
   skills: ["WordPress", "WooCommerce", "Figma to WordPress", "Responsive web design", "Cross-browser and mobile optimization", "Core Web Vitals", "On-page SEO", "UI debugging", "Third-party APIs and plugins", "ActiveCampaign", "GetResponse", "Zendesk", "PrestaShop"],

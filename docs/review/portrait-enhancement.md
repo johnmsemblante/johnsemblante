@@ -1,0 +1,3 @@
+# Portrait enhancement — 31 October 2026
+
+The 247 × 319 resume portrait was enhanced with AI at the owner’s request. The generated result is 1103 × 1426, not 4K/UHD. Fine details are reconstructed, not recovered photographic evidence. The original remains at public/images/profile/john-resume.jpg. The web-optimized enhanced version is public/images/profile/john-enhanced.webp and is referenced through profile.portrait by About, Home About, and the hero canvas. About displays it up to 460px wide; Home About up to 340px, with smaller mobile limits. The original Full Stack Developer text edits were retained.

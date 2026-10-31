@@ -165,3 +165,10 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .personal-study .study-tiles{margin-top:22px;gap:8px}
 .personal-study .study-tiles span{height:35px}
 @media(max-width:620px){.personal-study .study-canvas{padding:20px 14px}.personal-study .study-label{font-size:7px;margin-bottom:14px}.study-introduction{gap:10px}.study-person-copy>strong{font-size:17px}.study-person-copy>span{font-size:9px}.study-person-copy>.study-person-role{font-size:8px}.personal-study .study-phone{bottom:18px}.personal-study>p{max-width:calc(100% - 70px);line-height:1.7}}
+
+/* Enhanced portrait: larger presentation, original proportions and square edges. */
+.about-intro{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:56px}
+.about-intro .profile-portrait{width:100%;max-width:460px;max-height:none;height:auto;object-fit:contain;border:0;border-radius:0;justify-self:end}
+.home-about{grid-template-columns:minmax(0,340px) minmax(0,1fr)}
+.home-about .home-portrait{max-width:340px;max-height:none;height:auto;aspect-ratio:1103/1426}
+@media(max-width:700px){.about-intro{grid-template-columns:1fr;gap:32px}.about-intro .profile-portrait{max-width:380px;justify-self:center}.home-about{grid-template-columns:1fr}.home-about .home-portrait{max-width:300px;justify-self:start}}
