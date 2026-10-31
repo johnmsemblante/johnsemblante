@@ -172,3 +172,18 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .home-about{grid-template-columns:minmax(0,340px) minmax(0,1fr)}
 .home-about .home-portrait{max-width:340px;max-height:none;height:auto;aspect-ratio:1103/1426}
 @media(max-width:700px){.about-intro{grid-template-columns:1fr;gap:32px}.about-intro .profile-portrait{max-width:380px;justify-self:center}.home-about{grid-template-columns:1fr}.home-about .home-portrait{max-width:300px;justify-self:start}}
+
+/* Page-specific imagery within the same minimalist browser illustration. */
+.showcase-study .study-window{border:0;border-radius:0;box-shadow:none}
+.showcase-study .study-canvas{padding:24px 18px}
+.showcase-study .study-label{font-size:8px;line-height:1.7;letter-spacing:.1em;margin-bottom:18px}
+.study-showcase{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.study-showcase-card{min-width:0}
+.study-showcase-image{background:#fff;aspect-ratio:1;display:grid;place-items:center;overflow:hidden}
+.study-showcase-image img{display:block;width:100%;height:100%;object-fit:contain}
+.showcase-work .study-showcase-image{aspect-ratio:516/337}
+.study-showcase-card>span{display:block;font-size:10px;font-weight:600;line-height:1.5;margin-top:10px;overflow-wrap:anywhere}
+.showcase-study .study-tiles{margin-top:20px;gap:8px}
+.showcase-study .study-tiles span{height:26px}
+.showcase-study>p{max-width:calc(100% - 65px);line-height:1.7}
+@media(max-width:620px){.showcase-study .study-canvas{padding:20px 12px}.study-showcase{gap:10px}.study-showcase-card>span{font-size:9px}.showcase-study .study-label{font-size:7px}.showcase-study .study-phone{bottom:18px}}
