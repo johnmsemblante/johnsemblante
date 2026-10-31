@@ -2,7 +2,7 @@
 export const profile = {
   fullName: "John Clark Semblante",
   location: "Mandaue City, Cebu, Philippines",
-  title: "Senior Front-End & WordPress Developer",
+  title: "Full Stack Developer",
   headline: "Full Stack Developer",
   homeSummary: "I help businesses and teams build custom WordPress websites, improve WooCommerce stores, and fix front-end problems. Over 10 years of experience, with a focus on responsive interfaces, performance, and maintainable code.",
   resumePortrait: "/images/profile/john-resume.jpg",
@@ -22,6 +22,8 @@ export const profile = {
     { company: "Cebu Rent A Car", role: "Web Developer / SEO Specialist", dates: "June 2013 – May 2014", responsibilities: ["Managed website design, content publishing, on-page SEO optimization, and web performance tuning to enhance search visibility."] },
   ],
   education: [
+    { school: "Banilad Elementary School", qualification: "Primary Education", dates: "1999 – 2005" },
+    { school: "Saint Louis School of Mandaue", qualification: "Secondary Education", dates: "2005 – 2009" },
     { school: "University of Lapu-Lapu and Mandaue", qualification: "Bachelor of Information Technology", dates: "2009 – 2013" },
   ],
 };

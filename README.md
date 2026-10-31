@@ -12,10 +12,10 @@ The website is live and search indexing is enabled. `johnsemblante.com` is the i
 
 ## 1. Quick start
 
-Run commands from the `johnsemblante` project folder. On John's current Windows machine:
+Run commands from the `johnsemblante` checkout on the computer you are using. This machine uses the path below; the other device uses `D:\Personal\Sites\johnsemblante`.
 
 ```powershell
-cd "D:\Personal\Sites\johnsemblante"
+cd "C:\Users\John Clark Semblante\Documents\ChatGPT\johnsemblante"
 npm ci
 npm run dev
 ```
@@ -81,6 +81,9 @@ Content lives in TypeScript files; there is no CMS or database. Preserve the sur
 | Homepage service offers | `src/components/development-services.tsx` |
 | Skills descriptions, categories and icons | `src/content/skill-details.ts`, `public/icons/skills/` |
 | Confidential experience overview | `src/components/experience-spotlight.tsx` |
+| Shared hero canvas and page-specific images | `src/components/browser-illustration.tsx` and each page's `BrowserIllustration` props |
+| Browser and Apple home-screen icons | `src/app/icon.svg`, `src/app/favicon.ico`, `src/app/apple-icon.png` |
+| Image lightbox and gallery interaction | `src/components/zoom-image.tsx` |
 
 ### About and experience
 
@@ -314,3 +317,34 @@ John manually committed and published earlier changes today. This release builds
 One owner-authorized inquiry from the local browser preview was accepted by Formspree on 30 October 2026. Sending/success feedback and form reset were verified. Simulated host errors, rate limiting, validation rejection, network interruption, and missing/invalid acknowledgements were also checked. **Inbox notification receipt and Reply-To still require owner confirmation**; an accepted submission alone does not prove email delivery.
 
 Use the release steps above to type-check, build, commit, push, and deploy. GitHub and Firebase Hosting are separate steps; a Git push does not publish the website.
+
+
+## 11. Updates — 31 October 2026
+
+### Hero canvases
+
+The Home, Work, and Ventures directory hero illustrations share `src/components/browser-illustration.tsx`. Each keeps the illustrated browser/phone composition and now uses square, borderless browser-window styling without the outer shadow.
+
+- **Home:** the enhanced portrait beside John's name and Full Stack Developer role. The image comes from `profile.portrait`; the displayed name and hero role copy are configured in the homepage/component.
+- **Work:** Roar Fitness and Perth Cosmetic Surgery screenshots. Edit the ordered `heroProjects` slug selection in `src/app/(portfolio)/work/page.tsx`; image paths and names are read from the public project content.
+- **Ventures directory:** Golden Travel and Tours and Lazy Barista logos. Edit the ordered `heroBrands` slug selection in `src/app/(portfolio)/ventures/page.tsx`; logos and names come from the venture registry. This is the `/ventures/` hero, not the individual business landing pages.
+
+`BrowserIllustration` accepts either a `portrait` or `showcase` configuration. A showcase supplies its kind, label, caption and image list. Keep the two modes mutually exclusive. Images in these canvases are illustrative rather than links or lightbox triggers; the project and venture collections below provide navigation. Use existing source images rather than embedding duplicate assets.
+
+### Enhanced portrait and sizing
+
+`public/images/profile/john-enhanced.webp` is the current shared portrait. It is an AI-enhanced 1103 × 1426 version of the original 247 × 319 image, **not true 4K/UHD**. Reconstructed detail should not be described as recovered photographic detail. The original stays at `public/images/profile/john-resume.jpg` through `profile.resumePortrait`.
+
+The enhanced image is used in the About hero, homepage About section, and homepage canvas. The About portrait displays up to 460px wide on desktop; the homepage About image up to 340px. Responsive rules reduce these sizes on smaller screens. Portraits retain their proportions, square edges, and borderless treatment. See [portrait enhancement notes](docs/review/portrait-enhancement.md).
+
+To replace the portrait again, update `profile.portrait` in `src/content/profile.ts` and the image width/height attributes in the About page, homepage, and browser illustration. Update any aspect ratio in `.home-portrait` if the new crop changes. Keep public image filenames versioned when changing files to avoid stale browser caches.
+
+### Profile updates and icons
+
+John's profile title is now Full Stack Developer. The education list includes Banilad Elementary School (1999–2005), Saint Louis School of Mandaue (2005–2009), and University of Lapu-Lapu and Mandaue (2009–2013), as supplied in his local profile update. These additions supplement the resume-based career content.
+
+The existing `js.` site mark is available as an SVG favicon, a multi-size ICO fallback, and an Apple touch icon. Next.js adds their metadata links automatically from `src/app/`; there is no separate favicon service. After icon changes, a browser tab may need reopening to refresh its cached icon.
+
+### Verification scope
+
+The October 31 changes were checked with production builds, TypeScript checks, and exported HTML/image references. Visual browser interaction review was unavailable in this chat for these changes; those checks do not claim a completed visual/mobile review. Use the release checklist before further design changes. The Formspree inbox and Reply-To confirmation noted above remains outstanding unless confirmed separately by the owner.
