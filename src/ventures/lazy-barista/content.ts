@@ -16,6 +16,7 @@ export const lazyBarista: Venture = {
     { title: "Taymsa", image: {"src": "/ventures/lazy-barista/taymsa.webp", "alt": "Taymsa drink from the Lazy Barista menu", "width": 712, "height": 641}, description: "A simple, strong espresso and milk combination.", price: 115 },
     { title: "Unya Sa", image: {"src": "/ventures/lazy-barista/unya-sa.webp", "alt": "Unya Sa drink from the Lazy Barista menu", "width": 712, "height": 720}, description: "A cool, strong espresso mix.", price: 115 },
     { title: "Kana Nlng", image: {"src": "/ventures/lazy-barista/kana-nlng.webp", "alt": "Kana Nlng drink from the Lazy Barista menu", "width": 682, "height": 720}, description: "A thick chocolate drink for a change from coffee.", price: 120 },
+    { title: "Hasula", image: {"src": "/ventures/lazy-barista/hasula.webp", "alt": "Hasula drink from the Lazy Barista menu", "width": 682, "height": 720}, description: "Perfect green fix for your hasula to do list. a drink that matcha-s your not today energy", price: 120 },
   ],
   offeringsNote: "Oat milk add-on: +₱30. Message the team to confirm availability before ordering.",
   artwork: [
