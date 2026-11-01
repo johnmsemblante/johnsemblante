@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { submitInquiry } from "@/lib/submit-inquiry";
 import { site } from "@/content/site";
 
-export function InquiryForm() {
-  const [topic, setTopic] = useState("Web development");
+export function InquiryForm({ initialTopic = "Web development", initialMessage = "", travel = false }: { initialTopic?: string; initialMessage?: string; travel?: boolean } = {}) {
+  const [topic, setTopic] = useState(initialTopic);
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("topic") === "experience") {
       setTopic("Discuss relevant experience");
@@ -37,7 +37,7 @@ export function InquiryForm() {
       const result = await submitInquiry(site.contactFormEndpoint, data, controller.signal);
       if (result.ok) {
         form.reset();
-        setTopic("Web development");
+        setTopic(initialTopic);
         setStatus("success");
       } else {
         setError(result.message);
@@ -51,8 +51,8 @@ export function InquiryForm() {
   }
 
   return <div id="inquiry" className="inquiry-panel">
-    <h2>What would you like to build or improve?</h2>
-    <p id="inquiry-help" className="body-copy">Include your website or design link, the work you need, and your preferred timeline. A budget range is helpful if you have one. Please leave out passwords and private client materials.</p>
+    <h2>{travel ? "Request your final trip quotation" : "What would you like to build or improve?"}</h2>
+    <p id="inquiry-help" className="body-copy">{travel ? "Review your itinerary, add your name and email, then send it to John for a confirmed quotation. This does not reserve a vehicle." : "Include your website or design link, the work you need, and your preferred timeline. A budget range is helpful if you have one. Please leave out passwords and private client materials."}</p>
     <form action={site.contactFormEndpoint} method="POST" onSubmit={send} aria-busy={status === "sending"} aria-describedby="inquiry-help inquiry-privacy" onChange={() => { setError(""); if (status === "success") setStatus("idle"); }}>
       <div hidden aria-hidden="true"><label>Leave this blank<input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" /></label></div>
       <fieldset className="inquiry-fields" disabled={status === "sending"}>
@@ -63,13 +63,13 @@ export function InquiryForm() {
       <label htmlFor="inquiry-topic">What’s it about?</label>
       <select id="inquiry-topic" name="topic" value={topic} onChange={event => setTopic(event.target.value)}><option>Web development</option><option>Career opportunity</option><option>Discuss relevant experience</option><option>Lazy Barista</option><option>Golden Travel and Tours</option><option>Collaboration</option><option>General inquiry</option></select>
       <label htmlFor="inquiry-message">Your message <span>(required)</span></label>
-      <textarea id="inquiry-message" name="message" rows={7} required maxLength={3000} placeholder="Website or design link:
+      <textarea id="inquiry-message" name="message" defaultValue={initialMessage} rows={7} required maxLength={6000} placeholder="Website or design link:
 What you need help with:
 Preferred timeline:
 Budget range (optional):" />
       </fieldset>
       {error && <p role="alert" className="form-error">{error}</p>}
-      <button className="button" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send project inquiry"} <span aria-hidden="true">↗</span></button>
+      <button className="button" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : travel ? "Send trip inquiry" : "Send project inquiry"} <span aria-hidden="true">↗</span></button>
       <div className="inquiry-status" role="status" aria-live="polite" aria-atomic="true">{status === "success" ? "Thank you — your inquiry has been submitted. I’ll reply to the email address you provided." : status === "sending" ? "Sending your inquiry. Please keep this page open." : ""}</div>
       <p id="inquiry-privacy" className="form-note">Your name, email, and message are processed by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree</a> to deliver your inquiry.</p>
       <p className="form-note">Having trouble sending? Email <a href={`mailto:${site.email}`}>{site.email}</a> directly.</p>

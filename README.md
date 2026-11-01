@@ -348,3 +348,18 @@ The existing `js.` site mark is available as an SVG favicon, a multi-size ICO fa
 ### Verification scope
 
 The October 31 changes were checked with production builds, TypeScript checks, and exported HTML/image references. Visual browser interaction review was unavailable in this chat for these changes; those checks do not claim a completed visual/mobile review. Use the release checklist before further design changes. The Formspree inbox and Reply-To confirmation noted above remains outstanding unless confirmed separately by the owner.
+
+
+## 12. Golden Travel trip budget planner — 1 November 2026
+
+The Golden Travel landing page includes `#trip-estimator`, a client-side itinerary planner with six dated historical quotation references. It does not calculate current route prices, charge for extra stops, reserve vehicles, or take payments. Custom, changed, sedan/SUV and multi-day selections request personalized quotations. Even an unchanged package shows its old reference amount, not a verified total for the supplied journey.
+
+- `src/ventures/golden-travel-and-tours/rates.ts`: public historical amounts, dates, proposed stops and qualifications; no private messages or supplier commission data.
+- `src/ventures/golden-travel-and-tours/trip-estimator.tsx`: itinerary fields, ordered extra stops, dated results, estimate notice and request summary.
+- `src/components/inquiry-form.tsx`: optional initial topic/message and travel wording; the same Formspree endpoint handles explicit customer submissions. Original contact-page behavior remains available.
+
+Customers enter pickup/drop-off, travel date/time, passenger count, vehicle preference, journey type, optional hours/luggage, up to five extra stops and notes. Changing planner inputs clears the old result. “Request final quotation” opens a prefilled inquiry for review; it does not submit it. The customer supplies their name/email and explicitly presses Send trip inquiry. No planner input is stored in a database, browser storage or URL. It is sent to Formspree only upon inquiry submission.
+
+Historical package amounts are vehicle reference quotations, not per-person admission packages. Fuel/driver inclusions, activity and entrance fees, parking, tolls, boats/ferries, meals, accommodation and overtime require confirmation. No fuel adjustment, discretionary free hour, per-kilometre rate, live routing or availability guarantee is applied. Do not turn these references into current prices without updating their supporting rules and dates. A listed stop does not promise an attraction is open or that the full itinerary fits the customer's hours.
+
+Keep private Messenger exports, customer contacts and internal commission arrangements outside the repository. Test custom/unknown routes, modified stops, alternate vehicles and multi-day fallbacks when changing price logic. No test inquiry should be sent without explicit authorization. Build and logic checks do not replace browser/mobile and inbox delivery checks.
