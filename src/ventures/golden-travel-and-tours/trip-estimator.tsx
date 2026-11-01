@@ -2,26 +2,30 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import { InquiryForm } from "@/components/inquiry-form";
-import { estimateNotice, needsCustomQuote, referenceFor, tripReferences } from "./rates";
+import { estimateNotice } from "./rates";
+import { selectedPackage, tourPackages } from "./packages";
 const peso = (amount: number) => new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 }).format(amount);
 type Result = { message: string; title: string; reference?: string; date?: string; note?: string };
 
 export function TripEstimator() {
-  const [choice, setChoice] = useState("custom");
+  const [mode, setMode] = useState("custom");
+  const [choice, setChoice] = useState("");
+  const [customize, setCustomize] = useState(false);
   const [extra, setExtra] = useState(false);
   const [stops, setStops] = useState<string[]>([""]);
   const [result, setResult] = useState<Result | null>(null);
   const [inquire, setInquire] = useState(false);
   const resultHeading = useRef<HTMLHeadingElement>(null);
-  const reference = referenceFor(choice);
+  const reference = selectedPackage(mode, choice);
   function invalidate() { setResult(null); setInquire(false); }
   function calculate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
     const field = (name: string) => String(data.get(name) ?? "").trim();
-    const modified = extra || data.get("modified") === "on";
-    const custom = needsCustomQuote(choice, modified, field("vehicle"), data.get("multiDay") === "on");
+    const modified = extra || (mode === "packages" && customize);
+    const rate = reference?.fixedRate;
+    const custom = !rate || modified || data.get("multiDay") === "on";
     const summary = [
       "Golden Travel — request final quotation (not a booking)",
       `Trip: ${reference?.name ?? "Custom itinerary"}`,
@@ -33,23 +37,23 @@ export function TripEstimator() {
       `Suggested package stops: ${reference?.stops.join(" → ") ?? "None"}`,
       `Extra stops in requested order: ${extra ? stops.map(s => s.trim()).filter(Boolean).join(" → ") : "None"}`,
       `Expected total hours, including stops: ${field("hours") || "Please advise"}`,
-      `Package changes: ${data.get("modified") === "on" ? "Yes" : "No"}`,
+      `Package customization: ${mode === "packages" && customize ? field("customization") : "None"}`,
       `Notes / time at stops: ${field("notes") || "None"}`,
-      reference ? `Historical vehicle reference: ${peso(reference.amount)}, quoted ${reference.date}. Not a current trip total.` : "No supported price reference; manual quotation required.",
-      `Assessment: ${custom ? "Custom quotation required" : "Historical reference only; current total requires confirmation"}`,
+      rate ? `Package reference: ${peso(rate.amount)}, confirmed ${rate.confirmedOn}. Conditions: ${rate.conditions}. Changes require quotation.` : "No supported price reference; manual quotation required.",
+      `Assessment: ${custom ? "Custom quotation required" : "Package rate reference; final total requires confirmation"}`,
       estimateNotice,
     ].join("\n");
-    setResult({ message: summary, title: custom ? "Personalized quotation required" : "Your starting budget reference", reference: reference ? peso(reference.amount) : undefined, date: reference?.date, note: reference?.note });
+    setResult({ message: summary, title: custom ? "Personalized quotation required" : "Your starting budget reference", reference: rate ? peso(rate.amount) : undefined, date: rate?.confirmedOn, note: rate?.conditions });
     setInquire(false);
     requestAnimationFrame(() => resultHeading.current?.focus());
   }
-  return <section id="trip-estimator" className="venture-section trip-estimator" tabIndex={-1}>
-    <p className="eyebrow">Plan before you book</p><h2>Explore your trip budget.</h2>
-    <p>Choose a previous itinerary for a dated price reference, or build a custom trip for a personalized quotation. No live fuel adjustment, route-distance pricing, or availability check is applied.</p>
+  return <section className="trip-estimator" aria-label="Trip details">
+    <p>Build your own trip or explore our 12 suggested packages. Choose an itinerary, tell us what you would like to change, and request a confirmed price. Availability and practical schedules are confirmed by the team.</p>
     <form onSubmit={calculate} onChange={invalidate}>
-      <label htmlFor="trip-package">Package or custom trip</label>
-      <select id="trip-package" value={choice} onChange={e => { setChoice(e.target.value); invalidate(); }}><option value="custom">Build my own trip</option>{tripReferences.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
-      {reference && <div className="trip-package-info"><p><strong>Suggested stops</strong></p><p>{reference.stops.join(" → ")}</p><p>Stops are a proposed itinerary, not guaranteed activity bookings. Confirm that the schedule is practical.</p><label className="trip-check"><input type="checkbox" name="modified" /> I want to change or remove package stops</label></div>}
+      <label htmlFor="trip-mode">How would you like to plan?</label>
+      <select id="trip-mode" value={mode} onChange={e => { setMode(e.target.value); setChoice(""); setCustomize(false); setExtra(false); setStops([""]); invalidate(); }}><option value="custom">Build my own trip</option><option value="packages">Packages</option></select>
+      {mode === "packages" && <><label htmlFor="trip-package">Choose a package (required)</label><select id="trip-package" value={choice} required onChange={e => { setChoice(e.target.value); setCustomize(false); invalidate(); }}><option value="" disabled>Select one of the 12 packages</option>{tourPackages.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></>}
+      {reference && <div className="trip-package-info"><h3>{reference.name}</h3><p><strong>{reference.fixedRate ? `${peso(reference.fixedRate.amount)} · package reference` : "Rate: Request quotation"}</strong></p>{reference.fixedRate ? <p>{reference.fixedRate.conditions} · Confirmed {reference.fixedRate.confirmedOn}</p> : <p>A fixed rate for this exact itinerary is not yet published. Request the current price for your group and travel date.</p>}<p><strong>Suggested destinations and activities</strong></p><ul>{reference.stops.map(stop => <li key={stop}>{stop}</li>)}</ul><p>Activity tickets are not included unless confirmed in your quotation. The team will confirm access, stop order, and whether the itinerary needs more than one day.</p><label className="trip-check"><input type="checkbox" checked={customize} onChange={e => { setCustomize(e.target.checked); invalidate(); }} /> Customize this package</label>{customize && <><label htmlFor="trip-customization">What would you like to change? (required)</label><textarea id="trip-customization" name="customization" required maxLength={400} rows={3} placeholder="Add or remove destinations, change activities, or request a different schedule." /></>}</div>}
       <div className="trip-fields">
         <div><label htmlFor="trip-from">Pickup location (required)</label><input id="trip-from" name="from" required maxLength={160} placeholder="Hotel, landmark or address in Cebu" /></div>
         <div><label htmlFor="trip-to">Final drop-off (required)</label><input id="trip-to" name="to" required maxLength={160} placeholder="Return hotel or final destination" /></div>
@@ -68,7 +72,7 @@ export function TripEstimator() {
       <p>Island/ferry routes, overnight trips, large groups and unusual itineraries need manual review. Passenger count does not guarantee vehicle capacity.</p>
       <button type="submit" className="button">Review my trip budget</button>
     </form>
-    {result && <div className="trip-result"><h3 ref={resultHeading} tabIndex={-1}>{result.title}</h3>{result.reference ? <><p className="trip-reference">{result.reference}<span>Historical vehicle quotation · not per person or your final total</span></p><p>Reference date: {result.date}. This amount is not recalculated for your pickup, group size, chosen vehicle, date or changes.</p><p>{result.note}</p></> : <p>We do not have a verified pricing rule for this route. Send the itinerary below for a tailored quotation.</p>}
+    {result && <div className="trip-result"><h3 ref={resultHeading} tabIndex={-1}>{result.title}</h3>{result.reference ? <><p className="trip-reference">{result.reference}<span>Package reference · not per person or your final total</span></p><p>Reference date: {result.date}. This reference is not recalculated for your pickup, group size, chosen vehicle, date or changes.</p><p>{result.note}</p></> : <p>We do not have a verified pricing rule for this route. Send the itinerary below for a tailored quotation.</p>}
       <p className="trip-disclaimer"><strong>Estimate notice:</strong> {estimateNotice}</p>
       <p><strong>Not priced here:</strong> attraction tickets, boats/ferries, activities, tolls, parking, meals, accommodation and extra hours. Fuel and driver inclusions must also be confirmed in the final quote. No automatic fuel surcharge or extra-hour allowance is assumed.</p>
       <details><summary>Review the itinerary to send</summary><pre>{result.message}</pre></details>

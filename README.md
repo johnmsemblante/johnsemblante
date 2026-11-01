@@ -350,16 +350,33 @@ The existing `js.` site mark is available as an SVG favicon, a multi-size ICO fa
 The October 31 changes were checked with production builds, TypeScript checks, and exported HTML/image references. Visual browser interaction review was unavailable in this chat for these changes; those checks do not claim a completed visual/mobile review. Use the release checklist before further design changes. The Formspree inbox and Reply-To confirmation noted above remains outstanding unless confirmed separately by the owner.
 
 
-## 12. Golden Travel trip budget planner — 1 November 2026
+## 12. Golden Travel trip planner — 1 November 2026
 
-The Golden Travel landing page includes `#trip-estimator`, a client-side itinerary planner with six dated historical quotation references. It does not calculate current route prices, charge for extra stops, reserve vehicles, or take payments. Custom, changed, sedan/SUV and multi-day selections request personalized quotations. Even an unchanged package shows its old reference amount, not a verified total for the supplied journey.
+The Golden Travel landing page includes `#trip-estimator`, a client-side itinerary planner. The first selection is **Build my own trip** or **Packages**. Packages reveals a required second selection with all 12 owner-supplied itineraries (1–4 and A–H), their destinations and activities, and an optional customization field. The owner supplied the package list directly on November 1, matching the earlier July list.
 
-- `src/ventures/golden-travel-and-tours/rates.ts`: public historical amounts, dates, proposed stops and qualifications; no private messages or supplier commission data.
-- `src/ventures/golden-travel-and-tours/trip-estimator.tsx`: itinerary fields, ordered extra stops, dated results, estimate notice and request summary.
-- `src/components/inquiry-form.tsx`: optional initial topic/message and travel wording; the same Formspree endpoint handles explicit customer submissions. Original contact-page behavior remains available.
+All 12 packages currently display **Request quotation** because no complete rate sheet was supplied for these exact itineraries. The planner does not calculate current route prices, reserve vehicles or take payments. Do not apply historical quotations for different routes to these packages.
 
-Customers enter pickup/drop-off, travel date/time, passenger count, vehicle preference, journey type, optional hours/luggage, up to five extra stops and notes. Changing planner inputs clears the old result. “Request final quotation” opens a prefilled inquiry for review; it does not submit it. The customer supplies their name/email and explicitly presses Send trip inquiry. No planner input is stored in a database, browser storage or URL. It is sent to Formspree only upon inquiry submission.
+### Editing the planner
 
-Historical package amounts are vehicle reference quotations, not per-person admission packages. Fuel/driver inclusions, activity and entrance fees, parking, tolls, boats/ferries, meals, accommodation and overtime require confirmation. No fuel adjustment, discretionary free hour, per-kilometre rate, live routing or availability guarantee is applied. Do not turn these references into current prices without updating their supporting rules and dates. A listed stop does not promise an attraction is open or that the full itinerary fits the customer's hours.
+- `src/ventures/golden-travel-and-tours/packages.ts`: package names and stops. Optional `fixedRate` contains an owner-supplied amount in PHP, confirmation date and explicit conditions for that exact itinerary. A published reference is not an automatically adjusted final total.
+- `src/ventures/golden-travel-and-tours/trip-estimator.tsx`: the two planning modes, trip fields, customization, extra stops, results and inquiry summary.
+- `src/ventures/golden-travel-and-tours/rates.ts`: estimate disclaimer and retained historical quotation records. The historical records no longer populate the selector.
+- `src/components/inquiry-form.tsx`: initial topic/message and travel wording. The existing Formspree endpoint handles explicit customer submissions; the contact page uses the same component.
 
-Keep private Messenger exports, customer contacts and internal commission arrangements outside the repository. Test custom/unknown routes, modified stops, alternate vehicles and multi-day fallbacks when changing price logic. No test inquiry should be sent without explicit authorization. Build and logic checks do not replace browser/mobile and inbox delivery checks.
+Customers enter pickup/drop-off, travel date/time, passenger count, vehicle preference, journey type, optional hours/luggage, up to five extra stops and notes. Package customization allows requests to add/remove destinations or change activities and schedules. Switching modes clears hidden package/customization and extra-stop state; editing fields clears the previous result.
+
+“Request final quotation” opens a prefilled inquiry for review; it does not submit it. Customers provide their name/email and press Send trip inquiry. No planner input is stored in a database, browser storage or URL. It goes to Formspree only upon inquiry submission.
+
+### Pricing and verification
+
+Fuel/driver inclusions, activity and entrance fees, parking, tolls, boats/ferries, meals, accommodation and overtime require confirmation. No fuel adjustment, per-kilometre rate, live routing or availability guarantee is applied. A listed stop does not promise an attraction is open or that the itinerary fits the requested hours. The team confirms the schedule and whether multiple days are needed.
+
+Keep private Messenger exports, customer contacts and supplier commission arrangements outside the repository. When changing the planner, verify both modes, all 12 packages, customizations, added stops and inquiry summaries. Do not send test inquiries without explicit authorization. Build and logic checks do not replace browser/mobile review or inbox-delivery checks.
+
+### Trip planner popup
+
+Golden Travel’s primary hero action, **Request a travel quote**, opens a centered native dialog. The navigation anchor points to that hero button. The popup has square corners, the existing typeface and colors, a dimmed backdrop, a fixed close header and an independently scrolling form for small screens. Escape and Close dismiss it and return focus to the launch button; the native modal keeps keyboard focus inside while open. Background scrolling is locked while open. Clicking the backdrop does not dismiss the form accidentally.
+
+Edit `src/ventures/golden-travel-and-tours/trip-planner-dialog.tsx` for popup behavior and `.trip-planner-dialog` rules in `src/app/globals.css` for styling. The form remains mounted when closed, retaining the draft during the current page visit; nothing is persisted across reloads. Customers can still use the direct contact link in the Let’s connect section without JavaScript. The shared venture landing remains a server component, with only the planner and popup interactive.
+
+The Golden Travel hero has two actions: **Request a travel quote** opens the popup and **Explore services** scrolls to the services section. Visiting `/ventures/golden-travel-and-tours/?requestquote` also opens the popup after the page loads. The presence of the `requestquote` parameter triggers it, including alongside other parameters; unrelated parameters do not. Closing the popup does not reopen it until a new visit/reload or a button click.
