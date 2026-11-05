@@ -1,6 +1,6 @@
 # Industry portfolio enhancement
 
-**Release checkpoint:** the owner requested committing and publishing the accumulated changes with the dropdown label-click issue still unresolved. Clicking option text can close the category dropdown in the actual browser. Further debugging is deliberately deferred; earlier automated test passes do not establish that this browser issue is fixed.
+**Current status:** the owner confirmed that the label-click enhancement now works and requested publishing the fix. The dropdown tracks pointer gestures that start inside it, allowing label activation without premature dismissal. Earlier release/checkpoint notes below describe the investigation history.
 
 All 14 historical projects retain their original order, slugs, descriptions, dates, roles, technologies, screenshots and website links. Lazy Barista and Golden Travel and Tours are two additional **Personal venture** entries, pointing to their existing venture pages and accurately listing Next.js, TypeScript and Tailwind CSS.
 
@@ -112,3 +112,5 @@ The contextual-option and independent-mode follow-up is also local. Verification
 The subsequent label-click fix routes option text, count and row clicks through the associated checkbox's native click/change event. An isolated React DOM/jsdom interaction check verified the actual checked state and URL after each click, including disabled-option protection. The 22 portfolio tests, TypeScript, production build and export checks also passed. Temporary DOM tooling lives under ignored `tmp/portfolio-dom-tools`; portfolio dependencies are unchanged. This fix remains local pending deployment.
 
 The latest dismissal fix adds the previously missing pointer/focus regression: transient body focus before label activation must not close the dropdown. The isolated React DOM check now asserts that the panel stays open after label text, count, row and checkbox clicks, and still closes for outside pointer/control focus and Escape. All 23 portfolio tests pass. This follow-up remains local.
+
+After release, the owner confirmed that label clicks still closed the dropdown. The next local revision reproduces a missing case using the actual shell structure: `<main tabIndex={-1}>` can receive focus between an inside pointer press and native label activation. Dismissal now tracks pointer gestures originating inside the dropdown instead of relying only on a body-focus exception. The Technology/Next.js React DOM reproduction fails before this change and passes afterward; 23 portfolio tests, the build and export checks pass. The attempted automated Chrome check was stopped with Escape. The owner subsequently confirmed the behavior works and authorized committing and publishing this revision.

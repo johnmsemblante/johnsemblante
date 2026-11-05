@@ -11,6 +11,7 @@ export function ProjectFilterDropdown({ label, options, selected, open, disabled
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const moveFocus = useRef(false);
+  const pointerStartedInside = useRef(false);
   const [above, setAbove] = useState(false);
   useEffect(() => {
     if (!open) return;
@@ -18,15 +19,32 @@ export function ProjectFilterDropdown({ label, options, selected, open, disabled
     position(); window.addEventListener("resize", position);
     if (moveFocus.current) { panel.current?.querySelector<HTMLInputElement>('input[type="checkbox"]:not(:disabled)')?.focus(); moveFocus.current = false; }
     const outside = (event: Event) => { if (!root.current?.contains(event.target as Node)) onClose(); };
+    const pointerDown = (event: PointerEvent) => {
+      pointerStartedInside.current = !!root.current?.contains(event.target as Node);
+      if (!pointerStartedInside.current) onClose();
+    };
+    const finishPointer = () => { pointerStartedInside.current = false; };
     const outsideFocus = (event: FocusEvent) => {
-      // A pointer press on non-focusable label text can transiently focus the document body.
-      // Actual outside pointer presses are handled separately; only dismiss for real outside controls here.
+      // Chrome can focus the surrounding <main tabIndex={-1}> on a label press,
+      // before forwarding that label's click to its checkbox. Keep that gesture inside.
+      if (pointerStartedInside.current) return;
       if (event.target === document.body || event.target === document.documentElement) return;
       outside(event);
     };
-    document.addEventListener("pointerdown", outside);
+    document.addEventListener("pointerdown", pointerDown);
+    document.addEventListener("click", finishPointer);
+    document.addEventListener("pointercancel", finishPointer);
+    document.addEventListener("keydown", finishPointer, true);
     document.addEventListener("focusin", outsideFocus);
-    return () => { document.removeEventListener("pointerdown", outside); document.removeEventListener("focusin", outsideFocus); window.removeEventListener("resize", position); };
+    return () => {
+      pointerStartedInside.current = false;
+      document.removeEventListener("pointerdown", pointerDown);
+      document.removeEventListener("click", finishPointer);
+      document.removeEventListener("pointercancel", finishPointer);
+      document.removeEventListener("keydown", finishPointer, true);
+      document.removeEventListener("focusin", outsideFocus);
+      window.removeEventListener("resize", position);
+    };
   }, [open, onClose]);
   function closeAndFocus() { onClose(); trigger.current?.focus(); }
   return <div className="portfolio-filter-dropdown" ref={root} onKeyDown={event => {

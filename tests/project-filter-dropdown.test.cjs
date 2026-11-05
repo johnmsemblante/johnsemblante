@@ -37,8 +37,8 @@ test('unavailable labels and checkboxes cannot toggle, and Escape closes the pan
   assert.equal(h.closed(), 1); assert.equal(h.focused(), true);
 });
 
-test('label pointer presses and transient body focus keep the panel open; actual outside interactions still close it', () => {
-  const h = dropdown(); const inside = {}; const controlOutside = {};
+test('label presses remain inside even when the focusable page main receives focus; keyboard and pointer dismissal still work', () => {
+  const h = dropdown(); const inside = {}; const controlOutside = {}; const pageMain = {};
   const originalDocument = globalThis.document; const originalWindow = globalThis.window;
   const listeners = new Map();
   const fakeDocument = { body: {}, documentElement: {}, addEventListener(name, callback) { listeners.set(name, callback); }, removeEventListener(name) { listeners.delete(name); } };
@@ -49,10 +49,16 @@ test('label pointer presses and transient body focus keep the panel open; actual
     listeners.get('pointerdown')({ target: inside });
     listeners.get('focusin')({ target: fakeDocument.body });
     listeners.get('focusin')({ target: fakeDocument.documentElement });
+    listeners.get('focusin')({ target: pageMain });
     listeners.get('focusin')({ target: inside });
     assert.equal(h.closed(), 0);
+    listeners.get('click')();
     listeners.get('focusin')({ target: controlOutside }); assert.equal(h.closed(), 1);
     listeners.get('pointerdown')({ target: fakeDocument.body }); assert.equal(h.closed(), 2);
+    listeners.get('pointerdown')({ target: inside }); listeners.get('keydown')();
+    listeners.get('focusin')({ target: controlOutside }); assert.equal(h.closed(), 3);
+    listeners.get('pointerdown')({ target: inside }); listeners.get('pointercancel')();
+    listeners.get('focusin')({ target: controlOutside }); assert.equal(h.closed(), 4);
     cleanup(); assert.equal(listeners.size, 0);
   } finally {
     if (originalDocument === undefined) delete globalThis.document; else globalThis.document = originalDocument;
