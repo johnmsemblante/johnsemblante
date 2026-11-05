@@ -1,5 +1,7 @@
 # Writing on your blog
 
+For the browser-based editor, use `/adminauth/blog/` after completing [Firebase admin setup](admin-setup.md). It supports private drafts, previews, publishing and unpublishing. Managed articles appear at `/blog/?post=slug`. The instructions below describe the separate source-based workflow, which retains build-time article URLs and metadata.
+
 Open `src/content/blog.ts`. Duplicate the starter draft inside the `posts` array for each new article. Keep `status: "draft"` while writing. Drafts are not exported, linked, or included in the sitemap; there is no browser editor or saved-draft service.
 
 Set a unique lowercase URL slug with hyphens, title, excerpt, category, and publication date in YYYY-MM-DD format. Write the body using paragraph, heading, quote, and list blocks. Content is plain text, not HTML or Markdown. Heading blocks render as H2; the article title is H1.

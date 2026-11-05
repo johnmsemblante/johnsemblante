@@ -2,7 +2,30 @@
   "name": "john-semblante-portfolio",
   "version": "0.1.0",
   "private": true,
-  "scripts": { "dev": "node node_modules/next/dist/bin/next dev --webpack", "build": "node node_modules/next/dist/bin/next build --webpack", "preview": "node scripts/preview.mjs", "typecheck": "node node_modules/typescript/bin/tsc --noEmit" },
-  "dependencies": { "next": "latest", "react": "latest", "react-dom": "latest" },
-  "devDependencies": { "typescript": "^5", "@types/node": "^20", "@types/react": "^19", "@types/react-dom": "^19", "tailwindcss": "^4", "@tailwindcss/postcss": "^4" }
+  "scripts": {
+    "dev": "node node_modules/next/dist/bin/next dev --webpack",
+    "build": "node node_modules/next/dist/bin/next build --webpack",
+    "preview": "node scripts/preview.mjs",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+    "test:blog": "node --test tests/blog-model.test.cjs",
+    "test:rules": "node --test tests/firestore-rules.test.mjs"
+  },
+  "dependencies": {
+    "firebase": "13.2.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "6.0.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.13.6"
+  }
 }

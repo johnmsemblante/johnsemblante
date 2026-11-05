@@ -1,3 +1,4 @@
+import { ManagedBlog } from "@/components/managed-blog";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { publishedPosts, formatPostDate } from "@/content/blog";
@@ -21,10 +22,10 @@ export async function generateMetadata({ params }: Props) {
 export default async function Blog({ params }: Props) {
   const { slug } = await params;
   const posts = publishedPosts();
-  if (!slug?.length) return <>
+  if (!slug?.length) return <ManagedBlog hasStaticPosts={posts.length > 0}>
     <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>
     <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <article className="blog-preview" key={post.slug}><div className="blog-meta"><span>{post.category}</span><time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time></div><h2><Link href={`/blog/${post.slug}/`}>{post.title} <Arrow /></Link></h2><p>{post.excerpt}</p><Link className="text-link" href={`/blog/${post.slug}/`} aria-label={`Read ${post.title}`}>Read article <Arrow /></Link></article>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first article is in progress.</h2><p>In the meantime, explore my projects or get in touch about a website you want to build or improve.</p></div>}</section>
-  </>;
+  </ManagedBlog>;
   const post = posts.find(post => slug.length === 1 && post.slug === slug[0]);
   if (!post) notFound();
   return <article className="blog-article">

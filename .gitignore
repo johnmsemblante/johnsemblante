@@ -5,6 +5,7 @@ out/
 .env*
 .firebase/
 firebase-debug.log
+firestore-debug.log
 tmp/
 *.stackdump
 docs/review/*.jpg

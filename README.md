@@ -22,7 +22,7 @@ npm run dev
 
 Open http://localhost:3000. Leave the terminal running while editing. Most saved source changes appear automatically. Press **Ctrl+C** to stop the server.
 
-This project does not need XAMPP, Apache, PHP, a database, or Firebase credentials to run locally. The old site at `C:\xampp\htdocs\sites\johnmsemblanteapp` is historical; deploy this repository's `out/` folder instead.
+The public portfolio does not need XAMPP, Apache, PHP, a database, or Firebase credentials to run locally. Admin access and managed blog publishing require the optional Firebase setup in [admin-setup.md](docs/admin-setup.md). The old site at `C:\xampp\htdocs\sites\johnmsemblanteapp` is historical; deploy this repository's `out/` folder instead.
 
 ### On a new computer
 
@@ -58,11 +58,11 @@ Use `npm ci` to install the versions in `package-lock.json`. No `.env` file is r
 
 Run `npm run build` **before** `npm run preview`. Static preview does not watch source changes: rebuild and refresh after editing. Keep its terminal open and stop it with Ctrl+C. This lightweight preview does not emulate Firebase's redirects or headers.
 
-There is no `npm start`, lint script, or automated test suite configured. The scripts use Webpack because Turbopack's CSS worker had problems in the original Windows environment.
+There is no `npm start` or lint script. Blog validation and Firestore access-rule tests are available as `npm run test:blog` and `npm run test:rules`; see [admin setup](docs/admin-setup.md). The scripts use Webpack because Turbopack's CSS worker had problems in the original Windows environment.
 
 ## 3. Where to edit content
 
-Content lives in TypeScript files; there is no CMS or database. Preserve the surrounding quotes, commas, arrays, and braces. Use the existing entries as templates, save, then check the affected page locally.
+Portfolio and venture content lives in TypeScript files. Managed blog posts can be created and edited at `/adminauth/blog/` using Firebase Authentication and Firestore; see [admin setup](docs/admin-setup.md). The source-based blog remains supported separately. Preserve the surrounding quotes, commas, arrays, and braces. Use the existing entries as templates, save, then check the affected page locally.
 
 | What you want to change | File or directory |
 | --- | --- |
@@ -373,10 +373,17 @@ Fuel/driver inclusions, activity and entrance fees, parking, tolls, boats/ferrie
 
 Keep private Messenger exports, customer contacts and supplier commission arrangements outside the repository. When changing the planner, verify both modes, all 12 packages, customizations, added stops and inquiry summaries. Do not send test inquiries without explicit authorization. Build and logic checks do not replace browser/mobile review or inbox-delivery checks.
 
-### Trip planner popup
+### Expandable trip planner
 
-Golden Travel’s primary hero action, **Request a travel quote**, opens a centered native dialog. The navigation anchor points to that hero button. The popup has square corners, the existing typeface and colors, a dimmed backdrop, a fixed close header and an independently scrolling form for small screens. Escape and Close dismiss it and return focus to the launch button; the native modal keeps keyboard focus inside while open. Background scrolling is locked while open. Clicking the backdrop does not dismiss the form accidentally.
+The hero action and navigation open an inline expandable planner below the hero, implemented in `trip-planner.tsx`. Both `#trip-estimator` and `?requestquote` open the planner; hero anchor clicks preserve the fragment in browser history. Closing the section retains input during the current visit.
 
-Edit `src/ventures/golden-travel-and-tours/trip-planner-dialog.tsx` for popup behavior and `.trip-planner-dialog` rules in `src/app/globals.css` for styling. The form remains mounted when closed, retaining the draft during the current page visit; nothing is persisted across reloads. Customers can still use the direct contact link in the Let’s connect section without JavaScript. The shared venture landing remains a server component, with only the planner and popup interactive.
+Pickup, drop-off and extra stops are plain text fields. Customers can freely enter place names, landmarks, hotels or addresses. There is no location autocomplete, map, geocoding service or location API configuration. No planner input is persisted across reloads; the completed itinerary goes to Formspree only when the customer explicitly submits an inquiry.
 
-The Golden Travel hero has two actions: **Request a travel quote** opens the popup and **Explore services** scrolls to the services section. Visiting `/ventures/golden-travel-and-tours/?requestquote` also opens the popup after the page loads. The presence of the `requestquote` parameter triggers it, including alongside other parameters; unrelated parameters do not. Closing the popup does not reopen it until a new visit/reload or a button click.
+Travel dates are checked against the current date in Asia/Manila. Package pricing remains manual until verified rates and applicable conditions are supplied. Review both planning modes, all package selections, stop add/remove, direct quotation links and inquiry contents before release. Do not send test inquiries without authorization.
+
+
+## 13. Admin access and blog editor
+
+`/adminauth/` is the Google sign-in gateway for approved administrators. `/adminauth/blog/` supports adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect drafts and writes.
+
+See [admin-setup.md](docs/admin-setup.md) for the required Web app configuration, Authentication provider, security rules/index deployment, admin approval, local tests and static-export SEO limits. No production Firebase settings, users, rules or posts are changed automatically. The job hunt application is not implemented.
