@@ -21,6 +21,7 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
   const [posts, setPosts] = useState<ManagedPost[]>([]);
   const [article, setArticle] = useState<ManagedPost | null>(null);
   const [detail, setDetail] = useState(false);
+  const [routeReady, setRouteReady] = useState(false);
   const [loading, setLoading] = useState(firebaseConfigured);
   const [error, setError] = useState("");
   const [pages, setPages] = useState<Pages>(firstPages);
@@ -58,6 +59,7 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
     let disposed = false;
     const slug = new URLSearchParams(window.location.search).get("post");
     setDetail(slug !== null);
+    setRouteReady(true);
     if (!firebaseConfigured) {
       if (slug !== null) setError("This article is currently unavailable.");
       return () => { alive.current = false; };
@@ -83,10 +85,12 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
     // Refresh visible pages to discover newly released posts, even with the editor closed.
     const timer = window.setInterval(refresh, 60000);
     window.addEventListener("focus", refresh);
-    return () => { disposed = true; alive.current = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); };
+    document.addEventListener("visibilitychange", refresh);
+    return () => { disposed = true; alive.current = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
     // Initial page selection is fixed by the URL; links navigate to a new page.
   }, []);
 
+  if (firebaseConfigured && !routeReady) return <section className="section" aria-label="Blog" aria-busy="true"><p role="status">Loading blog…</p></section>;
   if (detail) return <article className="blog-article">
     <Link className="text-link" href="/blog/">← All posts</Link>
     {loading && <p role="status">Loading article…</p>}
@@ -94,10 +98,12 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
     {article && <><BlogPostMetadata post={article} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header><BlogArticleContent content={article.content} /></>}
   </article>;
   return <>
-    {hasStaticPosts || !posts.length ? children : <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>}
-    {(loading || error || posts.length > 0) && <section className="section" aria-label="Latest blog articles">
+    {hasStaticPosts || !firebaseConfigured ? children : <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>}
+    {(loading || error || posts.length > 0 || (firebaseConfigured && !hasStaticPosts)) && <section className="section" aria-label="Latest blog articles" aria-busy={loading}>
       <div className="blog-list">{posts.map(post => <article className="blog-preview" key={post.slug}><Labels post={post} /><div className="blog-meta"><time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time></div><h2><a href={`/blog/?post=${encodeURIComponent(post.slug)}`}>{post.title} →</a></h2><p>{post.excerpt}</p><a className="text-link" href={`/blog/?post=${encodeURIComponent(post.slug)}`}>Read article →</a></article>)}</div>
-      {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}{(pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}
+      {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}
+      {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2>No articles published yet.</h2><p>Check back for new notes from the work.</p></div>}
+      {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}
     </section>}
   </>;
 }

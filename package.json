@@ -7,7 +7,7 @@
     "build": "node node_modules/next/dist/bin/next build --webpack",
     "preview": "node scripts/preview.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test:blog": "node --test tests/blog-model.test.cjs",
+    "test:blog": "node --test tests/blog-model.test.cjs tests/blog-loading.test.cjs",
     "test:rules": "node --test tests/firestore-rules.test.mjs"
   },
   "dependencies": {
