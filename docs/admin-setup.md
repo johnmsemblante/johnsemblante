@@ -41,25 +41,30 @@ Official references: [Google sign-in](https://firebase.google.com/docs/auth/web/
 
 ## Writing and publishing
 
-- Visit `/adminauth/blog/`, then select **New post** or open a saved post.
-- Enter a title, unique lowercase slug, introduction, category, and article. Slugs become immutable after saving to preserve shared links.
-- Separate paragraphs with blank lines. `## Heading`, `- list item` and `> quote` support simple formatting. Separate these blocks with blank lines. Preview is available before saving. HTML, images, scripts, arbitrary links and advanced Markdown are rendered as text or unsupported, never executed.
-- **Draft — private** followed by **Save draft** stores a private draft. Valid publication dates are optional for drafts.
-- Choose **Published — public**, enter a real date, then **Save and publish**. The complete stored article becomes publicly readable. Publication is immediate even for future dates; there is no scheduled-publishing feature.
-- To unpublish, choose **Draft — private** and save. Subsequent public reads are denied. Previously public content cannot be recalled from readers who have already seen or copied it.
-- Editing a published post and saving publishes the updated version immediately. There is no separate pending revision of an already published article.
-- Another tab's changes cause a revision conflict instead of a silent overwrite. Copy any unsaved text before reopening the latest post. Duplicate slugs are also rejected. The editor warns before common navigation actions that would discard unsaved edits. Draft text is not stored in browser local storage.
-- The editor lists 25 posts at a time; the public list loads 20 at a time. Use **Load more** for older posts. There is deliberately no permanent-delete action.
+- Visit `/adminauth/blog/`, then select **New post** or open a saved article.
+- The slug is generated from the title. Duplicate titles receive numbered suffixes. Saved slugs remain fixed when titles change, preserving shared links.
+- Categories and Tags accept multiple labels: type a label and press Enter or comma, or use Add. Remove individual chips with their remove buttons. At least one category is required (maximum 10); tags are optional (maximum 20). Labels are limited to 80 characters and duplicates are normalized. Both are shown on the public article and its list card.
+- Separate paragraphs with blank lines. Use `## Heading`, `- list item` and `> quote`, with blank lines around blocks. Raw HTML is rendered as text.
+- Use **Insert an image or file** to insert an HTTPS or site-relative URL at the article cursor. Images use `![alt description](URL)`; other assets use `[link label](URL)`. An image description is required. Images display within the article; file links open in another tab. Only URLs are supported in this revision. No Storage bucket, billing upgrade or direct file upload is enabled.
+- **Draft** followed by Save draft stores a private draft.
+- **Published** followed by Save and publish records the actual publication date/time with a Firestore server timestamp. There is no manual publication date for immediate publishing. Editing a published article preserves its publication timestamp. Unpublishing to Draft clears it; republishing creates a new publication timestamp.
+- **Schedule** reveals a publication date/time input in **Asia/Manila (UTC+8)**. Only future times can be saved, checked in the editor and again by server-side access rules. At release time, the post automatically becomes public on subsequent reads; no editor needs to stay open and no paid scheduled job is used. Public pages refresh while visible approximately every minute, and on window focus, to discover newly released posts. Date/time settings on the reader's device must be accurate for time-bounded queries; a fast device clock cannot bypass server access checks.
+- The stored status of a released scheduled post stays `scheduled`; its effective displayed status becomes Published. Opening it after release defaults the editor to Published. Saving it as Published keeps the scheduled release timestamp. Choose a new future time to reschedule instead.
+- Optional **Meta title** and **Meta description** fields fall back independently to the post title and short introduction. The editor previews the effective values.
+- **Delete article** permanently deletes the selected saved record after confirmation. Unsaved edits are discarded too. The operation checks the loaded revision, so a post changed in another tab is not silently deleted. External image/files referenced by URL are not deleted from their host.
+- Another tab's changes cause a revision conflict instead of a silent overwrite. Copy unsaved text before reopening the latest version. Drafts are not persisted in browser local storage.
 
 ## Public blog and static-export limits
 
-The public `/blog/` fetches only `status == published` records. A new managed post uses `/blog/?post=your-slug`; publishing it needs no Hosting rebuild. Public detail reads also enforce published status, including for an administrator viewing the public site.
+The public `/blog/` fetches published posts and due schedules. Future schedules and drafts are protected by Firestore rules, including direct document reads. Public views also hide non-public posts when the visitor is an administrator. Managed article URLs remain `/blog/?post=your-slug` and publishing requires no Hosting rebuild.
 
-The existing source-based article routes (`/blog/slug/`) remain supported and use `src/content/blog.ts`. The starter source draft has not been imported into Firestore or exposed through admin page HTML. Real source-based articles, if added later, are edited in source; they are not automatically migrated into the admin editor. Their published slugs are reserved in the editor UI.
+Stored SEO values update the browser title, description, canonical URL, Open Graph/Twitter fields and BlogPosting structured data after the article loads. **The site is still a static export:** query-string articles do not have individual server-rendered metadata or sitemap entries. Crawlers/social preview services that do not execute JavaScript still receive the shared Blog metadata. These SEO fields do not remove that hosting limitation. Dedicated crawler-visible article HTML requires server rendering or a controlled content-to-build pipeline in a separate change.
 
-Managed articles currently render in the browser. They do **not** have build-time per-article Open Graph metadata or sitemap entries; the `/blog/` metadata remains the shared metadata for query-string articles. Article titles update in the browser after loading. For dedicated SEO article URLs and social previews, add server rendering or a controlled content-to-static-build pipeline later. The homepage's build-time writing preview still uses source-based posts.
+The existing source-based routes (`/blog/slug/`) remain supported and use `src/content/blog.ts`. Source-based articles are edited in source, not automatically imported into the browser editor. Their published slugs are reserved when new managed articles are created. The homepage's build-time writing preview still uses source-based posts.
 
-Only public article fields live in `blogPosts`. Do not add private editorial notes to a document that may be published: Firestore reads return complete documents. Rules enforce an explicit field allowlist. All unrelated collections are denied until separately implemented.
+Existing version-1 Firestore posts remain readable. Saving one upgrades it in place to schema version 2, keeping its slug, original creation time and existing publication date. New records use server publication timestamps, category/tag arrays and optional SEO fields. No bulk production migration or deletion runs automatically.
+
+Only public article fields live in `blogPosts`; do not add private editorial notes to a document that may be published. Rules enforce a field allowlist. All unrelated collections remain denied.
 
 ## Verification
 
@@ -75,17 +80,17 @@ Rules tests use the official local Firestore emulator with a **demo project**, n
 firebase emulators:exec --only firestore --project demo-portfolio-admin "npm run test:rules"
 ```
 
-The rules suite checks anonymous draft denial, published reads, non-admin denial, self-approval denial, verified-admin writes, schema/timestamp/revision validation, publishing/unpublishing, revocation and default-denied private collections. `test:rules` refuses to run without a loopback emulator. These tests do not send email or create production users/posts.
+The rules suite checks anonymous draft denial, published reads, non-admin denial, self-approval denial, verified-admin writes, schema/timestamp/revision validation, automatic slugs and collisions, scheduling before/after release, forged clock denial, publishing/unpublishing, deletion, legacy upgrades and revocation. `test:rules` refuses to run without a loopback emulator. These tests do not send email or create production users/posts.
 
 Before going live, test approved and unapproved Google accounts, direct editor URLs while signed out, popup cancellation, sign-out, admin revocation, a draft's public URL, publishing/unpublishing, two-tab conflicts, mobile layouts and quota/network failures. Code/build checks do not establish that Firebase Console configuration or live OAuth is working.
 
 The Firebase dependency includes a Node-side gRPC dependency override to `1.13.6` to address the certificate-validation advisory in the SDK's older pinned release. Review the override when upgrading Firebase; browser code uses the Web SDK transport.
 
-## Production provisioning ? 5 November 2026
+## Production provisioning - 5 November 2026
 
 The existing `johnmsemblanteapp` project now has a registered Web app named **John Semblante Portfolio**, Google sign-in, and a Standard-edition default Firestore database in **Singapore (`asia-southeast1`)** with deletion protection enabled. The production Firebase domains and localhost are authorized for sign-in. The Web configuration is stored only in ignored `.env.local`, and must be supplied separately on another computer or CI build. No service-account key is committed.
 
-Authentication provider configuration is versioned in `firebase.json`; its support email is the project owner?s public address. Rules and indexes are versioned separately. Index creation may take several minutes after first deployment; wait until the published-post index is **Enabled/Ready** before judging public-list queries. Admin approval remains an explicit database operation for a verified Google account, never an automatic grant to everyone who signs in.
+Authentication provider configuration is versioned in `firebase.json`; its support email is the project owner's public address. Rules and indexes are versioned separately. Index creation may take several minutes after first deployment; wait until both blog indexes are **Enabled/Ready** before judging public-list queries. Admin approval remains an explicit database operation for a verified Google account, never an automatic grant to everyone who signs in.
 
 A full release uses the existing build checklist, then deploys the selected resources:
 

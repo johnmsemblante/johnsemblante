@@ -387,3 +387,8 @@ Travel dates are checked against the current date in Asia/Manila. Package pricin
 `/adminauth/` is the Google sign-in gateway for approved administrators. `/adminauth/blog/` supports adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect drafts and writes.
 
 See [admin-setup.md](docs/admin-setup.md) for the required Web app configuration, Authentication provider, security rules/index deployment, admin approval, local tests and static-export SEO limits. No production Firebase settings, users, rules or posts are changed automatically. The job hunt application is not implemented.
+
+
+### Blog editor improvements
+
+Managed articles now support automatic unique slugs, multiple categories and tags, image/file URL blocks, automatic server publication timestamps, future scheduling in Manila time, confirmed permanent deletion, and optional SEO title/description fallbacks. Future schedules remain private until the server release time. Existing managed articles are upgraded only when saved. See [admin setup and publishing guide](docs/admin-setup.md) for scheduling behavior, media URL support and browser-rendered SEO limits.
