@@ -9,7 +9,7 @@ The site still exports static files to Firebase Hosting. Firebase Authentication
 Perform these steps in the existing `johnmsemblanteapp` project. No paid plan or billing change is required by this implementation. Check the Firebase console's current Spark quotas and monitor database reads/writes; quotas and third-party availability still apply.
 
 1. In Firebase Console, register a **Web app** if the project has none, then open its SDK configuration. Do not create or download a service-account key.
-2. Enable **Authentication → Sign-in method → Google**. Choose the support email requested by Firebase. Under Authentication settings, authorize the production domain (`johnmsemblanteapp.web.app`) and `localhost` for development. Add a custom domain when actually used. Do not authorize untrusted origins.
+2. Google sign-in is configured as code under `auth.providers.googleSignIn` in `firebase.json`. With Firebase CLI 15.35.0 or newer, run `firebase deploy --only auth --project johnmsemblanteapp` to provision it. Alternatively enable Google under Authentication > Sign-in method in the console. Authorize `johnmsemblanteapp.web.app`, `johnmsemblanteapp.firebaseapp.com` and `localhost` for development. Add a custom domain when actually used; do not authorize untrusted origins.
 3. Create a **Cloud Firestore** database in **production mode**. Select its region carefully; database location is a project decision. Do not use permissive test-mode rules. If the project already has a database, inspect its rules and collections before deploying this repository's rules: unspecified collections are denied by this ruleset.
 4. Copy the four public Web app configuration values into an ignored `.env.local` in the repository root:
 
@@ -80,3 +80,17 @@ The rules suite checks anonymous draft denial, published reads, non-admin denial
 Before going live, test approved and unapproved Google accounts, direct editor URLs while signed out, popup cancellation, sign-out, admin revocation, a draft's public URL, publishing/unpublishing, two-tab conflicts, mobile layouts and quota/network failures. Code/build checks do not establish that Firebase Console configuration or live OAuth is working.
 
 The Firebase dependency includes a Node-side gRPC dependency override to `1.13.6` to address the certificate-validation advisory in the SDK's older pinned release. Review the override when upgrading Firebase; browser code uses the Web SDK transport.
+
+## Production provisioning ? 5 November 2026
+
+The existing `johnmsemblanteapp` project now has a registered Web app named **John Semblante Portfolio**, Google sign-in, and a Standard-edition default Firestore database in **Singapore (`asia-southeast1`)** with deletion protection enabled. The production Firebase domains and localhost are authorized for sign-in. The Web configuration is stored only in ignored `.env.local`, and must be supplied separately on another computer or CI build. No service-account key is committed.
+
+Authentication provider configuration is versioned in `firebase.json`; its support email is the project owner?s public address. Rules and indexes are versioned separately. Index creation may take several minutes after first deployment; wait until the published-post index is **Enabled/Ready** before judging public-list queries. Admin approval remains an explicit database operation for a verified Google account, never an automatic grant to everyone who signs in.
+
+A full release uses the existing build checklist, then deploys the selected resources:
+
+```powershell
+firebase deploy --only "auth,firestore,hosting" --project johnmsemblanteapp
+```
+
+Review provider, rules and index changes before deploying. Use `--only hosting` for releases that only change website code/content and do not need to change backend configuration.

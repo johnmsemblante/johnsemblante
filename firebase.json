@@ -58,5 +58,17 @@
       "enabled": false
     },
     "singleProjectMode": true
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "John Semblante Portfolio",
+        "supportEmail": "johnmsemblante@gmail.com",
+        "authorizedRedirectUris": [
+          "https://johnmsemblanteapp.firebaseapp.com/__/auth/handler",
+          "https://johnmsemblanteapp.web.app/__/auth/handler"
+        ]
+      }
+    }
   }
 }
