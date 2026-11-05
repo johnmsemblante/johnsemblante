@@ -1,6 +1,6 @@
 # Admin access and blog publishing
 
-`/adminauth/` is the private-workspace gateway. `/adminauth/blog/` provides the blog editor. The job hunt app is not implemented.
+`/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Blog Management at `/adminauth/blog/` and Job Finder at `/adminauth/jobs/`, with a collapsible mobile sidebar and Logout. Existing blog records and editor workflows are preserved.
 
 The site still exports static files to Firebase Hosting. Firebase Authentication verifies Google accounts; Firestore rules authorize access to stored posts. Admin HTML and JavaScript are publicly downloadable, as on any static site, but contain no drafts or credentials. Private records are fetched only after authorization. Hiding a link or adding `noindex` is not the data-access boundary.
 
@@ -39,6 +39,54 @@ Sign-in persists for the browser session, using Firebase's session persistence. 
 
 Official references: [Google sign-in](https://firebase.google.com/docs/auth/web/google-signin), [role-based access](https://firebase.google.com/docs/firestore/solutions/role-based-access), [API keys for Firebase](https://firebase.google.com/docs/projects/api-keys), [Firestore quotas](https://firebase.google.com/docs/firestore/quotas).
 
+## Dashboard and Job Finder
+
+All dashboard routes share the existing verified-account/admin-membership gate. Signed-out visitors to an app return to Google sign-in, then to the requested known dashboard route. The static bundles contain app code, but private blog and bookmark operations still require Firestore authorization. Logout clears the session as before; the blog editor retains its unsaved-change warning for dashboard navigation and logout.
+
+Job Finder now targets remote work from the **Philippines (UTC+8)**. Its broader source is the [free Himalayas API](https://himalayas.app/docs/remote-jobs-api), connected through a small Cloudflare Worker because the API did not expose browser CORS headers when checked. [Jobicy](https://github.com/Jobicy/remote-jobs-api) is a second, directly accessible free source for listings published in the last seven days. Both require no job API key. Existing Arbeitnow bookmarks stay readable; that Europe-focused feed is no longer used for discovery.
+
+- Source search sends the selected keyword and Philippines/worldwide eligibility to the provider only on Search or a role shortcut. Himalayas additionally requests UTC+8 and recent ordering. Quick searches cover WordPress, WooCommerce, PHP, front end and full stack. With Himalayas connected, the default is WordPress and Philippines eligibility.
+- The Worker independently checks Himalayas country and timezone restrictions, rejecting explicit country conflicts, missing/malformed restrictions, known expired listings and obvious conflicting residence requirements in titles. Empty country restrictions mean worldwide; empty timezone restrictions mean unrestricted. This is a source-metadata check, not employer verification: descriptions can contain additional residence, payroll, visa, office, travel or working-hours conditions. UTC+8 eligibility does not promise daytime Philippine hours.
+- Jobicy's Philippines filter can include worldwide and broad APAC/regional labels. Their labels are displayed unchanged; UTC+8 compatibility is not invented for that source.
+- Local controls narrow loaded results by keyword, development-role focus and disclosed salary. Skill ordering uses the existing portfolio's WordPress, WooCommerce, PHP, front-end/full-stack and JavaScript focus. Development focus checks role titles so company boilerplate does not turn an unrelated role into a match. Skill keywords explain ordering; they are not a hiring probability or qualification assessment. Newest ordering is also available.
+- Listings display summaries, employment type, available pay with original currency/period, location/timezone restrictions and dates. Himalayas dates are labeled Published / updated because its `pubDate` can be an update time. No PHP currency conversion or estimated salary is invented. Apply preserves each provider's canonical application link and source credit.
+- Normalized public metadata is cached for 24 hours for Himalayas, matching its daily API refresh, and one hour for Jobicy; at most five responses live in browser storage. Edge caching also lasts 24 hours. Requests deduplicate, failed searches wait at least a minute and rate limits respect `Retry-After`. There is no feed polling or scraping. Offline cached listings are explicitly marked stale, limited to 48 hours for Himalayas or 24 for Jobicy, and stop pagination. Explicit expiry dates hide listings from Browse on the next render/minute; expired saved jobs remain removable. Providers can close listings earlier than the stated date.
+- Save job stores metadata under `admins/{your-UID}/savedJobs/{provider-specific-ID}`. Saved jobs displays the latest 100 bookmarks; Remove saved deletes a bookmark. Bookmarks are private to that approved, verified account, including against other approved administrators. Existing IDs and bookmarks are preserved without a bulk migration. Private bookmarks are not written to localStorage.
+- Loading, empty, provider-error and bookmark-error states are displayed independently. Saved jobs remains available if the external feed is down. Saved postings can expire at the provider.
+
+For an existing configured installation, build Hosting and deploy the updated Firestore rules together with it:
+
+```powershell
+npm run build
+firebase deploy --only "firestore:rules,hosting" --project johnmsemblanteapp
+```
+
+No new composite indexes or Firebase billing upgrade are needed. Firebase quotas, Cloudflare's free-plan limits and external API availability still apply. This MVP does not send applications or include AI features. Cloudflare deployment tooling is installed separately under ignored `tmp/cloudflare-tools`; no runtime dependencies were added to the portfolio.
+
+### Connecting the free Cloudflare feed
+
+The reviewed Worker is in `workers/job-feed/index.ts`, with configuration in `workers/job-feed/wrangler.jsonc`. It only calls the fixed Himalayas search endpoint, with Philippines/UTC+8 fixed; it cannot proxy arbitrary URLs. It serves public job metadata only. Approved browser origins are restricted to the Firebase domains and local development/preview. This origin allowlist is CORS protection, not authentication; no private data or account tokens belong in this service. Do not send Firebase credentials to it. There is no KV/database, cron schedule, paid API or paid Worker binding.
+
+1. Use a **free Cloudflare account/Workers plan**. The free allowance is currently 100,000 Worker requests per day; exceeding a free allowance can stop service. Do not upgrade billing for this implementation. See [Cloudflare pricing](https://developers.cloudflare.com/workers/platform/pricing/) for current limits.
+2. From the project root, sign in and deploy:
+
+   ```powershell
+   node tmp/cloudflare-tools/node_modules/wrangler/bin/wrangler.js login
+   node tmp/cloudflare-tools/node_modules/wrangler/bin/wrangler.js deploy --config workers/job-feed/wrangler.jsonc
+   ```
+
+   On another computer, install Wrangler separately before using its equivalent commands. Do not commit CLI credentials or put Cloudflare API tokens into `NEXT_PUBLIC_*` values.
+3. Copy the deployed public endpoint into ignored `.env.local`:
+
+   ```dotenv
+   NEXT_PUBLIC_HIMALAYAS_PROXY_URL=https://johnsemblante-job-feed.YOUR-SUBDOMAIN.workers.dev/jobs
+   ```
+
+   This is a public URL, not a secret. Use the actual deployed subdomain. Rebuild/restart Next.js after changing it. Without this value, Jobicy remains functional and the Himalayas source is marked not connected; an external Philippines search link is still available. A selected source's failure is shown explicitly rather than silently broadening eligibility or changing providers.
+4. Deploy the updated Hosting build and bookmark rules together using the command above. Test both providers while signed in, verify saving/removing each provider's jobs, and confirm that another administrator cannot read those bookmarks. If a custom website domain is added later, update `ALLOWED_ORIGINS` and redeploy the Worker too.
+
+Himalayas search returns 20 rows per page; the Worker continues until a short/empty raw page, without trusting estimated totals. Eligibility checks can make a displayed page shorter or empty even when another raw page exists. Jobicy cursors are echoed unchanged with the original search filters and expire after 24 hours. Neither source's absence of a listing is proof that an employer has closed it.
+
 ## Writing and publishing
 
 - Visit `/adminauth/blog/`, then select **New post** or open a saved article.
@@ -71,6 +119,7 @@ Only public article fields live in `blogPosts`; do not add private editorial not
 ```powershell
 npm run typecheck
 npm run test:blog
+npm run test:admin
 npm run build
 ```
 
@@ -80,7 +129,9 @@ Rules tests use the official local Firestore emulator with a **demo project**, n
 firebase emulators:exec --only firestore --project demo-portfolio-admin "npm run test:rules"
 ```
 
-The rules suite checks anonymous draft denial, published reads, non-admin denial, self-approval denial, verified-admin writes, schema/timestamp/revision validation, automatic slugs and collisions, scheduling before/after release, forged clock denial, publishing/unpublishing, deletion, legacy upgrades and revocation. `test:rules` refuses to run without a loopback emulator. These tests do not send email or create production users/posts.
+The rules suite checks anonymous draft denial, published reads, non-admin denial, self-approval denial, verified-admin writes, schema/timestamp/revision validation, automatic slugs and collisions, scheduling before/after release, forged clock denial, publishing/unpublishing, deletion, legacy upgrades and revocation. It also checks bookmark CRUD, owner-only access, unverified/revoked-account denial and bookmark field/URL validation. `test:rules` refuses to run without a loopback emulator. These tests do not send email or create production users/posts.
+
+`test:admin` checks dashboard navigation, login-return allowlisting, initial private-content gating, feed normalization, safe provider URLs/pagination, supported filters, caching, request deduplication and offline/storage failures. These checks do not replace signed-in browser testing of navigation, bookmarks, sidebar toggling or mobile layouts.
 
 Before going live, test approved and unapproved Google accounts, direct editor URLs while signed out, popup cancellation, sign-out, admin revocation, a draft's public URL, publishing/unpublishing, two-tab conflicts, mobile layouts and quota/network failures. Code/build checks do not establish that Firebase Console configuration or live OAuth is working.
 
@@ -99,3 +150,15 @@ firebase deploy --only "auth,firestore,hosting" --project johnmsemblanteapp
 ```
 
 Review provider, rules and index changes before deploying. Use `--only hosting` for releases that only change website code/content and do not need to change backend configuration.
+
+### Philippines remote Job Finder release - 5 November 2026
+
+The shared dashboard, Philippines-focused Job Finder and owner-only bookmark rules are deployed to the existing Firebase site. The Cloudflare Worker is deployed at the following public endpoint, also configured in this computer's ignored `.env.local`:
+
+```dotenv
+NEXT_PUBLIC_HIMALAYAS_PROXY_URL=https://johnsemblante-job-feed.john-semblante-portfolio.workers.dev/jobs
+```
+
+Use that value when setting up another computer or CI build; no Cloudflare credentials belong in the website build. Himalayas is the default source, starting with WordPress/Philippines; Jobicy remains selectable. Worker deployment did not add paid bindings or change Firebase billing. Cloudflare CLI authentication stays outside the repository.
+
+Release checks passed: 19 admin/feed/Worker tests, 8 blog tests, 11 Firestore emulator tests, TypeScript and the production build. Live HTTPS checks confirmed a populated Philippines/UTC+8 Himalayas response and rejection of an unapproved browser origin. A Workers-specific redirect-mode issue found during live verification was corrected; upstream redirects remain rejected rather than followed. Signed-in browser interaction/mobile review is still separate from these checks.

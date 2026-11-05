@@ -7,13 +7,13 @@ import { BlogArticleContent } from "@/components/blog-article-content";
 import { firebaseMessage } from "@/lib/firebase-client";
 import { editablePost, effectiveStatus, emptyPost, manilaDateTime, normalizeLabels, postFromData, postMetadata, safeAssetUrl, slugForTitle, validatePost, type ManagedPost, type PostInput } from "@/lib/blog-model";
 import { deleteManagedPost, saveManagedPost } from "@/lib/blog-store";
-import { AdminGate, useAdmin } from "./admin-gate";
+import { useAdmin } from "./admin-gate";
 import { TokenInput } from "./token-input";
 
 const dateLabel = (value: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(value));
 
 export function AdminBlog({ reservedSlugs = [] }: { reservedSlugs?: string[] }) {
-  return <AdminGate><BlogEditor reservedSlugs={reservedSlugs} /></AdminGate>;
+  return <BlogEditor reservedSlugs={reservedSlugs} />;
 }
 
 function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {

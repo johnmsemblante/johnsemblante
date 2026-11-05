@@ -43,6 +43,30 @@ service cloud.firestore {
       allow get: if request.auth != null && request.auth.uid == uid;
       allow list, write: if false;
     }
+    function validSavedJob(id) {
+      let j = request.resource.data;
+      return j.keys().hasAll(['sourceId', 'source', 'title', 'company', 'location', 'remote', 'url', 'postedAt', 'savedAt'])
+        && j.keys().hasOnly(['sourceId', 'source', 'title', 'company', 'location', 'remote', 'url', 'postedAt', 'savedAt', 'summary', 'salary', 'employment', 'timezone', 'expiresAt'])
+        && j.sourceId == id && id.size() <= 500 && id.matches('^[a-zA-Z0-9-]+$')
+        && text(j.title, 400) && text(j.company, 200) && text(j.location, 300)
+        && (j.remote == null || j.remote is bool)
+        && j.url is string && j.url.size() <= 2000
+        && ((j.source == 'Arbeitnow' && j.url.matches('^https://(www[.])?arbeitnow[.]com/jobs/[^\\s]+$'))
+          || (j.source == 'Jobicy' && id.matches('^jobicy-[1-9][0-9]*$') && j.remote == true && j.url.matches('^https://jobicy[.]com/jobs/[^\\s]+$'))
+          || (j.source == 'Himalayas' && id.matches('^himalayas-[1-9][0-9]*-[a-z0-9-]+$') && j.remote == true && j.url.matches('^https://himalayas[.]app/companies/[a-z0-9-]+/jobs/[a-z0-9-]+([?][^\\s]*)?$')))
+        && j.get('summary', '') is string && j.get('summary', '').size() <= 700
+        && j.get('salary', '') is string && j.get('salary', '').size() <= 200
+        && j.get('employment', '') is string && j.get('employment', '').size() <= 120
+        && j.get('timezone', '') is string && j.get('timezone', '').size() <= 120
+        && j.get('expiresAt', 0) is int && j.get('expiresAt', 0) >= 0 && j.get('expiresAt', 0) <= 8640000000000000
+        && (j.postedAt == null || (j.postedAt is int && j.postedAt > 0 && j.postedAt <= 8640000000000000))
+        && j.savedAt == request.time;
+    }
+    match /admins/{uid}/savedJobs/{id} {
+      allow read: if admin() && request.auth.uid == uid;
+      allow create, update: if admin() && request.auth.uid == uid && validSavedJob(id);
+      allow delete: if admin() && request.auth.uid == uid;
+    }
     match /blogPosts/{slug} {
       // Published legacy posts remain readable. Schedules use the server clock, never the visitor's clock, for access.
       allow get, list: if admin() || resource.data.status == 'published'

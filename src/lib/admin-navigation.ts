@@ -1,0 +1,15 @@
+export const adminLinks = [
+  { href: "/adminauth/", label: "Overview", icon: "overview" },
+  { href: "/adminauth/blog/", label: "Blog Management", icon: "blog" },
+  { href: "/adminauth/jobs/", label: "Job Finder", icon: "jobs" },
+] as const;
+
+export function activeAdminLink(pathname: string, href: string) {
+  const path = `${pathname.replace(/\/$/, "")}/`;
+  return href === "/adminauth/" ? path === href : path.startsWith(href);
+}
+export function safeAdminDestination(value: string | null): string | null {
+  if (!value) return null;
+  const path = value.endsWith("/") ? value : `${value}/`;
+  return adminLinks.some(link => link.href === path) ? path : null;
+}

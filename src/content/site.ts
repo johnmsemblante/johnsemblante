@@ -1,4 +1,5 @@
 import { portfolioProjects } from "./projects";
+import type { IndustrySlug } from "./industries";
 export const site = {
   name: "John Semblante",
   url: "https://johnmsemblanteapp.web.app",
@@ -13,8 +14,17 @@ export const site = {
 
 export type Project = {
   slug: string; title: string; summary: string; role: string;
+  industries: IndustrySlug[];
+  projectType: "client" | "venture" | "concept";
+  publication: "published" | "draft";
+  status: "archived" | "live" | "planned" | "in-progress";
+  description?: string; objectives?: string[]; features?: string[]; contributions?: string[];
+  tags?: string[]; capabilities?: string[];
+  gallery?: { src: string; alt: string; caption?: string; width?: number; height?: number }[];
+  seo?: { title?: string; description?: string };
+  caseStudyUrl?: string;
   technologies: string[]; challenge?: string; approach?: string; outcome?: string;
   year?: number; website?: string;
   image?: { src: string; alt: string };
 };
-export const projects: Project[] = portfolioProjects;
+export const projects: Project[] = portfolioProjects.filter(project => project.publication === "published");

@@ -58,7 +58,7 @@ Use `npm ci` to install the versions in `package-lock.json`. No `.env` file is r
 
 Run `npm run build` **before** `npm run preview`. Static preview does not watch source changes: rebuild and refresh after editing. Keep its terminal open and stop it with Ctrl+C. This lightweight preview does not emulate Firebase's redirects or headers.
 
-There is no `npm start` or lint script. Blog validation and Firestore access-rule tests are available as `npm run test:blog` and `npm run test:rules`; see [admin setup](docs/admin-setup.md). The scripts use Webpack because Turbopack's CSS worker had problems in the original Windows environment.
+There is no `npm start` or lint script. Blog, dashboard/Job Finder and Firestore access-rule tests are available as `npm run test:blog`, `npm run test:admin` and `npm run test:rules`; see [admin setup](docs/admin-setup.md). The scripts use Webpack because Turbopack's CSS worker had problems in the original Windows environment.
 
 ## 3. Where to edit content
 
@@ -384,11 +384,27 @@ Travel dates are checked against the current date in Asia/Manila. Package pricin
 
 ## 13. Admin access and blog editor
 
-`/adminauth/` is the Google sign-in gateway for approved administrators. `/adminauth/blog/` supports adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect drafts and writes.
+`/adminauth/` is the Google sign-in gateway and dashboard for approved administrators. Its shared header and responsive sidebar link to Overview, Blog Management, Job Finder and Logout. `/adminauth/blog/` preserves adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect private records and writes.
 
-See [admin-setup.md](docs/admin-setup.md) for the required Web app configuration, Authentication provider, security rules/index deployment, admin approval, local tests and static-export SEO limits. No production Firebase settings, users, rules or posts are changed automatically. The job hunt application is not implemented.
+`/adminauth/jobs/` targets remote work from the Philippines. It supports the free Himalayas feed through a small Cloudflare Worker (Philippines/UTC+8 checks) and the direct Jobicy feed (last seven days). Search shortcuts reflect John's WordPress, WooCommerce, PHP and front-end/full-stack experience. Local skill ordering, disclosed-pay filters, summaries, employment/pay details and private bookmarks help review opportunities. Country/timezone labels remain source data, not a hiring guarantee. Existing Arbeitnow bookmarks are preserved.
+
+The broader feed needs a free Cloudflare account and the public `NEXT_PUBLIC_HIMALAYAS_PROXY_URL` endpoint in ignored `.env.local`; see [connection instructions](docs/admin-setup.md#connecting-the-free-cloudflare-feed). Jobicy works without that configuration. No job API key, portfolio runtime dependency or Firebase billing upgrade is required. Deploy the updated bookmark rules with Hosting; no new composite index is needed.
+
+See [admin-setup.md](docs/admin-setup.md) for Web app configuration, Authentication, security rules/index deployment, admin approval, Job Finder limitations, local tests and static-export SEO limits. No production Firebase settings, users, rules or posts are changed automatically.
 
 
 ### Blog editor improvements
 
 Managed articles now support automatic unique slugs, multiple categories and tags, image/file URL blocks, automatic server publication timestamps, future scheduling in Manila time, confirmed permanent deletion, and optional SEO title/description fallbacks. Future schedules remain private until the server release time. Existing managed articles are upgraded only when saved. See [admin setup and publishing guide](docs/admin-setup.md) for scheduling behavior, media URL support and browser-rendered SEO limits.
+
+## 14. Industry portfolio collections
+
+The Work page keeps all 14 original projects and adds the existing Golden Travel and Tours and Lazy Barista pages as clearly labeled personal ventures. Industry filters work alongside the original technology filters, with shareable query URLs and dedicated `/work/industry/{industry}/` collections. Project cards show industry, type, technologies and case-study/live links; case-study pages support optional documented scope, galleries and SEO overrides.
+
+Dental, real estate and hospitality collections currently show honest empty states. SmileCraft Dental Studio, Haven Property Group, WellSpring Medical Clinic, Coastline Boutique Resort and Northstar Legal Group remain unpublished planning records, without working demo links or invented implementation claims.
+
+See [portfolio-industries.md](docs/portfolio-industries.md) for all nine routes, content fields, changed files, publishing guidance and checks. Run `npm run test:work` for the portfolio tests. No new dependencies, API keys or database setup are required.
+
+The Work directory now adds debounced keyword search, grouped multi-select Industry/Technology/Project Type dropdowns, removable chips, Clear All and **Share these results**. Readable query URLs restore selections and browser history; duplicate/legacy values normalize safely. Industry records and dedicated routes remain intact through a normalization layer. Technology choices come only from verified project fields. See the guide above for aliases, empty states, keyboard controls, clipboard fallback and static-export SEO behavior.
+
+Dropdown options without a match in the other selected groups are now disabled, with live contextual counts. Clicking an option's label or count also checks its checkbox. Search and dropdowns work separately: typing clears dropdown selections; filtering clears the search input. Shared links follow the same rule, with a keyword taking priority over group parameters in older combined URLs.

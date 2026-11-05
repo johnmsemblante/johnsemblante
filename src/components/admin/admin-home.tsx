@@ -1,8 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { AdminGate } from "./admin-gate";
+import { useAdmin } from "./admin-gate";
+import { AdminIcon } from "./admin-icon";
 
 export function AdminHome() {
-  return <AdminGate><section className="admin-card"><p className="eyebrow">Private workspace</p><h1>Welcome back.</h1><p>Create articles, edit existing posts, and choose when they are published.</p><Link className="button" href="/adminauth/blog/">Manage blog posts <span aria-hidden="true">→</span></Link></section></AdminGate>;
+  const { user } = useAdmin();
+  const name = user.displayName?.trim().split(/\s+/)[0];
+  return <>
+    <div className="admin-heading"><div><p className="eyebrow">Your workspace</p><h1>Overview</h1><p>{name ? `Welcome back, ${name}.` : "Welcome back."} Choose an application to get started.</p></div></div>
+    <div className="dashboard-apps">
+      <Link href="/adminauth/blog/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="blog" /></span><p className="eyebrow">Publishing</p><h2>Blog Management</h2><p>Create and edit articles, manage drafts, and schedule your next post.</p><span className="dashboard-app-action">Manage blog posts <AdminIcon name="arrow" /></span></Link>
+      <Link href="/adminauth/jobs/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="jobs" /></span><p className="eyebrow">Career opportunities</p><h2>Job Finder</h2><p>Discover real opportunities, filter listings, and keep a private shortlist.</p><span className="dashboard-app-action">Explore jobs <AdminIcon name="arrow" /></span></Link>
+    </div>
+  </>;
 }

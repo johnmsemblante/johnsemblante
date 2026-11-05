@@ -1,4 +1,14 @@
 import type { Project } from "./site";
+import type { IndustrySlug } from "./industries";
+
+// Industry describes the business, not an unverified technology or feature.
+const industryBySlug: Record<string, IndustrySlug[]> = {
+  "e-dee-monnen": ["other"], "sharon-kramer-books": ["other"], "impact-hygiene": ["professional-services"],
+  "roar-fitness": ["other"], "nexus-appliances": ["other"], "perth-cosmetic-surgery": ["healthcare"],
+  "active-kids-group": ["other"], "georges-bike-shop": ["other"], "northcroft": ["professional-services"],
+  "perth-scaffolding": ["professional-services"], "trinity-floors": ["professional-services"], "loonglist": ["ecommerce"],
+  "spinning-leaf-films": ["professional-services"], "parkwood-chiropractic": ["healthcare"],
+};
 
 const entries = [
   ["e-dee-monnen", "E Dee Monnen", 2024, "edeemonnen.jpg", "https://edeemonnen.com/", "An author website featuring Jumping Over the Moon and the writing of E. Dee Monnen.", ["UI", "WordPress"]],
@@ -19,8 +29,39 @@ const entries = [
 
 // These are historical portfolio entries, not newly verified client engagements.
 // Detailed scope and outcomes are intentionally absent until supplied.
-export const portfolioProjects: Project[] = entries.map(([slug, title, year, image, website, summary, technologies]) => ({
+const historicalProjects: Project[] = entries.map(([slug, title, year, image, website, summary, technologies]) => ({
   slug, title, year, website, summary, technologies,
   role: technologies.includes("UI") ? "UI / WordPress" : "WordPress",
   image: { src: `/images/projects/${image}`, alt: `${title} website as shown in John’s original portfolio` },
+  industries: industryBySlug[slug] ?? ["other"], projectType: "client", publication: "published", status: "archived",
 }));
+
+// Existing, publicly available venture pages. These run on Next.js, not WordPress.
+const ventureProjects: Project[] = [
+  {
+    slug: "golden-travel-and-tours", title: "Golden Travel and Tours", industries: ["travel"],
+    projectType: "venture", publication: "published", status: "live", role: "Independent venture / Website development",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    summary: "An independent Cebu travel venture page with vehicle information, package options and a trip-inquiry planner.",
+    description: "A dedicated page within this portfolio for Golden Travel and Tours. Visitors can explore travel and rental services, build a trip request or select an itinerary package, then review an inquiry before sending it. Quotations and availability are confirmed manually by the team.",
+    image: { src: "/ventures/golden-travel-and-tours/logo.webp", alt: "Golden Travel and Tours brand mark used on the venture page" },
+    website: "/ventures/golden-travel-and-tours/",
+    objectives: ["Present the venture's travel and transport services.", "Collect a clear trip request for a manually confirmed quotation."],
+    features: ["Vehicle and service information", "Build-your-own-trip and itinerary package selections", "Editable pickup, drop-off and extra-stop fields", "Prefilled inquiry summary for customer review"],
+    contributions: ["Developed the venture page within the existing Next.js portfolio.", "Implemented the trip-planning interface and inquiry handoff."],
+  },
+  {
+    slug: "lazy-barista", title: "Lazy Barista", industries: ["food-beverage"],
+    projectType: "venture", publication: "published", status: "live", role: "Independent venture / Website development",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    summary: "An independent coffee venture page presenting its menu, drink photography and ordering information.",
+    description: "A dedicated Lazy Barista page within this portfolio. It brings together the brand story, supplied drink photos, menu artwork and messaging links. Customers confirm orders and availability with the team through its existing contact channels.",
+    image: { src: "/ventures/lazy-barista/logo.webp", alt: "Lazy Barista coffee-cup brand mark used on the venture page" },
+    website: "/ventures/lazy-barista/",
+    objectives: ["Present the venture's menu and brand in one place.", "Make ordering instructions and contact channels easy to find."],
+    features: ["Drink menu and supplied photos", "Menu artwork with image previews", "Ordering instructions and messaging links"],
+    contributions: ["Developed the branded venture page within the Next.js portfolio.", "Organized the supplied menu content, imagery and ordering information."],
+  },
+];
+
+export const portfolioProjects: Project[] = [...historicalProjects, ...ventureProjects];

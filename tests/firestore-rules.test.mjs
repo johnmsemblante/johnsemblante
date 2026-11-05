@@ -98,3 +98,47 @@ test('existing legacy articles upgrade when edited; unpublishing and deletion re
   await assertFails(getDocFromServer(doc(environment.unauthenticatedContext().firestore(), 'blogPosts', 'legacy')));
   await assertSucceeds(deleteManagedPost(db, draft));
 });
+
+const savedJob = () => ({ sourceId: 'engineer-123', source: 'Arbeitnow', title: 'Engineer', company: 'Example company', location: 'Berlin', remote: true, url: 'https://www.arbeitnow.com/jobs/companies/example/engineer-123', postedAt: 1760000000000, savedAt: serverTimestamp() });
+test('approved admins can save, list and remove their own job bookmarks', async () => {
+  const db = adminDb(); const ref = doc(db, 'admins', 'owner', 'savedJobs', 'engineer-123');
+  await assertSucceeds(setDoc(ref, savedJob()));
+  await assertSucceeds(getDocFromServer(ref));
+  await assertSucceeds(getDocs(query(collection(db, 'admins', 'owner', 'savedJobs'), orderBy('savedAt', 'desc'))));
+  await assertSucceeds(deleteDoc(ref));
+});
+
+test('Jobicy bookmarks preserve optional pay and summary fields with provider-matched URLs', async () => {
+  const db = adminDb(); const ref = doc(db, 'admins', 'owner', 'savedJobs', 'jobicy-123');
+  const job = { ...savedJob(), sourceId: 'jobicy-123', source: 'Jobicy', location: 'Philippines', url: 'https://jobicy.com/jobs/123-developer', summary: 'WordPress developer', salary: 'USD 2,000 / monthly', employment: 'Contract' };
+  await assertSucceeds(setDoc(ref, job));
+  await assertSucceeds(getDocFromServer(ref));
+  for (const patch of [{ url: 'https://www.arbeitnow.com/jobs/123' }, { url: 'https://jobicy.com.evil/jobs/123' }, { remote: false }, { salary: 2000 }, { summary: 'x'.repeat(701) }, { employment: ['Contract'] }, { sourceId: 'different' }]) await assertFails(setDoc(ref, { ...job, ...patch }));
+  await assertSucceeds(deleteDoc(ref));
+});
+
+test('Himalayas bookmarks require their provider URL and retain timezone and expiration metadata', async () => {
+  const db = adminDb(); const id = 'himalayas-7-example-wordpress-developer'; const ref = doc(db, 'admins', 'owner', 'savedJobs', id);
+  const job = { ...savedJob(), sourceId: id, source: 'Himalayas', location: 'Philippines', url: 'https://himalayas.app/companies/example/jobs/wordpress-developer?utm_source=api', timezone: 'UTC+8 included in source restrictions', expiresAt: 8640000000000 };
+  await assertSucceeds(setDoc(ref, job)); await assertSucceeds(getDocFromServer(ref));
+  for (const patch of [{ url: 'https://jobicy.com/jobs/123' }, { url: 'https://himalayas.app.evil/companies/example/jobs/wordpress-developer' }, { timezone: 'x'.repeat(121) }, { expiresAt: 'tomorrow' }, { remote: false }]) await assertFails(setDoc(ref, { ...job, ...patch }));
+  await assertSucceeds(deleteDoc(ref));
+});
+test('saved jobs are private even from other approved administrators', async () => {
+  await environment.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), 'admins', 'other'), { enabled: true });
+    await setDoc(doc(context.firestore(), 'admins', 'owner', 'savedJobs', 'engineer-123'), savedJob());
+  });
+  for (const db of [environment.unauthenticatedContext().firestore(), environment.authenticatedContext('other', { email_verified: true }).firestore(), environment.authenticatedContext('owner', { email_verified: false }).firestore()]) {
+    const ref = doc(db, 'admins', 'owner', 'savedJobs', 'engineer-123');
+    await assertFails(getDocFromServer(ref)); await assertFails(setDoc(ref, savedJob())); await assertFails(deleteDoc(ref));
+    await assertFails(getDocs(collection(db, 'admins', 'owner', 'savedJobs')));
+  }
+});
+test('saved jobs reject unsafe URLs, extra fields and forged timestamps; revocation closes access', async () => {
+  const db = adminDb(); const ref = doc(db, 'admins', 'owner', 'savedJobs', 'engineer-123');
+  for (const patch of [{ sourceId: 'different' }, { source: 'Other provider' }, { url: 'javascript:alert(1)' }, { url: 'https://evil.example/jobs/123' }, { description: '<script>not allowed</script>' }, { remote: 'hybrid' }, { savedAt: Timestamp.fromMillis(0) }]) await assertFails(setDoc(ref, { ...savedJob(), ...patch }));
+  await assertSucceeds(setDoc(ref, savedJob()));
+  await environment.withSecurityRulesDisabled(context => updateDoc(doc(context.firestore(), 'admins', 'owner'), { enabled: false }));
+  await assertFails(getDocFromServer(ref)); await assertFails(deleteDoc(ref));
+});
