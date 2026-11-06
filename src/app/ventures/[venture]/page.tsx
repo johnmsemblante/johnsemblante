@@ -11,7 +11,8 @@ export async function generateMetadata({ params }: { params: Promise<{ venture: 
   const v = ventures.find(v => v.slug === venture);
   if (!v) return {};
   const url = v.canonicalBase || `${site.url}/ventures/${v.slug}/`;
-  const image = v.hero ? { url: new URL(v.hero.src, site.url).href, width: v.hero.width, height: v.hero.height, alt: v.hero.alt } : undefined;
+  const logo = v.logo?.src.trim() ? v.logo : undefined;
+  const image = logo ? { url: new URL(logo.src, site.url).href, width: logo.width, height: logo.height, alt: logo.alt } : undefined;
   const metadata = pageMetadata(v.name, v.description, `/ventures/${v.slug}/`, image);
   return { ...metadata, title: { absolute: v.name }, alternates: { canonical: url },
     openGraph: { ...metadata.openGraph, siteName: v.name, url },
