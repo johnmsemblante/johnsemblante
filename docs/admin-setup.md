@@ -174,3 +174,7 @@ Deploy both updated Firestore rules and Hosting for this revision: the rules all
 ### Publishing validation fix
 
 Label-heavy posts could exceed Firestore's 1,000-expression rule evaluation limit and return the generic permission-denied message despite valid admin access. Label validation now batches length and whitespace checks across preserved item boundaries, with explicit type checks. The emulator suite covers publishing and editing at the full 10-category/20-tag limits, invalid values at the first/middle/last positions, and 80-character labels. Reserved NUL separators are rejected. This fix only requires deploying Firestore rules; the open editor can retry saving without refreshing or losing unsaved text.
+
+### Article formatting toolbar
+
+The Article field now has Write and Preview modes, plus H2/H3 headings, bold, italic, inline code, bullets, numbered lists, quotes and links. Select text and use a toolbar button; Ctrl/Cmd+B and Ctrl/Cmd+I also work. Preview uses the same renderer as public articles. This is a Markdown editor with a formatted preview, rather than editing HTML directly. Existing paragraphs, headings, lists and image/file URLs remain supported. Formatting is stored in the existing content field; no paid editor service, extra dependency, schema migration or Firestore-rule update is needed. Raw HTML stays escaped.

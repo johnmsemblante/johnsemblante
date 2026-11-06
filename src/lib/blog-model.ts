@@ -88,15 +88,29 @@ export function safeAssetUrl(value: string): boolean {
   if (/^\/(?!\/)/.test(value)) return !/[\s<>"\\]/.test(value);
   try { const url = new URL(value); return url.protocol === "https:" && !url.username && !url.password; } catch { return false; }
 }
-export type ArticleBlock = { type: "paragraph" | "heading" | "quote" | "list" | "image" | "asset"; text?: string; items?: string[]; url?: string };
+export type ArticleBlock = { type: "paragraph" | "heading" | "quote" | "list" | "ordered-list" | "image" | "asset"; text?: string; items?: string[]; url?: string; level?: 3 };
 export function articleBlocks(content: string): ArticleBlock[] {
-  return content.replace(/\r\n/g, "\n").split(/\n\s*\n/).filter(part => part.trim()).map(part => {
-    const lines = part.trim().split("\n");
-    const media = /^(!?)\[([^\]\n]{1,200})\]\(([^\s()]+)\)$/.exec(part.trim());
-    if (media && safeAssetUrl(media[3])) return { type: media[1] ? "image" : "asset", text: media[2], url: media[3] };
-    if (lines.every(line => line.startsWith("- "))) return { type: "list", items: lines.map(line => line.slice(2)) };
-    if (lines.every(line => line.startsWith("> "))) return { type: "quote", text: lines.map(line => line.slice(2)).join("\n") };
-    if (lines.length === 1 && lines[0].startsWith("## ")) return { type: "heading", text: lines[0].slice(3) };
-    return { type: "paragraph", text: lines.join("\n") };
-  });
+  const blocks: ArticleBlock[] = [];
+  const lines = content.replace(/\r\n/g, "\n").split("\n");
+  let index = 0;
+  const mediaPattern = /^(!?)\[([^\]\n]{1,200})\]\(([^\s()]+)\)$/;
+  const special = (line: string) => /^(?:#{2,3} |[-] |\d+\. |> )/.test(line) || mediaPattern.test(line);
+  while (index < lines.length) {
+    const line = lines[index].trim();
+    if (!line) { index++; continue; }
+    const media = mediaPattern.exec(line);
+    if (media && safeAssetUrl(media[3])) { blocks.push({ type: media[1] ? "image" : "asset", text: media[2], url: media[3] }); index++; continue; }
+    const heading = /^(#{2,3}) (.*)$/.exec(line);
+    if (heading) { blocks.push({ type: "heading", text: heading[2], ...(heading[1].length === 3 ? { level: 3 as const } : {}) }); index++; continue; }
+    const kind = line.startsWith("- ") ? "list" : /^\d+\. /.test(line) ? "ordered-list" : line.startsWith("> ") ? "quote" : "paragraph";
+    const group: string[] = [];
+    while (index < lines.length && lines[index].trim()) {
+      const current = lines[index].trim();
+      if (kind === "list" && !current.startsWith("- ") || kind === "ordered-list" && !/^\d+\. /.test(current) || kind === "quote" && !current.startsWith("> ") || kind === "paragraph" && group.length > 0 && special(current)) break;
+      group.push(kind === "list" || kind === "quote" ? current.slice(2) : kind === "ordered-list" ? current.replace(/^\d+\. /, "") : current);
+      index++;
+    }
+    blocks.push(kind === "list" || kind === "ordered-list" ? { type: kind, items: group } : { type: kind, text: group.join("\n") });
+  }
+  return blocks;
 }

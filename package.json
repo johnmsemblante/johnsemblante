@@ -7,7 +7,7 @@
     "build": "node node_modules/next/dist/bin/next build --webpack",
     "preview": "node scripts/preview.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test:blog": "node --test tests/blog-model.test.cjs tests/blog-loading.test.cjs tests/blog-editor.test.cjs",
+    "test:blog": "node --test tests/blog-model.test.cjs tests/blog-loading.test.cjs tests/blog-editor.test.cjs tests/article-formatting.test.cjs",
     "test:rules": "node --test tests/firestore-rules.test.mjs",
     "test:admin": "node --test tests/admin-dashboard.test.cjs tests/jobs.test.cjs tests/job-feed-worker.test.cjs",
     "test:work": "node --test tests/work-portfolio.test.cjs tests/project-filter-session.test.cjs tests/project-filter-dropdown.test.cjs"

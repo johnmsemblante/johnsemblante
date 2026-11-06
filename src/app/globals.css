@@ -233,3 +233,27 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .blog-article>.blog-featured-image{margin-top:30px}
 .admin-preview .blog-featured-image{margin-bottom:24px}
 @media(max-width:700px){.blog-list{grid-template-columns:1fr}.blog-card-content{padding:24px}}
+
+/* Formatting controls for the managed article editor. */
+.article-editor{margin-top:10px}
+.article-editor-modes,.article-formatting{display:flex;flex-wrap:wrap;gap:6px}
+.article-editor-modes{margin-bottom:10px}
+.article-editor button{padding:8px 13px;border:1px solid #aab5af;background:#edf1e8;color:var(--ink);font-size:13px;line-height:1.5}
+.article-editor button:hover{background:#e7efdc}
+.article-editor button:focus-visible{outline:3px solid #32766c;outline-offset:3px}
+.article-editor-modes button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.article-formatting{padding:10px;border:1px solid #aab5af;border-bottom:0;background:#f0f1ed}
+.article-formatting [aria-label=Bold]{font-weight:700}
+.article-formatting [aria-label=Italic]{font-style:italic}
+.article-editor textarea[hidden]{display:none}
+.article-link-input{padding:0 15px 15px;border:1px solid #aab5af;background:#f0f1ed}
+.article-link-input button{margin:10px 8px 0 0}
+.article-editor-preview{padding:20px 26px;border:1px solid #aab5af;min-height:360px;background:white;overflow-wrap:anywhere}
+.article-editor-preview .blog-prose{padding:0}
+.blog-prose h3{font-size:24px;line-height:1.35;margin:30px 0 16px}
+.blog-prose ol{list-style:decimal;padding-left:26px;margin:24px 0}
+.blog-prose strong{font-weight:700}
+.blog-prose em{font-style:italic}
+.blog-prose code{font-family:monospace;font-size:.9em;background:#e7efec;border-radius:3px;padding:2px 5px}
+.blog-prose a{text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+@media(max-width:620px){.article-editor-preview{padding:18px;min-height:280px}.article-formatting{gap:5px;padding:8px}}
