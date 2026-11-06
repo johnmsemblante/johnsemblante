@@ -12,14 +12,16 @@ import { BlogFeaturedImage } from "@/components/blog-featured-image";
 import { ArticleEditor } from "./article-editor";
 import { BlogEditorDrawer } from "./blog-editor-drawer";
 import { TokenInput } from "./token-input";
+import { ArticleShareLink } from "@/components/article-share-link";
+import { site } from "@/content/site";
 
 const dateLabel = (value: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(value));
 
-export function AdminBlog({ reservedSlugs = [] }: { reservedSlugs?: string[] }) {
-  return <BlogEditor reservedSlugs={reservedSlugs} />;
+export function AdminBlog({ reservedSlugs = [], exportedSlugs = [] }: { reservedSlugs?: string[]; exportedSlugs?: string[] }) {
+  return <BlogEditor reservedSlugs={reservedSlugs} exportedSlugs={exportedSlugs} />;
 }
 
-function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
+function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[]; exportedSlugs: string[] }) {
   const { db } = useAdmin();
   const [editorOpen, setEditorOpen] = useState(false);
   const [posts, setPosts] = useState<ManagedPost[]>([]);
@@ -186,7 +188,10 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
           {input.status === "scheduled" && saved && effectiveStatus(saved, clock) === "published" && <p className="form-note">This schedule has already reached its publication time. Select Published to save edits without rescheduling, or choose a new future date.</p>}
           <fieldset className="seo-fields"><legend>SEO metadata</legend><label htmlFor="post-seo-title">Meta title (optional)</label><input id="post-seo-title" value={input.seoTitle} maxLength={160} placeholder={input.title || "Uses the post title"} onChange={e => field("seoTitle", e.target.value)} /><label htmlFor="post-seo-description">Meta description (optional)</label><textarea id="post-seo-description" value={input.seoDescription} maxLength={500} rows={3} placeholder={input.excerpt || "Uses the short introduction"} onChange={e => field("seoDescription", e.target.value)} /><p className="form-note">Blank fields use the title and short introduction. Preview: <strong>{seo.title || "Post title"}</strong> — {seo.description || "Short introduction"}</p></fieldset>
           <button type="submit" className="button">{input.status === "scheduled" ? "Save schedule" : input.status === "published" ? "Save and publish" : "Save draft"}</button>
-          {saved && effectiveStatus(saved, clock) === "published" && <Link className="text-link" href={`/blog/?post=${encodeURIComponent(saved.slug)}`} target="_blank" rel="noopener noreferrer">View published post ↗</Link>}
+          {saved && effectiveStatus(saved, clock) === "published" && <div className="admin-post-sharing">
+            {exportedSlugs.includes(saved.slug) ? <><Link className="text-link" href={`/blog/${saved.slug}/`} target="_blank" rel="noopener noreferrer">View published post ↗</Link><ArticleShareLink url={`${site.url}/blog/${saved.slug}/`} /><p className="form-note">Use the copied article URL for social previews. Rebuild and deploy after edits to update its title, image and content.</p></> : <p className="form-note">Rebuild and deploy to create this article’s shareable page with its own preview title and image.</p>}
+            <Link className="text-link" href={`/blog/?post=${encodeURIComponent(saved.slug)}`} target="_blank" rel="noopener noreferrer">View latest database version ↗</Link>
+          </div>}
         </fieldset></form>
         {saved && <button type="button" className="delete-article" disabled={busy} onClick={remove}>Delete article</button>}
         <details className="admin-preview"><summary>Preview article</summary><article><BlogFeaturedImage src={input.featuredImage} alt={input.featuredImageAlt || input.title} /><p className="eyebrow">{input.categories.join(" · ")}</p><h2>{input.title || "Untitled article"}</h2><p className="lede">{input.excerpt}</p><BlogArticleContent content={input.content} /><ul className="article-tags tags" aria-label="Tags">{input.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></article></details>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SiteNavigation } from "./site-navigation";
+import { profile } from "@/content/profile";
 
 export function SiteShell({ children }: { children: ReactNode }) {
   return <div className="portfolio-shell">
@@ -10,6 +11,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <SiteNavigation />
     </header>
     <main id="main" tabIndex={-1}>{children}</main>
-    <footer className="site-footer"><Link href="/">John Semblante<span className="muted"> / Development & ventures</span></Link><span>WordPress & front-end development · Cebu, Philippines</span></footer>
+    <footer className="site-footer"><Link href="/">John Semblante<span className="muted"> / Development & ventures</span></Link><span>{profile.title} · Cebu, Philippines</span></footer>
   </div>;
 }

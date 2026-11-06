@@ -1,6 +1,6 @@
 # John Semblante — Portfolio & Ventures
 
-A client-focused portfolio for John Semblante's WordPress and front-end development services, with public projects, confidential experience summaries, independent pages for Lazy Barista and Golden Travel and Tours, and a blog for development notes.
+A portfolio for John Clark Semblante, a WordPress/Full Stack Developer based in Cebu, Philippines, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista and Golden Travel and Tours, and a blog for development notes.
 
 - **Live website:** https://johnmsemblanteapp.web.app/
 - **Repository:** https://github.com/johnmsemblante/johnsemblante
@@ -17,6 +17,8 @@ See the [SEO audit and editing guide](docs/seo.md) for findings, meta title/desc
 Builds now export published dashboard articles to clean `/blog/slug/` pages with HTML and metadata. The instant `/blog/?post=slug` view remains available. **Rebuild and deploy after publishing, editing, unpublishing or deleting:** previously exported article copies stay public until redeployment. No paid SEO service or Firebase billing upgrade is required.
 
 Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
+
+Current professional title is maintained in `src/content/profile.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
 ## 1. Quick start
 

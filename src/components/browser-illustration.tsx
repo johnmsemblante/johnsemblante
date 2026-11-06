@@ -1,3 +1,5 @@
+import { profile } from "@/content/profile";
+
 type Portrait = { src: string; name: string };
 type Showcase = {
   kind: "work" | "ventures"; label: string; caption: string;
@@ -17,7 +19,7 @@ export function BrowserIllustration({ portrait, showcase }: { portrait?: Portrai
         <div className="study-canvas">
           <div className="study-label">{portrait ? "THE PERSON BEHIND THE PIXELS" : showcase?.label ?? "IDEA → EXPERIENCE"}</div>
           {portrait ? <div className="study-introduction">
-            <div className="study-person-copy"><span>Hello, I’m</span><strong>{portrait.name}</strong><span className="study-person-role">Full Stack Developer</span><div className="study-button" /></div>
+            <div className="study-person-copy"><span>Hello, I’m</span><strong>{portrait.name}</strong><span className="study-person-role">{profile.title}</span><div className="study-button" /></div>
             <div className="study-portrait-frame"><img src={portrait.src} alt="" width={1103} height={1426} /></div>
           </div> : showcase ? <div className="study-showcase">{showcase.images.map(asset => <div className="study-showcase-card" key={asset.src}><div className="study-showcase-image"><img src={asset.src} alt="" width={asset.width} height={asset.height} /></div><span>{asset.name}</span></div>)}</div> : <><div className="study-headline" /><div className="study-headline short" /><div className="study-line" /><div className="study-line short" /><div className="study-button" /></>}
           <div className="study-tiles"><span /><span /><span /></div>

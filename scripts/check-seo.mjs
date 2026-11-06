@@ -39,7 +39,17 @@ for (const url of urls) {
       if (image.origin === origin) assert.ok(fs.existsSync(path.join('out', image.pathname)), 'Social image is missing from export');
     }
     for (const match of body.matchAll(/<img\b[^>]*>/g)) assert.ok('alt' in attrs(match[0]), 'Image is missing alt attribute');
-    for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) JSON.parse(match[1]);
+    const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+    if (parsed.pathname === '/') {
+      const person = schemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'Person');
+      assert.ok(person?.name, 'Homepage is missing Person identity data');
+      assert.ok(title.includes(person.name), 'Homepage title does not include the full Person name');
+      assert.ok(person.jobTitle && title.includes(person.jobTitle), 'Homepage title differs from the current Person job title');
+      const specialty = decode(body.match(/<p class="hero-specialty">([\s\S]*?)<\/p>/)?.[1] || '');
+      assert.equal(specialty, person.jobTitle, 'Homepage hero differs from the current Person job title');
+      const heading = decode(body.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, '') || '');
+      assert.ok(heading.includes(person.name), 'Homepage H1 does not include the full Person name');
+    }
     if (title.length > 65) warnings.push(`${parsed.pathname}: title is ${title.length} characters; review for clarity.`);
     if ((meta('description') || '').length > 170) warnings.push(`${parsed.pathname}: description is long; review the snippet.`);
   } catch (error) { errors.push(`${url}: ${error.message}`); }

@@ -104,3 +104,59 @@ No Firestore rule/index change or billing upgrade is required for this SEO revis
 - [Google Article structured data](https://developers.google.com/search/docs/appearance/structured-data/article)
 - [Google canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)
 - [Search Console getting started](https://support.google.com/webmasters/answer/9128668)
+
+## Sharing a single article
+
+Use the clean `/blog/article-slug/` URL for social previews. The article footer and the dashboard now provide **Copy article link** for articles included in the current build. The dashboard's **View published post** also uses the clean page; **View latest database version** remains the instant query view. New posts need a build/deployment before the share link is available.
+
+An existing `/blog/?post=slug` URL still returns the listing's initial HTML on static Hosting, so a preview crawler may show the Blog title/image. Changing client-side metadata or adding a JavaScript redirect cannot reliably fix the preview of that old URL. Share the clean page instead. If a platform already cached an older preview of the clean URL, refresh it with that platform's preview/debugging tool after deploying.
+
+## Google indexability recheck ? 6 November 2026
+
+Live checks of all **34 sitemap URLs** returned HTTP 200 using a Googlebot-style user agent. Public pages had no blocking robots meta directive or X-Robots-Tag header. The homepage's canonical points to its current HTTPS web.app URL; robots.txt allows crawling and advertises the accessible XML sitemap. HTTP redirects to HTTPS. A deliberately nonexistent URL returned a genuine 404 with noindex. Admin pages have both noindex metadata and an X-Robots-Tag header. The alternate firebaseapp.com host uses the web.app canonical.
+
+These requests check technical accessibility from this environment. They do not impersonate a verified Google crawler IP, inspect Google's index, or prove a specific page is indexed. A missing result for a name search is not conclusive evidence of a technical block. No technical crawl/index prohibition was found in the tested public URLs, and buying a domain is not needed to make the current public site eligible.
+
+The follow-up changes make the homepage title, visible H1, description and Person metadata use **John Clark Semblante**, with John Semblante retained as the brand alias. Person metadata links only the social accounts already present in the project's profile data. The SEO export audit now checks that the homepage title and H1 contain the same full name as its Person schema. These identity changes require a build and Hosting deployment.
+
+### Owner steps still required in Search Console
+
+1. Add a **URL-prefix** property for exactly `https://johnmsemblanteapp.web.app/`.
+2. If the property is not already verified, choose the HTML tag method. Put only its content value in `GOOGLE_SITE_VERIFICATION` in the ignored build environment, then rebuild and deploy before pressing Verify. An absent verification meta tag does not prove the property is unverified; another verification method may already have been used.
+3. In **Sitemaps**, submit `https://johnmsemblanteapp.web.app/sitemap.xml`.
+4. Inspect `https://johnmsemblanteapp.web.app/` with **URL Inspection**. Record the actual indexed/not-indexed reason, Google's selected canonical, and any last crawl information.
+5. Use **Test live URL**. If eligible, use **Request indexing**. Also inspect Work, About, and a clean `/blog/slug/` article URL. Do not repeatedly request the same unchanged page.
+6. Monitor the Page indexing report. If Google reports ?Discovered ? currently not indexed? or ?Crawled ? currently not indexed?, use that exact report to decide the next step rather than changing robots settings at random. Add the website URL to your own public professional profiles when appropriate; the site code cannot edit those profiles.
+
+Search Console ownership verification, sitemap submission and requests for indexing have not been completed by the code changes. Google decides whether and when to index and serve a page; neither an index/follow directive nor submitting a sitemap guarantees it. Do not use paid indexing services or the restricted Google Indexing API for ordinary portfolio/blog pages.
+
+References: [Google technical eligibility](https://developers.google.com/search/docs/essentials/technical), [ownership verification](https://support.google.com/webmasters/answer/9008080), [requesting a recrawl](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl).
+
+### Live deployment status for the recheck
+
+The owner-supplied HTML verification tag was configured in ignored `.env.local`, built and deployed to Firebase Hosting on 6 November 2026. A live HTTPS fetch confirmed the exact tag, the full-name homepage title/H1, index/follow metadata and absence of a public noindex response header. The deployed homepage, blog, sitemap, robots.txt, article page, social image and admin asset matched the local build. This deployment also includes the prepared clean article sharing controls.
+
+The token is a public ownership-verification value; passwords and Google login codes were not used. Keep `GOOGLE_SITE_VERIFICATION` in the build environment on every computer/CI job that deploys this site, otherwise a later build can remove the verification tag. The owner confirmed **Ownership verified** using the HTML tag method on 6 November 2026. Keep that meta tag in subsequent deployments. Sitemap submission success and Google indexing status have not yet been confirmed; those require the corresponding Search Console results.
+
+## Current positioning and keyword plan
+
+The canonical current title is **WordPress/Full Stack Developer**, defined once as `professionalTitle` in `src/content/profile.ts`. The profile title/headline, current employment label, homepage title and hero, portrait illustration, footer, metadata image description and Person jobTitle use this shared value. Historical employer titles and project-specific technologies retain their factual meanings; a skill category such as Front-end is not another current job title. To regenerate the branded image after changing the title, run `node scripts/generate-social-card.cjs`, inspect the PNG, rebuild and deploy.
+
+The homepage title is now **John Clark Semblante | WordPress/Full Stack Developer**. The Work page targets portfolio/project searches, while About and Contact have distinct name-based titles. Avoid adding the same keyword list to every title or repeating the brand suffix. The site's canonical domain and existing project/article slugs do not change for keyword targeting.
+
+Suggested search phrases below are based on your documented skills and location, **not measured search volume, competition or a ranking guarantee**:
+
+| Search intent | Suggested phrases | Best existing destination / supporting content |
+| --- | --- | --- |
+| Find you by name | John Clark Semblante; John Semblante; John Clark Semblante portfolio | Homepage, with your full name, current role and introduction |
+| Assess your work | John Clark Semblante works; John Clark Semblante projects; WordPress developer portfolio | Work page, actual client/venture records, screenshots and case studies |
+| Find a local developer | WordPress developer Cebu; WordPress developer Philippines | Homepage introduction and service copy, location and genuine project evidence |
+| Hire remotely | remote WordPress developer Philippines; WordPress full stack developer | Homepage/profile/contact, plus documented collaboration experience |
+| Find a specific skill | custom WordPress development; Figma to WordPress developer; WooCommerce developer Philippines | Existing service sections, relevant experience and verified project write-ups |
+| Learn or solve a problem | Concrete WordPress troubleshooting or implementation questions you have actually solved | Helpful blog articles with steps, code, limitations and a relevant project example |
+
+Use **portfolio**, not ?portfoio,? in your site content. ?Works? is a reasonable branded query, but ?portfolio? and ?projects? make more natural headings. Generic ?WordPress developer? is broader than the branded/local phrases; use it naturally alongside your name and Cebu/Philippines context rather than assuming a new portfolio will immediately rank for it.
+
+No HTML meta-keywords tag is added: [Google says it does not affect indexing or ranking](https://developers.google.com/search/docs/crawling-indexing/special-tags). Titles, headings, useful text, descriptive internal links and real project evidence are the implementation focus. [Google recommends clear, concise titles without keyword stuffing](https://developers.google.com/search/docs/appearance/title-link).
+
+Next steps after Google begins showing data: review Search Console Performance queries and landing pages, compare branded versus service/location searches, and refine the pages that already match the intent. Expand real case studies with your contributions and technologies; do not add invented results or claim every historical website used the modern full-stack tools. Build a few useful articles from actual WordPress, WooCommerce, Figma implementation or website debugging work rather than creating many thin keyword landing pages.

@@ -4,6 +4,7 @@ import { postMetadata, type ManagedPost } from "@/lib/blog-model";
 import { articleSchema, jsonLd } from "@/lib/seo";
 import { BlogArticleContent } from "./blog-article-content";
 import { BlogFeaturedImage } from "./blog-featured-image";
+import { ArticleShareLink } from "./article-share-link";
 
 export function PublishedBlogArticle({ post }: { post: ManagedPost }) {
   const metadata = postMetadata(post);
@@ -15,6 +16,6 @@ export function PublishedBlogArticle({ post }: { post: ManagedPost }) {
     {post.featuredImage && <BlogFeaturedImage src={post.featuredImage} alt={post.featuredImageAlt || post.title} />}
     <BlogArticleContent content={post.content} />
     {post.tags.length > 0 && <ul className="article-tags tags" aria-label="Tags">{post.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>}
-    <footer><Link className="text-link" href="/blog/">← Back to the blog</Link></footer>
+    <footer><ArticleShareLink url={`${site.url}/blog/${post.slug}/`} /><Link className="text-link" href="/blog/">← Back to the blog</Link></footer>
   </article>;
 }

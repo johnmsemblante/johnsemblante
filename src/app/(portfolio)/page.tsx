@@ -12,13 +12,14 @@ import { websiteSchema, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/content/site";
 
-export const metadata = pageMetadata("WordPress & Front-end Developer in Cebu", site.description, "/");
+const homeTitle = `${profile.fullName} | ${profile.title}`;
+export const metadata = { ...pageMetadata(homeTitle, site.description, "/"), title: { absolute: homeTitle } };
 
 export default function Home() {
   const writing = publishedPosts().slice(0, 2);
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(websiteSchema()) }} />
-    <section className="hero mockup-hero"><div><p className="eyebrow">John Semblante / Full Stack Developer</p><h1>Your website.<br />Built for<br /><span className="hero-muted">what’s next.</span></h1><p className="lede">{profile.homeSummary}</p><div className="actions"><Button href="/contact/">Discuss your project</Button><Button href="/work/" secondary>Explore my work</Button></div></div><BrowserIllustration portrait={{ src: profile.portrait, name: "John Semblante" }} /></section>
+    <section className="hero mockup-hero"><div><p className="eyebrow">Developer portfolio / Cebu, Philippines</p><h1>{profile.fullName}</h1><p className="hero-specialty">{profile.title}</p><p className="lede">{profile.homeSummary}</p><div className="actions"><Button href="/contact/">Discuss your project</Button><Button href="/work/" secondary>View my portfolio</Button></div></div><BrowserIllustration portrait={{ src: profile.portrait, name: profile.fullName }} /></section>
     <div className="portfolio-strip" aria-label="Portfolio focus"><div><span className="strip-symbol" aria-hidden="true">&lt;/&gt;</span><p><strong>From design to website</strong><span>Custom WordPress development from your Figma designs.</span></p></div><div><span className="strip-symbol" aria-hidden="true">↗</span><p><strong>Better on every screen</strong><span>Responsive layouts and cross-browser improvements.</span></p></div><div><span className="strip-symbol" aria-hidden="true">✎</span><p><strong>Support for the details</strong><span>UI fixes, integrations, and performance improvements.</span></p></div></div>
     <DevelopmentServices /><section className="section"><div className="section-heading"><div><p className="eyebrow">The portfolio</p><h2>Selected public projects.</h2></div><Link className="text-link" href="/work/">View all work <Arrow /></Link></div>{projects.length ? <ProjectGrid projects={projects.slice(0, 3)} /> : <div className="work-pending"><span className="work-pending-mark" aria-hidden="true">&lt;/&gt;</span><div><h3>Project stories are taking shape.</h3><p>Verified projects, screenshots, and case studies will be shared here soon.</p></div></div>}</section>
     <section className="section"><div className="section-heading"><div><p className="eyebrow">Beyond the screen</p><h2>Independent ventures.</h2></div><Link className="text-link" href="/ventures/">View all ventures <Arrow /></Link></div><VentureCards compact /><p className="section-note">Take a coffee break with Lazy Barista or plan your Cebu trip with Golden Travel and Tours.</p></section>

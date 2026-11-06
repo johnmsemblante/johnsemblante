@@ -1,19 +1,20 @@
 // Updated résumé takes precedence over the historical portfolio (2026-10-29).
+export const professionalTitle = "WordPress/Full Stack Developer";
 export const profile = {
   fullName: "John Clark Semblante",
   location: "Mandaue City, Cebu, Philippines",
-  title: "Full Stack Developer",
-  headline: "Full Stack Developer",
+  title: professionalTitle,
+  headline: professionalTitle,
   homeSummary: "I help businesses and teams build custom WordPress websites, improve WooCommerce stores, and fix front-end problems. Over 10 years of experience, with a focus on responsive interfaces, performance, and maintainable code.",
   resumePortrait: "/images/profile/john-resume.jpg",
   portrait: "/images/profile/john-enhanced.webp",
-  introduction: "I’m John, a senior front-end and WordPress developer based in Cebu, Philippines. I bring over 10 years of experience building and improving websites across SaaS, ecommerce, and enterprise environments.",
+  introduction: `I’m John Clark Semblante, a ${professionalTitle} based in Cebu, Philippines. I bring over 10 years of experience building and improving websites across SaaS, ecommerce, and enterprise environments.`,
   biography: "My work connects design with the details that make a website usable: responsive layouts, clear interactions, and reliable functionality. I turn Figma designs into WordPress and WooCommerce websites using PHP, JavaScript, and CSS, and help resolve the technical issues that get in the way of a good customer experience.",
   skills: ["WordPress", "WooCommerce", "Figma to WordPress", "Responsive web design", "Cross-browser and mobile optimization", "Core Web Vitals", "On-page SEO", "UI debugging", "Third-party APIs and plugins", "ActiveCampaign", "GetResponse", "Zendesk", "PrestaShop"],
   languages: ["HTML5", "CSS3", "JavaScript", "PHP", "Tailwind CSS", "Bootstrap"],
   tools: ["Git", "Docker", "Playwright", "Figma MCP", "Cursor", "Claude AI workflows"],
   experience: [
-    { company: "Link365 by CreateIT", role: "Full Stack Developer", dates: "October 2021 – Present", responsibilities: ["Develop and maintain custom WordPress and WooCommerce websites from Figma designs.", "Investigate technical bugs, fix cross-browser interface issues, and address website performance bottlenecks.", "Use Cursor, Claude, and Docker to support development, debugging, and code review workflows."] },
+    { company: "Link365 by CreateIT", role: professionalTitle, dates: "October 2021 – Present", responsibilities: ["Develop and maintain custom WordPress and WooCommerce websites from Figma designs.", "Investigate technical bugs, fix cross-browser interface issues, and address website performance bottlenecks.", "Use Cursor, Claude, and Docker to support development, debugging, and code review workflows."] },
     { company: "LegalMatch PH", role: "Front End Developer", dates: "March 2019 – September 2021", responsibilities: ["Engineered responsive front-end layouts and custom WordPress themes for high-traffic enterprise legal tech platforms.", "Translated UI/UX designs into reusable front-end components with attention to accessibility and responsive behavior.", "Maintained core website functionality, supported security requirements, and integrated third-party APIs and plugins."] },
     { company: "Titan Digital", role: "WordPress Developer", dates: "May 2017 – February 2019", responsibilities: ["Built custom, responsive WordPress websites from design files.", "Resolved client support issues through technical fixes and theme and plugin customizations."] },
     { company: "Supporting Enterprise – Odusee", role: "Web Developer", dates: "February 2016 – May 2017", responsibilities: ["Developed and managed client WordPress platforms, improving overall site performance, navigation, and mobile responsiveness."] },

@@ -3,7 +3,8 @@ import { profile } from "@/content/profile";
 import { site } from "@/content/site";
 import { PageIntro, Button } from "@/components/ui";
 import { pageMetadata } from "@/lib/metadata";
-export const metadata = pageMetadata("About", "Meet John Clark Semblante, a senior front-end and WordPress developer based in Mandaue City, Cebu.", "/about/");
+const aboutTitle = `${profile.fullName} | About & Experience`;
+export const metadata = { ...pageMetadata(aboutTitle, `Meet ${profile.fullName}, a ${profile.title} in Cebu, Philippines. Explore my skills, career experience and website development work.`, "/about/"), title: { absolute: aboutTitle } };
 export default function About() {
   return <><div className="about-intro"><PageIntro eyebrow={`${profile.title} / ${profile.location}`} title="A developer who cares about the details."><p>{profile.introduction}</p><div className="actions"><Button href="/work/">Explore my work</Button><Button href="/contact/" secondary>Discuss your project</Button></div></PageIntro><img className="profile-portrait" src={profile.portrait} alt="John Clark Semblante, web developer based in Cebu" width={1103} height={1426} /></div>
     <section className="section two-columns"><h2>Design to code.<br />Ideas to experiences.</h2><div><p className="lede">{profile.biography}</p><p className="body-copy">Running Lazy Barista and Golden Travel and Tours also gives me a business owner’s perspective: customers need clear information and an easy way to take the next step. I bring that same focus to my development work.</p><Button href="/ventures/" secondary>Meet the ventures</Button></div></section>

@@ -23,7 +23,7 @@ test('blog rows put the image first, then category, title, date, excerpt, tags a
 });
 
 test('the admin blog starts with a full-width library and no hidden editing form', () => {
-  const { AdminBlog } = load('src/components/admin/admin-blog.tsx', { 'next/link': {}, 'firebase/firestore': {}, '@/components/blog-article-content': {}, '@/lib/firebase-client': {}, '@/lib/blog-model': model, '@/lib/blog-store': {}, './admin-gate': { useAdmin: () => ({ db: {} }) }, '@/components/blog-featured-image': {}, './article-editor': {}, './token-input': {}, './blog-editor-drawer': {} });
+  const { AdminBlog } = load('src/components/admin/admin-blog.tsx', { 'next/link': {}, 'firebase/firestore': {}, '@/components/blog-article-content': {}, '@/lib/firebase-client': {}, '@/lib/blog-model': model, '@/lib/blog-store': {}, './admin-gate': { useAdmin: () => ({ db: {} }) }, '@/components/blog-featured-image': {}, './article-editor': {}, './token-input': {}, './blog-editor-drawer': {}, '@/components/article-share-link': {}, '@/content/site': { site: {} } });
   const html = renderToStaticMarkup(React.createElement(AdminBlog));
   assert.ok(html.includes('admin-post-library'));
   assert.ok(html.includes('Your articles'));

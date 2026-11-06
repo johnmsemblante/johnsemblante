@@ -56,3 +56,24 @@ test('featured image uses the site logo for absent, unsafe or failed URLs and re
   const image = h.nodes().find(n => n.type === 'img'); assert.equal(image.props.alt, props.alt); image.props.onError(); h.render(); assert.ok(!h.nodes().some(n => n.type === 'img'));
   props.src = 'https://example.com/b.webp'; h.render(); assert.ok(h.nodes().some(n => n.type === 'img'));
 });
+
+
+test('copy article link uses the provided canonical URL and offers a selectable fallback when clipboard is blocked', async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+  const url = 'https://johnmsemblanteapp.web.app/blog/example-article/';
+  let copied = '';
+  try {
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { clipboard: { writeText: async value => { copied = value; } } } });
+    const h = harness('src/components/article-share-link.tsx', 'ArticleShareLink', { url });
+    await h.nodes().find(node => node.type === 'button').props.onClick(); h.render();
+    assert.equal(copied, url);
+    assert.ok(h.nodes().some(node => node.props?.role === 'status' && node.props.children === 'Article link copied.'));
+    navigator.clipboard.writeText = async () => { throw new Error('blocked'); };
+    await h.nodes().find(node => node.type === 'button').props.onClick(); h.render();
+    const input = h.nodes().find(node => node.type === 'input');
+    assert.equal(input.props.readOnly, true); assert.equal(input.props.value, url);
+    let selected = false; input.props.onFocus({ currentTarget: { select() { selected = true; } } }); assert.equal(selected, true);
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, 'navigator', descriptor); else delete globalThis.navigator;
+  }
+});

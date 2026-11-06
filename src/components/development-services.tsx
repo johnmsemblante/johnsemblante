@@ -10,6 +10,6 @@ export function DevelopmentServices() {
   return <section className="section" aria-labelledby="services-title">
     <div className="section-heading"><div><p className="eyebrow">How I can help</p><h2 id="services-title">Build it. Improve it. Keep it working.</h2></div></div>
     <div className="service-copy-grid">{services.map(([title, description, scope]) => <article key={title}><h3>{title}</h3><p>{description}</p><p className="service-scope">{scope}</p></article>)}</div>
-    <p className="service-copy-cta">For business owners and teams who need hands-on development support. <Link className="text-link" href="/contact/">Tell me what you need <span aria-hidden="true">↗</span></Link></p>
+    <p className="service-copy-cta">Looking for a WordPress developer in Cebu, Philippines? I work with businesses and remote teams on custom websites, WooCommerce and ongoing improvements. <Link className="text-link" href="/contact/">Tell me what you need <span aria-hidden="true">↗</span></Link></p>
   </section>;
 }

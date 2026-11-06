@@ -10,6 +10,8 @@ import { BlogArticleContent } from "./blog-article-content";
 import { BlogPostMetadata } from "./blog-post-metadata";
 import { BlogCard } from "./blog-card";
 import { BlogFeaturedImage } from "./blog-featured-image";
+import { ArticleShareLink } from "./article-share-link";
+import { site } from "@/content/site";
 import { PageIntro } from "./ui";
 
 const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "long", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(date));
@@ -109,6 +111,7 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
     {loading && <p role="status">Loading article…</p>}
     {error && <><h1>Article unavailable</h1><p role="status">{error}</p></>}
     {article && <><BlogPostMetadata post={article} canonicalPath={staticSlugs.includes(article.slug) ? `/blog/${article.slug}/` : undefined} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
+    {article && staticSlugs.includes(article.slug) && <footer><ArticleShareLink url={`${site.url}/blog/${article.slug}/`} /><p className="form-note">Use this article link for its own social preview title and image.</p></footer>}
   </article>;
   return <>
     {hasStaticPosts || (!firebaseConfigured && !initialPosts.length) ? children : <BlogIntro />}

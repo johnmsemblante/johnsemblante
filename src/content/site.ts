@@ -1,10 +1,11 @@
 import { portfolioProjects } from "./projects";
 import type { IndustrySlug } from "./industries";
+import { professionalTitle } from "./profile";
 export const site = {
   name: "John Semblante",
   url: "https://johnmsemblanteapp.web.app",
   socialImage: "/images/seo/john-semblante-social.png",
-  description: "Senior WordPress and front-end developer in Cebu. Custom websites, WooCommerce development, and website fixes. Discuss your project with John Semblante.",
+  description: `John Clark Semblante's portfolio as a ${professionalTitle} in Cebu, Philippines. Explore website projects, experience and remote opportunities.`,
   // Public email link. Change delivery recipients separately in the Formspree dashboard.
   email: "johnmsemblante@gmail.com",
   // Public form ID, not an API secret. Recipient is configured in Formspree.

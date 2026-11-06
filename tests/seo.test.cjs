@@ -11,8 +11,9 @@ function load(file, mocks = {}) {
 }
 const site = { name: 'John Semblante', url: 'https://johnmsemblanteapp.web.app', description: 'Developer in Cebu', socialImage: '/images/seo/john-semblante-social.png' };
 const model = load('src/lib/blog-model.ts');
-const metadata = load('src/lib/metadata.ts', { '@/content/site': { site } });
-const seo = load('src/lib/seo.ts', { '@/content/site': { site } });
+const profile = load('src/content/profile.ts');
+const metadata = load('src/lib/metadata.ts', { '@/content/site': { site }, '@/content/profile': profile });
+const seo = load('src/lib/seo.ts', { '@/content/site': { site }, '@/content/profile': profile });
 const { fetchPublicBlogSnapshot } = load('src/lib/public-blog-snapshot.ts', { './blog-model': model });
 const now = Date.parse('2026-11-06T04:00:00Z');
 const post = { ...model.emptyPost(), slug: 'seo-post', title: 'Article title', excerpt: 'An introduction', content: '## A section\n\n**Useful** article content.', status: 'published', publishedAt: '2026-11-05T04:00:00.000Z', revision: 1, schemaVersion: 2 };
@@ -31,6 +32,7 @@ test('article structured data uses real author/date/image and escapes script-bre
   const schema = seo.articleSchema({ title: '</script><script>bad</script>', description: 'Intro', publishedAt: post.publishedAt, url: site.url + '/blog/seo-post/' });
   assert.equal(schema.datePublished, post.publishedAt);
   assert.equal(schema.author.url, site.url + '/about/');
+  assert.equal(schema.author.name, 'John Clark Semblante');
   assert.equal(schema.image[0], site.url + site.socialImage);
   assert.ok(!seo.jsonLd(schema).includes('<'));
   assert.equal(JSON.parse(seo.jsonLd(schema)).headline, schema.headline);
@@ -61,7 +63,7 @@ test('export never includes drafts or future schedules and stops on provider/rec
 test('published managed articles render content, one H1 and JSON-LD without JavaScript', () => {
   const content = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model });
   const image = load('src/components/blog-featured-image.tsx', { '@/lib/blog-model': model });
-  const { PublishedBlogArticle } = load('src/components/published-blog-article.tsx', { 'next/link': { default: ({ children, ...props }) => React.createElement('a', props, children) }, '@/content/site': { site }, '@/lib/blog-model': model, '@/lib/seo': seo, './blog-article-content': content, './blog-featured-image': image });
+  const { PublishedBlogArticle } = load('src/components/published-blog-article.tsx', { 'next/link': { default: ({ children, ...props }) => React.createElement('a', props, children) }, '@/content/site': { site }, '@/lib/blog-model': model, '@/lib/seo': seo, './blog-article-content': content, './blog-featured-image': image, './article-share-link': load('src/components/article-share-link.tsx') });
   const html = renderToStaticMarkup(React.createElement(PublishedBlogArticle, { post }));
   assert.equal((html.match(/<h1>/g) || []).length, 1);
   assert.ok(html.includes('<strong>Useful</strong>'));
@@ -77,4 +79,13 @@ test('managed article routes use admin SEO values and only published snapshot sl
   assert.equal(result.title, 'Custom SEO title'); assert.equal(result.description, 'Custom SEO description');
   assert.equal(result.alternates.canonical, site.url + '/blog/seo-post/');
   await assert.rejects(route.generateMetadata({ params: Promise.resolve({ slug: ['draft'] }) }), /404/);
+});
+
+
+test('identity schema uses the full name, brand alias and existing public profile URLs', () => {
+  const person = seo.websiteSchema()['@graph'].find(item => item['@type'] === 'Person');
+  assert.equal(person.name, 'John Clark Semblante'); assert.equal(person.alternateName, site.name);
+  assert.equal(person.jobTitle, 'WordPress/Full Stack Developer');
+  assert.ok(person.sameAs.includes('https://www.linkedin.com/in/johnsemblante/'));
+  assert.deepEqual(person.sameAs, profile.socialAccounts.map(account => account.url));
 });
