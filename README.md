@@ -27,7 +27,7 @@ Current professional title is maintained in `src/content/profile.ts`. See the [p
 Run commands from the `johnsemblante` checkout on the computer you are using. This machine uses the path below; the other device uses `D:\Personal\Sites\johnsemblante`.
 
 ```powershell
-cd "C:\Users\John Clark Semblante\Documents\ChatGPT\johnsemblante"
+cd "C:\Users\johnm\Documents\ChatGPT\johnsemblante"
 npm ci
 npm run dev
 ```
@@ -55,7 +55,7 @@ npm ci
 npm run dev
 ```
 
-Use `npm ci` to install the versions in `package-lock.json`. No `.env` file is required for the current site. Firebase CLI access is only needed when deploying.
+Use `npm ci` to install the versions in `package-lock.json`. The source-based public pages work without an `.env` file. To reproduce the production admin, managed blog and Job Finder setup, restore the public Firebase configuration and feed endpoint in ignored `.env.local` using [admin setup](docs/admin-setup.md). Preserve `GOOGLE_SITE_VERIFICATION` in every production build environment to keep the deployed Google ownership tag. Do not commit environment files or credentials. Firebase CLI sign-in is needed for deployment, not ordinary public-page development.
 
 ## 2. Commands
 
@@ -66,6 +66,14 @@ Use `npm ci` to install the versions in `package-lock.json`. No `.env` file is r
 | `npm run typecheck` | Check TypeScript without publishing anything. |
 | `npm run build` | Fetch the public blog snapshot, compile, check TypeScript, and export the production site to `out/`. |
 | `npm run audit:seo` | Check metadata, canonicals, headings, images, sitemap and private-page indexing in the current export. |
+| `npm run sync:blog` | Refresh the anonymous public article snapshot for local development; also runs during build. |
+| `npm run test:forms` | Check confirmed submission/reset and failure preservation using mocked delivery. |
+| `npm run test:blog` | Check blog models, loading, editing, formatting, layout and live refresh. |
+| `npm run test:admin` | Check dashboard access/navigation, Job Finder and the feed Worker. |
+| `npm run test:work` | Check portfolio data, search and grouped filter behavior. |
+| `npm run test:ventures` | Check ventures, gallery data and detail-page sharing image selection. |
+| `npm run test:seo` | Check SEO metadata and static article export behavior. |
+| `npm run test:rules` | Check Firestore access rules against a local emulator; see admin setup. |
 | `npm run preview` | Serve the existing `out/` build at http://127.0.0.1:3100. |
 | `git diff --check` | Check pending changes for whitespace errors. |
 
@@ -121,6 +129,12 @@ Keep published slugs stable. Renaming one changes its URL and requires a redirec
 
 ### Blog: draft, preview and publish
 
+For normal publishing, use **Blog Management** at `/adminauth/blog/`. Its full-width post library opens a right-side editor for new or selected posts. The editor generates slugs, accepts comma-separated categories/tags (including pasted lists), and supports featured-image URLs, Write/Preview formatting, image/file URLs, SEO overrides, drafts, publishing, future Manila-time scheduling and confirmed deletion. Featured images appear beside article details in full-width blog rows, with the site logo for empty or broken card images. Compact tags follow the Work card style. The article toolbar supports H2/H3, emphasis, lists, quotes, code and links; it is a Markdown editor with preview. Direct file uploads are not enabled.
+
+After saving, readers receive live database updates; rebuild and deploy to update initial HTML, social previews, the sitemap and clean article routes. Share `/blog/your-slug/` after that deployment. Legacy `?post=` links retain generic initial sharing metadata. See [admin setup](docs/admin-setup.md) and [SEO publishing](docs/seo.md) for the exact workflow, scheduling and refresh limitations.
+
+The steps below apply only to the separate **source-based articles**, not dashboard records:
+
 1. Open `src/content/blog.ts` and duplicate the starter object inside `posts`.
 2. Set a unique slug, title, excerpt and category.
 3. Keep `status: "draft"` while writing.
@@ -167,6 +181,7 @@ src/
   app/
     (portfolio)/          Home, About, Work, Blog, Contact, Ventures directory
     ventures/[venture]/   Independent venture landing routes
+    adminauth/            Google sign-in, dashboard, blog editor and Job Finder
     layout.tsx            Root metadata and global stylesheet
     robots.ts             Search crawler rules
     sitemap.ts            Generated published-page sitemap
@@ -176,13 +191,16 @@ src/
   ventures/               Venture registry, content, types and presentation
 public/                   Public images and assets
 scripts/preview.mjs       Local static-export preview server
+scripts/sync-blog-snapshot.cjs  Anonymous public article snapshot for builds
+tests/                    Automated checks for forms, blog, admin, work and SEO
+workers/job-feed/         Separate Cloudflare Worker for the Himalayas feed
 docs/                     Writing and source/review notes
 firebase.json             Hosting folder, site and response headers
 .firebaserc               Default Firebase project
 next.config.ts            Production static export configuration
 ```
 
-Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/blog/`, `/blog/[slug]/`, `/contact/`, `/ventures/`, `/ventures/lazy-barista/`, and `/ventures/golden-travel-and-tours/`. Blog article routes exist only for published entries.
+Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/work/industry/[industry]/`, `/blog/`, `/blog/[slug]/`, `/contact/`, `/ventures/`, `/ventures/lazy-barista/`, `/ventures/golden-travel-and-tours/`, and `/ventures/lapse-hub/`. Clean blog article routes are exported for source-published and publicly released managed entries at build time. `/adminauth/`, `/adminauth/blog/` and `/adminauth/jobs/` are excluded from indexing; Firebase authorization protects private records.
 
 The `(portfolio)` directory is a layout group and does not appear in URLs. Venture pages have separate presentation from the portfolio shell. Most components render at build time; navigation, filtering and the inquiry form use client components for interaction.
 
@@ -227,22 +245,25 @@ Run each step only after the previous one succeeds:
 ```powershell
 npm run typecheck
 npm run build
+npm run audit:seo
 npm run preview
 ```
 
-Review the production preview, then stop it with Ctrl+C. Check mobile and desktop layouts, navigation, keyboard focus, images, contact form validation and delivery, the modified content, and an invalid URL's 404 page.
+Run the feature tests relevant to the change from the commands table, and update this README or its linked guides when behavior, configuration, content editing or release steps change. Review the production preview, then stop it with Ctrl+C. Check mobile and desktop layouts, navigation, keyboard focus, images, contact form validation, modified content, and an invalid URL's 404 page. Use mocked delivery for routine inquiry checks; send a real test inquiry only with explicit authorization.
 
 Save the reviewed changes to GitHub:
 
 ```powershell
 git status
 git diff --check
-git add -A
+git add <reviewed-files>
 git commit -m "Describe the website changes"
 git push origin main
 ```
 
 Inspect `git status` before staging to avoid including unrelated files. If there are no changes, skip the add/commit steps. Pushing to GitHub does **not** automatically deploy this project.
+
+Replace `<reviewed-files>` with the actual paths being released. A normal frontend/documentation release deploys Hosting only. Deploy Firestore rules/indexes, Auth configuration or the Cloudflare Worker separately only when those components changed; see the admin guide. A README update alone does not require backend deployment.
 
 Publish the build:
 
@@ -422,3 +443,24 @@ See [portfolio-industries.md](docs/portfolio-industries.md) for all nine routes,
 The Work directory now adds debounced keyword search, grouped multi-select Industry/Technology/Project Type dropdowns, removable chips, Clear All and **Share these results**. Readable query URLs restore selections and browser history; duplicate/legacy values normalize safely. Industry records and dedicated routes remain intact through a normalization layer. Technology choices come only from verified project fields. See the guide above for aliases, empty states, keyboard controls, clipboard fallback and static-export SEO behavior.
 
 Dropdown options without a match in the other selected groups are now disabled, with live contextual counts. Clicking an option's label or count also checks its checkbox. Search and dropdowns work separately: typing clears dropdown selections; filtering clears the search input. Shared links follow the same rule, with a keyword taking priority over group parameters in older combined URLs.
+
+## 15. Current feature and documentation summary - 6 November 2026
+
+This section describes the current implementation; dated notes above record earlier releases. The current professional title is **WordPress/Full Stack Developer**. Google Search Console ownership was verified by the owner. Crawlability checks passed, but indexing and rankings are Google decisions; the earlier sitemap fetch warning is not a confirmed successful sitemap-processing result.
+
+- **Blog:** the admin library, slide-in editor, automatic slugs and labels, formatting, featured images, scheduling, deletion, SEO overrides and live refresh are implemented. Clean article pages are exported during builds. Dashboard refresh requests new public reads in the same browser; it does not purge a CDN or deploy updated SEO HTML.
+- **Work:** original projects remain alongside clearly labeled personal ventures. Keyword search and grouped multi-select filters are separate modes. Unavailable combinations are disabled; clicking an enabled label or count toggles the checkbox and keeps the dropdown open.
+- **Ventures:** Lazy Barista, Golden Travel and Tours, and Lapse Hub are live. Lapse Hub uses its Facebook profile logo locally and a curated external Flickr gallery with popup viewing and source links; new Flickr uploads are not automatically imported.
+- **Sharing:** venture detail pages use their logo and Work detail pages use their project image. Missing or blank image configuration falls back to `site.socialImage`. Social platforms may cache previews; see the SEO guide.
+- **Inquiries:** confirmed Formspree submissions clear name, email and message. Travel submissions also reset planner choices and trip fields while retaining a success notice. Failures and itinerary reviews preserve input. Location fields are plain text, without autocomplete or interactive maps.
+- **Travel quotation link:** share [the expanded trip planner](https://johnmsemblanteapp.web.app/ventures/golden-travel-and-tours/#trip-estimator). The planner prepares an inquiry; it does not confirm a booking or take payment.
+
+| Guide | Use it for |
+| --- | --- |
+| [Admin setup](docs/admin-setup.md) | Google sign-in, approved admins, Firestore, blog editing, scheduling, live refresh and the Cloudflare Job Finder feed. |
+| [SEO](docs/seo.md) | Titles/descriptions, sharing images, clean article URLs, build-time publishing, Search Console and keywords. |
+| [Writing](docs/writing.md) | Source-based article content and writing guidance. |
+| [Portfolio industries](docs/portfolio-industries.md) | Project records, industry collections, grouped filtering and sharing filter results. |
+| [Lapse Hub](docs/lapse-hub.md) | Photography story, logo, external gallery, attribution and image hosting. |
+
+Keep this README as the current setup and feature entry point. With each meaningful change, update the affected instructions and linked guide before committing/deploying. Avoid adding credentials, private content or claims of verification that were not performed.
