@@ -66,3 +66,16 @@ test('article rendering escapes HTML and supports safe images and asset links', 
   assert.equal(safeAssetUrl('https://user:password@example.com/file'), false);
   assert.deepEqual(articleBlocks('- One\n- Two\n\n> A quote'), [{ type: 'list', items: ['One', 'Two'] }, { type: 'quote', text: 'A quote' }]);
 });
+
+
+test('featured images survive editing and older records default to the logo fallback', () => {
+  const record = { ...post, schemaVersion: 2, revision: 1, featuredImage: 'https://example.com/cover.webp', featuredImageAlt: 'A Cebu coastline' };
+  const parsed = postFromData(post.slug, record);
+  assert.equal(parsed.featuredImage, record.featuredImage);
+  assert.equal(loaded.exports.editablePost(parsed).featuredImageAlt, record.featuredImageAlt);
+  const { featuredImage, featuredImageAlt, ...older } = record;
+  assert.equal(postFromData(post.slug, older).featuredImage, '');
+  for (const url of ['javascript:alert(1)', '//evil.example/a', 'http://example.com/a', 'x'.repeat(2001)]) assert.ok(validatePost({ ...post, featuredImage: url }));
+  assert.equal(validatePost({ ...post, featuredImage: '/images/cover.webp' }), null);
+  assert.ok(validatePost({ ...post, featuredImageAlt: 'x'.repeat(201) }));
+});

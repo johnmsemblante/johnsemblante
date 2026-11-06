@@ -142,3 +142,19 @@ test('saved jobs reject unsafe URLs, extra fields and forged timestamps; revocat
   await environment.withSecurityRulesDisabled(context => updateDoc(doc(context.firestore(), 'admins', 'owner'), { enabled: false }));
   await assertFails(getDocFromServer(ref)); await assertFails(deleteDoc(ref));
 });
+
+
+test('featured image fields are optional, validated, and persist through editor saves', async () => {
+  const db = adminDb();
+  const input = { ...emptyPost(), title: 'Image post', excerpt: 'Intro', content: 'Body', featuredImage: 'https://example.com/cover.webp', featuredImageAlt: 'Cover description' };
+  const saved = await saveManagedPost(db, input, null, []);
+  assert.equal(saved.featuredImage, input.featuredImage);
+  assert.equal(saved.featuredImageAlt, input.featuredImageAlt);
+  const edited = await saveManagedPost(db, { ...input, featuredImage: '/images/cover.webp' }, saved, []);
+  assert.equal(edited.featuredImage, '/images/cover.webp');
+  const removed = await saveManagedPost(db, { ...input, featuredImage: '', featuredImageAlt: '' }, edited, []);
+  assert.equal(removed.featuredImage, '');
+  for (const patch of [{ featuredImage: 'javascript:bad' }, { featuredImage: '//evil.example/a' }, { featuredImage: 'http://example.com/a' }, { featuredImage: 42 }, { featuredImage: 'x'.repeat(2001) }, { featuredImageAlt: 'x'.repeat(201) }]) {
+    await assertFails(updateDoc(doc(db, 'blogPosts', saved.slug), { ...patch, revision: removed.revision + 1, updatedAt: serverTimestamp() }));
+  }
+});

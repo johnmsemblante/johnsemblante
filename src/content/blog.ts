@@ -7,6 +7,8 @@ export type BlogPost = {
   title: string;
   excerpt: string;
   category: string;
+  featuredImage?: string;
+  featuredImageAlt?: string;
   /** YYYY-MM-DD; required before publication. */
   publishedAt: string;
   status: "draft" | "published";

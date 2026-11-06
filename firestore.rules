@@ -20,11 +20,14 @@ service cloud.firestore {
     function validPost(slug) {
       let p = request.resource.data;
       return p.keys().hasAll(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt'])
-        && p.keys().hasOnly(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt'])
+        && p.keys().hasOnly(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt', 'featuredImage', 'featuredImageAlt'])
         && p.schemaVersion == 2 && p.slug == slug && slug.size() <= 100 && slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
         && text(p.title, 160) && text(p.excerpt, 500) && text(p.content, 60000)
         && labels(p.categories, 1, 10) && p.category == p.categories[0] && labels(p.tags, 0, 20)
         && p.seoTitle is string && p.seoTitle.size() <= 160 && p.seoDescription is string && p.seoDescription.size() <= 500
+        && p.get('featuredImage', '') is string && p.get('featuredImage', '').size() <= 2000
+        && (p.get('featuredImage', '') == '' || p.featuredImage.matches('^https://[^\\s<>]+$') || p.featuredImage.matches('^/[^/\\s<>][^\\s<>]*$'))
+        && p.get('featuredImageAlt', '') is string && p.get('featuredImageAlt', '').size() <= 200
         && p.status in ['draft', 'published', 'scheduled']
         && p.releaseAt is int
         && ((p.status == 'draft' && p.publishedAt == null && p.releaseAt == 0)

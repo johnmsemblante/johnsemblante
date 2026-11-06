@@ -8,6 +8,7 @@ import { firebaseMessage } from "@/lib/firebase-client";
 import { editablePost, effectiveStatus, emptyPost, manilaDateTime, normalizeLabels, postFromData, postMetadata, safeAssetUrl, slugForTitle, validatePost, type ManagedPost, type PostInput } from "@/lib/blog-model";
 import { deleteManagedPost, saveManagedPost } from "@/lib/blog-store";
 import { useAdmin } from "./admin-gate";
+import { BlogFeaturedImage } from "@/components/blog-featured-image";
 import { TokenInput } from "./token-input";
 
 const dateLabel = (value: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(value));
@@ -106,7 +107,7 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (saving.current) return;
-    const next: PostInput = { ...input, slug: saved?.slug ?? slugForTitle(input.title), title: input.title.trim(), excerpt: input.excerpt.trim(), content: input.content.trim(), categories: normalizeLabels(input.categories), tags: normalizeLabels(input.tags), seoTitle: input.seoTitle.trim(), seoDescription: input.seoDescription.trim() };
+    const next: PostInput = { ...input, slug: saved?.slug ?? slugForTitle(input.title), title: input.title.trim(), excerpt: input.excerpt.trim(), content: input.content.trim(), categories: normalizeLabels(input.categories), tags: normalizeLabels(input.tags), featuredImage: input.featuredImage.trim(), featuredImageAlt: input.featuredImageAlt.trim(), seoTitle: input.seoTitle.trim(), seoDescription: input.seoDescription.trim() };
     const problem = validatePost(next);
     if (problem) { setError(problem); return; }
     saving.current = true; setBusy(true); setError(""); setNotice("");
@@ -161,6 +162,9 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
           <label htmlFor="post-title">Title</label><input id="post-title" value={input.title} required maxLength={160} onChange={e => field("title", e.target.value)} />
           <p className="form-note">Automatic slug: <code>{input.slug || "Generated from the title"}</code>. Duplicate titles get a number; saved slugs stay fixed.</p>
           <label htmlFor="post-excerpt">Short introduction</label><textarea id="post-excerpt" value={input.excerpt} rows={3} required maxLength={500} onChange={e => field("excerpt", e.target.value)} />
+          <label htmlFor="post-featured-image">Featured image URL (optional)</label><input id="post-featured-image" value={input.featuredImage} maxLength={2000} aria-describedby="post-image-help" placeholder="https://example.com/photo.webp or /images/photo.webp" onChange={e => field("featuredImage", e.target.value)} />
+          <p id="post-image-help" className="form-note">Use a public HTTPS or site-relative image URL. The blog card uses the site logo when this is empty or the image cannot load.</p>
+          <label htmlFor="post-featured-image-alt">Featured image description (optional)</label><input id="post-featured-image-alt" value={input.featuredImageAlt} maxLength={200} placeholder={input.title || "Describe the image"} onChange={e => field("featuredImageAlt", e.target.value)} />
           <TokenInput key={`categories-${saved?.slug ?? "new"}`} id="post-categories" label="Categories" values={input.categories} maximum={10} onChange={values => field("categories", values)} />
           <TokenInput key={`tags-${saved?.slug ?? "new"}`} id="post-tags" label="Tags" values={input.tags} maximum={20} onChange={values => field("tags", values)} />
           <label htmlFor="post-content">Article</label><textarea ref={textarea} id="post-content" value={input.content} rows={18} required maxLength={60000} aria-describedby="post-format-help" onChange={e => field("content", e.target.value)} />
@@ -175,7 +179,7 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
           {saved && effectiveStatus(saved, clock) === "published" && <Link className="text-link" href={`/blog/?post=${encodeURIComponent(saved.slug)}`} target="_blank" rel="noopener noreferrer">View published post ↗</Link>}
         </fieldset></form>
         {saved && <button type="button" className="delete-article" disabled={busy} onClick={remove}>Delete article</button>}
-        <details className="admin-preview"><summary>Preview article</summary><article><p className="eyebrow">{input.categories.join(" · ")}</p><h2>{input.title || "Untitled article"}</h2><p className="lede">{input.excerpt}</p><BlogArticleContent content={input.content} /><ul className="article-tags" aria-label="Tags">{input.tags.map(tag => <li key={tag}>#{tag}</li>)}</ul></article></details>
+        <details className="admin-preview"><summary>Preview article</summary><article><BlogFeaturedImage src={input.featuredImage} alt={input.featuredImageAlt || input.title} /><p className="eyebrow">{input.categories.join(" · ")}</p><h2>{input.title || "Untitled article"}</h2><p className="lede">{input.excerpt}</p><BlogArticleContent content={input.content} /><ul className="article-tags" aria-label="Tags">{input.tags.map(tag => <li key={tag}>#{tag}</li>)}</ul></article></details>
       </section>
     </div>
   </>;

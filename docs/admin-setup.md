@@ -162,3 +162,11 @@ NEXT_PUBLIC_HIMALAYAS_PROXY_URL=https://johnsemblante-job-feed.john-semblante-po
 Use that value when setting up another computer or CI build; no Cloudflare credentials belong in the website build. Himalayas is the default source, starting with WordPress/Philippines; Jobicy remains selectable. Worker deployment did not add paid bindings or change Firebase billing. Cloudflare CLI authentication stays outside the repository.
 
 Release checks passed: 19 admin/feed/Worker tests, 8 blog tests, 11 Firestore emulator tests, TypeScript and the production build. Live HTTPS checks confirmed a populated Philippines/UTC+8 Himalayas response and rejection of an unapproved browser origin. A Workers-specific redirect-mode issue found during live verification was corrected; upstream redirects remain rejected rather than followed. Signed-in browser interaction/mobile review is still separate from these checks.
+
+### Featured images and label entry
+
+Categories and tags become chips as you type a comma. Pasting a comma-separated list commits every label immediately, including the final label. Duplicates are ignored; invalid or oversized lists stay in the input for correction. Enter, Add and leaving the field also commit a label.
+
+The editor supports optional **Featured image URL** and image description fields, using public HTTPS or site-relative URLs. The preview and article show the image; blog listings use two columns on larger screens and one on mobile. Empty or broken card images show the site logo. Older posts need no migration. This uses external image URLs, with no file uploads or additional paid service.
+
+Deploy both updated Firestore rules and Hosting for this revision: the rules allow the optional featured-image fields while retaining existing post access controls.

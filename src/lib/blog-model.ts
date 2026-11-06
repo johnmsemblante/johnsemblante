@@ -2,10 +2,11 @@ export type PostStatus = "draft" | "published" | "scheduled";
 export type PostInput = {
   slug: string; title: string; excerpt: string; categories: string[]; tags: string[];
   content: string; status: PostStatus; scheduledFor: string; seoTitle: string; seoDescription: string;
+  featuredImage: string; featuredImageAlt: string;
 };
 export type ManagedPost = PostInput & { revision: number; publishedAt: string; schemaVersion: number };
 
-export const emptyPost = (): PostInput => ({ slug: "", title: "", excerpt: "", categories: ["Notes"], tags: [], content: "", status: "draft", scheduledFor: "", seoTitle: "", seoDescription: "" });
+export const emptyPost = (): PostInput => ({ slug: "", title: "", excerpt: "", categories: ["Notes"], tags: [], content: "", status: "draft", scheduledFor: "", seoTitle: "", seoDescription: "", featuredImage: "", featuredImageAlt: "" });
 
 export function slugForTitle(title: string) {
   return title.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90).replace(/-$/, "") || "post";
@@ -38,6 +39,8 @@ export function validatePost(input: PostInput, options: { now?: number; allowDue
     if (!Array.isArray(values) || values.length > maximum || (required && !values.length) || values.some(value => typeof value !== "string" || !value.trim() || value.length > 80) || normalizeLabels(values).length !== values.length) return `${name} must contain ${required ? "1" : "0"} to ${maximum} unique labels, up to 80 characters each.`;
   }
   if (!["draft", "published", "scheduled"].includes(input.status)) return "Choose draft, published or scheduled visibility.";
+  if (typeof input.featuredImage !== "string" || input.featuredImage.length > 2000 || (input.featuredImage !== "" && !safeAssetUrl(input.featuredImage))) return "Featured image must be an HTTPS or site-relative URL, up to 2,000 characters.";
+  if (typeof input.featuredImageAlt !== "string" || input.featuredImageAlt.length > 200) return "Featured image description must be at most 200 characters.";
   if (typeof input.seoTitle !== "string" || input.seoTitle.length > 160 || typeof input.seoDescription !== "string" || input.seoDescription.length > 500) return "SEO title must be at most 160 characters and description at most 500 characters.";
   if (input.status === "scheduled") {
     const instant = scheduleMillis(input.scheduledFor);
@@ -66,13 +69,14 @@ export function postFromData(slug: string, value: Record<string, unknown>): Mana
     categories: legacy ? [value.category as string] : value.categories as string[], tags: legacy ? [] : value.tags as string[],
     status: value.status as PostStatus, scheduledFor: value.status === "scheduled" && publishedAt ? manilaDateTime(new Date(publishedAt)) : "",
     seoTitle: legacy ? "" : value.seoTitle as string, seoDescription: legacy ? "" : value.seoDescription as string,
+    featuredImage: (value.featuredImage ?? "") as string, featuredImageAlt: (value.featuredImageAlt ?? "") as string,
     publishedAt, revision: value.revision as number, schemaVersion: legacy ? 1 : 2,
   };
   if ((post.status === "published" || post.status === "scheduled") && !publishedAt) return null;
   return validatePost(post, { allowDueSchedule: true }) ? null : post;
 }
 export function editablePost(post: ManagedPost): PostInput {
-  return { slug: post.slug, title: post.title, excerpt: post.excerpt, categories: [...post.categories], tags: [...post.tags], content: post.content, status: effectiveStatus(post), scheduledFor: post.scheduledFor, seoTitle: post.seoTitle, seoDescription: post.seoDescription };
+  return { slug: post.slug, title: post.title, excerpt: post.excerpt, categories: [...post.categories], tags: [...post.tags], content: post.content, status: effectiveStatus(post), scheduledFor: post.scheduledFor, seoTitle: post.seoTitle, seoDescription: post.seoDescription, featuredImage: post.featuredImage, featuredImageAlt: post.featuredImageAlt };
 }
 export function effectiveStatus(post: ManagedPost, now = Date.now()): PostStatus {
   return post.status === "scheduled" && Date.parse(post.publishedAt) <= now ? "published" : post.status;

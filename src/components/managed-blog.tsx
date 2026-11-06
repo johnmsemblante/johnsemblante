@@ -8,6 +8,8 @@ import { effectiveStatus, postFromData, type ManagedPost } from "@/lib/blog-mode
 import { readPublicArticle } from "@/lib/public-blog-store";
 import { BlogArticleContent } from "./blog-article-content";
 import { BlogPostMetadata } from "./blog-post-metadata";
+import { BlogCard } from "./blog-card";
+import { BlogFeaturedImage } from "./blog-featured-image";
 import { PageIntro } from "./ui";
 
 const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "long", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(date));
@@ -95,12 +97,12 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
     <Link className="text-link" href="/blog/">← All posts</Link>
     {loading && <p role="status">Loading article…</p>}
     {error && <><h1>Article unavailable</h1><p role="status">{error}</p></>}
-    {article && <><BlogPostMetadata post={article} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header><BlogArticleContent content={article.content} /></>}
+    {article && <><BlogPostMetadata post={article} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
   </article>;
   return <>
     {hasStaticPosts || !firebaseConfigured ? children : <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>}
     {(loading || error || posts.length > 0 || (firebaseConfigured && !hasStaticPosts)) && <section className="section" aria-label="Latest blog articles" aria-busy={loading}>
-      <div className="blog-list">{posts.map(post => <article className="blog-preview" key={post.slug}><Labels post={post} /><div className="blog-meta"><time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time></div><h2><a href={`/blog/?post=${encodeURIComponent(post.slug)}`}>{post.title} →</a></h2><p>{post.excerpt}</p><a className="text-link" href={`/blog/?post=${encodeURIComponent(post.slug)}`}>Read article →</a></article>)}</div>
+      <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt}><Labels post={post} /><div className="blog-meta"><time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time></div></BlogCard>)}</div>
       {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}
       {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2>No articles published yet.</h2><p>Check back for new notes from the work.</p></div>}
       {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}
