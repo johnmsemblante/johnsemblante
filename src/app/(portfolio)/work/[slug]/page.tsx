@@ -13,7 +13,7 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const project = projects.find(project => project.slug === slug);
-  return project ? pageMetadata(project.seo?.title || project.title, project.seo?.description || project.summary, `/work/${project.slug}/`) : {};
+  return project ? pageMetadata(project.seo?.title || project.title, project.seo?.description || project.summary, `/work/${project.slug}/`, project.image ? { url: project.image.src, alt: project.image.alt } : undefined) : {};
 }
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;

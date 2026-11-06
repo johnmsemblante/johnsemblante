@@ -15,6 +15,9 @@ import { PageIntro } from "./ui";
 const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "long", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(date));
 type Pages = { published: QueryDocumentSnapshot | null; scheduled: QueryDocumentSnapshot | null; morePublished: boolean; moreScheduled: boolean };
 const firstPages = (): Pages => ({ published: null, scheduled: null, morePublished: true, moreScheduled: true });
+function BlogIntro() {
+  return <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>;
+}
 
 function Categories({ post }: { post: ManagedPost }) {
   return <ul className="article-categories" aria-label="Categories">{post.categories.map(category => <li key={category}>{category}</li>)}</ul>;
@@ -23,8 +26,12 @@ function Tags({ post }: { post: ManagedPost }) {
   return post.tags.length > 0 ? <ul className="article-tags tags" aria-label="Tags">{post.tags.map(tag => <li key={tag}>{tag}</li>)}</ul> : null;
 }
 function Labels({ post }: { post: ManagedPost }) { return <><Categories post={post} /><Tags post={post} /></>; }
-export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode; hasStaticPosts: boolean }) {
-  const [posts, setPosts] = useState<ManagedPost[]>([]);
+function BlogCards({ posts, staticSlugs }: { posts: ManagedPost[]; staticSlugs: string[] }) {
+  return <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={staticSlugs.includes(post.slug) ? `/blog/${post.slug}/` : `/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time>} tags={<Tags post={post} />}><Categories post={post} /></BlogCard>)}</div>;
+}
+export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { children: ReactNode; hasStaticPosts: boolean; initialPosts?: ManagedPost[] }) {
+  const staticSlugs = initialPosts.map(post => post.slug);
+  const [posts, setPosts] = useState<ManagedPost[]>(initialPosts);
   const [article, setArticle] = useState<ManagedPost | null>(null);
   const [detail, setDetail] = useState(false);
   const [routeReady, setRouteReady] = useState(false);
@@ -96,17 +103,17 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
     // Initial page selection is fixed by the URL; links navigate to a new page.
   }, []);
 
-  if (firebaseConfigured && !routeReady) return <section className="section" aria-label="Blog" aria-busy="true"><p role="status">Loading blog…</p></section>;
+  if (firebaseConfigured && !routeReady) return <>{hasStaticPosts ? children : <BlogIntro />}<section className="section" aria-label="Blog" aria-busy="true"><BlogCards posts={initialPosts} staticSlugs={staticSlugs} /><p role="status">Loading blog…</p><noscript><p>JavaScript is needed to load the latest articles.</p></noscript></section></>;
   if (detail) return <article className="blog-article">
     <Link className="text-link" href="/blog/">← All posts</Link>
     {loading && <p role="status">Loading article…</p>}
     {error && <><h1>Article unavailable</h1><p role="status">{error}</p></>}
-    {article && <><BlogPostMetadata post={article} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
+    {article && <><BlogPostMetadata post={article} canonicalPath={staticSlugs.includes(article.slug) ? `/blog/${article.slug}/` : undefined} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
   </article>;
   return <>
-    {hasStaticPosts || !firebaseConfigured ? children : <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>}
+    {hasStaticPosts || (!firebaseConfigured && !initialPosts.length) ? children : <BlogIntro />}
     {(loading || error || posts.length > 0 || (firebaseConfigured && !hasStaticPosts)) && <section className="section" aria-label="Latest blog articles" aria-busy={loading}>
-      <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time>} tags={<Tags post={post} />}><Categories post={post} /></BlogCard>)}</div>
+      <BlogCards posts={posts} staticSlugs={staticSlugs} />
       {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}
       {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2>No articles published yet.</h2><p>Check back for new notes from the work.</p></div>}
       {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}

@@ -21,3 +21,5 @@ yarn-error.log*
 .vercel/
 .wrangler/
 next-env.d.ts
+
+.generated/

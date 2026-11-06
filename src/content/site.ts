@@ -3,6 +3,7 @@ import type { IndustrySlug } from "./industries";
 export const site = {
   name: "John Semblante",
   url: "https://johnmsemblanteapp.web.app",
+  socialImage: "/images/seo/john-semblante-social.png",
   description: "Senior WordPress and front-end developer in Cebu. Custom websites, WooCommerce development, and website fixes. Discuss your project with John Semblante.",
   // Public email link. Change delivery recipients separately in the Formspree dashboard.
   email: "johnmsemblante@gmail.com",

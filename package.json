@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/next/dist/bin/next dev --webpack",
-    "build": "node node_modules/next/dist/bin/next build --webpack",
+    "build": "node scripts/sync-blog-snapshot.cjs && node node_modules/next/dist/bin/next build --webpack",
+    "test:seo": "node --test tests/seo.test.cjs",
+    "audit:seo": "node scripts/check-seo.mjs",
+    "sync:blog": "node scripts/sync-blog-snapshot.cjs",
     "preview": "node scripts/preview.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
     "test:blog": "node --test tests/blog-model.test.cjs tests/blog-loading.test.cjs tests/blog-editor.test.cjs tests/article-formatting.test.cjs tests/blog-layout.test.cjs",

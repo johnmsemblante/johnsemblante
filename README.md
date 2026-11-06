@@ -10,6 +10,14 @@ A client-focused portfolio for John Semblante's WordPress and front-end developm
 
 The website is live and search indexing is enabled. `johnsemblante.com` is the intended future custom domain; the current canonical URL is the Firebase URL above.
 
+## SEO and publishing
+
+See the [SEO audit and editing guide](docs/seo.md) for findings, meta title/description and social image settings, canonical URLs, article formatting, sitemap/indexing rules, and free Search Console setup.
+
+Builds now export published dashboard articles to clean `/blog/slug/` pages with HTML and metadata. The instant `/blog/?post=slug` view remains available. **Rebuild and deploy after publishing, editing, unpublishing or deleting:** previously exported article copies stay public until redeployment. No paid SEO service or Firebase billing upgrade is required.
+
+Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
+
 ## 1. Quick start
 
 Run commands from the `johnsemblante` checkout on the computer you are using. This machine uses the path below; the other device uses `D:\Personal\Sites\johnsemblante`.
@@ -52,7 +60,8 @@ Use `npm ci` to install the versions in `package-lock.json`. No `.env` file is r
 | `npm ci` | Install the locked dependencies on a fresh checkout or after lockfile changes. |
 | `npm run dev` | Start development at port 3000, with source updates. |
 | `npm run typecheck` | Check TypeScript without publishing anything. |
-| `npm run build` | Compile, check TypeScript, and export the production site to `out/`. |
+| `npm run build` | Fetch the public blog snapshot, compile, check TypeScript, and export the production site to `out/`. |
+| `npm run audit:seo` | Check metadata, canonicals, headings, images, sitemap and private-page indexing in the current export. |
 | `npm run preview` | Serve the existing `out/` build at http://127.0.0.1:3100. |
 | `git diff --check` | Check pending changes for whitespace errors. |
 

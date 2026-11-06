@@ -6,7 +6,7 @@ import { ProjectExplorer } from "@/components/project-explorer";
 import { BrowserIllustration } from "@/components/browser-illustration";
 import { Workflow } from "@/components/workflow";
 import { pageMetadata } from "@/lib/metadata";
-export const metadata = pageMetadata("Work by Industry | WordPress & Front-end Portfolio", "Explore John Semblante's WordPress and front-end portfolio by industry, including healthcare, professional services and independent ventures.", "/work/");
+export const metadata = pageMetadata("WordPress & Front-end Portfolio", "Explore John Semblante's WordPress and front-end portfolio by industry, including healthcare, professional services and independent ventures.", "/work/");
 export default function Work() {
   const featured = projects[0];
   const heroProjects = ["roar-fitness", "perth-cosmetic-surgery"].flatMap(slug => {

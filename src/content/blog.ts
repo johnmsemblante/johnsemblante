@@ -9,6 +9,8 @@ export type BlogPost = {
   category: string;
   featuredImage?: string;
   featuredImageAlt?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   /** YYYY-MM-DD; required before publication. */
   publishedAt: string;
   status: "draft" | "published";
