@@ -14,6 +14,7 @@ import { BlogEditorDrawer } from "./blog-editor-drawer";
 import { TokenInput } from "./token-input";
 import { ArticleShareLink } from "@/components/article-share-link";
 import { site } from "@/content/site";
+import { requestBlogRefresh } from "@/lib/blog-refresh";
 
 const dateLabel = (value: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(value));
 
@@ -123,6 +124,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
       const fields = editablePost(updated);
       setInput(fields); setSaved(updated); setBaseline(JSON.stringify(fields));
       setPosts(values => [updated, ...values.filter(item => item.slug !== updated.slug)]);
+      requestBlogRefresh();
       setNotice(updated.status === "scheduled" ? `Scheduled for ${dateLabel(updated.publishedAt)} (Cebu/Manila).` : updated.status === "published" ? "Post published. It is now available on the public blog." : "Draft saved in Firestore. Rebuild and redeploy to remove any previously exported public copy.");
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
@@ -134,7 +136,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
     try {
       await deleteManagedPost(db, saved);
       if (!mounted.current) return;
-      setPosts(values => values.filter(post => post.slug !== saved.slug)); reset(); setEditorOpen(false); setNotice("Article deleted from Firestore. Rebuild and redeploy to remove any previously exported public page.");
+      setPosts(values => values.filter(post => post.slug !== saved.slug)); requestBlogRefresh(); reset(); setEditorOpen(false); setNotice("Article deleted from Firestore. Rebuild and redeploy to remove any previously exported public page.");
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
   }
@@ -170,7 +172,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
         <p className="form-note">{dirty ? "You have unsaved changes." : saved ? "All changes saved." : "Start writing below."}</p>
         {error && <p role="alert" className="form-error">{error}</p>}
         <p role="status" className="admin-notice">{busy ? "Working?" : notice}</p>
-        <p className="form-note">SEO article pages are created during deployment. After publishing, editing, scheduling, unpublishing or deleting, rebuild and redeploy to update those pages and the sitemap. Previously deployed content stays public until the next deployment. The instant view uses the latest database version.</p>
+        <p className="form-note">Readers automatically check for saved public edits on article pages. Saving also refreshes open blog tabs in this browser. Rebuild and deploy to update the initial article HTML, search/social previews and sitemap. Previously exported HTML stays public until that deployment, even after unpublishing or deleting.</p>
         <form onSubmit={save} aria-busy={busy}><fieldset disabled={busy}>
           <label htmlFor="post-title">Title</label><input id="post-title" value={input.title} required maxLength={160} onChange={e => field("title", e.target.value)} />
           <p className="form-note">Automatic slug: <code>{input.slug || "Generated from the title"}</code>. Duplicate titles get a number; saved slugs stay fixed.</p>

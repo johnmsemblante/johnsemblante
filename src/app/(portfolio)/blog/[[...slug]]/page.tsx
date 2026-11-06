@@ -6,7 +6,7 @@ import { publishedPosts, formatPostDate } from "@/content/blog";
 import { PageIntro, Arrow } from "@/components/ui";
 import { buildBlogPosts } from "@/lib/build-blog";
 import { postMetadata } from "@/lib/blog-model";
-import { PublishedBlogArticle } from "@/components/published-blog-article";
+import { LivePublishedBlogArticle } from "@/components/live-published-blog-article";
 import { articleSchema, jsonLd } from "@/lib/seo";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
@@ -40,7 +40,7 @@ export default async function Blog({ params }: Props) {
     <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/${post.slug}/`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>}><ul className="article-categories" aria-label="Categories"><li>{post.category}</li></ul></BlogCard>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first article is in progress.</h2><p>In the meantime, explore my projects or get in touch about a website you want to build or improve.</p></div>}</section>
   </ManagedBlog>;
   const managedPost = managed.find(post => slug.length === 1 && post.slug === slug[0]);
-  if (managedPost) return <PublishedBlogArticle post={managedPost} />;
+  if (managedPost) return <LivePublishedBlogArticle key={managedPost.slug} initialPost={managedPost} />;
   const post = posts.find(post => slug.length === 1 && post.slug === slug[0]);
   if (!post) notFound();
   return <article className="blog-article">

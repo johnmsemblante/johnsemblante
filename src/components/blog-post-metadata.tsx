@@ -5,7 +5,7 @@ import { postMetadata, type ManagedPost } from "@/lib/blog-model";
 import { site } from "@/content/site";
 import { articleSchema } from "@/lib/seo";
 
-export function BlogPostMetadata({ post, canonicalPath }: { post: ManagedPost; canonicalPath?: string }) {
+export function BlogPostMetadata({ post, canonicalPath, includeStructuredData = true }: { post: ManagedPost; canonicalPath?: string; includeStructuredData?: boolean }) {
   useEffect(() => {
     const metadata = postMetadata(post);
     const previousTitle = document.title;
@@ -37,8 +37,8 @@ export function BlogPostMetadata({ post, canonicalPath }: { post: ManagedPost; c
     const structured = document.createElement("script");
     structured.type = "application/ld+json";
     structured.textContent = JSON.stringify(articleSchema({ title: post.title, description: metadata.description, image: imageUrl, publishedAt: post.publishedAt, tags: post.tags, categories: post.categories, url: canonicalUrl }));
-    document.head.appendChild(structured);
+    if (includeStructuredData) document.head.appendChild(structured);
     return () => { document.title = previousTitle; cleanup.forEach(fn => fn()); structured.remove(); };
-  }, [post, canonicalPath]);
+  }, [post, canonicalPath, includeStructuredData]);
   return null;
 }

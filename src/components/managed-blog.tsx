@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { collection, getDocs, limit, orderBy, query, startAfter, where, type QueryDocumentSnapshot } from "firebase/firestore";
+import { collection, getDocsFromServer, limit, orderBy, query, startAfter, where, type QueryDocumentSnapshot } from "firebase/firestore";
 import { firebaseConfigured, getFirebase } from "@/lib/firebase-client";
 import { effectiveStatus, postFromData, type ManagedPost } from "@/lib/blog-model";
 import { readPublicArticle } from "@/lib/public-blog-store";
+import { articleRefresher, subscribeBlogRefresh } from "@/lib/blog-refresh";
 import { BlogArticleContent } from "./blog-article-content";
 import { BlogPostMetadata } from "./blog-post-metadata";
 import { BlogCard } from "./blog-card";
@@ -41,11 +42,12 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
   const [error, setError] = useState("");
   const [pages, setPages] = useState<Pages>(firstPages);
   const busy = useRef(false);
+  const listRefreshPending = useRef(false);
   const alive = useRef(true);
   const requested = useRef({ published: 20, scheduled: 20 });
 
   async function loadList(reset: boolean) {
-    if (busy.current) return;
+    if (busy.current) { if (reset) listRefreshPending.current = true; return; }
     busy.current = true;
     if (!reset) setLoading(true);
     try {
@@ -57,7 +59,7 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
       const snapshots = await Promise.all((["published", "scheduled"] as const).map(status => {
         if (!(status === "published" ? state.morePublished : state.moreScheduled)) return Promise.resolve(null);
         const clauses = [where("status", "==", status), ...(status === "scheduled" ? [where("releaseAt", ">=", 0), where("releaseAt", "<=", cutoff)] : []), orderBy(status === "scheduled" ? "releaseAt" : "publishedAt", "desc"), ...(state[status] ? [startAfter(state[status])] : []), limit(sizes[status])];
-        return getDocs(query(source, ...clauses));
+        return getDocsFromServer(query(source, ...clauses));
       }));
       if (!alive.current) return;
       const found = snapshots.flatMap(snapshot => snapshot?.docs.flatMap(item => { const post = postFromData(item.id, item.data()); return post && effectiveStatus(post) === "published" ? [post] : []; }) ?? []);
@@ -66,7 +68,11 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
       if (!reset) { requested.current.published += snapshots[0]?.size ?? 0; requested.current.scheduled += snapshots[1]?.size ?? 0; }
       setError("");
     } catch { if (alive.current) setError("Articles could not be loaded. Check your connection and device date/time, then refresh."); }
-    finally { busy.current = false; if (alive.current) setLoading(false); }
+    finally {
+      busy.current = false;
+      if (alive.current) setLoading(false);
+      if (listRefreshPending.current && alive.current) { listRefreshPending.current = false; void loadList(true); }
+    }
   }
 
   useEffect(() => {
@@ -79,29 +85,27 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
       if (slug !== null) setError("This article is currently unavailable.");
       return () => { alive.current = false; };
     }
-    async function loadArticle() {
-      if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 100) { setLoading(false); setError("This article is unavailable."); return; }
-      try {
-        const { db } = getFirebase();
-        const post = await readPublicArticle(db, slug);
-        if (disposed) return;
-        if (post && effectiveStatus(post) === "published") { setArticle(post); setError(""); }
-        else { setArticle(null); setError("This article is unavailable. It may be unpublished or scheduled for later."); }
-      } catch { if (!disposed) { setArticle(null); setError("This article is unavailable. It may be unpublished, scheduled for later, or temporarily unreachable."); } }
-      finally { if (!disposed) setLoading(false); }
-    }
+    const articleController = articleRefresher(async () => {
+      if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 100) return null;
+      return readPublicArticle(getFirebase().db, slug);
+    }, post => {
+      if (disposed) return;
+      setArticle(post); setLoading(false);
+      setError(post ? "" : "This article is unavailable. It may be unpublished or scheduled for later.");
+    }, () => { if (!disposed) { setLoading(false); setError("This article is temporarily unreachable. Check your connection and try again."); } });
     const refresh = () => {
       if (document.visibilityState === "hidden") return;
-      if (slug !== null) void loadArticle();
+      if (slug !== null) void articleController.refresh();
       else void loadList(true);
     };
     refresh();
+    const unsubscribeRefresh = subscribeBlogRefresh(refresh);
     // Time-based rules do not push a change event when the clock passes a schedule.
     // Refresh visible pages to discover newly released posts, even with the editor closed.
     const timer = window.setInterval(refresh, 60000);
     window.addEventListener("focus", refresh);
     document.addEventListener("visibilitychange", refresh);
-    return () => { disposed = true; alive.current = false; window.clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+    return () => { disposed = true; alive.current = false; articleController.dispose(); unsubscribeRefresh(); window.clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
     // Initial page selection is fixed by the URL; links navigate to a new page.
   }, []);
 
@@ -109,7 +113,7 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
   if (detail) return <article className="blog-article">
     <Link className="text-link" href="/blog/">← All posts</Link>
     {loading && <p role="status">Loading article…</p>}
-    {error && <><h1>Article unavailable</h1><p role="status">{error}</p></>}
+    {error && <>{!article && <h1>Article unavailable</h1>}<p role="status">{error}</p></>}
     {article && <><BlogPostMetadata post={article} canonicalPath={staticSlugs.includes(article.slug) ? `/blog/${article.slug}/` : undefined} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
     {article && staticSlugs.includes(article.slug) && <footer><ArticleShareLink url={`${site.url}/blog/${article.slug}/`} /><p className="form-note">Use this article link for its own social preview title and image.</p></footer>}
   </article>;

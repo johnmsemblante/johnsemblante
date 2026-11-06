@@ -188,3 +188,13 @@ Public blog cards now use full-width horizontal rows, ordered as category, title
 ### SEO export publishing workflow
 
 See [SEO setup and editing](seo.md) for the current workflow. Production builds now export published managed articles to `/blog/slug/` with initial HTML, SEO metadata and sitemap entries. The instant `/blog/?post=slug` view remains available. **Older notes about managed articles having no static pages are superseded by this workflow.** Rebuild and deploy after publishing, editing, unpublishing or deleting: an exported public article remains publicly accessible until its next deployment removes or changes it. Future schedules are excluded from the snapshot until released, and then require a new build for their clean page. The build reads only public posts with anonymous queries, not admin credentials, and does not publish drafts.
+
+### Live article updates and dashboard refresh
+
+Clean `/blog/slug/` pages retain their deployed article HTML for SEO, then anonymously check Firestore for the latest published revision when opened. Visible pages also check on focus, visibility changes and every 60 seconds. A successful save/delete notifies other public blog tabs in the same browser; the listing explicitly reads from the server. Draft, deleted and future-scheduled articles hide their old rendered copy after a successful public availability check. Network failures show a warning while keeping the last available copy.
+
+The Overview at `/adminauth/` includes **Refresh live blog content**. It requests fresh reads in open public blog tabs in that browser. It stores only a small refresh signal, does not clear sign-in data, bookmarks or job-feed preferences, and does not reload an unsaved editor. When browser storage is blocked, it explains that other tabs could not be notified. Other devices refresh on load/focus or their next visible interval.
+
+This control is not a Firebase CDN purge or a deployment trigger. Search crawlers without JavaScript, social previews and the initial HTML continue to use the deployed snapshot. Rebuild and redeploy for those copies, newly created clean article URLs, sitemap updates and removal of previously published HTML. Clearing browser storage cannot replace that deployment. Live refresh uses public reads under the existing rules; no billing upgrade or admin credentials are needed, and normal Firestore read quotas apply.
+
+Firebase Hosting also revalidates `/blog/**` HTML using `Cache-Control: public,max-age=0,must-revalidate`. Fingerprinted Next.js assets keep their existing immutable cache policy. This header prevents a browser from treating article HTML as fresh for an hour; it still cannot generate new HTML from Firestore without a deployment.
