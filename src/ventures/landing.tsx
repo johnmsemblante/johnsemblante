@@ -3,9 +3,11 @@ import { HeaderNavigation } from "@/components/header-navigation";
 import { ZoomImage } from "@/components/zoom-image";
 import Link from "next/link";
 import type { Venture } from "./types";
+import { PhotographyLanding } from "./photography-landing";
 
 const peso = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 });
 export function VentureLanding({ venture: v }: { venture: Venture }) {
+  if (v.theme === "photography") return <PhotographyLanding venture={v} />;
   const offeringGallery = (v.offerings ?? []).flatMap(item => item.image ? [{ ...item.image, caption: `${item.title}${item.price !== undefined ? ` · ${peso.format(item.price)}` : ""} — ${item.description}` }] : []);
   const vehicleGallery = (v.vehicles ?? []).map(vehicle => ({ ...vehicle.image, caption: `${vehicle.name} — Representative vehicle. Confirm model, seating, and availability when you inquire.` }));
   const coffee = v.theme === "coffee";

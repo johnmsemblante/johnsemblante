@@ -1,6 +1,6 @@
 # John Semblante — Portfolio & Ventures
 
-A portfolio for John Clark Semblante, a WordPress/Full Stack Developer based in Cebu, Philippines, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista and Golden Travel and Tours, and a blog for development notes.
+A portfolio for John Clark Semblante, a WordPress/Full Stack Developer based in Cebu, Philippines, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
 - **Live website:** https://johnmsemblanteapp.web.app/
 - **Repository:** https://github.com/johnmsemblante/johnsemblante
@@ -85,6 +85,7 @@ Portfolio and venture content lives in TypeScript files. Managed blog posts can 
 | Blog posts and drafts | `src/content/blog.ts` |
 | Lazy Barista menu, prices, images, ordering instructions and contacts | `src/ventures/lazy-barista/content.ts` |
 | Golden Travel services, brand information and contacts | `src/ventures/golden-travel-and-tours/content.ts` |
+| Lapse Hub photography story and Flickr gallery links | `src/ventures/lapse-hub/content.ts`; see [Lapse Hub guide](docs/lapse-hub.md) |
 | Venture registration and shared data shape | `src/ventures/registry.ts`, `src/ventures/types.ts` |
 | Personal photos and project screenshots | `public/images/profile/`, `public/images/projects/` |
 | Business logos, artwork and drink photos | `public/ventures/` |

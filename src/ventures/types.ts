@@ -1,9 +1,11 @@
 export type VentureImage = { src: string; alt: string; width: number; height: number };
+export type VentureGalleryImage = VentureImage & { title: string; thumbnailSrc: string; sourceUrl: string; caption?: string };
 export type Venture = {
   slug: string; name: string; category: string; description: string;
-  theme: "coffee" | "travel"; title: string; tagline: string; canonicalBase?: string;
+  theme: "coffee" | "travel" | "photography"; title: string; tagline: string; canonicalBase?: string;
   logo?: VentureImage; hero?: VentureImage; storyImage?: VentureImage;
   story?: string;
+  gallery?: VentureGalleryImage[];
   offerings?: { title: string; description: string; price?: number; image?: VentureImage }[];
   offeringsNote?: string;
   artwork?: VentureImage[];

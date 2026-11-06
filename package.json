@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "node node_modules/next/dist/bin/next dev --webpack",
     "build": "node scripts/sync-blog-snapshot.cjs && node node_modules/next/dist/bin/next build --webpack",
+    "test:ventures": "node --test tests/ventures.test.cjs",
     "test:seo": "node --test tests/seo.test.cjs",
     "audit:seo": "node scripts/check-seo.mjs",
     "sync:blog": "node scripts/sync-blog-snapshot.cjs",

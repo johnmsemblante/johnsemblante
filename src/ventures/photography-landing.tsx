@@ -1,0 +1,19 @@
+import Link from "next/link";
+import { HeaderNavigation } from "@/components/header-navigation";
+import { ZoomImage } from "@/components/zoom-image";
+import type { Venture } from "./types";
+
+export function PhotographyLanding({ venture: v }: { venture: Venture }) {
+  const photos = v.gallery ?? [];
+  const hero = photos.find(photo => photo.src === v.hero?.src) ?? photos[0];
+  return <div className="venture-site photography">
+    <a className="skip-link" href="#main">Skip to content</a>
+    <header className="venture-header"><Link href={`/ventures/${v.slug}/`} className="venture-name">{v.logo && <img className="venture-header-logo" src={v.logo.src} alt="" width={v.logo.width} height={v.logo.height} />}{v.name}</Link><HeaderNavigation label={`${v.name} navigation`} links={[{ label: "Gallery", href: "#gallery" }, { label: "The story", href: "#story" }, { label: "Find Lapse Hub", href: "#connect" }, { label: "All ventures ↗", href: "/ventures/" }]} /></header>
+    <main id="main" tabIndex={-1} className="venture-main">
+      <section className="photography-intro"><div>{v.logo && <img className="photography-brand-logo" src={v.logo.src} alt={v.logo.alt} width={v.logo.width} height={v.logo.height} />}<p className="eyebrow">{v.tagline}</p><h1>{v.name}</h1><p className="venture-tagline">{v.title}</p><p className="lede">{v.description}</p><div className="actions"><a className="button" href="#gallery">Explore the gallery ↓</a><a className="button secondary" href={v.contact?.url}>Visit Lapse Hub on Facebook ↗</a></div></div>{hero && <figure className="photography-hero"><ZoomImage {...hero} thumbnailSrc={hero.src} gallery={photos} loading="eager" /><figcaption>{hero.title} · <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer">View album on Flickr ↗</a></figcaption></figure>}</section>
+      <section id="story" tabIndex={-1} className="venture-section photography-story"><p className="eyebrow">Behind the lens</p><h2>A hobby that became commissioned work.</h2><p className="lede">{v.story}</p><Link className="text-link" href="/about/">Meet John Clark Semblante ↗</Link></section>
+      <section id="gallery" tabIndex={-1} className="venture-section"><div className="photography-gallery-heading"><div><p className="eyebrow">Selected photographs</p><h2>Moments from the archive.</h2></div><a className="text-link" href="https://www.flickr.com/photos/johnmsemblante/albums/" target="_blank" rel="noopener noreferrer">Browse all Flickr albums ↗</a></div><p className="body-copy">A selection of album-cover photographs from John Clark Semblante’s public Flickr archive. Open a photo for a larger view, or follow its album link to see the rest of the shoot.</p><div className="photography-gallery">{photos.map(photo => <figure key={photo.src}><ZoomImage {...photo} gallery={photos} loading="lazy" /><figcaption><h3>{photo.title}</h3><p>Photography by John Clark Semblante</p><a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer">View album on Flickr ↗</a></figcaption></figure>)}</div><p className="venture-detail-note">Photographs are displayed from Flickr, with links to their original albums. If an image is unavailable, you can still open its album directly.</p></section>
+      <section id="connect" tabIndex={-1} className="venture-section photography-connect"><p className="eyebrow">Find Lapse Hub</p><h2>More stories, through photographs.</h2><p>Explore the photography pages and albums, or contact John about Lapse Hub.</p><div className="venture-contact-links">{v.socials?.map(social => <a key={social.url} href={social.url} target="_blank" rel="noopener noreferrer">{social.label} ↗</a>)}<Link href="/contact/">Contact John ↗</Link></div></section>
+    </main><footer className="venture-footer">{v.name} · Photography by John Clark Semblante<Link href="/">Portfolio & ventures ↗</Link></footer>
+  </div>;
+}

@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-type GalleryImage = { src: string; alt: string; caption?: string };
+type GalleryImage = { src: string; alt: string; caption?: string; thumbnailSrc?: string; sourceUrl?: string };
 type Props = GalleryImage & {
   width: number; height: number;
   className?: string; loading?: "lazy" | "eager";
@@ -11,12 +11,13 @@ type Props = GalleryImage & {
 };
 
 /** Native dialog contains focus and restores it to the opening thumbnail. */
-export function ZoomImage({ className, gallery, caption, ...image }: Props) {
-  const images = gallery?.some(item => item.src === image.src) ? gallery : [{ ...image, caption }];
+export function ZoomImage({ className, gallery, caption, thumbnailSrc, sourceUrl, ...image }: Props) {
+  const images = gallery?.some(item => item.src === image.src) ? gallery : [{ ...image, caption, thumbnailSrc, sourceUrl }];
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [thumbnailFailed, setThumbnailFailed] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const strip = useRef<HTMLDivElement>(null);
@@ -54,7 +55,7 @@ export function ZoomImage({ className, gallery, caption, ...image }: Props) {
 
   return <>
     <button ref={trigger} type="button" className={`zoom-image-trigger ${className ?? ""}`} aria-label={`Enlarge image: ${image.alt}`} aria-haspopup="dialog" onClick={() => { select(images.findIndex(item => item.src === image.src)); setOpen(true); }}>
-      <img {...image} />
+      {thumbnailFailed ? <span className="zoom-image-unavailable">Image unavailable</span> : <img {...image} src={thumbnailSrc ?? image.src} onError={() => setThumbnailFailed(true)} />}
       <span className="zoom-image-hint" aria-hidden="true">Enlarge ↗</span>
     </button>
     {open && createPortal(<dialog ref={dialog} className="image-viewer" aria-label="Image gallery" aria-describedby={title} onCancel={event => { event.preventDefault(); close(); }} onClose={() => setOpen(false)} onClick={event => { if (event.target === event.currentTarget) close(); }} onKeyDown={event => {
@@ -75,9 +76,9 @@ export function ZoomImage({ className, gallery, caption, ...image }: Props) {
         </div>
         {grouped && <button type="button" className="image-viewer-arrow next" aria-label="Next image" onClick={() => select(index + 1)}>›</button>}
       </div>
-      <div className="image-viewer-caption" aria-live="polite" aria-atomic="true"><p id={title}>{current.caption ?? current.alt}</p></div>
+      <div className="image-viewer-caption" aria-live="polite" aria-atomic="true"><p id={title}>{current.caption ?? current.alt}</p>{current.sourceUrl && <a href={current.sourceUrl} target="_blank" rel="noopener noreferrer">View original album on Flickr ↗</a>}</div>
       {grouped && <div ref={strip} className="image-viewer-thumbnails" role="group" aria-label="Gallery thumbnails">
-        {images.map((item, itemIndex) => <button key={item.src} type="button" aria-label={`View image ${itemIndex + 1}: ${item.caption ?? item.alt}`} aria-current={itemIndex === index ? "true" : undefined} onClick={() => select(itemIndex)}><img src={item.src} alt="" /></button>)}
+        {images.map((item, itemIndex) => <button key={item.src} type="button" aria-label={`View image ${itemIndex + 1}: ${item.caption ?? item.alt}`} aria-current={itemIndex === index ? "true" : undefined} onClick={() => select(itemIndex)}><img src={item.thumbnailSrc ?? item.src} alt="" /></button>)}
       </div>}
       <p className="image-viewer-help">{zoom ? "Scroll to explore · Fit to screen to resume keyboard navigation" : grouped ? "Use arrow keys or select a thumbnail" : "Zoom in to explore the details"} · Esc to close</p>
     </dialog>, document.body)}
