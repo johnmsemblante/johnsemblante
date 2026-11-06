@@ -167,7 +167,7 @@ Release checks passed: 19 admin/feed/Worker tests, 8 blog tests, 11 Firestore em
 
 Categories and tags become chips as you type a comma. Pasting a comma-separated list commits every label immediately, including the final label. Duplicates are ignored; invalid or oversized lists stay in the input for correction. Enter, Add and leaving the field also commit a label.
 
-The editor supports optional **Featured image URL** and image description fields, using public HTTPS or site-relative URLs. The preview and article show the image; blog listings use two columns on larger screens and one on mobile. Empty or broken card images show the site logo. Older posts need no migration. This uses external image URLs, with no file uploads or additional paid service.
+The editor supports optional **Featured image URL** and image description fields, using public HTTPS or site-relative URLs. The preview and article show the image; blog listings use full-width rows with the image on the left and article details on the right, stacking on mobile. Empty or broken card images show the site logo. Older posts need no migration. This uses external image URLs, with no file uploads or additional paid service.
 
 Deploy both updated Firestore rules and Hosting for this revision: the rules allow the optional featured-image fields while retaining existing post access controls.
 
@@ -178,3 +178,9 @@ Label-heavy posts could exceed Firestore's 1,000-expression rule evaluation limi
 ### Article formatting toolbar
 
 The Article field now has Write and Preview modes, plus H2/H3 headings, bold, italic, inline code, bullets, numbered lists, quotes and links. Select text and use a toolbar button; Ctrl/Cmd+B and Ctrl/Cmd+I also work. Preview uses the same renderer as public articles. This is a Markdown editor with a formatted preview, rather than editing HTML directly. Existing paragraphs, headings, lists and image/file URLs remain supported. Formatting is stored in the existing content field; no paid editor service, extra dependency, schema migration or Firestore-rule update is needed. Raw HTML stays escaped.
+
+### Post library and editor panel
+
+Blog Management opens on a full-width list of saved articles with introductions, categories, visibility and publication dates. New post opens a blank editor in a panel that slides in from the right; selecting an article first loads its saved fields. The panel fills smaller screens. Close, Escape and clicking the backdrop all respect unsaved-change confirmation, and closing restores focus to the invoking control. Saving keeps the panel open and updates the list; deleting returns to the list. Closing is disabled during saves or deletion.
+
+Public blog cards now use full-width horizontal rows, ordered as category, title, date, introduction, compact Work-style tags, and Read article. Images remain on the left with the existing logo fallback. On mobile the image sits above the details.

@@ -10,6 +10,7 @@ import { deleteManagedPost, saveManagedPost } from "@/lib/blog-store";
 import { useAdmin } from "./admin-gate";
 import { BlogFeaturedImage } from "@/components/blog-featured-image";
 import { ArticleEditor } from "./article-editor";
+import { BlogEditorDrawer } from "./blog-editor-drawer";
 import { TokenInput } from "./token-input";
 
 const dateLabel = (value: string) => new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Manila" }).format(new Date(value));
@@ -20,6 +21,7 @@ export function AdminBlog({ reservedSlugs = [] }: { reservedSlugs?: string[] }) 
 
 function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
   const { db } = useAdmin();
+  const [editorOpen, setEditorOpen] = useState(false);
   const [posts, setPosts] = useState<ManagedPost[]>([]);
   const [input, setInput] = useState<PostInput>(emptyPost);
   const [saved, setSaved] = useState<ManagedPost | null>(null);
@@ -86,7 +88,8 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
   function reset() {
     const next = emptyPost(); setInput(next); setSaved(null); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setError("");
   }
-  function newPost() { if (canDiscard()) { reset(); setNotice(""); } }
+  function newPost() { if (!busy && canDiscard()) { reset(); setNotice(""); setEditorOpen(true); } }
+  function closeEditor() { if (!busy && canDiscard()) { reset(); setNotice(""); setEditorOpen(false); } }
   async function editPost(slug: string) {
     if (busy || !canDiscard()) return;
     setBusy(true); setError(""); setNotice("");
@@ -96,7 +99,7 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
       if (!post) { setError("This post could not be loaded. Refresh the page and try again."); return; }
       if (!mounted.current) return;
       const next = editablePost(post);
-      setSaved(post); setInput(next); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel("");
+      setSaved(post); setInput(next); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setEditorOpen(true);
     } catch (cause) { if (mounted.current) setError(firebaseMessage(cause)); }
     finally { if (mounted.current) setBusy(false); }
   }
@@ -129,7 +132,7 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
     try {
       await deleteManagedPost(db, saved);
       if (!mounted.current) return;
-      setPosts(values => values.filter(post => post.slug !== saved.slug)); reset(); setNotice("Article deleted.");
+      setPosts(values => values.filter(post => post.slug !== saved.slug)); reset(); setEditorOpen(false); setNotice("Article deleted.");
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
   }
@@ -153,12 +156,18 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
   }
 
   return <>
-    <div className="admin-heading"><div><p className="eyebrow">Publishing</p><h1>Blog posts</h1><p>Write, preview, publish or schedule your articles.</p></div><button type="button" className="button secondary" disabled={busy} onClick={newPost}>New post</button></div>
-    {error && <p role="alert" className="form-error">{error}</p>}
-    <p role="status" className="admin-notice">{busy ? "Working…" : notice}</p>
-    <div className="admin-editor-layout">
-      <aside className="admin-card admin-post-list" aria-label="Saved posts"><h2>Your posts</h2>{!loading && !posts.length && <p>No posts saved yet. Start your first draft.</p>}<ul>{posts.map(post => <li key={post.slug}><button type="button" disabled={busy} aria-current={saved?.slug === post.slug ? "true" : undefined} onClick={() => editPost(post.slug)}>{post.title}<small>{effectiveStatus(post, clock)} · {post.slug}</small></button></li>)}</ul>{loading && <p role="status">Loading posts…</p>}{more && <button type="button" disabled={loading || busy} onClick={loadMore}>Load more posts</button>}</aside>
-      <section className="admin-card"><h2>{saved ? "Edit post" : "New post"}</h2><p className="form-note">{dirty ? "You have unsaved changes." : saved ? "All changes saved." : "Start writing below."}</p>
+    <div className="admin-heading"><div><p className="eyebrow">Publishing</p><h1>Blog posts</h1><p>Write, preview, publish or schedule your articles.</p></div><button type="button" id="new-blog-post" aria-haspopup="dialog" className="button secondary" disabled={busy} onClick={newPost}>New post</button></div>
+    {!editorOpen && <>{error && <p role="alert" className="form-error">{error}</p>}<p role="status" className="admin-notice">{busy ? "Loading article?" : notice}</p></>}
+    <section className="admin-card admin-post-library" aria-labelledby="post-library-heading">
+      <div className="post-library-heading"><div><h2 id="post-library-heading">Your articles</h2><p>Choose an article to edit, or start a new post.</p></div><span>{posts.length}{more ? "+" : ""} articles</span></div>
+      {!loading && !posts.length && <div className="empty-state"><h3>No posts saved yet.</h3><p>Create your first draft with New post.</p></div>}
+      <ul className="post-library-list">{posts.map(post => <li key={post.slug}><button type="button" disabled={busy} aria-haspopup="dialog" onClick={() => editPost(post.slug)}><span className="post-library-copy"><strong>{post.title}</strong><span>{post.excerpt}</span><small>{post.categories.join(" ? ")}</small></span><span className="post-library-meta"><span className={`post-status post-status-${effectiveStatus(post, clock)}`}>{effectiveStatus(post, clock)}</span><small>{post.publishedAt ? dateLabel(post.publishedAt) : "Not published"}</small><span className="post-library-action">Edit article <span aria-hidden="true">?</span></span></span></button></li>)}</ul>
+      {loading && <p role="status">Loading posts?</p>}{more && <button type="button" className="button secondary" disabled={loading || busy} onClick={loadMore}>Load more posts</button>}
+    </section>
+    {editorOpen && <BlogEditorDrawer title={saved ? "Edit post" : "New post"} busy={busy} onClose={closeEditor}>
+        <p className="form-note">{dirty ? "You have unsaved changes." : saved ? "All changes saved." : "Start writing below."}</p>
+        {error && <p role="alert" className="form-error">{error}</p>}
+        <p role="status" className="admin-notice">{busy ? "Working?" : notice}</p>
         <form onSubmit={save} aria-busy={busy}><fieldset disabled={busy}>
           <label htmlFor="post-title">Title</label><input id="post-title" value={input.title} required maxLength={160} onChange={e => field("title", e.target.value)} />
           <p className="form-note">Automatic slug: <code>{input.slug || "Generated from the title"}</code>. Duplicate titles get a number; saved slugs stay fixed.</p>
@@ -179,8 +188,7 @@ function BlogEditor({ reservedSlugs }: { reservedSlugs: string[] }) {
           {saved && effectiveStatus(saved, clock) === "published" && <Link className="text-link" href={`/blog/?post=${encodeURIComponent(saved.slug)}`} target="_blank" rel="noopener noreferrer">View published post ↗</Link>}
         </fieldset></form>
         {saved && <button type="button" className="delete-article" disabled={busy} onClick={remove}>Delete article</button>}
-        <details className="admin-preview"><summary>Preview article</summary><article><BlogFeaturedImage src={input.featuredImage} alt={input.featuredImageAlt || input.title} /><p className="eyebrow">{input.categories.join(" · ")}</p><h2>{input.title || "Untitled article"}</h2><p className="lede">{input.excerpt}</p><BlogArticleContent content={input.content} /><ul className="article-tags" aria-label="Tags">{input.tags.map(tag => <li key={tag}>#{tag}</li>)}</ul></article></details>
-      </section>
-    </div>
+        <details className="admin-preview"><summary>Preview article</summary><article><BlogFeaturedImage src={input.featuredImage} alt={input.featuredImageAlt || input.title} /><p className="eyebrow">{input.categories.join(" · ")}</p><h2>{input.title || "Untitled article"}</h2><p className="lede">{input.excerpt}</p><BlogArticleContent content={input.content} /><ul className="article-tags tags" aria-label="Tags">{input.tags.map(tag => <li key={tag}>{tag}</li>)}</ul></article></details>
+    </BlogEditorDrawer>}
   </>;
 }

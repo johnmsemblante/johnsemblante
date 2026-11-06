@@ -16,9 +16,13 @@ const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle
 type Pages = { published: QueryDocumentSnapshot | null; scheduled: QueryDocumentSnapshot | null; morePublished: boolean; moreScheduled: boolean };
 const firstPages = (): Pages => ({ published: null, scheduled: null, morePublished: true, moreScheduled: true });
 
-function Labels({ post }: { post: ManagedPost }) {
-  return <><ul className="article-categories" aria-label="Categories">{post.categories.map(category => <li key={category}>{category}</li>)}</ul>{post.tags.length > 0 && <ul className="article-tags" aria-label="Tags">{post.tags.map(tag => <li key={tag}>#{tag}</li>)}</ul>}</>;
+function Categories({ post }: { post: ManagedPost }) {
+  return <ul className="article-categories" aria-label="Categories">{post.categories.map(category => <li key={category}>{category}</li>)}</ul>;
 }
+function Tags({ post }: { post: ManagedPost }) {
+  return post.tags.length > 0 ? <ul className="article-tags tags" aria-label="Tags">{post.tags.map(tag => <li key={tag}>{tag}</li>)}</ul> : null;
+}
+function Labels({ post }: { post: ManagedPost }) { return <><Categories post={post} /><Tags post={post} /></>; }
 export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode; hasStaticPosts: boolean }) {
   const [posts, setPosts] = useState<ManagedPost[]>([]);
   const [article, setArticle] = useState<ManagedPost | null>(null);
@@ -102,7 +106,7 @@ export function ManagedBlog({ children, hasStaticPosts }: { children: ReactNode;
   return <>
     {hasStaticPosts || !firebaseConfigured ? children : <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>}
     {(loading || error || posts.length > 0 || (firebaseConfigured && !hasStaticPosts)) && <section className="section" aria-label="Latest blog articles" aria-busy={loading}>
-      <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt}><Labels post={post} /><div className="blog-meta"><time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time></div></BlogCard>)}</div>
+      <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time>} tags={<Tags post={post} />}><Categories post={post} /></BlogCard>)}</div>
       {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}
       {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2>No articles published yet.</h2><p>Check back for new notes from the work.</p></div>}
       {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}

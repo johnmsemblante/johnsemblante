@@ -257,3 +257,18 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .blog-prose code{font-family:monospace;font-size:.9em;background:#e7efec;border-radius:3px;padding:2px 5px}
 .blog-prose a{text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:620px){.article-editor-preview{padding:18px;min-height:280px}.article-formatting{gap:5px;padding:8px}}
+
+/* Horizontal blog rows with the same compact labels used by Work cards. */
+.blog-list{grid-template-columns:minmax(0,1fr);gap:28px}
+.blog-preview,.blog-preview:first-child{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.blog-image-link{height:100%;min-width:0;background:#e7efec}
+.blog-image-link .blog-featured-image{height:100%;min-height:300px;aspect-ratio:auto}
+.blog-card-content{padding:32px 36px;align-items:flex-start}
+.blog-card-content .article-categories{margin:0}
+.blog-card-content h2{margin:16px 0 12px;font-size:clamp(25px,2.5vw,34px)}
+.blog-card-content>.blog-meta{margin-bottom:16px}
+.blog-card-content>p{margin-bottom:18px}
+.article-tags.tags{gap:6px;margin:0 0 22px;padding:0}
+.article-tags.tags li{padding:4px 8px;background:#e7efec;border:0;border-radius:0;font-size:10px;font-weight:400;line-height:1.5}
+.blog-card-content>.text-link{padding-top:8px}
+@media(max-width:700px){.blog-preview,.blog-preview:first-child{grid-template-columns:minmax(0,1fr)}.blog-image-link .blog-featured-image{aspect-ratio:16/9;height:auto;min-height:0}.blog-card-content{padding:24px}}
