@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { submitInquiry } from "@/lib/submit-inquiry";
 import { site } from "@/content/site";
 
-export function InquiryForm({ initialTopic = "Web development", initialMessage = "", travel = false }: { initialTopic?: string; initialMessage?: string; travel?: boolean } = {}) {
+export function InquiryForm({ initialTopic = "Web development", initialMessage = "", travel = false, onSuccess }: { initialTopic?: string; initialMessage?: string; travel?: boolean; onSuccess?: () => void } = {}) {
   const [topic, setTopic] = useState(initialTopic);
+  const [message, setMessage] = useState(initialMessage);
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("topic") === "experience") {
       setTopic("Discuss relevant experience");
@@ -38,7 +39,9 @@ export function InquiryForm({ initialTopic = "Web development", initialMessage =
       if (result.ok) {
         form.reset();
         setTopic(initialTopic);
+        setMessage("");
         setStatus("success");
+        onSuccess?.();
       } else {
         setError(result.message);
         setStatus("idle");
@@ -63,14 +66,14 @@ export function InquiryForm({ initialTopic = "Web development", initialMessage =
       <label htmlFor="inquiry-topic">What’s it about?</label>
       <select id="inquiry-topic" name="topic" value={topic} onChange={event => setTopic(event.target.value)}><option>Web development</option><option>Career opportunity</option><option>Discuss relevant experience</option><option>Lazy Barista</option><option>Golden Travel and Tours</option><option>Collaboration</option><option>General inquiry</option></select>
       <label htmlFor="inquiry-message">Your message <span>(required)</span></label>
-      <textarea id="inquiry-message" name="message" defaultValue={initialMessage} rows={7} required maxLength={6000} placeholder="Website or design link:
+      <textarea id="inquiry-message" name="message" value={message} onChange={event => setMessage(event.target.value)} rows={7} required maxLength={6000} placeholder="Website or design link:
 What you need help with:
 Preferred timeline:
 Budget range (optional):" />
       </fieldset>
       {error && <p role="alert" className="form-error">{error}</p>}
       <button className="button" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : travel ? "Send trip inquiry" : "Send project inquiry"} <span aria-hidden="true">↗</span></button>
-      <div className="inquiry-status" role="status" aria-live="polite" aria-atomic="true">{status === "success" ? "Thank you — your inquiry has been submitted. I’ll reply to the email address you provided." : status === "sending" ? "Sending your inquiry. Please keep this page open." : ""}</div>
+      <div className="inquiry-status" role="status" aria-live="polite" aria-atomic="true">{status === "success" ? "Thank you — your inquiry has been submitted. I’ll reply to the email address you provided. The form is ready for a new inquiry." : status === "sending" ? "Sending your inquiry. Please keep this page open." : ""}</div>
       <p id="inquiry-privacy" className="form-note">Your name, email, and message are processed by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree</a> to deliver your inquiry.</p>
       <p className="form-note">Having trouble sending? Email <a href={`mailto:${site.email}`}>{site.email}</a> directly.</p>
     </form>

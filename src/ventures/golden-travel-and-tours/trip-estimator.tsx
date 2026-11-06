@@ -18,10 +18,19 @@ export function TripEstimator() {
   const [inquire, setInquire] = useState(false);
   const [validation, setValidation] = useState("");
   const [minimumDate, setMinimumDate] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   useEffect(() => { setMinimumDate(todayInCebu()); }, []);
   const resultHeading = useRef<HTMLHeadingElement>(null);
+  const plannerForm = useRef<HTMLFormElement>(null);
+  const confirmation = useRef<HTMLParagraphElement>(null);
   const reference = selectedPackage(mode, choice);
   function invalidate() { setResult(null); setInquire(false); }
+  function inquirySent() {
+    plannerForm.current?.reset();
+    setMode("custom"); setChoice(""); setCustomize(false); setExtra(false); setStops([""]);
+    setResult(null); setInquire(false); setValidation(""); setMinimumDate(todayInCebu()); setSubmitted(true);
+    requestAnimationFrame(() => confirmation.current?.focus());
+  }
   function calculate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -59,7 +68,8 @@ export function TripEstimator() {
   }
   return <section className="trip-estimator" aria-label="Trip details">
     <p>Build your own trip or explore our 12 suggested packages. Choose an itinerary, tell us what you would like to change, and request a confirmed price. Availability and practical schedules are confirmed by the team.</p>
-    <form onSubmit={calculate} onChange={() => { invalidate(); setValidation(""); }}>
+    {submitted && <p ref={confirmation} tabIndex={-1} className="trip-submission-success" role="status">Thank you — your trip inquiry has been submitted. The form is ready for a new itinerary. The team will reply to the email address you provided; this does not confirm a booking.</p>}
+    <form ref={plannerForm} onSubmit={calculate} onChange={() => { invalidate(); setValidation(""); setSubmitted(false); }}>
       <label htmlFor="trip-mode">How would you like to plan?</label>
       <select id="trip-mode" value={mode} onChange={e => { setMode(e.target.value); setChoice(""); setCustomize(false); setExtra(false); setStops([""]); invalidate(); }}><option value="custom">Build my own trip</option><option value="packages">Packages</option></select>
       {mode === "packages" && <><label htmlFor="trip-package">Choose a package (required)</label><select id="trip-package" value={choice} required onChange={e => { setChoice(e.target.value); setCustomize(false); invalidate(); }}><option value="" disabled>Select one of the 12 packages</option>{tourPackages.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></>}
@@ -88,7 +98,7 @@ export function TripEstimator() {
       <p><strong>Not priced here:</strong> attraction tickets, boats/ferries, activities, tolls, parking, meals, accommodation and extra hours. Fuel and driver inclusions must also be confirmed in the final quote. No automatic fuel surcharge or extra-hour allowance is assumed.</p>
       <details><summary>Review the itinerary to send</summary><pre>{result.message}</pre></details>
       <button className="button" type="button" onClick={() => setInquire(true)}>Request final quotation</button>
-      {inquire && <InquiryForm key={result.message} initialTopic="Golden Travel and Tours" initialMessage={result.message} travel />}
+      {inquire && <InquiryForm key={result.message} initialTopic="Golden Travel and Tours" initialMessage={result.message} travel onSuccess={inquirySent} />}
     </div>}
     <noscript>Please use the business contact links below to request a quotation. The budget planner needs JavaScript.</noscript>
   </section>;

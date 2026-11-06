@@ -311,3 +311,5 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 @media(max-width:620px){.photography-intro{grid-template-columns:minmax(0,1fr);padding:44px 0;gap:30px}.photography-intro h1{font-size:56px}.photography-gallery{grid-template-columns:minmax(0,1fr);gap:20px}.photography-gallery-heading{align-items:start}.photography .venture-header{flex-wrap:wrap}.photography .venture-header nav{width:100%}.photography .venture-footer{align-items:start;gap:12px}}
 
 .photography-brand-logo{display:block;width:140px;height:140px;object-fit:contain;margin:0 0 26px}.photography .venture-header-logo{background:#fad629}@media(max-width:620px){.photography-brand-logo{width:112px;height:112px;margin-bottom:22px}}
+
+.trip-submission-success{padding:18px 22px;border:1px solid #b9c9a8;background:#edf3e6;color:#334b2c;margin:20px 0;line-height:1.8}.trip-submission-success:focus{outline:3px solid #32766c;outline-offset:3px}
