@@ -170,3 +170,7 @@ Categories and tags become chips as you type a comma. Pasting a comma-separated 
 The editor supports optional **Featured image URL** and image description fields, using public HTTPS or site-relative URLs. The preview and article show the image; blog listings use two columns on larger screens and one on mobile. Empty or broken card images show the site logo. Older posts need no migration. This uses external image URLs, with no file uploads or additional paid service.
 
 Deploy both updated Firestore rules and Hosting for this revision: the rules allow the optional featured-image fields while retaining existing post access controls.
+
+### Publishing validation fix
+
+Label-heavy posts could exceed Firestore's 1,000-expression rule evaluation limit and return the generic permission-denied message despite valid admin access. Label validation now batches length and whitespace checks across preserved item boundaries, with explicit type checks. The emulator suite covers publishing and editing at the full 10-category/20-tag limits, invalid values at the first/middle/last positions, and 80-character labels. Reserved NUL separators are rejected. This fix only requires deploying Firestore rules; the open editor can retry saving without refreshing or losing unsaved text.

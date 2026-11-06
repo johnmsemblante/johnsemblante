@@ -9,13 +9,37 @@ service cloud.firestore {
     function text(value, maximum) {
       return value is string && value.size() > 0 && value.size() <= maximum && value.matches('(?s).*[^\\s].*');
     }
-    function labelAt(labels, i) { return labels.size() <= i || text(labels[i], 80); }
+    function labelStrings(value, count) {
+      return (count <= 0 || value[0] is string)
+        && (count <= 1 || value[1] is string)
+        && (count <= 2 || value[2] is string)
+        && (count <= 3 || value[3] is string)
+        && (count <= 4 || value[4] is string)
+        && (count <= 5 || value[5] is string)
+        && (count <= 6 || value[6] is string)
+        && (count <= 7 || value[7] is string)
+        && (count <= 8 || value[8] is string)
+        && (count <= 9 || value[9] is string)
+        && (count <= 10 || value[10] is string)
+        && (count <= 11 || value[11] is string)
+        && (count <= 12 || value[12] is string)
+        && (count <= 13 || value[13] is string)
+        && (count <= 14 || value[14] is string)
+        && (count <= 15 || value[15] is string)
+        && (count <= 16 || value[16] is string)
+        && (count <= 17 || value[17] is string)
+        && (count <= 18 || value[18] is string)
+        && (count <= 19 || value[19] is string);
+    }
     function labels(value, minimum, maximum) {
-      return value is list && value.size() >= minimum && value.size() <= maximum && value.toSet().size() == value.size()
-        && labelAt(value, 0) && labelAt(value, 1) && labelAt(value, 2) && labelAt(value, 3) && labelAt(value, 4)
-        && labelAt(value, 5) && labelAt(value, 6) && labelAt(value, 7) && labelAt(value, 8) && labelAt(value, 9)
-        && labelAt(value, 10) && labelAt(value, 11) && labelAt(value, 12) && labelAt(value, 13) && labelAt(value, 14)
-        && labelAt(value, 15) && labelAt(value, 16) && labelAt(value, 17) && labelAt(value, 18) && labelAt(value, 19);
+      let count = value.size();
+      let joined = value.join('\u0000');
+      // Preserve item boundaries to validate all labels
+      // without evaluating a separate chain of functions for every array entry.
+      return value is list && count >= minimum && count <= maximum && value.toSet().size() == count && labelStrings(value, count)
+        && (count == 0 || (joined.split('\u0000').size() == count
+          && joined.matches('(?s)[^\x00]{1,80}(\x00[^\x00]{1,80})*')
+          && !joined.matches('(?s)(.*\x00)?\\s*(\x00.*)?')));
     }
     function validPost(slug) {
       let p = request.resource.data;

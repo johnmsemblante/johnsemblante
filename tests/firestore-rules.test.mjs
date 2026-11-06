@@ -84,7 +84,7 @@ test('future schedules are private and become readable after server time passes 
 });
 test('rules reject past schedules, forged publish times, malformed labels/SEO, extra fields and stale revisions', async () => {
   const db = adminDb(); const ref = doc(db, 'blogPosts', 'an-article');
-  for (const patch of [{ status: 'scheduled', publishedAt: Timestamp.fromMillis(Date.now() - 1000) }, { title: ' ' }, { categories: [] }, { tags: ['duplicate', 'duplicate'] }, { tags: [5] }, { tags: ['x'.repeat(81)] }, { seoTitle: 'x'.repeat(161) }, { privateNotes: 'not allowed' }, { content: 'x'.repeat(60001) }, { updatedAt: Timestamp.fromMillis(0) }, { revision: 1 }]) await assertFails(updateDoc(ref, { revision: 2, updatedAt: serverTimestamp(), ...patch }));
+  for (const patch of [{ status: 'scheduled', publishedAt: Timestamp.fromMillis(Date.now() - 1000) }, { title: ' ' }, { categories: [] }, { tags: ['duplicate', 'duplicate'] }, { tags: [5] }, { tags: ['x'.repeat(81)] }, { seoTitle: 'x'.repeat(161) }, { privateNotes: 'not allowed' }, { content: 'x'.repeat(60001) }, { updatedAt: Timestamp.fromMillis(0) }, { revision: 1 }]) await assertFails(updateDoc(ref, { revision: 2, updatedAt: serverTimestamp(), ...patch })).catch(cause => { throw new Error('Invalid patch accepted: '+JSON.stringify(patch), { cause }); });
   await assertFails(setDoc(doc(db, 'blogPosts', 'forged'), { ...article('published'), slug: 'forged', publishedAt: Timestamp.fromMillis(Date.now() - 60000) }));
   await assertFails(setDoc(doc(db, 'blogPosts', 'future-public'), { ...article('published'), slug: 'future-public', publishedAt: Timestamp.fromMillis(Date.now() + 60000) }));
 });
@@ -157,4 +157,33 @@ test('featured image fields are optional, validated, and persist through editor 
   for (const patch of [{ featuredImage: 'javascript:bad' }, { featuredImage: '//evil.example/a' }, { featuredImage: 'http://example.com/a' }, { featuredImage: 42 }, { featuredImage: 'x'.repeat(2001) }, { featuredImageAlt: 'x'.repeat(201) }]) {
     await assertFails(updateDoc(doc(db, 'blogPosts', saved.slug), { ...patch, revision: removed.revision + 1, updatedAt: serverTimestamp() }));
   }
+});
+
+
+test('publishing supports the full category and tag limits with a featured image', async () => {
+  const db = adminDb();
+  for (const [categories, tags] of [[1,0], [2,5], [5,10], [10,20]]) {
+    const input = { ...emptyPost(), title: 'Publishing labels ' + categories + '-' + tags, excerpt: 'Intro', content: 'Body', status: 'published', categories: Array.from({length: categories}, (_,i)=>'Category '+i), tags: Array.from({length: tags},(_,i)=>'Tag '+i), featuredImage: 'https://images.unsplash.com/photo-test.jpg', featuredImageAlt: 'Test image' };
+    const saved = await saveManagedPost(db, input, null, []).catch(cause => { throw new Error('Publish failed at '+categories+' categories / '+tags+' tags', { cause }); });
+    assert.equal(saved.tags.length, tags);
+    const edited = await saveManagedPost(db, { ...input, excerpt: 'Updated intro' }, saved, []);
+    assert.equal(edited.categories.length, categories);
+  }
+});
+
+
+test('label validation rejects malformed entries at every position and preserves boundaries', async () => {
+  const db = adminDb(); const ref = doc(db, 'blogPosts', 'an-article');
+  for (const invalid of ['', ' ', '\t\n', 5, true, null, { label: 'nested' }, 'x'.repeat(81), 'a'.repeat(60)+'\u0000'+'b'.repeat(60)]) {
+    for (const index of [0, 9, 19]) {
+      const tags = Array.from({length: 20}, (_, i) => 'Tag '+i); tags[index] = invalid;
+      await assertFails(updateDoc(ref, { tags, revision: 2, updatedAt: serverTimestamp() }));
+    }
+  }
+  await assertFails(updateDoc(ref, { tags: Array.from({length:21},(_,i)=>'Tag '+i), revision:2, updatedAt:serverTimestamp() }));
+  await assertFails(updateDoc(ref, { categories: Array.from({length:11},(_,i)=>'Category '+i), category:'Category 0', revision:2, updatedAt:serverTimestamp() }));
+  const categories = Array.from({length:10},(_,i)=>('Category '+i).padEnd(80,'x'));
+  const tags = Array.from({length:20},(_,i)=>('Tag '+i).padEnd(80,'x'));
+  tags[0] = 'Cebu\nPhilippines'; tags[1] = 'Caf? / ???';
+  await assertSucceeds(updateDoc(ref, { categories, category:categories[0], tags, revision:2, updatedAt:serverTimestamp() }));
 });
