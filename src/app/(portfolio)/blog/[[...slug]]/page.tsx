@@ -19,7 +19,7 @@ export function generateStaticParams() {
 }
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  if (!slug?.length) return pageMetadata("Web Development Notes & Articles", "Notes on web development, building businesses, and lessons from the work by John Semblante.", "/blog/");
+  if (!slug?.length) return pageMetadata("Web Development Notes & Articles", "Read notes from John Clark Semblante, a web developer in Cebu, on his development career, website projects, and independent ventures.", "/blog/");
   const managed = buildBlogPosts().find(post => slug.length === 1 && post.slug === slug[0]);
   if (managed) {
     const seo = postMetadata(managed);
@@ -36,7 +36,7 @@ export default async function Blog({ params }: Props) {
   const posts = publishedPosts();
   const managed = buildBlogPosts();
   if (!slug?.length) return <ManagedBlog hasStaticPosts={posts.length > 0} initialPosts={managed}>
-    <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>
+    <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>I write about my path into web development, what I’m learning, and the projects I’m working on. These notes sit alongside the websites and ventures in my portfolio.</p></PageIntro>
     <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/${post.slug}/`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>}><ul className="article-categories" aria-label="Categories"><li>{post.category}</li></ul></BlogCard>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first article is in progress.</h2><p>In the meantime, explore my projects or get in touch about a website you want to build or improve.</p></div>}</section>
   </ManagedBlog>;
   const managedPost = managed.find(post => slug.length === 1 && post.slug === slug[0]);

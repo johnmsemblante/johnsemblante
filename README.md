@@ -1,6 +1,6 @@
 # John Semblante — Portfolio & Ventures
 
-A portfolio for John Clark Semblante, a WordPress/Full Stack Developer based in Cebu, Philippines, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
+A portfolio for John Clark Semblante, a Cebu web developer whose professional title is WordPress/Full Stack Developer, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
 - **Live website:** https://johnmsemblanteapp.web.app/
 - **Repository:** https://github.com/johnmsemblante/johnsemblante
@@ -20,7 +20,7 @@ Public article views now refresh saved content automatically on load, focus and 
 
 Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
 
-Current professional title is maintained in `src/content/profile.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
+The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante** and H1 **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
 ## 1. Quick start
 

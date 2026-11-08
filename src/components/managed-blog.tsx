@@ -19,7 +19,7 @@ const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle
 type Pages = { published: QueryDocumentSnapshot | null; scheduled: QueryDocumentSnapshot | null; morePublished: boolean; moreScheduled: boolean };
 const firstPages = (): Pages => ({ published: null, scheduled: null, morePublished: true, moreScheduled: true });
 function BlogIntro() {
-  return <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>A place for practical ideas on websites, development, and building businesses.</p></PageIntro>;
+  return <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>I write about my path into web development, what I’m learning, and the projects I’m working on. These notes sit alongside the websites and ventures in my portfolio.</p></PageIntro>;
 }
 
 function Categories({ post }: { post: ManagedPost }) {

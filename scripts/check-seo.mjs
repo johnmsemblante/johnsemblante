@@ -44,11 +44,13 @@ for (const url of urls) {
       const person = schemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'Person');
       assert.ok(person?.name, 'Homepage is missing Person identity data');
       assert.ok(title.includes(person.name), 'Homepage title does not include the full Person name');
-      assert.ok(person.jobTitle && title.includes(person.jobTitle), 'Homepage title differs from the current Person job title');
+      assert.ok(title.includes('Cebu Web Developer'), 'Homepage title is missing the primary local service phrase');
+      assert.ok(person.jobTitle, 'Homepage Person schema is missing the professional role');
       const specialty = decode(body.match(/<p class="hero-specialty">([\s\S]*?)<\/p>/)?.[1] || '');
       assert.equal(specialty, person.jobTitle, 'Homepage hero differs from the current Person job title');
       const heading = decode(body.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, '') || '');
-      assert.ok(heading.includes(person.name), 'Homepage H1 does not include the full Person name');
+      assert.equal(heading, 'Cebu Web Developer', 'Homepage H1 differs from the primary local service phrase');
+      assert.ok(decode(body.replace(/<[^>]*>/g, '')).includes(person.name), 'Homepage visible copy is missing the full Person name');
     }
     if (title.length > 65) warnings.push(`${parsed.pathname}: title is ${title.length} characters; review for clarity.`);
     if ((meta('description') || '').length > 170) warnings.push(`${parsed.pathname}: description is long; review the snippet.`);

@@ -140,9 +140,13 @@ The token is a public ownership-verification value; passwords and Google login c
 
 ## Current positioning and keyword plan
 
-The canonical current title is **WordPress/Full Stack Developer**, defined once as `professionalTitle` in `src/content/profile.ts`. The profile title/headline, current employment label, homepage title and hero, portrait illustration, footer, metadata image description and Person jobTitle use this shared value. Historical employer titles and project-specific technologies retain their factual meanings; a skill category such as Front-end is not another current job title. To regenerate the branded image after changing the title, run `node scripts/generate-social-card.cjs`, inspect the PNG, rebuild and deploy.
+The professional title remains **WordPress/Full Stack Developer**, defined as `professionalTitle` in `src/content/profile.ts`. It supplies the profile role, current employment label, hero specialty, portrait illustration, footer, metadata image description and Person jobTitle. Historical employment titles keep their original meanings.
 
-The homepage title is now **John Clark Semblante | WordPress/Full Stack Developer**. The Work page targets portfolio/project searches, while About and Contact have distinct name-based titles. Avoid adding the same keyword list to every title or repeating the brand suffix. The site's canonical domain and existing project/article slugs do not change for keyword targeting.
+The primary homepage search phrase is **Cebu Web Developer**. Its title is **Cebu Web Developer | John Clark Semblante**, defined separately as `homePageTitle` in the profile file and used by the homepage and root metadata. The homepage H1 is **Cebu Web Developer**; John's full name appears in the eyebrow, introduction and structured data. The default description in `src/content/site.ts` describes WordPress development, WooCommerce customization and website fixes. The shared metadata helper carries each page's title/description into Open Graph and Twitter previews.
+
+About focuses on John's career and Mandaue City location; Work shows actual projects; Contact explains what to send for a project or remote role. Their titles/descriptions are edited in the corresponding `src/app/(portfolio)/.../page.tsx` files. Homepage services and process copy live in `src/components/development-services.tsx` and `src/components/workflow.tsx`. The Blog index has matching introductory copy in its route and `src/components/managed-blog.tsx`; update both to keep initial and live views consistent. Do not add the primary phrase to unrelated venture offers or every project title.
+
+The 8 November content revision replaces general slogans with specific work, tools and inquiry guidance, grounded in the supplied career history. It does not rewrite managed articles or project records, add client results, change URLs, or claim new availability. The existing branded social image keeps the accurate professional role; changing metadata does not require new artwork. See [the content review](review/content-review-2026-11-08.md).
 
 Suggested search phrases below are based on your documented skills and location, **not measured search volume, competition or a ranking guarantee**:
 
@@ -150,12 +154,14 @@ Suggested search phrases below are based on your documented skills and location,
 | --- | --- | --- |
 | Find you by name | John Clark Semblante; John Semblante; John Clark Semblante portfolio | Homepage, with your full name, current role and introduction |
 | Assess your work | John Clark Semblante works; John Clark Semblante projects; WordPress developer portfolio | Work page, actual client/venture records, screenshots and case studies |
-| Find a local developer | WordPress developer Cebu; WordPress developer Philippines | Homepage introduction and service copy, location and genuine project evidence |
+| Find a local developer | Cebu web developer (primary); web developer in Cebu; WordPress developer Cebu | Homepage introduction and service copy, location and genuine project evidence |
 | Hire remotely | remote WordPress developer Philippines; WordPress full stack developer | Homepage/profile/contact, plus documented collaboration experience |
 | Find a specific skill | custom WordPress development; Figma to WordPress developer; WooCommerce developer Philippines | Existing service sections, relevant experience and verified project write-ups |
 | Learn or solve a problem | Concrete WordPress troubleshooting or implementation questions you have actually solved | Helpful blog articles with steps, code, limitations and a relevant project example |
 
 Use **portfolio**, not ?portfoio,? in your site content. ?Works? is a reasonable branded query, but ?portfolio? and ?projects? make more natural headings. Generic ?WordPress developer? is broader than the branded/local phrases; use it naturally alongside your name and Cebu/Philippines context rather than assuming a new portfolio will immediately rank for it.
+
+Write for people who need to assess your work, not an AI detector. Google prioritizes helpful, reliable, people-first content; AI assistance alone is not the deciding factor. Natural wording cannot guarantee rankings or prevent a classifier from labeling content as AI-generated. Use first-hand examples and verify facts rather than inventing personal stories. References: [Google’s people-first guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content), [Google on AI-generated content](https://developers.google.com/search/blog/2023/02/google-search-and-ai-content).
 
 No HTML meta-keywords tag is added: [Google says it does not affect indexing or ranking](https://developers.google.com/search/docs/crawling-indexing/special-tags). Titles, headings, useful text, descriptive internal links and real project evidence are the implementation focus. [Google recommends clear, concise titles without keyword stuffing](https://developers.google.com/search/docs/appearance/title-link).
 

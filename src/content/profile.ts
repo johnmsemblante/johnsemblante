@@ -1,15 +1,17 @@
 // Updated résumé takes precedence over the historical portfolio (2026-10-29).
 export const professionalTitle = "WordPress/Full Stack Developer";
+// Homepage positioning; keep employment titles separate from search wording.
+export const homePageTitle = "Cebu Web Developer | John Clark Semblante";
 export const profile = {
   fullName: "John Clark Semblante",
   location: "Mandaue City, Cebu, Philippines",
   title: professionalTitle,
   headline: professionalTitle,
-  homeSummary: "I help businesses and teams build custom WordPress websites, improve WooCommerce stores, and fix front-end problems. Over 10 years of experience, with a focus on responsive interfaces, performance, and maintainable code.",
+  homeSummary: "I’m John Clark Semblante, based in Mandaue City, Cebu. I build WordPress websites from Figma designs, customize WooCommerce stores, and fix layout and performance issues. I’ve been working in web development since 2013.",
   resumePortrait: "/images/profile/john-resume.jpg",
   portrait: "/images/profile/john-enhanced.webp",
-  introduction: `I’m John Clark Semblante, a ${professionalTitle} based in Cebu, Philippines. I bring over 10 years of experience building and improving websites across SaaS, ecommerce, and enterprise environments.`,
-  biography: "My work connects design with the details that make a website usable: responsive layouts, clear interactions, and reliable functionality. I turn Figma designs into WordPress and WooCommerce websites using PHP, JavaScript, and CSS, and help resolve the technical issues that get in the way of a good customer experience.",
+  introduction: `I’m John Clark Semblante, a ${professionalTitle} in Mandaue City, Cebu. My career started in 2013 with website development and SEO work at Cebu Rent A Car. Since then, I’ve worked on WordPress websites, ecommerce stores, and front-end interfaces for business and legal technology teams.`,
+  biography: "Much of my work starts with a Figma file or a website that needs attention. I use PHP, JavaScript, and CSS to build custom WordPress themes, adapt WooCommerce storefronts, and resolve layout or plugin issues. I also work on mobile layouts, browser compatibility, and page performance—the details people notice when they use a site.",
   skills: ["WordPress", "WooCommerce", "Figma to WordPress", "Responsive web design", "Cross-browser and mobile optimization", "Core Web Vitals", "On-page SEO", "UI debugging", "Third-party APIs and plugins", "ActiveCampaign", "GetResponse", "Zendesk", "PrestaShop"],
   languages: ["HTML5", "CSS3", "JavaScript", "PHP", "Tailwind CSS", "Bootstrap"],
   tools: ["Git", "Docker", "Playwright", "Figma MCP", "Cursor", "Claude AI workflows"],
