@@ -64,13 +64,14 @@ Use `npm ci` to install the versions in `package-lock.json`. The source-based pu
 | `npm ci` | Install the locked dependencies on a fresh checkout or after lockfile changes. |
 | `npm run dev` | Start development at port 3000, with source updates. |
 | `npm run typecheck` | Check TypeScript without publishing anything. |
-| `npm run build` | Fetch the public blog snapshot, compile, check TypeScript, and export the production site to `out/`. |
+| `npm run build` | Fetch public blog and Works snapshots, compile, check TypeScript, and export the production site to `out/`. |
 | `npm run audit:seo` | Check metadata, canonicals, headings, images, sitemap and private-page indexing in the current export. |
 | `npm run sync:blog` | Refresh the anonymous public article snapshot for local development; also runs during build. |
 | `npm run test:forms` | Check confirmed submission/reset and failure preservation using mocked delivery. |
 | `npm run test:blog` | Check blog models, loading, editing, formatting, layout and live refresh. |
 | `npm run test:admin` | Check dashboard access/navigation, Job Finder and the feed Worker. |
 | `npm run test:work` | Check portfolio data, search and grouped filter behavior. |
+| `npm run test:work-admin` | Check Works validation, public merging/reads, transactions and server-side uploads. |
 | `npm run test:ventures` | Check ventures, gallery data and detail-page sharing image selection. |
 | `npm run test:seo` | Check SEO metadata and static article export behavior. |
 | `npm run test:rules` | Check Firestore access rules against a local emulator; see admin setup. |
@@ -83,13 +84,13 @@ There is no `npm start` or lint script. Blog, dashboard/Job Finder and Firestore
 
 ## 3. Where to edit content
 
-Portfolio and venture content lives in TypeScript files. Managed blog posts can be created and edited at `/adminauth/blog/` using Firebase Authentication and Firestore; see [admin setup](docs/admin-setup.md). The source-based blog remains supported separately. Preserve the surrounding quotes, commas, arrays, and braces. Use the existing entries as templates, save, then check the affected page locally.
+Portfolio and venture baseline content lives in TypeScript files. Works can also be managed at `/adminauth/works/`; see [Works administration](docs/works-admin.md). Managed blog posts can be created and edited at `/adminauth/blog/` using Firebase Authentication and Firestore; see [admin setup](docs/admin-setup.md). The source-based blog remains supported separately. Preserve the surrounding quotes, commas, arrays, and braces. Use the existing entries as templates, save, then check the affected page locally.
 
 | What you want to change | File or directory |
 | --- | --- |
 | Name, live domain, general description, public email and phone | `src/content/site.ts` |
 | Biography, title, skills, experience, education, portrait and personal social links | `src/content/profile.ts` |
-| Portfolio projects, screenshot filenames, dates, descriptions and website links | `src/content/projects.ts` |
+| Portfolio projects, images, dates, descriptions and website links | `/adminauth/works/`; source baseline in `src/content/projects.ts` |
 | Blog posts and drafts | `src/content/blog.ts` |
 | Lazy Barista menu, prices, images, ordering instructions and contacts | `src/ventures/lazy-barista/content.ts` |
 | Golden Travel services, brand information and contacts | `src/ventures/golden-travel-and-tours/content.ts` |
@@ -114,6 +115,8 @@ Edit the `experience` array in `profile.ts`. Each company has `company`, `role`,
 The current bullets are based on John's supplied resume and edited for clarity without adding unverified results. Update the source file when the resume changes; the website does not automatically read the PDF. The full resume is not published because it contains reference contacts and a residential address.
 
 ### Portfolio projects and case studies
+
+Manage projects at `/adminauth/works/`: add, edit, draft, publish and delete works through a full-width library and right-side editor. Existing local image paths are preserved; featured images can be uploaded through the admin-only Cloudflare service to Cloudinary, or entered as URLs. The browser and upload service enforce a 5 MB limit for JPG/PNG/WebP/AVIF. Gallery images accept URLs and captions. See [Works administration](docs/works-admin.md) for setup, quotas, tests and publishing limits. The instructions below describe the source baseline; managed records override source entries by slug. Rebuild/deploy after public changes to update clean detail pages, the homepage, SEO/social HTML and sitemap. The public Work directory and detail views also refresh published data on load/focus and while visible.
 
 The `entries` array in `projects.ts` uses this order:
 
@@ -181,7 +184,7 @@ src/
   app/
     (portfolio)/          Home, About, Work, Blog, Contact, Ventures directory
     ventures/[venture]/   Independent venture landing routes
-    adminauth/            Google sign-in, dashboard, blog editor and Job Finder
+    adminauth/            Google sign-in, dashboard, Blog, Works and Job Finder
     layout.tsx            Root metadata and global stylesheet
     robots.ts             Search crawler rules
     sitemap.ts            Generated published-page sitemap
@@ -192,15 +195,17 @@ src/
 public/                   Public images and assets
 scripts/preview.mjs       Local static-export preview server
 scripts/sync-blog-snapshot.cjs  Anonymous public article snapshot for builds
+scripts/sync-works.cjs     Anonymous public Works overrides for builds
 tests/                    Automated checks for forms, blog, admin, work and SEO
 workers/job-feed/         Separate Cloudflare Worker for the Himalayas feed
+workers/media-upload/     Admin-only Cloudinary image upload service
 docs/                     Writing and source/review notes
 firebase.json             Hosting folder, site and response headers
 .firebaserc               Default Firebase project
 next.config.ts            Production static export configuration
 ```
 
-Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/work/industry/[industry]/`, `/blog/`, `/blog/[slug]/`, `/contact/`, `/ventures/`, `/ventures/lazy-barista/`, `/ventures/golden-travel-and-tours/`, and `/ventures/lapse-hub/`. Clean blog article routes are exported for source-published and publicly released managed entries at build time. `/adminauth/`, `/adminauth/blog/` and `/adminauth/jobs/` are excluded from indexing; Firebase authorization protects private records.
+Public routes include `/`, `/about/`, `/work/`, `/work/[slug]/`, `/work/industry/[industry]/`, `/blog/`, `/blog/[slug]/`, `/contact/`, `/ventures/`, `/ventures/lazy-barista/`, `/ventures/golden-travel-and-tours/`, and `/ventures/lapse-hub/`. Clean blog article routes are exported for source-published and publicly released managed entries at build time. `/adminauth/`, `/adminauth/blog/`, `/adminauth/works/` and `/adminauth/jobs/` are excluded from indexing; Firebase authorization protects private records.
 
 The `(portfolio)` directory is a layout group and does not appear in URLs. Venture pages have separate presentation from the portfolio shell. Most components render at build time; navigation, filtering and the inquiry form use client components for interaction.
 
@@ -419,7 +424,7 @@ Travel dates are checked against the current date in Asia/Manila. Package pricin
 
 ## 13. Admin access and blog editor
 
-`/adminauth/` is the Google sign-in gateway and dashboard for approved administrators. Its shared header and responsive sidebar link to Overview, Blog Management, Job Finder and Logout. `/adminauth/blog/` preserves adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect private records and writes.
+`/adminauth/` is the Google sign-in gateway and dashboard for approved administrators. Its shared header and responsive sidebar link to Overview, Blog, Works, Job Finder and Logout. `/adminauth/blog/` preserves adding, editing, previewing, saving drafts, publishing and unpublishing Firestore-backed articles. Admin membership is granted only by a trusted Firebase project operator; signing in alone does not grant access. Firestore rules protect private records and writes.
 
 `/adminauth/jobs/` targets remote work from the Philippines. It supports the free Himalayas feed through a small Cloudflare Worker (Philippines/UTC+8 checks) and the direct Jobicy feed (last seven days). Search shortcuts reflect John's WordPress, WooCommerce, PHP and front-end/full-stack experience. Local skill ordering, disclosed-pay filters, summaries, employment/pay details and private bookmarks help review opportunities. Country/timezone labels remain source data, not a hiring guarantee. Existing Arbeitnow bookmarks are preserved.
 
@@ -462,5 +467,6 @@ This section describes the current implementation; dated notes above record earl
 | [Writing](docs/writing.md) | Source-based article content and writing guidance. |
 | [Portfolio industries](docs/portfolio-industries.md) | Project records, industry collections, grouped filtering and sharing filter results. |
 | [Lapse Hub](docs/lapse-hub.md) | Photography story, logo, external gallery, attribution and image hosting. |
+| [Works administration](docs/works-admin.md) | Works editor, signed Cloudinary uploads, Firestore rules and release steps. |
 
 Keep this README as the current setup and feature entry point. With each meaningful change, update the affected instructions and linked guide before committing/deploying. Avoid adding credentials, private content or claims of verification that were not performed.

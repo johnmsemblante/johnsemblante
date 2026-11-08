@@ -1,0 +1,13 @@
+{
+  "name": "johnsemblante-media-upload",
+  "main": "index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "vars": {
+    "FIREBASE_PROJECT_ID": "johnmsemblanteapp",
+    "CLOUDINARY_CLOUD_NAME": "dty8edpr",
+    "CLOUDINARY_UPLOAD_PRESET": "portfolio_works",
+    "ALLOWED_ORIGINS": "https://johnmsemblanteapp.web.app,https://johnmsemblanteapp.firebaseapp.com,http://localhost:3000,http://127.0.0.1:3100"
+  },
+  "observability": { "enabled": false }
+}

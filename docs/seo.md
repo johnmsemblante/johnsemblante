@@ -170,3 +170,7 @@ The initial HTML and previews fetched without JavaScript remain build-time copie
 ## Venture and Work sharing image priority
 
 Single venture pages use `venture.logo` for both Open Graph and Twitter previews. When the logo is absent or its URL is blank, they use `site.socialImage`; a gallery/hero photo is not substituted. Work detail pages use `project.image`, falling back to `site.socialImage` when no usable image URL is configured. The default is `public/images/seo/john-semblante-social.png`. This fallback is selected at build time for missing/blank configuration; a social platform cannot automatically switch to it if a configured external URL later fails. Rebuild and redeploy after changing these fields. Previously shared previews may remain cached by the social platform until it fetches the URL again.
+
+## Managed Works publishing
+
+Production builds now export the merged source/managed Work collection to clean detail routes, industry lists, homepage project sections and the sitemap. Public Work explorers and detail views refresh published data after hydration. Newly published projects have an instant `/work/?project=slug` view until a rebuild/deploy creates their clean URL. Share the clean URL after deployment for project-specific social metadata. As with blog posts, editing, drafting or deleting a Work requires rebuild/deployment to update or remove its initial HTML; browser refresh cannot remove an old exported file. See [Works administration](works-admin.md).

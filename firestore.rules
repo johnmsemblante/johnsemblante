@@ -94,6 +94,51 @@ service cloud.firestore {
       allow create, update: if admin() && request.auth.uid == uid && validSavedJob(id);
       allow delete: if admin() && request.auth.uid == uid;
     }
+    function workUrl(value) {
+      return value is string && value.size() <= 2000 && (value == '' || value.matches('^https://[^\\s<>]+$') || value.matches('^/[^/\\s<>][^\\s<>]*$'));
+    }
+    function workLabels(value, minimum) {
+      let count = value.size();
+      let joined = value.join('\u0000');
+      return value is list && count >= minimum && count <= 20 && value.toSet().size() == count
+        && (count == 0 || (joined.split('\u0000') == value
+          && joined.matches('(?s)[^\x00]{1,80}(\x00[^\x00]{1,80})*') && !joined.matches('(?s)(.*\x00)?\\s*(\x00.*)?')));
+    }
+    function validWork(p, slug) {
+      return p is map && p.keys().hasAll(['slug','title','summary','role','industries','technologies','projectType','publication','status'])
+        && p.keys().hasOnly(['slug','title','summary','role','industries','technologies','projectType','publication','status','description','objectives','features','contributions','tags','capabilities','gallery','seo','caseStudyUrl','challenge','approach','outcome','year','website','image'])
+        && p.slug == slug && slug.size() <= 100 && slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && text(p.title,160) && text(p.summary,1000) && text(p.role,200)
+        && p.projectType in ['client','venture','concept'] && p.publication in ['published','draft'] && p.status in ['archived','live','planned','in-progress']
+        && p.industries is list && p.industries.size() > 0 && p.industries.size() <= 9 && p.industries.hasOnly(['dental','real-estate','healthcare','travel','food-beverage','ecommerce','hospitality','professional-services','other'])
+        && workLabels(p.technologies,1) && workLabels(p.get('tags',[]),0) && workLabels(p.get('capabilities',[]),0)
+        && workLabels(p.get('objectives',[]),0) && workLabels(p.get('features',[]),0) && workLabels(p.get('contributions',[]),0)
+        && p.get('description','') is string && p.get('description','').size() <= 10000
+        && p.get('challenge','') is string && p.get('challenge','').size() <= 10000
+        && p.get('approach','') is string && p.get('approach','').size() <= 10000
+        && p.get('outcome','') is string && p.get('outcome','').size() <= 10000
+        && p.get('year',2000) is int && p.get('year',2000) >= 1900 && p.get('year',2000) <= 2200
+        && workUrl(p.get('website','')) && workUrl(p.get('caseStudyUrl',''))
+        && (!('image' in p) || (p.image is map && p.image.keys().hasOnly(['src','alt']) && text(p.image.src,2000) && workUrl(p.image.src) && text(p.image.alt,200)))
+        && (!('seo' in p) || (p.seo is map && p.seo.keys().hasOnly(['title','description']) && p.seo.get('title','') is string && p.seo.get('title','').size() <= 160 && p.seo.get('description','') is string && p.seo.get('description','').size() <= 500))
+        && p.get('gallery',[]) is list && p.get('gallery',[]).size() <= 20;
+    }
+    match /managedWorks/{slug} {
+      allow read: if admin();
+      allow create, update: if admin() && request.resource.data.keys().hasOnly(['project','revision','updatedAt'])
+        && validWork(request.resource.data.project,slug) && request.resource.data.updatedAt == request.time
+        && request.resource.data.revision is int && request.resource.data.revision == (resource == null ? 1 : resource.data.revision + 1)
+        && getAfter(/databases/$(database)/documents/publicWorks/$(slug)).data == (request.resource.data.project.publication == 'published' ? {'slug':slug,'deleted':false,'project':request.resource.data.project} : {'slug':slug,'deleted':true});
+      allow delete: if admin() && getAfter(/databases/$(database)/documents/publicWorks/$(slug)).data == {'slug':slug,'deleted':true};
+    }
+    match /publicWorks/{slug} {
+      allow read: if true;
+      allow create, update: if admin() && (request.resource.data == {'slug':slug,'deleted':true}
+        ? (!existsAfter(/databases/$(database)/documents/managedWorks/$(slug)) || getAfter(/databases/$(database)/documents/managedWorks/$(slug)).data.project.publication == 'draft')
+        : (request.resource.data.keys().hasOnly(['slug','deleted','project']) && request.resource.data.slug == slug && request.resource.data.deleted == false
+          && request.resource.data.project.publication == 'published' && request.resource.data.project == getAfter(/databases/$(database)/documents/managedWorks/$(slug)).data.project));
+      allow delete: if false;
+    }
     match /blogPosts/{slug} {
       // Published legacy posts remain readable. Schedules use the server clock, never the visitor's clock, for access.
       allow get, list: if admin() || resource.data.status == 'published'

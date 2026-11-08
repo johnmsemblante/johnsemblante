@@ -22,7 +22,7 @@ test('shared shell exposes both apps, one active navigation item and an accessib
   const icons = load('src/components/admin/admin-icon.tsx');
   const { DashboardShell } = load('src/components/admin/dashboard-shell.tsx', { 'next/link': link, 'next/navigation': { usePathname: () => '/adminauth/jobs' }, '@/lib/admin-navigation': navigation, './admin-icon': icons });
   const html = renderToStaticMarkup(React.createElement(DashboardShell, { name: 'Admin', email: 'owner@example.com', busy: false, error: '', logout: async () => {} }, 'Selected app'));
-  for (const text of ['Dashboard', 'Overview', 'Blog Management', 'Job Finder', 'Logout', 'Selected app']) assert.ok(html.includes(text));
+  for (const text of ['Dashboard', 'Overview', 'Blog', 'Works', 'Job Finder', 'Logout', 'Selected app']) assert.ok(html.includes(text));
   const active = html.match(/<a[^>]*aria-current="page"[^>]*>/g) || [];
   assert.equal(active.length, 1); assert.ok(active[0].includes('/adminauth/jobs/'));
   assert.ok(html.includes('aria-expanded="false"')); assert.ok(html.includes('aria-controls='));

@@ -1,6 +1,7 @@
 export const adminLinks = [
   { href: "/adminauth/", label: "Overview", icon: "overview" },
-  { href: "/adminauth/blog/", label: "Blog Management", icon: "blog" },
+  { href: "/adminauth/blog/", label: "Blog", icon: "blog" },
+  { href: "/adminauth/works/", label: "Works", icon: "works" },
   { href: "/adminauth/jobs/", label: "Job Finder", icon: "jobs" },
 ] as const;
 

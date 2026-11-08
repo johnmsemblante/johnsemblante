@@ -1,6 +1,7 @@
 const paths = {
   overview: ["M3 3h7v7H3z", "M14 3h7v7h-7z", "M3 14h7v7H3z", "M14 14h7v7h-7z"],
   blog: ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M8 12h8M8 16h8"],
+  works: ["M3 4h18v16H3z", "M3 9h18M8 9v11"],
   jobs: ["M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2", "M3 7h18v13H3z", "M3 11c5 4 13 4 18 0M12 11v5"],
   logout: ["M9 4H4v16h5", "M10 12h11M17 8l4 4-4 4"],
   menu: ["M4 6h16M4 12h16M4 18h16"],

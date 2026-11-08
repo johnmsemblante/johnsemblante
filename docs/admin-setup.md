@@ -1,6 +1,6 @@
 # Admin access and blog publishing
 
-`/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Blog Management at `/adminauth/blog/` and Job Finder at `/adminauth/jobs/`, with a collapsible mobile sidebar and Logout. Existing blog records and editor workflows are preserved.
+`/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Blog at `/adminauth/blog/`, Works at `/adminauth/works/` and Job Finder at `/adminauth/jobs/`, with a collapsible mobile sidebar and Logout. Existing blog records and editor workflows are preserved.
 
 The site still exports static files to Firebase Hosting. Firebase Authentication verifies Google accounts; Firestore rules authorize access to stored posts. Admin HTML and JavaScript are publicly downloadable, as on any static site, but contain no drafts or credentials. Private records are fetched only after authorization. Hiding a link or adding `noindex` is not the data-access boundary.
 
@@ -198,3 +198,7 @@ The Overview at `/adminauth/` includes **Refresh live blog content**. It request
 This control is not a Firebase CDN purge or a deployment trigger. Search crawlers without JavaScript, social previews and the initial HTML continue to use the deployed snapshot. Rebuild and redeploy for those copies, newly created clean article URLs, sitemap updates and removal of previously published HTML. Clearing browser storage cannot replace that deployment. Live refresh uses public reads under the existing rules; no billing upgrade or admin credentials are needed, and normal Firestore read quotas apply.
 
 Firebase Hosting also revalidates `/blog/**` HTML using `Cache-Control: public,max-age=0,must-revalidate`. Fingerprinted Next.js assets keep their existing immutable cache policy. This header prevents a browser from treating article HTML as fresh for an hour; it still cannot generate new HTML from Firestore without a deployment.
+
+## Works editor
+
+The Works sidebar entry manages portfolio projects using the same approved-admin gate. See [Works administration](works-admin.md) for source overrides, private drafts, atomic published copies, Cloudinary image uploads and static export limitations. The media upload endpoint is configured by the public `NEXT_PUBLIC_MEDIA_UPLOAD_URL` build variable; Cloudinary credentials belong only in Worker secrets. Deploy the reviewed Works rules before the normal build so its anonymous snapshot can load. Existing blog and bookmark access rules remain covered by the shared emulator suite.

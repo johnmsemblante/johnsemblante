@@ -5,7 +5,7 @@ import { BrowserIllustration } from "@/components/browser-illustration";
 import { Workflow } from "@/components/workflow";
 import { ProjectGrid } from "@/components/project-grid";
 import { VentureCards } from "@/ventures/cards";
-import { projects } from "@/content/site";
+import { buildWorks } from "@/lib/build-works";
 import { profile } from "@/content/profile";
 import { publishedPosts } from "@/content/blog";
 import { websiteSchema, jsonLd } from "@/lib/seo";
@@ -14,6 +14,8 @@ import { site } from "@/content/site";
 
 const homeTitle = `${profile.fullName} | ${profile.title}`;
 export const metadata = { ...pageMetadata(homeTitle, site.description, "/"), title: { absolute: homeTitle } };
+
+const projects = buildWorks();
 
 export default function Home() {
   const writing = publishedPosts().slice(0, 2);
