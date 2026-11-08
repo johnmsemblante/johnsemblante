@@ -91,6 +91,16 @@
     "site": "johnmsemblanteapp",
     "redirects": [
       {
+        "source": "/blog/my-web-development-journey-from-front-end-beginnings-to-what-s-next/",
+        "destination": "/blog/my-web-development-journey-a-cebu-web-developers-story/",
+        "type": 301
+      },
+      {
+        "source": "/blog/my-web-development-journey-from-front-end-beginnings-to-what-s-next",
+        "destination": "/blog/my-web-development-journey-a-cebu-web-developers-story/",
+        "type": 301
+      },
+      {
         "source": "/sitemap.xml/",
         "destination": "/sitemap.xml",
         "type": 301

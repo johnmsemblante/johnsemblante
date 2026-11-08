@@ -167,6 +167,10 @@ No HTML meta-keywords tag is added: [Google says it does not affect indexing or 
 
 Next steps after Google begins showing data: review Search Console Performance queries and landing pages, compare branded versus service/location searches, and refine the pages that already match the intent. Expand real case studies with your contributions and technologies; do not add invented results or claim every historical website used the modern full-stack tools. Build a few useful articles from actual WordPress, WooCommerce, Figma implementation or website debugging work rather than creating many thin keyword landing pages.
 
+## First article URL change — 8 November 2026
+
+The first managed article was renamed to `/blog/my-web-development-journey-a-cebu-web-developers-story/`. Its public rename record identifies the former slug as `my-web-development-journey-from-front-end-beginnings-to-what-s-next`. Hosting has exact 301 redirects for the old clean path, with and without a trailing slash, to the new clean page. The rebuild includes only the new article URL in the sitemap. Share the new clean URL. Legacy `/blog/?post=old-slug` query links are not covered by these path redirects and should be updated manually.
+
 ## Live browser content versus deployed SEO HTML
 
 Clean article pages now pre-render the snapshot and refresh the visible article from Firestore on load, focus, visibility changes and a 60-second visible-page interval. Saves and the admin Overview's **Refresh live blog content** action request fresh reads in other public tabs in the same browser. This fixes saved edits appearing stale to readers without requiring a rebuild for every visible text edit. The page keeps a consistent canonical and updates its browser metadata and structured data with the live public article.
