@@ -10,6 +10,8 @@ import { deleteManagedPost, saveManagedPost } from "@/lib/blog-store";
 import { useAdmin } from "./admin-gate";
 import { BlogFeaturedImage } from "@/components/blog-featured-image";
 import { ArticleEditor } from "./article-editor";
+import { ImageUpload } from "./image-upload";
+import { insertArticleMedia } from "@/lib/article-media";
 import { BlogEditorDrawer } from "./blog-editor-drawer";
 import { TokenInput } from "./token-input";
 import { ArticleShareLink } from "@/components/article-share-link";
@@ -28,6 +30,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
   const [posts, setPosts] = useState<ManagedPost[]>([]);
   const [input, setInput] = useState<PostInput>(emptyPost);
   const [saved, setSaved] = useState<ManagedPost | null>(null);
+  const [customSlug, setCustomSlug] = useState(false);
   const [baseline, setBaseline] = useState(() => JSON.stringify(emptyPost()));
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,10 +39,13 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
   const [cursor, setCursor] = useState<QueryDocumentSnapshot | null>(null);
   const [more, setMore] = useState(false);
   const [clock, setClock] = useState(Date.now);
-  const [mediaType, setMediaType] = useState("image");
+  const [mediaType, setMediaType] = useState<"image" | "asset">("image");
   const [mediaUrl, setMediaUrl] = useState("");
   const [mediaLabel, setMediaLabel] = useState("");
   const textarea = useRef<HTMLTextAreaElement>(null);
+  const mediaPanel = useRef<HTMLDetailsElement>(null);
+  const mediaCaret = useRef<number | null>(null);
+  const uploading = useRef(false);
   const mounted = useRef(true);
   const saving = useRef(false);
   const dirty = JSON.stringify(input) !== baseline;
@@ -52,7 +58,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
   }, []);
 
   useEffect(() => {
-    if (!dirty) return;
+    if (!dirty && !uploading.current) return;
     function unload(event: BeforeUnloadEvent) { event.preventDefault(); event.returnValue = ""; }
     function leave(event: MouseEvent) {
       const target = event.target instanceof Element ? event.target.closest("a,button") : null;
@@ -62,7 +68,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
     }
     window.addEventListener("beforeunload", unload); document.addEventListener("click", leave, true);
     return () => { window.removeEventListener("beforeunload", unload); document.removeEventListener("click", leave, true); };
-  }, [dirty]);
+  }, [dirty, busy]);
 
   useEffect(() => {
     let disposed = false;
@@ -89,7 +95,8 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
 
   function canDiscard() { return !dirty || window.confirm("Discard the unsaved changes to this post?"); }
   function reset() {
-    const next = emptyPost(); setInput(next); setSaved(null); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setError("");
+    mediaCaret.current = null; setMediaType("image");
+    const next = emptyPost(); setInput(next); setSaved(null); setCustomSlug(false); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setError("");
   }
   function newPost() { if (!busy && canDiscard()) { reset(); setNotice(""); setEditorOpen(true); } }
   function closeEditor() { if (!busy && canDiscard()) { reset(); setNotice(""); setEditorOpen(false); } }
@@ -102,30 +109,35 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
       if (!post) { setError("This post could not be loaded. Refresh the page and try again."); return; }
       if (!mounted.current) return;
       const next = editablePost(post);
-      setSaved(post); setInput(next); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setEditorOpen(true);
+      mediaCaret.current = null; setMediaType("image");
+      setSaved(post); setInput(next); setCustomSlug(true); setBaseline(JSON.stringify(next)); setMediaUrl(""); setMediaLabel(""); setEditorOpen(true);
     } catch (cause) { if (mounted.current) setError(firebaseMessage(cause)); }
     finally { if (mounted.current) setBusy(false); }
   }
 
   function operationError(cause: unknown) {
     const reason = (cause as Error).message;
+    if (reason === "slug-in-use") return "That URL slug is already in use or reserved for a source article. Choose another slug; your edits are still here.";
     return reason === "revision-conflict" ? "This post changed in another tab. Copy unsaved text before reopening its latest version." : reason === "slug-conflict" ? "A unique slug could not be generated. Adjust the title and try again." : reason === "save-unconfirmed" ? "The save may have succeeded, but could not be verified. Copy your text and reload the post before saving again." : firebaseMessage(cause);
   }
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (saving.current) return;
-    const next: PostInput = { ...input, slug: saved?.slug ?? slugForTitle(input.title), title: input.title.trim(), excerpt: input.excerpt.trim(), content: input.content.trim(), categories: normalizeLabels(input.categories), tags: normalizeLabels(input.tags), featuredImage: input.featuredImage.trim(), featuredImageAlt: input.featuredImageAlt.trim(), seoTitle: input.seoTitle.trim(), seoDescription: input.seoDescription.trim() };
+    if (saving.current || uploading.current) return;
+    const next: PostInput = { ...input, slug: input.slug.trim(), title: input.title.trim(), excerpt: input.excerpt.trim(), content: input.content.trim(), categories: normalizeLabels(input.categories), tags: normalizeLabels(input.tags), featuredImage: input.featuredImage.trim(), featuredImageAlt: input.featuredImageAlt.trim(), seoTitle: input.seoTitle.trim(), seoDescription: input.seoDescription.trim() };
     const problem = validatePost(next);
     if (problem) { setError(problem); return; }
+    const renaming = saved && next.slug !== saved.slug;
+    if (renaming && !window.confirm(`Change the article URL from /blog/${saved.slug}/ to /blog/${next.slug}/? Old links will need a redirect. Rebuild and deploy to update the exported pages and sitemap.`)) return;
     saving.current = true; setBusy(true); setError(""); setNotice("");
     try {
-      const updated = await saveManagedPost(db, next, saved, reservedSlugs);
+      const updated = await saveManagedPost(db, next, saved, reservedSlugs, customSlug || saved ? { slug: next.slug } : {});
       if (!mounted.current) return;
       const fields = editablePost(updated);
-      setInput(fields); setSaved(updated); setBaseline(JSON.stringify(fields));
-      setPosts(values => [updated, ...values.filter(item => item.slug !== updated.slug)]);
+      setInput(fields); setSaved(updated); setCustomSlug(true); setBaseline(JSON.stringify(fields));
+      setPosts(values => [updated, ...values.filter(item => item.slug !== updated.slug && item.slug !== saved?.slug)]);
       requestBlogRefresh();
       setNotice(updated.status === "scheduled" ? `Scheduled for ${dateLabel(updated.publishedAt)} (Cebu/Manila).` : updated.status === "published" ? "Post published. It is now available on the public blog." : "Draft saved in Firestore. Rebuild and redeploy to remove any previously exported public copy.");
+      if (renaming) setNotice(`Slug changed to ${updated.slug}. Rebuild/deploy to replace the old exported page and update the sitemap. Add a redirect for any shared old URL.`);
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
   }
@@ -142,21 +154,25 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
   }
 
   function field<Key extends keyof PostInput>(key: Key, value: PostInput[Key]) {
-    setInput(current => ({ ...current, [key]: value, ...(key === "title" && !saved ? { slug: slugForTitle(String(value)) } : {}) }));
+    setInput(current => ({ ...current, [key]: value, ...(key === "title" && !saved && !customSlug ? { slug: slugForTitle(String(value)) } : {}) }));
     setNotice(""); setError("");
   }
+  function uploadBusy(value: boolean) { uploading.current = value; setBusy(value); }
+  function openImagePanel() {
+    mediaCaret.current = textarea.current?.selectionEnd ?? input.content.length;
+    setMediaType("image");
+    if (mediaPanel.current) mediaPanel.current.open = true;
+    document.getElementById("media-label")?.focus();
+  }
   function insertMedia() {
-    const raw = mediaUrl.trim();
-    if (!safeAssetUrl(raw) || !mediaLabel.trim()) { setError("Enter an HTTPS or site-relative URL and a description for the image/file."); return; }
-    const url = (raw.startsWith("/") ? raw : new URL(raw).href).replace(/\(/g, "%28").replace(/\)/g, "%29");
-    const label = mediaLabel.trim().replace(/[\[\]\r\n]/g, " ");
-    const snippet = `\n\n${mediaType === "image" ? "!" : ""}[${label}](${url})\n\n`;
-    const start = textarea.current?.selectionStart ?? input.content.length;
-    const end = textarea.current?.selectionEnd ?? start;
-    const content = input.content.slice(0, start) + snippet + input.content.slice(end);
-    if (content.length > 60000) { setError("The article exceeds 60,000 characters."); return; }
-    field("content", content); setMediaUrl(""); setMediaLabel("");
-    requestAnimationFrame(() => { textarea.current?.focus(); textarea.current?.setSelectionRange(start + snippet.length, start + snippet.length); });
+    if (busy || uploading.current) return;
+    try {
+      const next = insertArticleMedia(input.content, mediaCaret.current ?? input.content.length, mediaType, mediaUrl, mediaLabel);
+      field("content", next.content); setMediaUrl(""); setMediaLabel(""); mediaCaret.current = next.caret;
+      if (mediaPanel.current) mediaPanel.current.open = false;
+      setNotice("Image or link inserted. Choose Preview to review it, then save the article.");
+      requestAnimationFrame(() => { textarea.current?.focus(); textarea.current?.setSelectionRange(next.caret, next.caret); });
+    } catch (cause) { setError((cause as Error).message); }
   }
 
   return <>
@@ -175,15 +191,27 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
         <p className="form-note">Readers automatically check for saved public edits on article pages. Saving also refreshes open blog tabs in this browser. Rebuild and deploy to update the initial article HTML, search/social previews and sitemap. Previously exported HTML stays public until that deployment, even after unpublishing or deleting.</p>
         <form onSubmit={save} aria-busy={busy}><fieldset disabled={busy}>
           <label htmlFor="post-title">Title</label><input id="post-title" value={input.title} required maxLength={160} onChange={e => field("title", e.target.value)} />
-          <p className="form-note">Automatic slug: <code>{input.slug || "Generated from the title"}</code>. Duplicate titles get a number; saved slugs stay fixed.</p>
+          <label htmlFor="post-slug">URL slug</label><input id="post-slug" value={input.slug} required maxLength={100} pattern="[a-z0-9]+(-[a-z0-9]+)*" autoCapitalize="none" autoCorrect="off" spellCheck={false} aria-describedby="post-slug-help" onChange={e => { setCustomSlug(true); field("slug", e.target.value); }} />
+          <button type="button" disabled={!input.title.trim()} onClick={() => { setCustomSlug(true); field("slug", slugForTitle(input.title)); }}>Generate from title</button>
+          <p id="post-slug-help" className="form-note">Use lowercase letters, numbers and hyphens. URL: <code>/blog/{input.slug || "your-slug"}/</code>. Changing a saved title keeps its URL unless you edit the slug or generate it again. Renaming needs a rebuild/deploy; old links need a redirect configured separately.</p>
           <label htmlFor="post-excerpt">Short introduction</label><textarea id="post-excerpt" value={input.excerpt} rows={3} required maxLength={500} onChange={e => field("excerpt", e.target.value)} />
           <label htmlFor="post-featured-image">Featured image URL (optional)</label><input id="post-featured-image" value={input.featuredImage} maxLength={2000} aria-describedby="post-image-help" placeholder="https://example.com/photo.webp or /images/photo.webp" onChange={e => field("featuredImage", e.target.value)} />
-          <p id="post-image-help" className="form-note">Use a public HTTPS or site-relative image URL. The blog card uses the site logo when this is empty or the image cannot load.</p>
+          <p id="post-image-help" className="form-note">Upload a featured image below, or use a public HTTPS or site-relative image URL. The blog card uses the site logo when this is empty or the image cannot load.</p>
+          <ImageUpload label="Upload featured image" onUpload={url => field("featuredImage", url)} onBusy={uploadBusy} disabled={busy} />
           <label htmlFor="post-featured-image-alt">Featured image description (optional)</label><input id="post-featured-image-alt" value={input.featuredImageAlt} maxLength={200} placeholder={input.title || "Describe the image"} onChange={e => field("featuredImageAlt", e.target.value)} />
+          {input.featuredImage && safeAssetUrl(input.featuredImage) && <img className="work-editor-preview" src={input.featuredImage} alt={input.featuredImageAlt || input.title || "Featured image preview"} />}
           <TokenInput key={`categories-${saved?.slug ?? "new"}`} id="post-categories" label="Categories" values={input.categories} maximum={10} onChange={values => field("categories", values)} />
           <TokenInput key={`tags-${saved?.slug ?? "new"}`} id="post-tags" label="Tags" values={input.tags} maximum={20} onChange={values => field("tags", values)} />
-          <label htmlFor="post-content">Article</label><ArticleEditor value={input.content} onChange={value => field("content", value)} textareaRef={textarea} />
-          <details className="article-insert"><summary>Insert an image or file</summary><label htmlFor="media-type">Insert</label><select id="media-type" value={mediaType} onChange={e => setMediaType(e.target.value)}><option value="image">Image</option><option value="asset">File / asset link</option></select><label htmlFor="media-url">Image or file URL</label><input id="media-url" value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://… or /images/…" /><label htmlFor="media-label">{mediaType === "image" ? "Image description (alt text)" : "Link label"}</label><input id="media-label" value={mediaLabel} maxLength={200} onChange={e => setMediaLabel(e.target.value)} /><button type="button" onClick={insertMedia}>Insert into article</button></details>
+          <label htmlFor="post-content">Article</label><ArticleEditor value={input.content} onChange={value => field("content", value)} textareaRef={textarea} onImage={openImagePanel} onSelectionChange={position => { mediaCaret.current = position; }} />
+          <details ref={mediaPanel} className="article-insert"><summary>Insert an image or file</summary>
+            <p className="form-note">Place the cursor in the article, then upload an image or paste a URL below. Add a description and choose Insert into article. Selected text is kept; the image is placed after it. With no cursor selected, it is added at the end.</p>
+            <label htmlFor="media-type">Insert</label><select id="media-type" value={mediaType} onChange={e => { setMediaType(e.target.value as "image" | "asset"); setMediaUrl(""); setMediaLabel(""); }}><option value="image">Image</option><option value="asset">File / asset link</option></select>
+            <label htmlFor="media-label">{mediaType === "image" ? "Image description (alt text)" : "Link label"}</label><input id="media-label" value={mediaLabel} maxLength={200} onChange={e => setMediaLabel(e.target.value)} />
+            {mediaType === "image" ? <ImageUpload label="Upload article image" successMessage="Image uploaded. Add its description, then choose Insert into article." onUpload={url => { setMediaUrl(url); setError(""); }} onBusy={uploadBusy} disabled={busy} /> : <p className="form-note">For PDFs and other files, paste an existing public URL below.</p>}
+            <label htmlFor="media-url">Image or file URL</label><input id="media-url" value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://… or /images/…" />
+            {mediaType === "image" && mediaUrl && safeAssetUrl(mediaUrl) && <img className="work-editor-preview" src={mediaUrl} alt={mediaLabel || "Uploaded image preview"} />}
+            <button type="button" onClick={insertMedia}>Insert into article</button>
+          </details>
           <label htmlFor="post-status">Visibility after saving</label><select id="post-status" value={input.status} onChange={e => { field("status", e.target.value as PostInput["status"]); setClock(Date.now()); }}><option value="draft">Draft — private</option><option value="published">Published — public</option><option value="scheduled">Schedule</option></select>
           {input.status === "scheduled" ? <><label htmlFor="post-date">Publish date and time</label><input id="post-date" type="datetime-local" value={input.scheduledFor} min={manilaDateTime(clock + 60000)} required onFocus={() => setClock(Date.now())} onChange={e => field("scheduledFor", e.target.value)} /><p className="form-note">Cebu/Manila time (UTC+8). Choose a future date and time. The article remains private until then.</p></> : <p className="form-note">{input.status === "published" ? "Publication date and time are recorded automatically when you first publish. Editing keeps the original publication time." : "Drafts are private. Publishing records the publication date automatically."}</p>}
           {saved?.publishedAt && <p className="form-note">{effectiveStatus(saved, clock) === "published" ? "Published" : "Scheduled"}: {dateLabel(saved.publishedAt)} (Cebu/Manila).</p>}

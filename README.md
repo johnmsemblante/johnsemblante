@@ -69,7 +69,7 @@ Use `npm ci` to install the versions in `package-lock.json`. The source-based pu
 | `npm run audit:seo:live` | Check the deployed sitemap/robots responses, crawler-file redirects and every listed page. Requires network access. |
 | `npm run sync:blog` | Refresh the anonymous public article snapshot for local development; also runs during build. |
 | `npm run test:forms` | Check confirmed submission/reset and failure preservation using mocked delivery. |
-| `npm run test:blog` | Check blog models, loading, editing, formatting, layout and live refresh. |
+| `npm run test:blog` | Check blog models, loading, editing, formatting, image uploads/insertion, layout and live refresh. |
 | `npm run test:admin` | Check dashboard access/navigation, Job Finder and the feed Worker. |
 | `npm run test:work` | Check portfolio data, search and grouped filter behavior. |
 | `npm run test:work-admin` | Check Works validation, public merging/reads, transactions and server-side uploads. |
@@ -131,9 +131,13 @@ The `Project` type in `site.ts` also supports optional `challenge`, `approach`, 
 
 Keep published slugs stable. Renaming one changes its URL and requires a redirect if old links should continue working.
 
+Both dashboard editors now offer **URL slug** and **Generate from title**. Changing a saved title keeps its URL until you explicitly edit/regenerate the slug. Saving a rename asks for confirmation, checks for collisions and moves the records atomically. Rebuild/deploy after renaming to replace clean pages and update the sitemap; old links need separately configured redirects. See [article URL changes](docs/admin-setup.md#changing-an-article-url) and [Works administration](docs/works-admin.md). Release this feature with the updated Firestore rules before Hosting; the blog rules preserve original timestamps during a rename.
+
 ### Blog: draft, preview and publish
 
-For normal publishing, use **Blog Management** at `/adminauth/blog/`. Its full-width post library opens a right-side editor for new or selected posts. The editor generates slugs, accepts comma-separated categories/tags (including pasted lists), and supports featured-image URLs, Write/Preview formatting, image/file URLs, SEO overrides, drafts, publishing, future Manila-time scheduling and confirmed deletion. Featured images appear beside article details in full-width blog rows, with the site logo for empty or broken card images. Compact tags follow the Work card style. The article toolbar supports H2/H3, emphasis, lists, quotes, code and links; it is a Markdown editor with preview. Direct file uploads are not enabled.
+For normal publishing, use **Blog** at `/adminauth/blog/`. Its full-width post library opens a right-side editor for new or selected posts. The editor generates slugs, accepts comma-separated categories/tags (including pasted lists), and supports featured-image uploads/URLs, Write/Preview formatting, article images, file links, SEO overrides, drafts, publishing, future Manila-time scheduling and confirmed deletion. Featured images appear beside article details in full-width blog rows, with the site logo for empty or broken card images. Compact tags follow the Work card style. The article toolbar supports H2/H3, emphasis, lists, quotes, code, links and an **Image** button; it is a Markdown editor with preview.
+
+Use **Upload featured image** to choose a cover from your computer. To place an image between paragraphs, put the cursor in the article, click **Image**, choose **Upload article image**, enter a description and click **Insert into article**. Selected text is retained, with the image inserted after it. Preview the result and save the post. Both editors use the existing admin-only Cloudinary upload service for JPG/PNG/WebP/AVIF images up to 5 MB. Existing public image URLs still work; PDFs and other non-image files use public URLs. Uploading stores the image immediately, but does not save or publish the article. See [blog image uploads](docs/admin-setup.md#blog-image-uploads) for setup and limits.
 
 After saving, readers receive live database updates; rebuild and deploy to update initial HTML, social previews, the sitemap and clean article routes. Share `/blog/your-slug/` after that deployment. Legacy `?post=` links retain generic initial sharing metadata. See [admin setup](docs/admin-setup.md) and [SEO publishing](docs/seo.md) for the exact workflow, scheduling and refresh limitations.
 

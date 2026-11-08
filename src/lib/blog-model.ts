@@ -31,7 +31,7 @@ export function normalizeLabels(values: string[]) {
   return [...unique.values()];
 }
 export function validatePost(input: PostInput, options: { now?: number; allowDueSchedule?: boolean } = {}): string | null {
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) || input.slug.length > 100) return "A valid automatically generated slug is required.";
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug) || input.slug.length > 100) return "Use a URL slug of up to 100 lowercase letters, numbers and single hyphens between words.";
   for (const [name, value, maximum] of [["Title", input.title, 160], ["Excerpt", input.excerpt, 500], ["Article", input.content, 60000]] as const) {
     if (typeof value !== "string" || !value.trim() || value.length > maximum) return `${name} is required and must be at most ${maximum.toLocaleString()} characters.`;
   }

@@ -12,8 +12,33 @@ function load(file, mocks = {}) {
 }
 const model = load('src/lib/blog-model.ts');
 const { formatArticle } = load('src/lib/article-formatting.ts', { './blog-model': model });
+const { insertArticleMedia } = load('src/lib/article-media.ts', { './blog-model': model });
 const { BlogArticleContent } = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model });
 const render = content => renderToStaticMarkup(React.createElement(BlogArticleContent, { content }));
+
+test('uploaded images insert between paragraphs and render with descriptions without losing text', () => {
+  const before = 'First paragraph.'; const after = 'Second paragraph.';
+  const url = 'https://res.cloudinary.com/demo/image/upload/v1/photo.webp';
+  const next = insertArticleMedia(before + '\n\n' + after, before.length, 'image', url, 'Cebu waterfront');
+  const html = render(next.content);
+  assert.ok(html.indexOf(before) < html.indexOf('<figure'));
+  assert.ok(html.indexOf('</figure>') < html.indexOf(after));
+  assert.ok(html.includes('alt="Cebu waterfront"'));
+  assert.ok(html.includes('<figcaption>Cebu waterfront</figcaption>'));
+  const repeated = insertArticleMedia(next.content, next.caret, 'image', url, 'Second view');
+  assert.equal((render(repeated.content).match(/<figure/g) || []).length, 2);
+  assert.ok(repeated.content.includes(before) && repeated.content.includes(after));
+});
+
+test('media insertion rejects invalid input and oversized content while retaining URL file links', () => {
+  for (const url of ['javascript:bad', '//evil.example/a', 'data:image/png,bad', 'https://user:pass@example.com/a']) assert.throws(() => insertArticleMedia('Original', 4, 'image', url, 'Photo'));
+  for (const label of ['', '[]\n', 'a'.repeat(201)]) assert.throws(() => insertArticleMedia('Original', 4, 'image', '/photo.webp', label));
+  assert.throws(() => insertArticleMedia('x'.repeat(60000), 10, 'image', '/photo.webp', 'Photo'), /60,000/);
+  const file = insertArticleMedia('Body', 999, 'asset', '/files/guide(1).pdf', 'Read [the] guide');
+  assert.ok(file.content.startsWith('Body'));
+  assert.ok(render(file.content).includes('href="/files/guide%281%29.pdf"'));
+  assert.ok(!render(file.content).includes('<figure'));
+});
 
 test('inline toolbar wraps the selection, restores it, and toggles existing formatting', () => {
   const bold = formatArticle('Hello world', 6, 11, 'bold');

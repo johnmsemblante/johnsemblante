@@ -11,11 +11,16 @@ if (!['127.0.0.1', 'localhost'].includes(host)) throw new Error('Rules tests req
 const moduleUrl = source => `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`;
 const compile = path => ts.transpileModule(readFileSync(path, 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2017 } }).outputText;
 const modelUrl = moduleUrl(compile('src/lib/blog-model.ts'));
-const { emptyPost } = await import(modelUrl);
+const { emptyPost, editablePost, postFromData } = await import(modelUrl);
 const storeSource = compile('src/lib/blog-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./blog-model"', JSON.stringify(modelUrl));
 const { saveManagedPost, deleteManagedPost } = await import(moduleUrl(storeSource));
 const readerSource = compile('src/lib/public-blog-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./blog-model"', JSON.stringify(modelUrl));
 const { readPublicArticle } = await import(moduleUrl(readerSource));
+const industriesUrl = moduleUrl(compile('src/content/industries.ts'));
+const workModelUrl = moduleUrl(compile('src/lib/work-model.ts').replace('"@/content/industries"', JSON.stringify(industriesUrl)));
+const { mergeWorks } = await import(workModelUrl);
+const workStoreUrl = moduleUrl(compile('src/lib/work-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./work-model"', JSON.stringify(workModelUrl)));
+const { writeWork } = await import(workStoreUrl);
 let environment;
 const article = (status = 'draft') => ({ schemaVersion: 2, slug: 'an-article', title: 'An article', excerpt: 'Intro', category: 'Notes', categories: ['Notes'], tags: ['Firebase'], content: 'A paragraph\n\n## Heading', seoTitle: '', seoDescription: '', status, publishedAt: status === 'published' ? serverTimestamp() : null, releaseAt: 0, revision: 1, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
 const adminDb = () => environment.authenticatedContext('owner', { email_verified: true }).firestore();
@@ -194,3 +199,90 @@ test('Works drafts remain private and publication uses a matching atomic public 
 test('Works reject unapproved writes, mismatched public records and stale revisions',async()=>{const anon=environment.unauthenticatedContext().firestore();await assertFails(workBatch(anon,workProject('published')));const db=adminDb();await assertSucceeds(workBatch(db,workProject('published')));await assertFails(workBatch(db,workProject('published'),1));await assertFails(setDoc(doc(db,'publicWorks','sample-work'),{slug:'sample-work',deleted:false,project:{...workProject('published'),title:'Forged'}}));await assertFails(setDoc(doc(db,'managedWorks','sample-work'),{project:workProject('draft'),revision:2,updatedAt:serverTimestamp()}));});
 test('Works deletion leaves a tombstone so source projects do not reappear',async()=>{const db=adminDb();await assertSucceeds(workBatch(db,workProject('published')));await assertFails(deleteDoc(doc(db,'managedWorks','sample-work')));const batch=writeBatch(db);batch.delete(doc(db,'managedWorks','sample-work'));batch.set(doc(db,'publicWorks','sample-work'),{slug:'sample-work',deleted:true});await assertSucceeds(batch.commit());assert.equal((await getDoc(doc(environment.unauthenticatedContext().firestore(),'publicWorks','sample-work'))).data().deleted,true);});
 test('Works validates URLs and full label lists while keeping publication within rule limits',async()=>{const db=adminDb();await assertFails(workBatch(db,{...workProject('published'),website:'javascript:alert(1)'}));const labels=Array.from({length:20},(_,i)=>'Entry '+i);await assertSucceeds(workBatch(db,{...workProject('published'),technologies:labels,tags:labels,capabilities:labels,objectives:labels,features:labels,contributions:labels}));});
+
+test('blog rename preserves timestamps, content and privacy across published, draft and scheduled posts', async () => {
+  const db = adminDb();
+  for (const status of ['published', 'draft', 'scheduled']) {
+    const schedule = new Date(Date.now() + 86400000).toISOString().slice(0,16);
+    const original = await saveManagedPost(db, { ...emptyPost(), title: 'Rename ' + status, excerpt: 'Intro', content: '## Keep this content', status, scheduledFor: schedule, tags: ['Keep'], featuredImage: '/images/keep.webp' }, null, []);
+    const oldData = (await getDocFromServer(doc(db,'blogPosts',original.slug))).data();
+    const moved = await saveManagedPost(db, { ...editablePost(original), title: 'New title' }, original, [], {slug: original.slug + '-new'});
+    const newData = (await getDocFromServer(doc(db,'blogPosts',moved.slug))).data();
+    assert.equal((await getDocFromServer(doc(db,'blogPosts',original.slug))).exists(), false);
+    assert.ok(oldData.createdAt.isEqual(newData.createdAt));
+    assert.equal(moved.publishedAt, original.publishedAt);
+    assert.equal(moved.content, original.content); assert.equal(moved.featuredImage, original.featuredImage);
+    assert.equal(newData.releaseAt, oldData.releaseAt);
+    assert.equal(moved.revision,1);
+    const anonRef=doc(environment.unauthenticatedContext().firestore(),'blogPosts',moved.slug);
+    if(status==='published')await assertSucceeds(getDocFromServer(anonRef));else await assertFails(getDocFromServer(anonRef));
+    const edited = await saveManagedPost(db, { ...editablePost(moved), excerpt: 'Still editable' }, moved, []);
+    assert.equal(edited.revision,2);
+    await assert.rejects(saveManagedPost(db, editablePost(original), original, [], {slug:'stale-'+status}), /revision-conflict/);
+  }
+});
+
+test('blog explicit slugs reject collisions, reserved source URLs and invalid values without losing either record', async () => {
+  const db=adminDb();const original=postFromData('public-article',(await getDocFromServer(doc(db,'blogPosts','public-article'))).data());
+  for(const slug of ['an-article','reserved-source']) {
+    await assert.rejects(saveManagedPost(db,editablePost(original),original,['reserved-source'],{slug}),/slug-in-use/);
+    assert.equal((await getDocFromServer(doc(db,'blogPosts',original.slug))).data().revision,original.revision);
+  }
+  for(const slug of ['','UPPER','with spaces','../bad','double--dash','x'.repeat(101)]) await assert.rejects(saveManagedPost(db,editablePost(original),original,[],{slug}),/URL slug/);
+  const custom=await saveManagedPost(db,{...emptyPost(),title:'A different title',excerpt:'Intro',content:'Body'},null,[],{slug:'chosen-slug'});
+  assert.equal(custom.slug,'chosen-slug');
+  await assert.rejects(saveManagedPost(db,editablePost(custom),null,[],{slug:'chosen-slug'}),/slug-in-use/);
+});
+
+test('blog rename rules require deleting a real source atomically and forbid forged timestamp inheritance', async () => {
+  const db=adminDb();const old=(await getDocFromServer(doc(db,'blogPosts','public-article'))).data();
+  const moved={...old,slug:'renamed-post',renamedFrom:'public-article',revision:1,updatedAt:serverTimestamp()};
+  await assertFails(setDoc(doc(db,'blogPosts','renamed-post'),moved));
+  for(const patch of [{renamedFrom:'missing'}, {createdAt:Timestamp.fromMillis(0)}, {publishedAt:Timestamp.fromMillis(0)}]) {
+    const batch=writeBatch(db);batch.set(doc(db,'blogPosts','renamed-post'),{...moved,...patch});batch.delete(doc(db,'blogPosts','public-article'));await assertFails(batch.commit());
+  }
+  const legacy=postFromData('legacy',(await getDocFromServer(doc(db,'blogPosts','legacy'))).data());
+  const renamedLegacy=await saveManagedPost(db,editablePost(legacy),legacy,[],{slug:'legacy-renamed'});
+  assert.equal(renamedLegacy.publishedAt,legacy.publishedAt);
+});
+
+test('Works rename moves managed/public records and hides a renamed source baseline', async () => {
+  const db=adminDb(),source=workProject('published');
+  const first=await writeWork(db,source,null);
+  const moved=await writeWork(db,{...source,slug:'managed-renamed'},first.revision,false,{originalSlug:source.slug});
+  assert.equal(moved.revision,1);
+  assert.equal((await getDocFromServer(doc(db,'managedWorks',source.slug))).exists(),false);
+  assert.deepEqual((await getDocFromServer(doc(db,'publicWorks',source.slug))).data(),{slug:source.slug,deleted:true});
+  assert.equal((await getDocFromServer(doc(db,'publicWorks',moved.project.slug))).data().project.slug,'managed-renamed');
+  const sourceOnly={...source,slug:'source-only',image:{src:'/images/original.webp',alt:'Original screenshot'}};
+  await writeWork(db,{...sourceOnly,slug:'source-renamed'},null,false,{originalSlug:sourceOnly.slug,reservedSlugs:[sourceOnly.slug]});
+  const publicRecords=(await getDocs(collection(db,'publicWorks'))).docs.map(d=>d.data());
+  const merged=mergeWorks([source,sourceOnly],publicRecords);
+  assert.deepEqual(merged.map(p=>p.slug).sort(),['managed-renamed','source-renamed']);
+  assert.equal(merged.find(p=>p.slug==='source-renamed').image.src,sourceOnly.image.src);
+  await assert.rejects(writeWork(db,{...source,slug:'stale'},first.revision,false,{originalSlug:source.slug}),/changed in another tab/);
+});
+
+test('Works rename rejects occupied, reserved and deleted slugs and keeps drafts private', async () => {
+  const db=adminDb(),source=workProject();const saved=await writeWork(db,source,null);
+  await writeWork(db,{...source,slug:'taken'},null);
+  await writeWork(db,{...source,slug:'deleted'},null,true);
+  for(const slug of ['taken','deleted','source-reserved']) await assert.rejects(writeWork(db,{...source,slug},saved.revision,false,{originalSlug:source.slug,reservedSlugs:['source-reserved']}),/already/);
+  const moved=await writeWork(db,{...source,slug:'private-new'},saved.revision,false,{originalSlug:source.slug});
+  const publicData=(await getDocFromServer(doc(environment.unauthenticatedContext().firestore(),'publicWorks',moved.project.slug))).data();
+  assert.deepEqual(publicData,{slug:'private-new',deleted:true});
+  await assertFails(getDocFromServer(doc(environment.unauthenticatedContext().firestore(),'managedWorks',moved.project.slug)));
+  await assert.rejects(writeWork(db,{...source,slug:'industry'},null,false,{originalSlug:null}),/reserved/);
+});
+
+test('renaming supports the full label limits for published blog posts and Works', async () => {
+  const db=adminDb();
+  const labels=Array.from({length:20},(_,i)=>('Entry '+i).padEnd(80,'x'));
+  const original=await saveManagedPost(db,{...emptyPost(),title:'Many labels',excerpt:'Intro',content:'Body',status:'published',categories:labels.slice(0,10),tags:labels},null,[]);
+  const moved=await saveManagedPost(db,editablePost(original),original,[],{slug:'many-labels-renamed'});
+  assert.equal(moved.tags.length,20);assert.equal(moved.publishedAt,original.publishedAt);
+  const project={...workProject('published'),technologies:labels,tags:labels,capabilities:labels,objectives:labels,features:labels,contributions:labels};
+  const work=await writeWork(db,project,null);
+  const renamed=await writeWork(db,{...project,slug:'many-work-labels'},work.revision,false,{originalSlug:project.slug});
+  assert.equal(renamed.project.contributions.length,20);
+});

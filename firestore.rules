@@ -9,42 +9,20 @@ service cloud.firestore {
     function text(value, maximum) {
       return value is string && value.size() > 0 && value.size() <= maximum && value.matches('(?s).*[^\\s].*');
     }
-    function labelStrings(value, count) {
-      return (count <= 0 || value[0] is string)
-        && (count <= 1 || value[1] is string)
-        && (count <= 2 || value[2] is string)
-        && (count <= 3 || value[3] is string)
-        && (count <= 4 || value[4] is string)
-        && (count <= 5 || value[5] is string)
-        && (count <= 6 || value[6] is string)
-        && (count <= 7 || value[7] is string)
-        && (count <= 8 || value[8] is string)
-        && (count <= 9 || value[9] is string)
-        && (count <= 10 || value[10] is string)
-        && (count <= 11 || value[11] is string)
-        && (count <= 12 || value[12] is string)
-        && (count <= 13 || value[13] is string)
-        && (count <= 14 || value[14] is string)
-        && (count <= 15 || value[15] is string)
-        && (count <= 16 || value[16] is string)
-        && (count <= 17 || value[17] is string)
-        && (count <= 18 || value[18] is string)
-        && (count <= 19 || value[19] is string);
-    }
     function labels(value, minimum, maximum) {
       let count = value.size();
       let joined = value.join('\u0000');
-      // Preserve item boundaries to validate all labels
-      // without evaluating a separate chain of functions for every array entry.
-      return value is list && count >= minimum && count <= maximum && value.toSet().size() == count && labelStrings(value, count)
-        && (count == 0 || (joined.split('\u0000').size() == count
+      // Exact round-trip equality verifies string types and item boundaries,
+      // leaving enough rule expressions for atomic slug moves at full label limits.
+      return value is list && count >= minimum && count <= maximum && value.toSet().size() == count
+        && (count == 0 || (joined.split('\u0000') == value
           && joined.matches('(?s)[^\x00]{1,80}(\x00[^\x00]{1,80})*')
           && !joined.matches('(?s)(.*\x00)?\\s*(\x00.*)?')));
     }
     function validPost(slug) {
       let p = request.resource.data;
       return p.keys().hasAll(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt'])
-        && p.keys().hasOnly(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt', 'featuredImage', 'featuredImageAlt'])
+        && p.keys().hasOnly(['schemaVersion', 'slug', 'title', 'excerpt', 'category', 'categories', 'tags', 'content', 'publishedAt', 'releaseAt', 'status', 'seoTitle', 'seoDescription', 'revision', 'createdAt', 'updatedAt', 'featuredImage', 'featuredImageAlt', 'renamedFrom'])
         && p.schemaVersion == 2 && p.slug == slug && slug.size() <= 100 && slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
         && text(p.title, 160) && text(p.excerpt, 500) && text(p.content, 60000)
         && labels(p.categories, 1, 10) && p.category == p.categories[0] && labels(p.tags, 0, 20)
@@ -59,12 +37,19 @@ service cloud.firestore {
           || (p.status == 'scheduled' && p.publishedAt is timestamp && p.releaseAt > request.time.toMillis() && p.releaseAt == p.publishedAt.toMillis()))
         && p.revision is int && p.revision > 0 && p.createdAt is timestamp && p.updatedAt == request.time;
     }
-    function validPublicationUpdate() {
+    function validPublicationUpdate(old) {
       let p = request.resource.data;
-      let old = resource.data;
       return p.status != 'published' || p.publishedAt == request.time
         || (old.status == 'published' && (old.get('schemaVersion', 1) == 1 || p.publishedAt == old.publishedAt))
         || (old.status == 'scheduled' && old.publishedAt <= request.time && p.publishedAt == old.publishedAt);
+    }
+    function validPostRename(slug) {
+      let from = request.resource.data.renamedFrom;
+      let path = /databases/$(database)/documents/blogPosts/$(from);
+      return from is string && from != slug && from.size() <= 100 && from.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && exists(path) && !existsAfter(path)
+        && request.resource.data.createdAt == get(path).data.createdAt
+        && validPublicationUpdate(get(path).data);
     }
     match /admins/{uid} {
       allow get: if request.auth != null && request.auth.uid == uid;
@@ -144,9 +129,11 @@ service cloud.firestore {
       allow get, list: if admin() || resource.data.status == 'published'
         || (resource.data.status == 'scheduled' && resource.data.releaseAt <= request.time.toMillis());
       allow create: if admin() && validPost(slug) && request.resource.data.revision == 1
-        && request.resource.data.createdAt == request.time
-        && (request.resource.data.status != 'published' || request.resource.data.publishedAt == request.time);
-      allow update: if admin() && validPost(slug) && validPublicationUpdate()
+        && (request.resource.data.keys().hasAny(['renamedFrom']) ? validPostRename(slug)
+          : (request.resource.data.createdAt == request.time
+            && (request.resource.data.status != 'published' || request.resource.data.publishedAt == request.time)));
+      allow update: if admin() && validPost(slug) && validPublicationUpdate(resource.data)
+        && (!request.resource.data.keys().hasAny(['renamedFrom']) || request.resource.data.renamedFrom == resource.data.get('renamedFrom', ''))
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.revision == resource.data.revision + 1;
       allow delete: if admin();

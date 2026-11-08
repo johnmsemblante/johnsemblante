@@ -7,7 +7,7 @@ export const workSlug = (title: string) => title.normalize("NFKD").replace(/[\u0
 export const assetUrl = (url: string) => /^https:\/\/[^\s<>]+$/.test(url) || /^\/[^/\s<>][^\s<>]*$/.test(url);
 export function emptyWork(): Project { return { slug: "", title: "", summary: "", role: "", technologies: [], industries: ["other"], projectType: "client", publication: "draft", status: "live" }; }
 export function validateWork(p: Project): string {
-  if (!p || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.slug) || p.slug.length > 100) return "Enter a title that generates a valid project slug.";
+  if (!p || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.slug) || p.slug.length > 100 || p.slug === "industry") return "Use a URL slug of up to 100 lowercase letters, numbers and single hyphens between words. The slug industry is reserved.";
   for (const [key, max] of [["title",160],["summary",1000],["role",200]] as const) if (typeof p[key] !== "string" || !p[key].trim() || p[key].length > max) return `Enter ${key} (up to ${max} characters).`;
   if (!["client","venture","concept"].includes(p.projectType) || !["draft","published"].includes(p.publication) || !["archived","live","planned","in-progress"].includes(p.status)) return "Choose a valid project type, status and visibility.";
   if (!Array.isArray(p.industries) || !p.industries.length || p.industries.length > 9 || p.industries.some(i => !industries.some(v => v.slug === i))) return "Select at least one industry.";

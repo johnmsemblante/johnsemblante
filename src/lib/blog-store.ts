@@ -1,17 +1,23 @@
 "use client";
 
 import { doc, getDocFromServer, runTransaction, serverTimestamp, Timestamp, type Firestore } from "firebase/firestore";
-import { postFromData, scheduleMillis, slugCandidate, slugForTitle, type ManagedPost, type PostInput } from "./blog-model";
+import { postFromData, scheduleMillis, slugCandidate, slugForTitle, validatePost, type ManagedPost, type PostInput } from "./blog-model";
 
-export async function saveManagedPost(db: Firestore, input: PostInput, saved: ManagedPost | null, reservedSlugs: string[]): Promise<ManagedPost> {
+export async function saveManagedPost(db: Firestore, input: PostInput, saved: ManagedPost | null, reservedSlugs: string[], options: { slug?: string } = {}): Promise<ManagedPost> {
+  const base = options.slug ?? saved?.slug ?? slugForTitle(input.title);
+  const problem = validatePost({ ...input, slug: base });
+  if (problem) throw new Error(problem);
   const slug = await runTransaction(db, async transaction => {
-    const base = saved?.slug ?? slugForTitle(input.title);
+    const original = saved ? doc(db, "blogPosts", saved.slug) : null;
+    const previous = original ? await transaction.get(original) : null;
+    if (saved && (!previous?.exists() || previous.data().revision !== saved.revision)) throw new Error("revision-conflict");
+    const renaming = !!saved && base !== saved.slug;
     let selected = base;
     let reference = doc(db, "blogPosts", selected);
-    let current = await transaction.get(reference);
-    if (saved) {
-      if (!current.exists() || current.data().revision !== saved.revision) throw new Error("revision-conflict");
-    } else {
+    let current = saved && !renaming ? previous! : await transaction.get(reference);
+    if (renaming || (!saved && options.slug !== undefined)) {
+      if (current.exists() || reservedSlugs.includes(selected)) throw new Error("slug-in-use");
+    } else if (!saved) {
       let attempt = 0;
       while (current.exists() || reservedSlugs.includes(selected)) {
         if (++attempt > 20) throw new Error("slug-conflict");
@@ -20,15 +26,17 @@ export async function saveManagedPost(db: Firestore, input: PostInput, saved: Ma
         current = await transaction.get(reference);
       }
     }
+    const prior = previous ?? current;
     let publishedAt: ReturnType<typeof serverTimestamp> | Timestamp | null = null;
     if (input.status === "scheduled") publishedAt = Timestamp.fromMillis(scheduleMillis(input.scheduledFor));
     if (input.status === "published") {
-      const existing = current.exists() ? postFromData(selected, current.data()) : null;
+      const existing = prior.exists() ? postFromData(saved?.slug ?? selected, prior.data()) : null;
       const alreadyPublic = existing && existing.publishedAt && (existing.status === "published" || (existing.status === "scheduled" && Date.parse(existing.publishedAt) <= Date.now()));
-      publishedAt = alreadyPublic ? (current.data()!.publishedAt instanceof Timestamp ? current.data()!.publishedAt : Timestamp.fromDate(new Date(existing.publishedAt))) : serverTimestamp();
+      publishedAt = alreadyPublic ? (prior.data()!.publishedAt instanceof Timestamp ? prior.data()!.publishedAt : Timestamp.fromDate(new Date(existing.publishedAt))) : serverTimestamp();
     }
     const { scheduledFor: _schedule, ...fields } = input;
-    transaction.set(reference, { ...fields, slug: selected, category: input.categories[0], schemaVersion: 2, publishedAt, releaseAt: input.status === "scheduled" ? scheduleMillis(input.scheduledFor) : 0, revision: (saved?.revision ?? 0) + 1, createdAt: current.exists() ? current.data().createdAt : serverTimestamp(), updatedAt: serverTimestamp() });
+    transaction.set(reference, { ...fields, slug: selected, category: input.categories[0], schemaVersion: 2, publishedAt, releaseAt: input.status === "scheduled" ? scheduleMillis(input.scheduledFor) : 0, revision: renaming ? 1 : (saved?.revision ?? 0) + 1, createdAt: prior.exists() ? prior.data().createdAt : serverTimestamp(), updatedAt: serverTimestamp(), ...(renaming ? { renamedFrom: saved!.slug } : {}) });
+    if (renaming) transaction.delete(original!);
     return selected;
   });
   try {
