@@ -174,3 +174,22 @@ Single venture pages use `venture.logo` for both Open Graph and Twitter previews
 ## Managed Works publishing
 
 Production builds now export the merged source/managed Work collection to clean detail routes, industry lists, homepage project sections and the sitemap. Public Work explorers and detail views refresh published data after hydration. Newly published projects have an instant `/work/?project=slug` view until a rebuild/deploy creates their clean URL. Share the clean URL after deployment for project-specific social metadata. As with blog posts, editing, drafting or deleting a Work requires rebuild/deployment to update or remove its initial HTML; browser refresh cannot remove an old exported file. See [Works administration](works-admin.md).
+
+## Sitemap fetch check - 8 November 2026
+
+The owner reported the November 6 `/sitemap.xml` submission still showing Unknown / Couldn't fetch, with no Last read date and zero discovered pages. That is not proof of a specific XML defect, nor does it establish that Google has successfully processed the current sitemap. Search Console's detailed fetch error and Google's crawler logs are unavailable to this code review.
+
+Direct live requests on November 8 returned HTTP 200 for the canonical HTTPS sitemap (35 URLs, 2,932 uncompressed bytes) and robots.txt. The sitemap has the expected UTF-8 declaration, sitemap namespace, absolute production URLs and no admin routes. Robots permits crawling and references the canonical sitemap. HTTP requests redirect to HTTPS. GET, HEAD, identity encoding and requests bearing Googlebot/Inspection user-agent strings all succeeded. User-agent strings do not make those requests originate from Google infrastructure.
+
+One reproducible routing issue was found: `/sitemap.xml/` returned 404. The submitted path reported by the owner does not have that trailing slash, so this does not explain that particular Search Console row. Hosting now redirects extra-slash variants of sitemap.xml and robots.txt to the canonical files. Explicit XML/plain-text content types and `public,max-age=0,must-revalidate` headers make crawler-file delivery predictable after releases. The canonical sitemap was already valid and accessible; these changes are not a confirmed cure for Google's reported fetch failure. No artificial lastmod dates, duplicate sitemap URLs or unrelated robots exclusions were added.
+
+Run `npm run audit:seo:live` after deployment. It checks current HTTPS status/content, sitemap URLs/namespace/duplicates, crawler request variants, HEAD, robots discovery, canonical crawler-file redirects and every listed page's response/canonical/noindex settings. It does not access Search Console or impersonate a verified Google crawler. `npm run test:seo` also tests its error detection without network requests.
+
+Owner steps:
+
+1. Select the verified URL-prefix property `https://johnmsemblanteapp.web.app/`.
+2. Resubmit the canonical sitemap once: `https://johnmsemblanteapp.web.app/sitemap.xml`, without a trailing slash. Use `sitemap.xml` if the form already displays the site's URL prefix.
+3. Revisit the Sitemaps report after Google processes that request; look for a new Last read date, status and discovered-page count. Google controls retry timing; no specific turnaround is guaranteed.
+4. If a new attempt still fails, use URL Inspection on that exact sitemap URL and select Test live URL. Successful live retrieval helps establish availability from the inspection service; it does not guarantee processing by the sitemap crawler. Record the submission/last-read timestamps and any detailed HTTP error for further diagnosis.
+
+Google says it retries failed fetches for a few days and may stop after continued failures; resubmitting creates a new fetch request. Do not repeatedly rename/delete sitemap files, request indexing of the XML itself, or remove the ownership verification tag. Reference: [Google Sitemaps report and fetch troubleshooting](https://support.google.com/webmasters/answer/7451001?hl=en).

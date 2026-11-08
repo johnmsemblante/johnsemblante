@@ -60,9 +60,47 @@
             "value": "public,max-age=0,must-revalidate"
           }
         ]
+      },
+      {
+        "source": "/sitemap.xml",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml; charset=utf-8"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=0,must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "/robots.txt",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/plain; charset=utf-8"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public,max-age=0,must-revalidate"
+          }
+        ]
       }
     ],
-    "site": "johnmsemblanteapp"
+    "site": "johnmsemblanteapp",
+    "redirects": [
+      {
+        "source": "/sitemap.xml/",
+        "destination": "/sitemap.xml",
+        "type": 301
+      },
+      {
+        "source": "/robots.txt/",
+        "destination": "/robots.txt",
+        "type": 301
+      }
+    ]
   },
   "firestore": {
     "rules": "firestore.rules",

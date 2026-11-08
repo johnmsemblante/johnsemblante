@@ -66,6 +66,7 @@ Use `npm ci` to install the versions in `package-lock.json`. The source-based pu
 | `npm run typecheck` | Check TypeScript without publishing anything. |
 | `npm run build` | Fetch public blog and Works snapshots, compile, check TypeScript, and export the production site to `out/`. |
 | `npm run audit:seo` | Check metadata, canonicals, headings, images, sitemap and private-page indexing in the current export. |
+| `npm run audit:seo:live` | Check the deployed sitemap/robots responses, crawler-file redirects and every listed page. Requires network access. |
 | `npm run sync:blog` | Refresh the anonymous public article snapshot for local development; also runs during build. |
 | `npm run test:forms` | Check confirmed submission/reset and failure preservation using mocked delivery. |
 | `npm run test:blog` | Check blog models, loading, editing, formatting, layout and live refresh. |
@@ -279,6 +280,8 @@ firebase deploy --only hosting --project johnmsemblanteapp
 This replaces the live website at https://johnmsemblanteapp.web.app/. Wait for `Deploy complete!`, then open the live pages and verify the changes. The CLI uploads the existing `out/` directory; it does not run the build for you. Never deploy after a failed build, because an older export may still exist.
 
 Firebase serves real exported page files with trailing slashes and a real 404 response. Do not add the old site's catch-all `/index.html` SPA rewrite. Hashed Next.js static assets use long-lived immutable caching.
+
+After deploying, run `npm run audit:seo:live`. The canonical crawler files are `/sitemap.xml` and `/robots.txt`, without ending slashes; their slash variants redirect to those files. Both crawler files revalidate on requests. A passing live audit confirms current public responses, not successful Google processing or indexing. See [sitemap troubleshooting](docs/seo.md#sitemap-fetch-check---8-november-2026) if Search Console reports Couldn't fetch.
 
 Official reference: [Firebase Hosting deployment workflow](https://firebase.google.com/docs/hosting/test-preview-deploy).
 
