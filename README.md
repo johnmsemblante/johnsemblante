@@ -2,13 +2,13 @@
 
 A portfolio for John Clark Semblante, a Cebu web developer whose professional title is WordPress/Full Stack Developer, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
-- **Live website:** https://johnmsemblanteapp.web.app/
+- **Live website:** https://johnsemblante.com/
 - **Repository:** https://github.com/johnmsemblante/johnsemblante
 - **Firebase project and Hosting site:** `johnmsemblanteapp`
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
-The website is live and search indexing is enabled. `johnsemblante.com` is the intended future custom domain; the current canonical URL is the Firebase URL above.
+The website is live and search indexing is enabled. `https://johnsemblante.com` is the canonical production URL. The existing Firebase addresses remain available and serve metadata pointing to the custom domain.
 
 ## SEO and publishing
 
@@ -281,7 +281,7 @@ Publish the build:
 firebase deploy --only hosting --project johnmsemblanteapp
 ```
 
-This replaces the live website at https://johnmsemblanteapp.web.app/. Wait for `Deploy complete!`, then open the live pages and verify the changes. The CLI uploads the existing `out/` directory; it does not run the build for you. Never deploy after a failed build, because an older export may still exist.
+This replaces the live website at https://johnsemblante.com/. Wait for `Deploy complete!`, then open the live pages and verify the changes. The CLI uploads the existing `out/` directory; it does not run the build for you. Never deploy after a failed build, because an older export may still exist.
 
 Firebase serves real exported page files with trailing slashes and a real 404 response. Do not add the old site's catch-all `/index.html` SPA rewrite. Hashed Next.js static assets use long-lived immutable caching.
 
@@ -302,7 +302,9 @@ In the [Firebase console](https://console.firebase.google.com/project/johnmsembl
 - `src/app/sitemap.ts`: generates URLs for pages, projects, ventures and published posts.
 - Venture route metadata: individual titles, descriptions, canonicals and brand images.
 
-To launch `johnsemblante.com`, add and verify it in Firebase Hosting, follow Firebase's DNS instructions, and wait for HTTPS to work. Then update `site.url`, rebuild and deploy. Confirm canonicals, sitemap and social image URLs use the chosen domain. Changing the string alone does not connect a domain.
+`johnsemblante.com` is connected to the existing `johnmsemblanteapp` Hosting site. The 10 November 2026 domain release updates `site.url`, generated canonicals, sitemap, structured data and social-image URLs. The Firebase project ID, web app configuration and existing auth handler domain stay the same. Firebase Authentication must authorize `johnsemblante.com`; both Cloudflare Workers include `https://johnsemblante.com` in `ALLOWED_ORIGINS` and require redeployment after that change.
+
+Use `npm run audit:seo:live` to check the custom domain after release. Keep the ownership TXT record and the Google verification build variable. Add and verify `https://johnsemblante.com/` separately in Search Console and submit `https://johnsemblante.com/sitemap.xml`; verification of the old URL-prefix property does not cover this domain. `www.johnsemblante.com` is not yet configured: add it to Firebase Hosting as a redirect to the apex domain and follow the exact DNS records Firebase supplies before sharing www links. See [domain migration details](docs/seo.md#custom-domain-launch--10-november-2026).
 
 ## 8. Moving a venture to its own website
 
@@ -465,7 +467,7 @@ This section describes the current implementation; dated notes above record earl
 - **Ventures:** Lazy Barista, Golden Travel and Tours, and Lapse Hub are live. Lapse Hub uses its Facebook profile logo locally and a curated external Flickr gallery with popup viewing and source links; new Flickr uploads are not automatically imported.
 - **Sharing:** venture detail pages use their logo and Work detail pages use their project image. Missing or blank image configuration falls back to `site.socialImage`. Social platforms may cache previews; see the SEO guide.
 - **Inquiries:** confirmed Formspree submissions clear name, email and message. Travel submissions also reset planner choices and trip fields while retaining a success notice. Failures and itinerary reviews preserve input. Location fields are plain text, without autocomplete or interactive maps.
-- **Travel quotation link:** share [the expanded trip planner](https://johnmsemblanteapp.web.app/ventures/golden-travel-and-tours/#trip-estimator). The planner prepares an inquiry; it does not confirm a booking or take payment.
+- **Travel quotation link:** share [the expanded trip planner](https://johnsemblante.com/ventures/golden-travel-and-tours/#trip-estimator). The planner prepares an inquiry; it does not confirm a booking or take payment.
 
 | Guide | Use it for |
 | --- | --- |

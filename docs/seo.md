@@ -1,6 +1,6 @@
 ﻿# SEO setup and editing guide
 
-This guide covers the technical SEO audit and implementation of 6 November 2026 (Asia/Manila). The current production domain is **https://johnmsemblanteapp.web.app**. These changes need a production build and Hosting deployment before they become live.
+This guide covers the technical SEO audit and implementation of 6 November 2026 (Asia/Manila). The current production domain is **https://johnsemblante.com** (changed on 10 November 2026). These changes need a production build and Hosting deployment before they become live.
 
 ## Audit findings and priorities
 
@@ -121,10 +121,10 @@ The follow-up changes make the homepage title, visible H1, description and Perso
 
 ### Owner steps still required in Search Console
 
-1. Add a **URL-prefix** property for exactly `https://johnmsemblanteapp.web.app/`.
+1. Add a **URL-prefix** property for exactly `https://johnsemblante.com/`. The older Firebase URL-prefix property is separate.
 2. If the property is not already verified, choose the HTML tag method. Put only its content value in `GOOGLE_SITE_VERIFICATION` in the ignored build environment, then rebuild and deploy before pressing Verify. An absent verification meta tag does not prove the property is unverified; another verification method may already have been used.
-3. In **Sitemaps**, submit `https://johnmsemblanteapp.web.app/sitemap.xml`.
-4. Inspect `https://johnmsemblanteapp.web.app/` with **URL Inspection**. Record the actual indexed/not-indexed reason, Google's selected canonical, and any last crawl information.
+3. In **Sitemaps**, submit `https://johnsemblante.com/sitemap.xml`.
+4. Inspect `https://johnsemblante.com/` with **URL Inspection**. Record the actual indexed/not-indexed reason, Google's selected canonical, and any last crawl information.
 5. Use **Test live URL**. If eligible, use **Request indexing**. Also inspect Work, About, and a clean `/blog/slug/` article URL. Do not repeatedly request the same unchanged page.
 6. Monitor the Page indexing report. If Google reports ?Discovered ? currently not indexed? or ?Crawled ? currently not indexed?, use that exact report to decide the next step rather than changing robots settings at random. Add the website URL to your own public professional profiles when appropriate; the site code cannot edit those profiles.
 
@@ -203,3 +203,16 @@ Owner steps:
 4. If a new attempt still fails, use URL Inspection on that exact sitemap URL and select Test live URL. Successful live retrieval helps establish availability from the inspection service; it does not guarantee processing by the sitemap crawler. Record the submission/last-read timestamps and any detailed HTTP error for further diagnosis.
 
 Google says it retries failed fetches for a few days and may stop after continued failures; resubmitting creates a new fetch request. Do not repeatedly rename/delete sitemap files, request indexing of the XML itself, or remove the ownership verification tag. Reference: [Google Sitemaps report and fetch troubleshooting](https://support.google.com/webmasters/answer/7451001?hl=en).
+
+
+## Custom domain launch — 10 November 2026
+
+The canonical origin is now `https://johnsemblante.com`. `src/content/site.ts` supplies the base for page canonicals, Open Graph URLs/images, structured data, robots discovery and the sitemap. The deployment still targets Firebase site `johnmsemblanteapp`; it does not require a new project or moving data. The live SEO audit defaults to the new domain.
+
+Firebase reported active domain ownership, hosting and certificate. Initial HTTPS retrieval returned Firebase's Site Not Found, while later direct requests returned the existing portfolio before any new deployment. This is consistent with domain routing propagation; no broken Next.js route or empty export was found. The apex A record resolves to `199.36.158.100`, the ownership TXT identifies the existing site, and no AAAA record was present during inspection. Keep DNS changes aligned with the Firebase domain wizard; a rebuild cannot fix an unconnected hostname. Reference: [Firebase custom-domain setup](https://firebase.google.com/docs/hosting/custom-domain).
+
+The old Firebase hostnames remain available and serve the same export with custom-domain canonicals. No host-wide redirect is configured: Firebase Hosting path redirects apply across this site's domains, so a catch-all redirect to the custom domain would loop on that domain. Existing article-slug redirects remain. `www.johnsemblante.com` currently has no DNS record or Hosting connection; configure it separately as an apex redirect before use.
+
+Add and verify the new URL-prefix property in Search Console, submit `https://johnsemblante.com/sitemap.xml`, and inspect the homepage there. Keep the existing verification tag; use the new property's supplied verification method if it does not accept the existing tag. Earlier sitemap troubleshooting above refers to the old Firebase property, not a verified result for this new domain. Update public profile links to the new domain. Indexing, canonical selection and rankings are controlled by Google.
+
+Custom-domain admin access additionally requires Firebase Authentication's authorized domains and the two Cloudflare Worker CORS allowlists. The release adds the apex domain without removing the existing Firebase or local-development entries. Do not change project IDs, Firestore data, Cloudinary secrets or the working Firebase auth handler domain just to change the public site URL.

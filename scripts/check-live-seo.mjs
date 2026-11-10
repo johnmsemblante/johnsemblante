@@ -71,7 +71,7 @@ export async function auditLiveSeo(origin, fetcher = fetch) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  auditLiveSeo(process.argv[2] || 'https://johnmsemblanteapp.web.app').then(result => {
+  auditLiveSeo(process.argv[2] || 'https://johnsemblante.com').then(result => {
     console.log(`Live SEO audit passed: ${result.pages} public URLs; sitemap ${result.bytes} bytes; XML/robots/crawler-file redirects/canonical pages checked.`);
     console.log('User-agent checks are not requests from Google infrastructure. Search Console fetch status and indexing must be checked separately.');
   }).catch(error => { console.error(`Live SEO audit failed: ${error.message}`); process.exitCode = 1; });

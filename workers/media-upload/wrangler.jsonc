@@ -7,7 +7,7 @@
     "FIREBASE_PROJECT_ID": "johnmsemblanteapp",
     "CLOUDINARY_CLOUD_NAME": "dty8edpr",
     "CLOUDINARY_UPLOAD_PRESET": "portfolio_works",
-    "ALLOWED_ORIGINS": "https://johnmsemblanteapp.web.app,https://johnmsemblanteapp.firebaseapp.com,http://localhost:3000,http://127.0.0.1:3100"
+    "ALLOWED_ORIGINS": "https://johnsemblante.com,https://johnmsemblanteapp.web.app,https://johnmsemblanteapp.firebaseapp.com,http://localhost:3000,http://127.0.0.1:3100"
   },
   "observability": { "enabled": false }
 }
