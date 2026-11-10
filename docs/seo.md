@@ -207,6 +207,8 @@ Google says it retries failed fetches for a few days and may stop after continue
 
 ## Custom domain launch — 10 November 2026
 
+For public wording and client inquiry guidance, see the [10 November content review](review/content-review-2026-11-10.md). The content uses concrete service descriptions and verified experience while retaining the Cebu Web Developer positioning. Punctuation preferences are editorial choices, not AI-detection or ranking signals we can guarantee.
+
 The canonical origin is now `https://johnsemblante.com`. `src/content/site.ts` supplies the base for page canonicals, Open Graph URLs/images, structured data, robots discovery and the sitemap. The deployment still targets Firebase site `johnmsemblanteapp`; it does not require a new project or moving data. The live SEO audit defaults to the new domain.
 
 Firebase reported active domain ownership, hosting and certificate. Initial HTTPS retrieval returned Firebase's Site Not Found, while later direct requests returned the existing portfolio before any new deployment. This is consistent with domain routing propagation; no broken Next.js route or empty export was found. The apex A record resolves to `199.36.158.100`, the ownership TXT identifies the existing site, and no AAAA record was present during inspection. Keep DNS changes aligned with the Firebase domain wizard; a rebuild cannot fix an unconnected hostname. Reference: [Firebase custom-domain setup](https://firebase.google.com/docs/hosting/custom-domain).

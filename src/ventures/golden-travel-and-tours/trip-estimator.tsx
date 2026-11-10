@@ -46,7 +46,7 @@ export function TripEstimator() {
     const rate = reference?.fixedRate;
     const custom = !rate || modified || data.get("multiDay") === "on";
     const summary = [
-      "Golden Travel — request final quotation (not a booking)",
+      "Golden Travel: request final quotation (not a booking)",
       `Trip: ${reference?.name ?? "Custom itinerary"}`,
       `Travel date: ${field("date")} | Pickup time: ${field("time")}`,
       `From: ${field("from")} | Final drop-off: ${field("to")}`,
@@ -68,7 +68,7 @@ export function TripEstimator() {
   }
   return <section className="trip-estimator" aria-label="Trip details">
     <p>Build your own trip or explore our 12 suggested packages. Choose an itinerary, tell us what you would like to change, and request a confirmed price. Availability and practical schedules are confirmed by the team.</p>
-    {submitted && <p ref={confirmation} tabIndex={-1} className="trip-submission-success" role="status">Thank you — your trip inquiry has been submitted. The form is ready for a new itinerary. The team will reply to the email address you provided; this does not confirm a booking.</p>}
+    {submitted && <p ref={confirmation} tabIndex={-1} className="trip-submission-success" role="status">Thank you! Your trip inquiry has been submitted. The form is ready for a new itinerary. The team will reply to the email address you provided; this does not confirm a booking.</p>}
     <form ref={plannerForm} onSubmit={calculate} onChange={() => { invalidate(); setValidation(""); setSubmitted(false); }}>
       <label htmlFor="trip-mode">How would you like to plan?</label>
       <select id="trip-mode" value={mode} onChange={e => { setMode(e.target.value); setChoice(""); setCustomize(false); setExtra(false); setStops([""]); invalidate(); }}><option value="custom">Build my own trip</option><option value="packages">Packages</option></select>

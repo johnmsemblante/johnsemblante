@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: Props) {
   const industry = findIndustry((await params).industry);
   if (!industry) return {};
   const hasProjects = buildWorks().some(project => project.industries.includes(industry.slug));
-  return pageMetadata(industry.title, `${industry.description}${hasProjects ? "" : " No project examples are currently published in this collection."}`, industryPath(industry.slug));
+  const description = hasProjects ? industry.description : `${industry.label} website development with John Semblante in Cebu. No project examples are published here yet. Discuss your project.`;
+  return pageMetadata(industry.title, description, industryPath(industry.slug));
 }
 const projects = buildWorks();
 
@@ -29,7 +30,7 @@ export default async function IndustryPage({ params }: Props) {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
     <PageIntro eyebrow="Work / Industry collection" title={industry.heading}><p>{industry.introduction}</p><div className="actions"><Link className="button secondary" href="/work/#projects">← All portfolio projects</Link></div></PageIntro>
     <section className="section" aria-label={`${industry.label} portfolio`}>
-      <div className="industry-context"><p>{collection.length ? "Explore the available public examples below. Technology badges describe each project; historical screenshots and live websites may differ." : `There are no published ${industry.label.toLowerCase()} project examples in this collection yet. Get in touch to discuss your website requirements.`}</p><p>Share this page&apos;s URL to send someone directly to this collection.</p></div>
+      <div className="industry-context"><p>{collection.length ? "Open a project for its screenshot, technologies, and available details. Live websites may have changed since this work." : `There are no published ${industry.label.toLowerCase()} project examples in this collection yet. Tell me what you need, or browse the full portfolio for examples from other industries.`}</p><p>Share this page&apos;s URL to send someone directly to this collection.</p></div>
       <LiveWorkExplorer initial={projects} industry={industry.slug} />
     </section>
     <section className="contact-band"><div className="industry-contact-copy"><p className="eyebrow">Your next website</p><h2>Let&apos;s discuss your {industry.slug === "other" ? "website" : industry.label.toLowerCase()} project.</h2><p className="body-copy">Share your design, existing website or requirements. We can talk through the development support you need.</p></div><Link className="button" href="/contact/?topic=experience#inquiry">Discuss your project ↗</Link></section>

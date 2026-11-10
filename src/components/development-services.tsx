@@ -1,15 +1,15 @@
 import Link from "next/link";
 
 const services = [
-  ["Figma to WordPress", "Send me your Figma designs and the pages you need. I build custom WordPress themes and adapt the layouts for desktop, tablet, and mobile screens.", "Design implementation · Custom themes"],
-  ["WooCommerce development", "I customize product and shop layouts, adjust theme behavior, and connect third-party tools. We’ll review your existing store and agree on the changes it needs.", "Storefronts · Theme customization · Integrations"],
-  ["Website fixes & improvements", "A layout breaks on mobile, a plugin causes a problem, or a page loads slowly. I investigate the cause, explain the fix, and check the affected pages after making changes.", "UI debugging · Mobile usability · Performance"],
+  ["Figma to WordPress", "Have a design ready to build? I turn Figma layouts into custom WordPress themes, including the pages and reusable sections your site needs. We’ll review how the design should work on smaller screens and which content you need to edit yourself.", "Design implementation · Custom themes"],
+  ["WooCommerce development", "If your store’s theme doesn’t quite fit the way you sell, I can help with product pages, shop layouts, theme behavior, and third-party integrations. Start by showing me the current store and what you want customers to be able to do.", "Storefronts · Theme customization · Integrations"],
+  ["Website fixes & improvements", "You don’t always need a new website. I investigate broken layouts, plugin conflicts, and slow pages, then work on the affected parts. Send the page link and a description of the problem so we can decide where to start.", "UI debugging · Mobile usability · Performance"],
 ];
 
 export function DevelopmentServices() {
   return <section className="section" aria-labelledby="services-title">
     <div className="section-heading"><div><p className="eyebrow">How I can help</p><h2 id="services-title">WordPress development & website support.</h2></div></div>
     <div className="service-copy-grid">{services.map(([title, description, scope]) => <article key={title}><h3>{title}</h3><p>{description}</p><p className="service-scope">{scope}</p></article>)}</div>
-    <p className="service-copy-cta">Have a website that needs work, but aren’t sure where to start? Send me the link and describe what’s getting in the way. I’m based in Cebu and welcome project inquiries and remote development opportunities. <Link className="text-link" href="/contact/">Discuss your website <span aria-hidden="true">↗</span></Link></p>
+    <p className="service-copy-cta">Not sure which service fits? Tell me what you want visitors to do and what is getting in their way. A website link or screenshot is a useful starting point. <Link className="text-link" href="/contact/">Tell me about your website <span aria-hidden="true">↗</span></Link></p>
   </section>;
 }

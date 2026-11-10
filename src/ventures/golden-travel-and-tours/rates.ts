@@ -8,7 +8,7 @@ export const tripReferences: TripReference[] = [
   { id: "safari", name: "Marco Polo → Cebu Safari → Marco Polo", amount: 6000, date: "2026-09-06", stops: ["Cebu Safari"], note: "Previous return van quotation for approximately 10 passengers; this does not establish vehicle capacity or include admission." },
   { id: "simala", name: "Marco Polo → Simala → Naga → Marco Polo", amount: 6000, date: "2026-09-14", stops: ["Simala", "Naga"], note: "Previous eight-hour van quotation. ₱350/hour overtime was discussed for that booking; current overtime terms require confirmation." },
 ];
-export const estimateNotice = "Estimated budget only—not a confirmed quotation. Historical prices may change without prior notice with fuel prices, vehicle choice, travel date, pickup location, additional stops, waiting time, and other trip requirements. Final pricing and availability require confirmation. Charges not expressly confirmed as included are excluded.";
+export const estimateNotice = "This budget is an estimate. Request a confirmed quotation before booking. Historical prices may change without prior notice with fuel prices, vehicle choice, travel date, pickup location, additional stops, waiting time, and other trip requirements. Final pricing and availability require confirmation. Charges not expressly confirmed as included are excluded.";
 export function referenceFor(id: string) { return tripReferences.find(item => item.id === id); }
 export function needsCustomQuote(id: string, modified: boolean, vehicle: string, multiDay: boolean) {
   return !referenceFor(id) || modified || multiDay || vehicle === "Sedan" || vehicle === "SUV";

@@ -22,6 +22,12 @@ Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deployin
 
 The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante** and H1 **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
+### Editing public copy
+
+Use specific, first-person descriptions of the work John actually does. Keep **Cebu Web Developer** as the homepage focus and use service terms where they help explain the offer. Avoid repeated keywords, invented client results, fixed turnaround promises, and claims that wording can pass an AI detector. Public copy uses sentences, commas or colons instead of em dashes, as an editorial preference.
+
+Edit client questions in `src/components/project-questions.tsx`, services in `src/components/development-services.tsx`, and the project process in `src/components/workflow.tsx`. The homepage article previews include both published source articles and the managed blog snapshot, sorted by publication date. Rebuild after publishing or editing articles to update those previews. See the [content review](docs/review/content-review-2026-11-10.md) for this revision, the approved article timeline correction, and verification scope.
+
 ## 1. Quick start
 
 Run commands from the `johnsemblante` checkout on the computer you are using. This machine uses the path below; the other device uses `D:\Personal\Sites\johnsemblante`.

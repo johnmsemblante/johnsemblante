@@ -73,7 +73,7 @@ Budget range (optional):" />
       </fieldset>
       {error && <p role="alert" className="form-error">{error}</p>}
       <button className="button" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : travel ? "Send trip inquiry" : "Send project inquiry"} <span aria-hidden="true">↗</span></button>
-      <div className="inquiry-status" role="status" aria-live="polite" aria-atomic="true">{status === "success" ? "Thank you — your inquiry has been submitted. I’ll reply to the email address you provided. The form is ready for a new inquiry." : status === "sending" ? "Sending your inquiry. Please keep this page open." : ""}</div>
+      <div className="inquiry-status" role="status" aria-live="polite" aria-atomic="true">{status === "success" ? "Thank you! Your inquiry has been submitted. I’ll reply to the email address you provided. The form is ready for a new inquiry." : status === "sending" ? "Sending your inquiry. Please keep this page open." : ""}</div>
       <p id="inquiry-privacy" className="form-note">Your name, email, and message are processed by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">Formspree</a> to deliver your inquiry.</p>
       <p className="form-note">Having trouble sending? Email <a href={`mailto:${site.email}`}>{site.email}</a> directly.</p>
     </form>

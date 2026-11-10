@@ -6,9 +6,9 @@ export const goldenTravel: Venture = {
 
   slug: "golden-travel-and-tours", name: "Golden Travel and Tours", category: "Travel & rentals",
 
-  description: "Cebu travel, tours, and car rentals. Explore vehicle options, airport and pier transfers, personal tours, and sightseeing, then contact Golden Travel for a tailored quote.",
+  description: "Plan Cebu tours, car rentals, and airport or pier transfers with Golden Travel and Tours. Share your dates, route, and group size to request a quote.",
 
-  theme: "travel", title: "Discover. Experience. Enjoy.", tagline: "Travel, tours & rentals in Cebu",
+  theme: "travel", title: "Where in Cebu would you like to go?", tagline: "Travel, tours & rentals in Cebu",
 
   logo: { src: `${base}/logo.webp`, alt: "Golden Travel and Tours logo", width: 1024, height: 824 },
 
@@ -16,7 +16,7 @@ export const goldenTravel: Venture = {
 
   storyImage: { src: `${base}/suv.webp`, alt: "Representative SUV graphic from Golden Travel’s materials", width: 413, height: 270 },
 
-  story: "From an airport pickup to a day of exploring Cebu, your trip starts with the right transport plan. Share your itinerary with Golden Travel and Tours to discuss rentals, transfers, sightseeing, or transport for a special occasion. The team will confirm suitable options and a quote for your plans.",
+  story: "Planning an airport pickup, a day around the city, or a trip outside Cebu City? Share your pickup point, destinations, travel dates, and group size. Golden Travel and Tours will help you review transport options and confirm the route, vehicle availability, and quotation before you book.",
 
   offerings: [
 

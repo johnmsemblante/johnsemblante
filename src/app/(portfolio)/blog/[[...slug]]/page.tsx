@@ -36,7 +36,7 @@ export default async function Blog({ params }: Props) {
   const posts = publishedPosts();
   const managed = buildBlogPosts();
   if (!slug?.length) return <ManagedBlog hasStaticPosts={posts.length > 0} initialPosts={managed}>
-    <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>I write about my path into web development, what I’m learning, and the projects I’m working on. These notes sit alongside the websites and ventures in my portfolio.</p></PageIntro>
+    <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>Notes from my work as a web developer in Cebu: how I got started, what I’m learning, and the decisions behind the websites I build. For project screenshots and details, you can also explore my portfolio.</p></PageIntro>
     <section className="section" aria-label="Blog posts">{posts.length ? <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={`/blog/${post.slug}/`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{formatPostDate(post.publishedAt)}</time>}><ul className="article-categories" aria-label="Categories"><li>{post.category}</li></ul></BlogCard>)}</div> : <div className="empty-state"><p className="eyebrow">A fresh page</p><h2>The first article is in progress.</h2><p>In the meantime, explore my projects or get in touch about a website you want to build or improve.</p></div>}</section>
   </ManagedBlog>;
   const managedPost = managed.find(post => slug.length === 1 && post.slug === slug[0]);

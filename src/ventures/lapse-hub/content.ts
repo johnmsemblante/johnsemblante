@@ -129,7 +129,7 @@ export const lapseHub: Venture = {
   theme: "photography", title: "A different way of seeing.", tagline: "Photography by John Clark Semblante",
   logo: { src: "/ventures/lapse-hub/logo.jpg", alt: "Lapse Hub media logo on a yellow background, from the Facebook profile picture", width: 720, height: 720 },
   description: "Lapse Hub is John Clark Semblante's photography venture, grown from a personal hobby into commissioned work. Explore selected photographs and Flickr albums.",
-  story: "Lapse Hub began as a photography hobby during my photography era. What started as a way to explore and capture moments later grew into commissioned photography. I created Facebook and Flickr pages to share my shoots, and this archive brings a selection of those photographs together alongside my other ventures.",
+  story: "Lapse Hub started as a photography hobby and later grew into commissioned photography. I shared my shoots on Facebook and Flickr, from portraits and couples to places around Cebu. This page brings together a selection from those albums. Open a photograph to take a closer look, or visit the full album to see the rest of the shoot.",
   hero: lapseHubGallery[1],
   gallery: lapseHubGallery,
   contact: { label: "Visit Lapse Hub on Facebook", url: "https://www.facebook.com/lapsehub" },

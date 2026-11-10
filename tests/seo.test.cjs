@@ -20,6 +20,28 @@ const post = { ...model.emptyPost(), slug: 'seo-post', title: 'Article title', e
 function wire(value) { if (value === null) return { nullValue: null }; if (Array.isArray(value)) return { arrayValue: { values: value.map(wire) } }; return typeof value === 'number' ? { integerValue: String(value) } : { stringValue: value }; }
 function document(value) { return { document: { name: 'projects/demo-site/databases/(default)/documents/blogPosts/' + value.slug, fields: Object.fromEntries(Object.entries(value).map(([key, item]) => [key, wire(item)])) } }; }
 
+test('homepage includes managed and source article previews in publication order with clean links', () => {
+  const source = { slug: 'older-source', title: 'Source article', excerpt: 'Source introduction', category: 'Notes', publishedAt: '2026-11-01' };
+  const managed = { ...post, slug: 'latest-managed', title: 'Managed article', categories: ['WordPress', 'Learning'] };
+  const noop = () => null;
+  const mocks = {
+    'next/link': { default: ({ children, ...props }) => React.createElement('a', props, children) },
+    '@/content/profile': profile, '@/content/site': { site }, '@/lib/metadata': metadata, '@/lib/seo': seo,
+    '@/content/blog': { publishedPosts: () => [source] }, '@/lib/build-blog': { buildBlogPosts: () => [managed] },
+    '@/lib/build-works': { buildWorks: () => [] }, '@/components/ui': { Button: noop, Arrow: noop },
+    '@/components/development-services': { DevelopmentServices: noop }, '@/components/browser-illustration': { BrowserIllustration: noop },
+    '@/components/workflow': { Workflow: noop }, '@/components/project-grid': { ProjectGrid: noop },
+    '@/ventures/cards': { VentureCards: noop }, '@/components/project-questions': { ProjectQuestions: noop },
+  };
+  const Home = load('src/app/(portfolio)/page.tsx', mocks).default;
+  const html = renderToStaticMarkup(React.createElement(Home));
+  assert.ok(html.includes('href="/blog/latest-managed/"'));
+  assert.ok(html.includes('href="/blog/older-source/"'));
+  assert.ok(html.indexOf('Managed article') < html.indexOf('Source article'));
+  assert.ok(html.includes('WordPress / Learning'));
+  assert.ok(!html.includes('Articles are in progress'));
+});
+
 test('shared metadata supplies canonical URLs, public images and large Twitter cards', () => {
   const result = metadata.pageMetadata('Title', 'Description', '/blog/');
   assert.equal(result.alternates.canonical, site.url + '/blog/');
