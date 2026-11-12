@@ -8,6 +8,10 @@ A portfolio for John Clark Semblante, a Cebu web developer whose professional ti
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
+## Free online tools
+
+The [QR Code Generator](/tools/qr-code-generator/) supports links, text, Wi-Fi, email and phone QR codes with local PNG/SVG downloads. Tools are source-managed and appear publicly on Ventures; they are excluded from admin editing and database records. See [code-managed tools](docs/code-managed-tools.md) for architecture, validation, future tools and release commands. Run `npm.cmd run test:qr` for payload and separation checks.
+
 The website is live and search indexing is enabled. `https://johnsemblante.com` is the canonical production URL. The existing Firebase addresses remain available and serve metadata pointing to the custom domain.
 
 ## SEO and publishing

@@ -7,6 +7,7 @@
     "build": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs && node node_modules/next/dist/bin/next build --webpack",
     "test:forms": "node --test tests/inquiry-reset.test.cjs",
     "test:ventures": "node --test tests/ventures.test.cjs",
+    "test:qr": "node --test tests/qr-content.test.cjs",
     "test:seo": "node --test tests/seo.test.cjs tests/live-seo.test.mjs",
     "audit:seo": "node scripts/check-seo.mjs",
     "sync:blog": "node scripts/sync-blog-snapshot.cjs",
@@ -27,6 +28,7 @@
   "dependencies": {
     "firebase": "13.2.0",
     "next": "latest",
+    "qr-code-styling": "1.9.2",
     "react": "latest",
     "react-dom": "latest"
   },

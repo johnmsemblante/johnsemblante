@@ -1,0 +1,39 @@
+# Code-managed tools
+
+Utilities live in `src/config/tool-ventures.ts` with routes under `src/app/(portfolio)/tools/`. Published entries appear in tool cards and the sitemap. Keep them out of the managed venture registry, venture store, Firestore, and editable page catalog. `ToolVentureCards` uses plain links/text to bypass admin page editing. The Ventures page retains its original live cards and adds a separate tools section using the same card classes. Future tools reuse this registry without altering admin schemas.
+
+## QR generator
+
+`/tools/qr-code-generator/` supports HTTP(S), text, Wi-Fi (WPA/WPA2, WEP, open, hidden), email, and phone numbers. Settings include two colors, square/rounded dots, 512/1024/2048px output, reset and PNG/SVG downloads. Input stays in React state; generation and Blob downloads run locally, with no requests, uploads, persistent storage, logging or scan analytics. Recipients can read the data in a downloaded code, including Wi-Fi passwords.
+
+`qr-code-styling` 1.9.2 (MIT) is dynamically imported in a client effect, keeping browser APIs out of static rendering. Its single-byte encoder needs explicit UTF-8 bytes (`qrByteString`); retain the Unicode decode check when upgrading. The generator uses Q correction, a 10% margin per side (at least four modules), a conservative 1,600 UTF-8 byte limit, a 250ms debounce and cancellation of stale results. Downloads are disabled until the current preview is ready. Weak contrast/inverted colors show a scanning warning.
+
+Static codes have no built-in expiry; linked destinations can still disappear. Test downloaded codes on target devices before printing. Logo uploads, vCards, bulk generation, templates and payments are deferred. Future payload types belong in `qr-content.ts`, independently of rendering/export code.
+
+## Check and release
+
+```powershell
+npm.cmd run test:qr
+npm.cmd run typecheck
+node --test tests/*.test.cjs tests/live-seo.test.mjs
+npm.cmd run build
+npm.cmd run audit:seo
+npm.cmd run preview
+```
+
+Review `/ventures/`, `/tools/`, and the generator at desktop/tablet/mobile widths. Generate and scan PNG/SVG files for all content types, including Unicode and escaped Wi-Fi delimiters. Check invalid input, reset, keyboard focus, contrast warnings and final printed output.
+
+Use the existing Hosting-only release after successful validation:
+
+```powershell
+firebase deploy --only hosting --project johnmsemblanteapp
+npm.cmd run audit:seo:live
+```
+
+No Firebase configuration, rules, domain, worker or storage changes are needed. Never deploy stale `out/` files after a failed build.
+
+## Implementation verification (12 November 2026)
+
+The static production build and TypeScript checks passed. The 131 existing Node regression tests and six added QR tests passed. The exported-site SEO audit passed with zero errors or editorial warnings. Automated Edge checks verified payloads by decoding downloaded PNG/SVG files with jsQR (SVG rasterized with sharp), including all five types, Unicode/emoji, escaped Wi-Fi names/passwords, open Wi-Fi, rounded colored output and 2048px dimensions. Browser checks also covered invalid/empty/over-capacity content, reset, contrast warning, 1440/768/390px overflow, keyboard order, canonical/title, venture links, empty local/session storage and absence of input contents in requests. Test artifacts are in ignored `tmp/qr-*` files.
+
+No authenticated production CRUD or physical-phone/printed-code scan was performed. Existing admin, blog and work behavior is supported by regression tests and unchanged implementation, not a claim of an exhaustive live audit. There is no configured lint command. Releases use the established Hosting-only CLI deployment command with an authorized login; no credentials should be copied into the repository.
