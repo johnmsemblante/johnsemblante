@@ -10,7 +10,7 @@ export function articleSchema(post: { title: string; description: string; publis
 }
 export function websiteSchema() {
   return { "@context": "https://schema.org", "@graph": [
-    { "@type": "WebSite", "@id": `${site.url}/#website`, url: `${site.url}/`, name: site.name, description: site.description, publisher: { "@id": `${site.url}/#person` } },
+    { "@type": "WebSite", "@id": `${site.url}/#website`, url: `${site.url}/`, name: site.searchName, alternateName: site.name, description: site.description, publisher: { "@id": `${site.url}/#person` } },
     { "@type": "Person", "@id": `${site.url}/#person`, name: profile.fullName, alternateName: site.name, url: `${site.url}/about/`, jobTitle: profile.title, image: `${site.url}${profile.portrait}`, sameAs: socialAccounts.map(account => account.url) },
   ] };
 }

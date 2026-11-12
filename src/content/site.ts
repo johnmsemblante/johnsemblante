@@ -2,6 +2,7 @@ import { portfolioProjects } from "./projects";
 import type { IndustrySlug } from "./industries";
 export const site = {
   name: "John Semblante",
+  searchName: "John Clark Semblante",
   url: "https://johnsemblante.com",
   socialImage: "/images/seo/john-semblante-social.png",
   description: "Cebu web developer John Clark Semblante builds WordPress websites, customizes WooCommerce stores, and fixes website issues. View projects and get in touch.",

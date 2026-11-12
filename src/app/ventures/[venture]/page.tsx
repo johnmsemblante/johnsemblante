@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ venture: 
   const image = logo ? { url: new URL(logo.src, site.url).href, width: logo.width, height: logo.height, alt: logo.alt } : undefined;
   const metadata = pageMetadata(v.seo?.title?.trim() || v.name, v.seo?.description?.trim() || v.description, `/ventures/${v.slug}/`, image);
   return { ...metadata, title: { absolute: v.seo?.title?.trim() || v.name }, alternates: { canonical: url },
-    openGraph: { ...metadata.openGraph, siteName: v.name, url },
+    openGraph: { ...metadata.openGraph, siteName: site.searchName, url },
   };
 }
 export default async function VenturePage({ params }: { params: Promise<{ venture: string }> }) { const { venture } = await params; const v = buildVentures().find(v => v.slug === venture); if (!v) notFound(); return <LiveVentureDetail initial={[v]} />; }

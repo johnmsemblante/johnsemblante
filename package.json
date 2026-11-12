@@ -21,7 +21,8 @@
     "sync:pages": "node scripts/sync-pages.cjs",
     "test:pages": "node --test tests/pages.test.cjs",
     "sync:ventures": "node scripts/sync-ventures.cjs",
-    "test:venture-admin": "node --test tests/venture-admin.test.cjs"
+    "test:venture-admin": "node --test tests/venture-admin.test.cjs",
+    "audit:search-branding": "node scripts/check-search-branding.mjs"
   },
   "dependencies": {
     "firebase": "13.2.0",

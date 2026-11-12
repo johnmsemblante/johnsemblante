@@ -32,6 +32,9 @@ for (const url of urls) {
     assert.equal((body.match(/<h1\b/g) || []).length, 1, 'Expected one initial-HTML H1');
     assert.equal(meta('og:url'), url, 'Open Graph URL differs from canonical');
     assert.ok(meta('og:title') && meta('og:description'), 'Missing Open Graph title/description');
+    assert.equal(meta('og:site_name'), 'John Clark Semblante', 'Inconsistent preferred site name');
+    const icons = [...html.matchAll(/<link\b[^>]*>/g)].map(match => attrs(match[0])).filter(link => link.rel === 'icon');
+    assert.ok(icons.some(icon => new URL(icon.href, origin).pathname === '/icon.png' && icon.sizes === '96x96' && icon.type === 'image/png'), 'Missing shared 96px PNG favicon');
     assert.equal(meta('twitter:card'), 'summary_large_image', 'Missing large-image Twitter card');
     for (const key of ['og:image', 'twitter:image']) {
       const image = new URL(meta(key));
@@ -41,6 +44,10 @@ for (const url of urls) {
     for (const match of body.matchAll(/<img\b[^>]*>/g)) assert.ok('alt' in attrs(match[0]), 'Image is missing alt attribute');
     const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
     if (parsed.pathname === '/') {
+      const website = schemas.flatMap(schema => schema['@graph'] || [schema]).filter(schema => schema['@type'] === 'WebSite');
+      assert.equal(website.length, 1, 'Expected one homepage WebSite node');
+      assert.equal(website[0].name, 'John Clark Semblante', 'Incorrect preferred Google site name');
+      assert.equal(website[0].alternateName, 'John Semblante', 'Missing alternate site name');
       const person = schemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'Person');
       assert.ok(person?.name, 'Homepage is missing Person identity data');
       assert.ok(title.includes(person.name), 'Homepage title does not include the full Person name');

@@ -12,6 +12,8 @@ The website is live and search indexing is enabled. `https://johnsemblante.com` 
 
 ## SEO and publishing
 
+See [Google search name and favicon](docs/google-search-appearance.md) for the preferred **John Clark Semblante** site name, shared favicon, page-specific titles, production verification and Search Console recrawl steps. `npm run audit:search-branding` verifies the deployed branding; Google controls when and how its search results change.
+
 See the [SEO audit and editing guide](docs/seo.md) for findings, meta title/description and social image settings, canonical URLs, article formatting, sitemap/indexing rules, and free Search Console setup.
 
 Builds now export published dashboard articles to clean `/blog/slug/` pages with HTML and metadata. The instant `/blog/?post=slug` view remains available. **Rebuild and deploy after publishing, editing, unpublishing or deleting:** previously exported article copies stay public until redeployment. No paid SEO service or Firebase billing upgrade is required.

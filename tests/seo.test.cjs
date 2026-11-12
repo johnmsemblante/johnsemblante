@@ -9,7 +9,7 @@ function load(file, mocks = {}) {
   new Function('require', 'exports', ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX } }).outputText)(name => mocks[name] ?? (name === '@/components/page-content' ? require('./page-content-mocks.cjs').content : name === '@/lib/build-pages' ? require('./page-content-mocks.cjs').build : require(name)), exports);
   return exports;
 }
-const site = { name: 'John Semblante', url: 'https://johnmsemblanteapp.web.app', description: 'Developer in Cebu', socialImage: '/images/seo/john-semblante-social.png' };
+const site = { name: 'John Semblante', searchName: 'John Clark Semblante', url: 'https://johnmsemblanteapp.web.app', description: 'Developer in Cebu', socialImage: '/images/seo/john-semblante-social.png' };
 const model = load('src/lib/blog-model.ts');
 const profile = load('src/content/profile.ts');
 const metadata = load('src/lib/metadata.ts', { '@/content/site': { site }, '@/content/profile': profile });
@@ -111,9 +111,20 @@ test('managed article routes use admin SEO values and only published snapshot sl
 
 
 test('identity schema uses the full name, brand alias and existing public profile URLs', () => {
+  const website = seo.websiteSchema()['@graph'].find(item => item['@type'] === 'WebSite');
+  assert.equal(website.name, site.searchName); assert.equal(website.alternateName, site.name);
+  assert.equal(website.url, site.url + '/');
   const person = seo.websiteSchema()['@graph'].find(item => item['@type'] === 'Person');
   assert.equal(person.name, 'John Clark Semblante'); assert.equal(person.alternateName, site.name);
   assert.equal(person.jobTitle, 'WordPress/Full Stack Developer');
   assert.ok(person.sameAs.includes('https://www.linkedin.com/in/johnsemblante/'));
   assert.deepEqual(person.sameAs, profile.socialAccounts.map(account => account.url));
+});
+
+test('all page types share the preferred site name while retaining their own metadata titles', () => {
+  for (const [title,path] of [['Cebu Web Developer | John Clark Semblante','/'],['About John Clark Semblante','/about/'],['Development notes','/blog/'],['Project example','/work/example/'],['Lazy Barista','/ventures/lazy-barista/']]) {
+    const result=metadata.pageMetadata(title,'Page description',path);
+    assert.equal(result.openGraph.siteName,site.searchName);assert.equal(result.title,title);
+    assert.equal(result.alternates.canonical,site.url+path);
+  }
 });
