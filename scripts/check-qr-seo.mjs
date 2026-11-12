@@ -55,8 +55,9 @@ for (const heading of headings) assert.match(body, new RegExp(`<h2[^>]*>${headin
 assert.ok(body.indexOf('aria-label="QR code generator"') < body.indexOf('id="qr-how-to"'));
 assert.ok(body.includes("A linked website must remain accessible"));
 const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
-assert.equal(schemas.length, 1);
-const application = schemas[0];
+const applications = schemas.filter(schema => schema["@type"] === "WebApplication");
+assert.equal(applications.length, 1);
+const application = applications[0];
 assert.equal(application["@context"], "https://schema.org");
 assert.equal(application["@type"], "WebApplication");
 assert.equal(application.url, canonical);

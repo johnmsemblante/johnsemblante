@@ -11,6 +11,7 @@ export type ToolVenture = {
   ctaLabel?: string;
   iconImage?: string;
   donationsEnabled?: boolean;
+  navigationLabel?: string;
 };
 export const toolVentures: ToolVenture[] = [{
   id: "qr-code-generator", slug: "qr-code-generator",
@@ -25,6 +26,7 @@ export const toolVentures: ToolVenture[] = [{
   ctaLabel: "Create a QR Code",
   iconImage: "/tools/qr-code-generator/icon.svg",
   donationsEnabled: true,
+  navigationLabel: "QR Generator",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 

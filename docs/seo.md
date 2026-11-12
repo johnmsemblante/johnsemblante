@@ -2,6 +2,16 @@
 
 This guide covers the technical SEO audit and implementation of 6 November 2026 (Asia/Manila). The current production domain is **https://johnsemblante.com** (changed on 10 November 2026). These changes need a production build and Hosting deployment before they become live.
 
+## Navigation and breadcrumbs
+
+The portfolio header's Ventures link has a separate disclosure button for its submenu. The submenu lists published venture routes, followed by a linked Free Tools heading and published tool links. Venture entries come from the build's existing public venture snapshot. Tools come from the source-managed registry, with optional `navigationLabel` text. Rebuild after publishing or renaming managed ventures so header links reflect exported destinations.
+
+Public portfolio pages other than the homepage have a breadcrumb trail. Standalone venture pages use the same breadcrumb component within their own layouts. Work industry trails link directly through Work, since there is no separate industry index. Each visible trail has matching BreadcrumbList JSON-LD, with absolute production URLs matching the existing trailing-slash canonicals. Homepage branding, metadata, and canonical URLs retain their existing values. Admin and unknown routes have no public breadcrumb trail.
+
+`build-navigation.ts` prepares lightweight route labels on the server. `PortfolioBreadcrumbs` selects the current path and renders its trail in initial exported HTML. The shared HeaderNavigation component supports click/touch, Tab/Enter, Escape, focus dismissal and outside-click dismissal for dropdowns. The mobile menu contains the same submenu as an expandable section.
+
+Use `node --test tests/navigation-breadcrumbs.test.cjs`, `npm.cmd run build`, `npm.cmd run audit:seo` and `npm.cmd run audit:seo:qr` to validate navigation models, breadcrumb markup and canonical metadata. Google Search Console indexing and rich-result appearance require separate verification.
+
 ## Audit findings and priorities
 
 The initial live-HTML audit checked the homepage, Blog, Work, About, Contact, admin landing page, robots.txt and sitemap. The completed export audit checks every public sitemap URL and the exported admin pages.
