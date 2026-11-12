@@ -193,3 +193,10 @@
 .admin-shell .venture-array{padding-top:12px}
 .admin-shell .job-search label,.admin-shell .job-filters label{margin-top:0}
 .admin-shell .job-checkbox{margin:0}
+
+/* Separate follow-up actions and image previews from the preceding content. */
+.admin-shell p+:is(button,.button,.actions){margin-top:15px}
+.admin-shell .page-content-field>button{margin-top:15px}
+.admin-shell .venture-object-field>button{margin-top:15px}
+.admin-shell :is(input,textarea,select,label)+.admin-image-upload{margin-top:15px}
+.admin-shell .work-editor-preview{display:block;margin-block:15px}
