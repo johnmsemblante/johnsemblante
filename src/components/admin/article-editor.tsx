@@ -42,7 +42,7 @@ export function ArticleEditor({ value, onChange, textareaRef, onImage, onSelecti
       if ((event.ctrlKey || event.metaKey) && !event.altKey && ["b", "i"].includes(event.key.toLowerCase())) { event.preventDefault(); apply(event.key.toLowerCase() === "b" ? "bold" : "italic"); }
     }} />
     {preview && <div className="article-editor-preview" role="region" aria-label="Formatted article preview">{value.trim() ? <BlogArticleContent content={value} /> : <p>Start writing to preview your article.</p>}</div>}
-    <p id="post-format-help" className="form-note">Select text and use the toolbar, then choose Preview to see the formatting. Ctrl/Cmd+B for bold; Ctrl/Cmd+I for italic. Markdown is saved with the article; pasted HTML stays plain text. Images and file links can be inserted below.</p>
+    <p id="post-format-help" className="form-note">Select text and use the toolbar, then choose Preview to see the formatting. Ctrl/Cmd+B for bold; Ctrl/Cmd+I for italic. Markdown is saved with the article; pasted HTML stays plain text. External website links open in a new tab. Images and file links can be inserted below.</p>
     {error && <p role="alert" className="form-error">{error}</p>}
   </div>;
 }

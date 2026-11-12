@@ -56,7 +56,7 @@ test('SEO fields fall back independently to title and introduction', () => {
 test('article rendering escapes HTML and supports safe images and asset links', () => {
   const React = require('react'); const { renderToStaticMarkup } = require('react-dom/server');
   const renderer = ts.transpileModule(fs.readFileSync('src/components/blog-article-content.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-  const exported = {}; new Function('require', 'exports', renderer)(name => name === '@/lib/blog-model' ? loaded.exports : require(name), exported);
+  const exported = {}; new Function('require', 'exports', renderer)(name => name === '@/lib/blog-model' ? loaded.exports : name === '@/content/site' ? { site: { url: 'https://johnsemblante.com' } } : require(name), exported);
   const html = renderToStaticMarkup(React.createElement(exported.BlogArticleContent, { content: '<script>alert(1)</script>\n\n## Heading\n\n![A photo](https://example.com/photo.webp)\n\n[Document](/files/info.pdf)\n\n![Bad](javascript:alert)' }));
   assert.ok(!html.includes('<script>')); assert.ok(html.includes('&lt;script&gt;'));
   assert.ok(html.includes('<h2>Heading</h2>')); assert.ok(html.includes('alt="A photo"'));

@@ -90,7 +90,7 @@ test('export never includes drafts or future schedules and stops on provider/rec
 });
 
 test('published managed articles render content, one H1 and JSON-LD without JavaScript', () => {
-  const content = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model });
+  const content = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model, '@/content/site': { site } });
   const image = load('src/components/blog-featured-image.tsx', { '@/lib/blog-model': model });
   const { PublishedBlogArticle } = load('src/components/published-blog-article.tsx', { 'next/link': { default: ({ children, ...props }) => React.createElement('a', props, children) }, '@/content/site': { site }, '@/lib/blog-model': model, '@/lib/seo': seo, './blog-article-content': content, './blog-featured-image': image, './article-share-link': load('src/components/article-share-link.tsx') });
   const html = renderToStaticMarkup(React.createElement(PublishedBlogArticle, { post }));

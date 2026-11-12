@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 import { articleBlocks, safeAssetUrl } from "@/lib/blog-model";
+import { site } from "@/content/site";
 
 /** Render a small Markdown subset as React nodes; never interpret stored HTML. */
 function inline(text = "", depth = 0): ReactNode {
@@ -11,7 +12,13 @@ function inline(text = "", depth = 0): ReactNode {
     parts.push(text.slice(cursor, match.index));
     const key = match.index;
     if (match[1] !== undefined) parts.push(<code key={key}>{match[1]}</code>);
-    else if (match[2] !== undefined) parts.push(safeAssetUrl(match[3]) ? <a key={key} href={match[3]} rel="noopener noreferrer">{inline(match[2], depth + 1)}</a> : <Fragment key={key}>{match[0]}</Fragment>);
+    else if (match[2] !== undefined) {
+      const href = match[3];
+      if (safeAssetUrl(href)) {
+        const external = new URL(href, site.url).origin !== new URL(site.url).origin;
+        parts.push(<a key={key} href={href} target={external ? "_blank" : undefined} rel="noopener noreferrer">{inline(match[2], depth + 1)}</a>);
+      } else parts.push(<Fragment key={key}>{match[0]}</Fragment>);
+    }
     else if (match[4] !== undefined) parts.push(<strong key={key}>{inline(match[4], depth + 1)}</strong>);
     else parts.push(<em key={key}>{inline(match[5], depth + 1)}</em>);
     cursor = match.index! + match[0].length;

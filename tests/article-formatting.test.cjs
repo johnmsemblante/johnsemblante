@@ -13,8 +13,26 @@ function load(file, mocks = {}) {
 const model = load('src/lib/blog-model.ts');
 const { formatArticle } = load('src/lib/article-formatting.ts', { './blog-model': model });
 const { insertArticleMedia } = load('src/lib/article-media.ts', { './blog-model': model });
-const { BlogArticleContent } = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model });
+const { BlogArticleContent } = load('src/components/blog-article-content.tsx', { '@/lib/blog-model': model, '@/content/site': { site: { url: 'https://johnsemblante.com' } } });
 const render = content => renderToStaticMarkup(React.createElement(BlogArticleContent, { content }));
+
+test('external inline article links open securely in new tabs across all text formatting', () => {
+  const html = render('Read [outside](https://example.com/read?x=1&y=2).\n## Heading [reference](https://docs.example.com)\n- List [source](https://example.com/list)\n> Quote [source](https://example.com/quote)');
+  const links = html.match(/<a\b[^>]*>/g) || [];
+  assert.equal(links.length, 4);
+  for (const link of links) {
+    assert.ok(link.includes('target="_blank"'));
+    assert.ok(link.includes('rel="noopener noreferrer"'));
+  }
+});
+
+test('internal inline links preserve same-tab navigation and unsafe links stay inert', () => {
+  const html = render('Visit [contact](/contact/), [about](https://johnsemblante.com/about/) and [unsafe](javascript:evil).');
+  const links = html.match(/<a\b[^>]*>/g) || [];
+  assert.equal(links.length, 2);
+  assert.ok(links.every(link => !link.includes('target=')));
+  assert.ok(!html.includes('href="javascript:'));
+});
 
 test('uploaded images insert between paragraphs and render with descriptions without losing text', () => {
   const before = 'First paragraph.'; const after = 'Second paragraph.';
