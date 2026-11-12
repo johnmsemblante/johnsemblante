@@ -390,11 +390,11 @@ The Home, Work, and Ventures directory hero illustrations share `src/components/
 
 ### Enhanced portrait and sizing
 
-`public/images/profile/john-enhanced.webp` is the current shared portrait. It is an AI-enhanced 1103 × 1426 version of the original 247 × 319 image, **not true 4K/UHD**. Reconstructed detail should not be described as recovered photographic detail. The original stays at `public/images/profile/john-resume.jpg` through `profile.resumePortrait`.
+Home uses the approved black-blazer portrait with a slight smile, `public/images/profile/john-home-black-smile.webp` (1103 ? 1426), through `profile.portrait`. About uses the gray-blazer corporate portrait, `public/images/profile/john-about-gray-blazer.webp` (1004 ? 1567), through `profile.aboutPortrait`. Both are AI-edited previews optimized to WebP; fine details are generated rather than recovered photographic evidence. The previous enhanced portrait and original r?sum? photo remain available as source assets.
 
-The enhanced image is used in the About hero, homepage About section, and homepage canvas. The About portrait displays up to 460px wide on desktop; the homepage About image up to 340px. Responsive rules reduce these sizes on smaller screens. Portraits retain their proportions, square edges, and borderless treatment. See [portrait enhancement notes](docs/review/portrait-enhancement.md).
+The homepage portrait appears in its hero canvas and About section. About has its own portrait, displayed up to 460px wide on desktop; the homepage About image displays up to 340px. Responsive rules preserve the existing sizing and borderless treatment.
 
-To replace the portrait again, update `profile.portrait` in `src/content/profile.ts` and the image width/height attributes in the About page, homepage, and browser illustration. Update any aspect ratio in `.home-portrait` if the new crop changes. Keep public image filenames versioned when changing files to avoid stale browser caches.
+To replace a portrait, update the relevant profile path, its rendered width/height attributes and its Pages editor catalog keys/defaults in `src/content/page-fields.json`. Keep filenames versioned to avoid stale browser caches.
 
 ### Profile updates and icons
 
