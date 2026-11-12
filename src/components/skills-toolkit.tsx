@@ -1,5 +1,7 @@
 "use client";
 
+import { PageText, PageImage } from "@/components/page-content";
+
 import { useId, useState } from "react";
 import { profile } from "@/content/profile";
 import { skillDetails, skillCategories } from "@/content/skill-details";
@@ -15,14 +17,14 @@ export function SkillsToolkit() {
   return <div className="skills-toolkit" onKeyDown={event => {
     if (event.key === "Escape") { setActive(null); setPinned(null); }
   }}>
-    <p className="toolkit-intro">The platforms, languages, and tools behind my work. Hover, focus, or tap an item to learn more.</p>
+    <p className="toolkit-intro"><PageText scope="skills_toolkit_1" fallback={"The platforms, languages, and tools behind my work. Hover, focus, or tap an item to learn more."} /></p>
     <div className="toolkit-filters" role="group" aria-label="Filter skills by category">
-      {["All", ...skillCategories].map(item => <button key={item} type="button" aria-pressed={category === item} onClick={() => { setCategory(item); setActive(null); setPinned(null); }}>{item}</button>)}
+      {["All", ...skillCategories].map(item => <button key={item} type="button" aria-pressed={category === item} onClick={() => { setCategory(item); setActive(null); setPinned(null); }}><PageText scope="skills_toolkit_2" fallback={item} /></button>)}
     </div>
-    <p className="toolkit-count" role="status">{visible.length} {visible.length === 1 ? "skill" : "skills"} · {category === "All" ? "All categories" : category}</p>
+    <p className="toolkit-count" role="status">{visible.length} <PageText scope="skills_toolkit_3" fallback={visible.length === 1 ? "skill" : "skills"} /> · <PageText scope="skills_toolkit_4" fallback={category === "All" ? "All categories" : category} /></p>
     <div className="toolkit-groups">
       {skillCategories.filter(group => category === "All" || category === group).map(group => <section key={group} className="toolkit-group" aria-label={group}>
-        <h3>{group}</h3>
+        <h3><PageText scope="skills_toolkit_5" fallback={group} /></h3>
         <ul className="toolkit-grid">
           {visible.filter(name => skillDetails[name]?.category === group).map(name => {
             const detail = skillDetails[name];
@@ -33,11 +35,11 @@ export function SkillsToolkit() {
                 const next = pinned === name ? null : name;
                 setPinned(next); setActive(next);
               }}>
-                <span className="toolkit-icon"><img src={`/icons/skills/${detail.icon}.svg`} alt="" width={36} height={36} loading="lazy" /></span>
-                <span className="toolkit-label">{name}</span>
-                <span className="toolkit-info" aria-hidden="true">i</span>
+                <span className="toolkit-icon"><PageImage scope="skills_toolkit_6" src={`/icons/skills/${detail.icon}.svg`} alt="" width={36} height={36} loading="lazy" /></span>
+                <span className="toolkit-label"><PageText scope="skills_toolkit_7" fallback={name} /></span>
+                <span className="toolkit-info" aria-hidden="true"><PageText scope="skills_toolkit_8" fallback={"i"} /></span>
               </button>
-              <div id={tooltipId} role="tooltip" className="toolkit-tooltip" hidden={!expanded}>{detail.description}</div>
+              <div id={tooltipId} role="tooltip" className="toolkit-tooltip" hidden={!expanded}><PageText scope="skills_toolkit_9" fallback={detail.description} /></div>
             </li>;
           })}
         </ul>

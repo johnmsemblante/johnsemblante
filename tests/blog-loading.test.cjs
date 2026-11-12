@@ -9,6 +9,7 @@ function initialBlog(configured, hasStaticPosts, initialPosts = []) {
   const code = ts.transpileModule(fs.readFileSync('src/components/managed-blog.tsx', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
   const exported = {};
   new Function('require', 'exports', code)(name => {
+    if (name === '@/components/page-content') return require('./page-content-mocks.cjs').content;
     if (name === 'react' || name === 'react/jsx-runtime') return require(name);
     if (name === '@/lib/firebase-client') return { firebaseConfigured: configured, getFirebase() { throw new Error('Server rendering must not fetch Firestore'); } };
     if (name === './ui') return { PageIntro: ({ title, children }) => React.createElement('header', null, React.createElement('h1', null, title), children) };

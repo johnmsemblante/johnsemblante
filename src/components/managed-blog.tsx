@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { PageText, PageLink } from "@/components/page-content";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { collection, getDocsFromServer, limit, orderBy, query, startAfter, where, type QueryDocumentSnapshot } from "firebase/firestore";
 import { firebaseConfigured, getFirebase } from "@/lib/firebase-client";
@@ -19,18 +20,18 @@ const dateLabel = (date: string) => new Intl.DateTimeFormat("en-PH", { dateStyle
 type Pages = { published: QueryDocumentSnapshot | null; scheduled: QueryDocumentSnapshot | null; morePublished: boolean; moreScheduled: boolean };
 const firstPages = (): Pages => ({ published: null, scheduled: null, morePublished: true, moreScheduled: true });
 function BlogIntro() {
-  return <PageIntro eyebrow="Notes from the work" title="Development notes & lessons learned."><p>Notes from my work as a web developer in Cebu: how I got started, what I’m learning, and the decisions behind the websites I build. For project screenshots and details, you can also explore my portfolio.</p></PageIntro>;
+  return <PageIntro eyebrow={<PageText scope="blog_1" fallback={"Notes from the work"} />} title={<PageText scope="blog_2" fallback={"Development notes & lessons learned."} />}><p><PageText scope="blog_3" fallback={"Notes from my work as a web developer in Cebu: how I got started, what I’m learning, and the decisions behind the websites I build. For project screenshots and details, you can also explore my portfolio."} /></p></PageIntro>;
 }
 
 function Categories({ post }: { post: ManagedPost }) {
-  return <ul className="article-categories" aria-label="Categories">{post.categories.map(category => <li key={category}>{category}</li>)}</ul>;
+  return <ul className="article-categories" aria-label="Categories">{post.categories.map(category => <li key={category}><PageText scope="managed_blog_4" fallback={category} /></li>)}</ul>;
 }
 function Tags({ post }: { post: ManagedPost }) {
   return post.tags.length > 0 ? <ul className="article-tags tags" aria-label="Tags">{post.tags.map(tag => <li key={tag}>{tag}</li>)}</ul> : null;
 }
 function Labels({ post }: { post: ManagedPost }) { return <><Categories post={post} /><Tags post={post} /></>; }
 function BlogCards({ posts, staticSlugs }: { posts: ManagedPost[]; staticSlugs: string[] }) {
-  return <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={staticSlugs.includes(post.slug) ? `/blog/${post.slug}/` : `/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} (Cebu)</time>} tags={<Tags post={post} />}><Categories post={post} /></BlogCard>)}</div>;
+  return <div className="blog-list">{posts.map(post => <BlogCard key={post.slug} title={post.title} excerpt={post.excerpt} href={staticSlugs.includes(post.slug) ? `/blog/${post.slug}/` : `/blog/?post=${encodeURIComponent(post.slug)}`} image={post.featuredImage} imageAlt={post.featuredImageAlt} date={<time dateTime={post.publishedAt}>{dateLabel(post.publishedAt)} <PageText scope="managed_blog_5" fallback={"(Cebu)"} /></time>} tags={<Tags post={post} />}><Categories post={post} /></BlogCard>)}</div>;
 }
 export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { children: ReactNode; hasStaticPosts: boolean; initialPosts?: ManagedPost[] }) {
   const staticSlugs = initialPosts.map(post => post.slug);
@@ -109,21 +110,21 @@ export function ManagedBlog({ children, hasStaticPosts, initialPosts = [] }: { c
     // Initial page selection is fixed by the URL; links navigate to a new page.
   }, []);
 
-  if (firebaseConfigured && !routeReady) return <>{hasStaticPosts ? children : <BlogIntro />}<section className="section" aria-label="Blog" aria-busy="true"><BlogCards posts={initialPosts} staticSlugs={staticSlugs} /><p role="status">Loading blog…</p><noscript><p>JavaScript is needed to load the latest articles.</p></noscript></section></>;
+  if (firebaseConfigured && !routeReady) return <>{hasStaticPosts ? children : <BlogIntro />}<section className="section" aria-label="Blog" aria-busy="true"><BlogCards posts={initialPosts} staticSlugs={staticSlugs} /><p role="status"><PageText scope="managed_blog_6" fallback={"Loading blog…"} /></p><noscript><p><PageText scope="managed_blog_7" fallback={"JavaScript is needed to load the latest articles."} /></p></noscript></section></>;
   if (detail) return <article className="blog-article">
-    <Link className="text-link" href="/blog/">← All posts</Link>
-    {loading && <p role="status">Loading article…</p>}
-    {error && <>{!article && <h1>Article unavailable</h1>}<p role="status">{error}</p></>}
-    {article && <><BlogPostMetadata post={article} canonicalPath={staticSlugs.includes(article.slug) ? `/blog/${article.slug}/` : undefined} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span>John Semblante</span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} (Cebu)</time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
-    {article && staticSlugs.includes(article.slug) && <footer><ArticleShareLink url={`${site.url}/blog/${article.slug}/`} /><p className="form-note">Use this article link for its own social preview title and image.</p></footer>}
+    <PageLink scope="managed_blog_8" className="text-link" href="/blog/"><PageText scope="managed_blog_9" fallback={"← All posts"} /></PageLink>
+    {loading && <p role="status"><PageText scope="managed_blog_10" fallback={"Loading article…"} /></p>}
+    {error && <>{!article && <h1><PageText scope="managed_blog_11" fallback={"Article unavailable"} /></h1>}<p role="status">{error}</p></>}
+    {article && <><BlogPostMetadata post={article} canonicalPath={staticSlugs.includes(article.slug) ? `/blog/${article.slug}/` : undefined} /><header><Labels post={article} /><h1>{article.title}</h1><p className="lede">{article.excerpt}</p><div className="blog-meta"><span><PageText scope="managed_blog_12" fallback={"John Semblante"} /></span><time dateTime={article.publishedAt}>{dateLabel(article.publishedAt)} <PageText scope="managed_blog_13" fallback={"(Cebu)"} /></time></div></header>{article.featuredImage && <BlogFeaturedImage src={article.featuredImage} alt={article.featuredImageAlt || article.title} />}<BlogArticleContent content={article.content} /></>}
+    {article && staticSlugs.includes(article.slug) && <footer><ArticleShareLink url={`${site.url}/blog/${article.slug}/`} /><p className="form-note"><PageText scope="managed_blog_14" fallback={"Use this article link for its own social preview title and image."} /></p></footer>}
   </article>;
   return <>
     {hasStaticPosts || (!firebaseConfigured && !initialPosts.length) ? children : <BlogIntro />}
     {(loading || error || posts.length > 0 || (firebaseConfigured && !hasStaticPosts)) && <section className="section" aria-label="Latest blog articles" aria-busy={loading}>
       <BlogCards posts={posts} staticSlugs={staticSlugs} />
-      {loading && <p role="status">Loading latest articles…</p>}{error && <p role="status">{error}</p>}
-      {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2>No articles published yet.</h2><p>Check back for new notes from the work.</p></div>}
-      {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}>Load more articles</button>}
+      {loading && <p role="status"><PageText scope="managed_blog_15" fallback={"Loading latest articles…"} /></p>}{error && <p role="status">{error}</p>}
+      {!loading && !error && !posts.length && !hasStaticPosts && <div className="empty-state"><h2><PageText scope="managed_blog_16" fallback={"No articles published yet."} /></h2><p><PageText scope="managed_blog_17" fallback={"Check back for new notes from the work."} /></p></div>}
+      {posts.length > 0 && (pages.morePublished || pages.moreScheduled) && !loading && <button type="button" className="button secondary" onClick={() => loadList(false)}><PageText scope="managed_blog_18" fallback={"Load more articles"} /></button>}
     </section>}
   </>;
 }

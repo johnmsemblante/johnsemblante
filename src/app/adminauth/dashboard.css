@@ -167,3 +167,13 @@
 @media(max-width:700px){.admin-shell .post-library-list button{grid-template-columns:minmax(0,1fr);gap:16px;padding:24px 0}.post-library-meta{flex-direction:row;align-items:center;flex-wrap:wrap;gap:12px}.post-library-action{margin-left:auto}.post-library-heading{flex-wrap:wrap;gap:8px}.blog-drawer-header{padding:18px 20px}.blog-drawer-body{padding:20px 20px 40px}.admin-shell .blog-drawer-header h2{font-size:26px}}
 
 @media(prefers-reduced-motion:reduce){.admin-blog-drawer[open]{animation:none}}
+.page-admin-list{border-top:1px solid var(--line)}
+.admin-shell .page-admin-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:28px;align-items:center;width:100%;padding:24px 4px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;color:var(--ink)}
+.page-admin-row strong,.page-admin-row small{display:block}.page-admin-row strong{font-size:22px}.page-admin-row small{margin-top:6px;color:var(--muted)}
+.admin-blog-drawer.page-editor-drawer{inset:0 auto 0 0;box-shadow:15px 0 60px #0003}.page-editor-drawer[open]{animation:page-drawer-in .24s ease-out}
+@keyframes page-drawer-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+.page-field-group{margin:24px 0;border:1px solid var(--line);padding:20px}.page-field-group summary{cursor:pointer;text-transform:capitalize;font-weight:600}.page-field-group summary small{margin-left:12px;font-weight:400}.page-field-group fieldset{margin-top:24px}
+.page-content-field{margin-bottom:28px}.page-content-field>label{display:block;margin-bottom:8px}.page-content-field>button{margin-top:8px;font-size:12px}.page-editor-actions{position:sticky;bottom:0;background:var(--paper);padding:18px 0;border-top:1px solid var(--line);z-index:1}.page-editor-actions>span{font-size:12px}
+@media(max-width:700px){.admin-shell .page-admin-row{grid-template-columns:minmax(0,1fr) auto;gap:16px}.page-admin-row>span:nth-child(2){display:none}.page-field-group{padding:14px}}
+@media(prefers-reduced-motion:reduce){.page-editor-drawer[open]{animation:none}}
+.venture-object-field{min-width:0}.venture-object-field>h4{text-transform:capitalize;margin:28px 0 8px}.venture-array{border-top:1px solid var(--line);padding-top:20px}.venture-array>h3{text-transform:capitalize}.venture-object>button,.venture-object-field>button,.venture-array>button{margin:12px 12px 12px 0}.venture-object label{text-transform:capitalize}

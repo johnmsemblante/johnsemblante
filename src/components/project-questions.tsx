@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PageText, PageLink } from "@/components/page-content";
 
 const questions = [
   ["Can you work on my existing WordPress website?", "Yes. My work includes theme changes, WooCommerce customization, layout fixes, and plugin-related issues. Send the website link and describe the change or problem. I’ll need to review the current setup before agreeing on the work."],
@@ -9,8 +9,8 @@ const questions = [
 
 export function ProjectQuestions() {
   return <section className="section" aria-labelledby="project-questions-title">
-    <div className="section-heading"><div><p className="eyebrow">Before we start</p><h2 id="project-questions-title">Questions about working together.</h2></div></div>
-    <div className="venture-faq">{questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
-    <p className="body-copy">Have a different question? <Link className="text-link" href="/contact/">Send me a message</Link>.</p>
+    <div className="section-heading"><div><p className="eyebrow"><PageText scope="project_questions_1" fallback={"Before we start"} /></p><h2 id="project-questions-title"><PageText scope="project_questions_2" fallback={"Questions about working together."} /></h2></div></div>
+    <div className="venture-faq">{questions.map(([question, answer]) => <details key={question}><summary><PageText scope="project_questions_3" fallback={question} /></summary><p><PageText scope="project_questions_4" fallback={answer} /></p></details>)}</div>
+    <p className="body-copy"><PageText scope="project_questions_5" fallback={"Have a different question? "} /><PageLink scope="project_questions_6" className="text-link" href="/contact/"><PageText scope="project_questions_7" fallback={"Send me a message"} /></PageLink>.</p>
   </section>;
 }

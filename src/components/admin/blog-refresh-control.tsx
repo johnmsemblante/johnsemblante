@@ -1,17 +1,29 @@
 "use client";
-
-import Link from "next/link";
-import { useState } from "react";
-import { requestBlogRefresh } from "@/lib/blog-refresh";
+import { useRef, useState } from "react";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { requestSiteRefresh } from "@/lib/site-refresh";
+import { firebaseMessage } from "@/lib/firebase-client";
+import { useAdmin } from "./admin-gate";
 
 export function BlogRefreshControl() {
-  const [message, setMessage] = useState("");
-  return <section className="admin-card blog-refresh-control" aria-labelledby="blog-refresh-title">
-    <h2 id="blog-refresh-title">Blog content refresh</h2>
-    <p>Saved articles check for the latest public content automatically. Use this if an open blog tab still shows an older version.</p>
-    <button type="button" className="button secondary" onClick={() => setMessage(requestBlogRefresh() ? "Refresh requested for open public blog tabs in this browser. You can also reopen the article to read the latest saved content." : "Browser storage is blocked, so other tabs could not be notified. Reopen or refresh the public article to load its latest saved content.")}>Refresh live blog content</button>
-    <Link href="/blog/" className="text-link" target="_blank" rel="noopener noreferrer">Open public blog ↗</Link>
+  const { db } = useAdmin();
+  const [message, setMessage] = useState(""), [busy, setBusy] = useState(false);
+  const lock = useRef(false);
+  async function refresh() {
+    if (lock.current) return;
+    lock.current = true; setBusy(true); setMessage("");
+    requestSiteRefresh();
+    try {
+      await setDoc(doc(db, "siteState", "content"), { token: crypto.randomUUID(), updatedAt: serverTimestamp() });
+      setMessage("Site-wide refresh requested. Connected visitors will reload the latest managed page, blog, work, and venture content. Other visitors receive the latest content when they open or refresh a page.");
+    } catch (error) { setMessage("This browser was notified, but the site-wide request failed. " + firebaseMessage(error)); }
+    finally { lock.current = false; setBusy(false); }
+  }
+  return <section className="admin-card blog-refresh-control" aria-labelledby="site-refresh-title">
+    <h2 id="site-refresh-title">Site-wide content refresh</h2>
+    <p>Ask connected public pages across browsers and devices to fetch the latest saved content.</p>
+    <button type="button" className="button secondary" disabled={busy} onClick={() => void refresh()}>{busy ? "Requesting refresh?" : "Refresh live site content"}</button>
     <p role="status" className="admin-notice">{message}</p>
-    <p className="form-note">This refreshes open tabs in this browser. It does not purge Firebase Hosting or social-platform caches. Rebuild and deploy to update the article HTML, search/social previews, or remove previously exported content.</p>
+    <p className="form-note">This refreshes managed content. Rebuild and deploy to update exported HTML, new clean URLs, search metadata, and Firebase Hosting?s CDN cache. Browser image caches and social-platform previews are managed separately.</p>
   </section>;
 }

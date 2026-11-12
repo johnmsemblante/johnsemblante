@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/next/dist/bin/next dev --webpack",
-    "build": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node node_modules/next/dist/bin/next build --webpack",
+    "build": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs && node node_modules/next/dist/bin/next build --webpack",
     "test:forms": "node --test tests/inquiry-reset.test.cjs",
     "test:ventures": "node --test tests/ventures.test.cjs",
     "test:seo": "node --test tests/seo.test.cjs tests/live-seo.test.mjs",
@@ -17,7 +17,11 @@
     "test:admin": "node --test tests/admin-dashboard.test.cjs tests/jobs.test.cjs tests/job-feed-worker.test.cjs",
     "test:work": "node --test tests/work-portfolio.test.cjs tests/project-filter-session.test.cjs tests/project-filter-dropdown.test.cjs",
     "test:work-admin": "node --test tests/work-admin.test.cjs",
-    "audit:seo:live": "node scripts/check-live-seo.mjs"
+    "audit:seo:live": "node scripts/check-live-seo.mjs",
+    "sync:pages": "node scripts/sync-pages.cjs",
+    "test:pages": "node --test tests/pages.test.cjs",
+    "sync:ventures": "node scripts/sync-ventures.cjs",
+    "test:venture-admin": "node --test tests/venture-admin.test.cjs"
   },
   "dependencies": {
     "firebase": "13.2.0",

@@ -5,6 +5,30 @@
 const imageLimit = 5 * 1024 * 1024;
 const formats = ["jpg", "jpeg", "png", "webp", "avif"];
 
+function cloudinaryFailure(message: unknown): string {
+  const detail = typeof message === "string" ? message : "";
+  // Return fixed messages only. Provider errors can contain API keys or signed parameters.
+  if (/invalid api[_ ]key|unknown api[_ ]key|api[_ ]key.*(?:invalid|not found|disabled)/i.test(detail)) {
+    return "Cloudinary rejected the configured API key. Update the upload Worker's CLOUDINARY_API_KEY for this cloud.";
+  }
+  if (/invalid signature|signature.*(?:invalid|mismatch)/i.test(detail)) {
+    return "Cloudinary could not verify the upload signature. Check that the Worker's API key and API secret belong to the same Cloudinary cloud.";
+  }
+  if (/upload preset|upload_preset/i.test(detail)) {
+    return "Cloudinary rejected the upload preset. Check that portfolio_works exists in this cloud and supports signed image uploads.";
+  }
+  if (/file size|too large|maximum.*size/i.test(detail)) {
+    return "Cloudinary rejected the image size. Choose a smaller image and check the upload preset's size limit.";
+  }
+  if (/invalid image|unsupported.*(?:format|file)|not allowed.*(?:format|file)|format.*not allowed/i.test(detail)) {
+    return "Cloudinary rejected the image format. Choose a valid JPG, PNG, WebP or AVIF image and check the preset's allowed formats.";
+  }
+  if (/quota|credit|usage limit|rate limit/i.test(detail)) {
+    return "Cloudinary's upload allowance is currently exhausted. Check the account's usage limits and retry when uploads are available.";
+  }
+  return "Cloudinary rejected the image. Check the signed preset and API key pair, then retry.";
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get("Origin") ?? "";
@@ -24,7 +48,8 @@ export default {
       // Firestore validates the token signature and expiry; decoded claims alone grant no access.
       const claims = JSON.parse(atob(auth.slice(7).split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
       if (claims.aud !== env.FIREBASE_PROJECT_ID || claims.iss !== `https://securetoken.google.com/${env.FIREBASE_PROJECT_ID}` || claims.email_verified !== true || typeof claims.sub !== "string" || !/^[a-zA-Z0-9_-]{1,128}$/.test(claims.sub)) return reply(403, "Admin access required.");
-      const member = await fetch(`https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents/admins/${claims.sub}`, { headers: { Authorization: auth }, redirect: "error", signal: AbortSignal.timeout(10000) });
+      // Workers supports manual/follow only. Never follow redirects with the bearer token.
+      const member = await fetch(`https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents/admins/${claims.sub}`, { headers: { Authorization: auth }, redirect: "manual", signal: AbortSignal.timeout(10000) });
       if (!member.ok) return reply(403, "Admin access required.");
       const record = await member.json() as { fields?: { enabled?: { booleanValue?: boolean } } };
       if (record.fields?.enabled?.booleanValue !== true) return reply(403, "Admin access required.");
@@ -56,10 +81,12 @@ export default {
       const upload = new FormData(); upload.set("file", file);
       for (const [key, value] of Object.entries(parameters)) upload.set(key, String(value));
       upload.set("api_key", env.CLOUDINARY_API_KEY); upload.set("signature", signature);
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(env.CLOUDINARY_CLOUD_NAME)}/image/upload`, { method: "POST", body: upload, redirect: "error", signal: AbortSignal.timeout(45000) });
-      const result = await response.json() as { secure_url?: string; resource_type?: string; format?: string };
+      // Keep signed upload credentials at the configured provider; reject redirects below.
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(env.CLOUDINARY_CLOUD_NAME)}/image/upload`, { method: "POST", body: upload, redirect: "manual", signal: AbortSignal.timeout(45000) });
+      const result = await response.json() as { secure_url?: string; resource_type?: string; format?: string; error?: { message?: unknown } };
       const prefix = `https://res.cloudinary.com/${env.CLOUDINARY_CLOUD_NAME}/image/upload/`;
-      if (!response.ok || result.resource_type !== "image" || !formats.includes(result.format ?? "") || !result.secure_url?.startsWith(prefix)) return reply(502, "Cloudinary rejected the image. Check the signed preset and API key pair, then retry.");
+      if (!response.ok) return reply(502, cloudinaryFailure(result.error?.message));
+      if (result.resource_type !== "image" || !formats.includes(result.format ?? "") || !result.secure_url?.startsWith(prefix)) return reply(502, "Cloudinary returned an unexpected image response. Check the cloud name and upload preset configuration.");
       return new Response(JSON.stringify({ url: result.secure_url }), { headers });
     } catch { return reply(502, "Image upload failed. Your project fields are preserved; please retry."); }
   },

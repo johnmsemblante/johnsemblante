@@ -138,6 +138,78 @@ service cloud.firestore {
         && request.resource.data.revision == resource.data.revision + 1;
       allow delete: if admin();
     }
+    function pageGalleryItem(images, index) {
+      return images.size() <= index || validPageImage(images[index]);
+    }
+    function validPageImage(image) {
+      let src = image.src;
+      let alt = image.alt;
+      return image.keys().hasAll(['src','alt','caption']) && image.keys().hasOnly(['src','alt','caption'])
+        && src is string && src.size() > 0 && src.size() <= 2000
+        && src.matches('^(https://[^\\s<>]+|/[^/\\s<>][^\\s<>]*)$')
+        && alt is string && alt.size() > 0 && alt.size() <= 200 && alt.matches('(?s).*[^\\s].*')
+        && image.caption is string && image.caption.size() <= 500;
+    }
+    function validPage() {
+      let p = request.resource.data;
+      let keys = p.values.keys().join('\u0000');
+      let values = p.values.values().join('\u0000');
+      return p.keys().hasAll(['values','seoTitle','seoDescription','images','revision'])
+        && p.keys().hasOnly(['values','seoTitle','seoDescription','images','revision'])
+        && p.values is map && p.values.size() <= 500
+        && (p.values.size() == 0 || (keys.matches('^[a-zA-Z0-9_-]{1,100}(\x00[a-zA-Z0-9_-]{1,100})*$')
+          && (values + '\u0000~').split('\u0000') == p.values.values().concat(['~']) && values.size() <= 200000))
+        && p.seoTitle is string && p.seoTitle.size() <= 160
+        && p.seoDescription is string && p.seoDescription.size() <= 500
+        && p.revision is int && p.revision == (resource == null ? 1 : resource.data.revision + 1)
+        && p.images is list && p.images.size() <= 5
+        && pageGalleryItem(p.images, 0)
+        && pageGalleryItem(p.images, 1)
+        && pageGalleryItem(p.images, 2)
+        && pageGalleryItem(p.images, 3)
+        && pageGalleryItem(p.images, 4)
+        ;
+    }
+    match /pages/{id} {
+      allow get: if id in ['home','about','work','blog','ventures','contact'];
+      allow list: if false;
+      allow create, update: if admin() && id in ['home','about','work','blog','ventures','contact'] && validPage();
+      allow delete: if false;
+    }
+    match /siteState/{id} {
+      allow get: if id == 'content';
+      allow list, delete: if false;
+      allow create, update: if id == 'content' && admin()
+        && request.resource.data.keys().hasAll(['token','updatedAt'])
+        && request.resource.data.keys().hasOnly(['token','updatedAt'])
+        && request.resource.data.token is string && request.resource.data.token.size() == 36
+        && request.resource.data.updatedAt == request.time;
+    }
+    function validManagedVenture(slug) {
+      let v = request.resource.data;
+      return v.keys().hasAll(['slug','content','status','revision']) && v.keys().hasOnly(['slug','content','status','revision'])
+        && v.slug == slug && slug.size() <= 100 && slug != 'view' && slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && v.content is string && v.content.size() > 0 && v.content.size() <= 400000
+        && v.status in ['draft','published'] && v.revision is int
+        && v.revision == (resource == null ? 1 : resource.data.revision + 1)
+        && getAfter(/databases/$(database)/documents/publicVentures/$(slug)).data == (v.status == 'published'
+          ? {'slug':slug,'deleted':false,'content':v.content} : {'slug':slug,'deleted':true});
+    }
+    match /managedVentures/{slug} {
+      allow read: if admin();
+      allow create, update: if admin() && validManagedVenture(slug);
+      allow delete: if admin() && getAfter(/databases/$(database)/documents/publicVentures/$(slug)).data == {'slug':slug,'deleted':true};
+    }
+    match /publicVentures/{slug} {
+      allow read: if true;
+      allow create, update: if admin() && (request.resource.data == {'slug':slug,'deleted':true}
+        ? (!existsAfter(/databases/$(database)/documents/managedVentures/$(slug)) || getAfter(/databases/$(database)/documents/managedVentures/$(slug)).data.status == 'draft')
+        : (request.resource.data.keys().hasAll(['slug','deleted','content']) && request.resource.data.keys().hasOnly(['slug','deleted','content'])
+          && request.resource.data.slug == slug && request.resource.data.deleted == false
+          && getAfter(/databases/$(database)/documents/managedVentures/$(slug)).data.status == 'published'
+          && request.resource.data.content == getAfter(/databases/$(database)/documents/managedVentures/$(slug)).data.content));
+      allow delete: if false;
+    }
     match /{document=**} { allow read, write: if false; }
   }
 }

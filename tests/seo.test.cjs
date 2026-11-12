@@ -6,7 +6,7 @@ const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 function load(file, mocks = {}) {
   const exports = {};
-  new Function('require', 'exports', ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX } }).outputText)(name => mocks[name] ?? require(name), exports);
+  new Function('require', 'exports', ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX } }).outputText)(name => mocks[name] ?? (name === '@/components/page-content' ? require('./page-content-mocks.cjs').content : name === '@/lib/build-pages' ? require('./page-content-mocks.cjs').build : require(name)), exports);
   return exports;
 }
 const site = { name: 'John Semblante', url: 'https://johnmsemblanteapp.web.app', description: 'Developer in Cebu', socialImage: '/images/seo/john-semblante-social.png' };
@@ -33,6 +33,12 @@ test('homepage includes managed and source article previews in publication order
     '@/components/workflow': { Workflow: noop }, '@/components/project-grid': { ProjectGrid: noop },
     '@/ventures/cards': { VentureCards: noop }, '@/components/project-questions': { ProjectQuestions: noop },
   };
+  mocks['@/components/live-home-content'] = load('src/components/live-home-content.tsx', {
+    '@/content/site': { projects: [] }, '@/lib/work-model': {}, '@/lib/public-works': {}, '@/lib/public-blog-snapshot': {}, '@/lib/blog-refresh': {}, '@/lib/site-refresh': {},
+    './project-grid': { ProjectGrid: noop }, './ui': { Arrow: noop }, './page-content': require('./page-content-mocks.cjs').content, 'next/link': mocks['next/link'],
+  });
+  mocks['@/components/live-ventures'] = { LiveVentureCards: noop };
+  mocks['@/lib/build-ventures'] = { buildVentures: () => [] };
   const Home = load('src/app/(portfolio)/page.tsx', mocks).default;
   const html = renderToStaticMarkup(React.createElement(Home));
   assert.ok(html.includes('href="/blog/latest-managed/"'));

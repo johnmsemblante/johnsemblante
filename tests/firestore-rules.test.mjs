@@ -21,6 +21,10 @@ const workModelUrl = moduleUrl(compile('src/lib/work-model.ts').replace('"@/cont
 const { mergeWorks } = await import(workModelUrl);
 const workStoreUrl = moduleUrl(compile('src/lib/work-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./work-model"', JSON.stringify(workModelUrl)));
 const { writeWork } = await import(workStoreUrl);
+const pageModelUrl = moduleUrl(compile('src/lib/page-model.ts'));
+const ventureModelUrl = moduleUrl(compile('src/lib/venture-model.ts').replace('"./page-model"', JSON.stringify(pageModelUrl)));
+const ventureStoreUrl = moduleUrl(compile('src/lib/venture-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./venture-model"', JSON.stringify(ventureModelUrl)));
+const { writeVenture } = await import(ventureStoreUrl);
 let environment;
 const article = (status = 'draft') => ({ schemaVersion: 2, slug: 'an-article', title: 'An article', excerpt: 'Intro', category: 'Notes', categories: ['Notes'], tags: ['Firebase'], content: 'A paragraph\n\n## Heading', seoTitle: '', seoDescription: '', status, publishedAt: status === 'published' ? serverTimestamp() : null, releaseAt: 0, revision: 1, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
 const adminDb = () => environment.authenticatedContext('owner', { email_verified: true }).firestore();
@@ -36,6 +40,83 @@ beforeEach(async () => {
   });
 });
 after(async () => { await environment?.cleanup(); });
+
+const ventureFixture = () => ({ slug: 'test-venture', name: 'Test venture', category: 'Coffee', description: 'A coffee venture.', theme: 'coffee', title: 'Coffee for you', tagline: 'Coffee in Cebu' });
+test('Ventures publish atomically, keep drafts private, reject stale revisions and delete with a tombstone', async () => {
+  const db=adminDb(),v=ventureFixture(),publicDb=environment.unauthenticatedContext().firestore();
+  let record=await writeVenture(db,{venture:v,status:'draft',revision:0},null,[]);
+  await assertFails(getDoc(doc(publicDb,'managedVentures',v.slug)));
+  assert.deepEqual((await getDoc(doc(publicDb,'publicVentures',v.slug))).data(),{slug:v.slug,deleted:true});
+  record=await writeVenture(db,{...record,status:'published'},v.slug,[]);
+  assert.equal(JSON.parse((await getDoc(doc(publicDb,'publicVentures',v.slug))).data().content).name,v.name);
+  await assert.rejects(writeVenture(db,{...record,revision:1},v.slug,[]),/another tab/);
+  await assertFails(setDoc(doc(db,'publicVentures',v.slug),{slug:v.slug,deleted:false,content:'forged'}));
+  await assertFails(updateDoc(doc(db,'managedVentures',v.slug),{status:'draft',revision:3}));
+  await writeVenture(db,record,v.slug,[],true);
+  assert.deepEqual((await getDoc(doc(publicDb,'publicVentures',v.slug))).data(),{slug:v.slug,deleted:true});
+  assert.equal((await getDoc(doc(db,'managedVentures',v.slug))).exists(),false);
+});
+test('Ventures enforce verified admin access, allowed schema, revision increments and bounded payloads', async () => {
+  const v=ventureFixture(),input={venture:v,status:'published',revision:0};
+  for(const db of [environment.unauthenticatedContext().firestore(),environment.authenticatedContext('other',{email_verified:true}).firestore(),environment.authenticatedContext('owner',{email_verified:false}).firestore()]) await assertFails(writeVenture(db,input,null,[]));
+  const db=adminDb();
+  for(const patch of [{revision:2},{content:'x'.repeat(400001)},{unknown:true},{status:'invalid'}]){
+    const batch=writeBatch(db),data={slug:v.slug,content:JSON.stringify(v),status:'published',revision:1,...patch};
+    batch.set(doc(db,'managedVentures',v.slug),data);batch.set(doc(db,'publicVentures',v.slug),{slug:v.slug,deleted:false,content:data.content});await assertFails(batch.commit());
+  }
+  await environment.withSecurityRulesDisabled(context=>updateDoc(doc(context.firestore(),'admins','owner'),{enabled:false}));
+  await assertFails(writeVenture(db,input,null,[]));
+});
+test('Ventures rename preserves draft privacy and rejects collisions including tombstones', async () => {
+  const db=adminDb(),v=ventureFixture();let record=await writeVenture(db,{venture:v,status:'published',revision:0},null,[]);
+  record=await writeVenture(db,{...record,venture:{...v,slug:'renamed-venture'},status:'draft'},v.slug,[]);
+  assert.equal(record.revision,1);
+  for(const slug of [v.slug,'renamed-venture'])assert.deepEqual((await getDoc(doc(environment.unauthenticatedContext().firestore(),'publicVentures',slug))).data(),{slug,deleted:true});
+  await assert.rejects(writeVenture(db,{...record,venture:{...v,slug:v.slug}},'renamed-venture',[]),/reserved/);
+  record=await writeVenture(db,{...record,status:'published'},'renamed-venture',[]);
+  assert.equal(JSON.parse((await getDoc(doc(db,'publicVentures','renamed-venture'))).data().content).slug,'renamed-venture');
+});
+test('site-wide refresh state is publicly readable and only enabled verified admins can write a timestamped signal', async () => {
+  const publicDb=environment.unauthenticatedContext().firestore(),signal={token:'00000000-0000-4000-8000-000000000001',updatedAt:serverTimestamp()};
+  await assertSucceeds(getDoc(doc(publicDb,'siteState','content')));
+  for(const db of [publicDb,environment.authenticatedContext('other',{email_verified:true}).firestore(),environment.authenticatedContext('owner',{email_verified:false}).firestore()]) await assertFails(setDoc(doc(db,'siteState','content'),signal));
+  await assertSucceeds(setDoc(doc(adminDb(),'siteState','content'),signal));
+  assert.equal((await getDoc(doc(publicDb,'siteState','content'))).data().token,signal.token);
+  await assertFails(setDoc(doc(adminDb(),'siteState','content'),{...signal,updatedAt:Timestamp.fromMillis(1)}));
+  await assertFails(setDoc(doc(adminDb(),'siteState','content'),{...signal,secret:'not allowed'}));
+  await assertFails(setDoc(doc(adminDb(),'siteState','other'),signal));
+  await assertFails(getDocs(collection(publicDb,'siteState')));
+});
+
+test('Pages allow public single reads and only verified enabled admins can publish known pages', async () => {
+  const record = { values: { home_hero: 'Updated heading', empty: '' }, seoTitle: 'Home title', seoDescription: 'Home description', images: [], revision: 1 };
+  const publicDb = environment.unauthenticatedContext().firestore();
+  await assertSucceeds(getDoc(doc(publicDb, 'pages', 'home')));
+  for (const db of [publicDb, environment.authenticatedContext('other', { email_verified: true }).firestore(), environment.authenticatedContext('owner', { email_verified: false }).firestore()]) {
+    await assertFails(setDoc(doc(db, 'pages', 'home'), record));
+  }
+  await assertSucceeds(setDoc(doc(adminDb(), 'pages', 'home'), record));
+  assert.equal((await assertSucceeds(getDoc(doc(publicDb, 'pages', 'home')))).data().values.home_hero, 'Updated heading');
+  await assertFails(getDocs(collection(publicDb, 'pages')));
+  await assertFails(setDoc(doc(adminDb(), 'pages', 'lazy-barista'), record));
+  await assertFails(setDoc(doc(adminDb(), 'pages', 'home'), record));
+  await assertSucceeds(setDoc(doc(adminDb(), 'pages', 'home'), { ...record, revision: 2 }));
+  await assertFails(deleteDoc(doc(adminDb(), 'pages', 'home')));
+  await environment.withSecurityRulesDisabled(context => updateDoc(doc(context.firestore(), 'admins', 'owner'), { enabled: false }));
+  await assertFails(setDoc(doc(adminDb(), 'pages', 'home'), { ...record, revision: 3 }));
+});
+
+test('Pages validate content, metadata and every gallery image including the last slot', async () => {
+  const record = { values: {}, seoTitle: '', seoDescription: '', images: [], revision: 1 };
+  for (const patch of [{ unknown: true }, { values: { key: 3 } }, { values: { key: null } }, { values: { key: ['text'] } }, { values: { 'bad.key': 'text' } }, { seoTitle: 'x'.repeat(161) }, { seoDescription: 'x'.repeat(501) }, { revision: 2 }, { images: Array(6).fill({ src: '/image.webp', alt: 'Photo', caption: '' }) }]) {
+    await assertFails(setDoc(doc(adminDb(), 'pages', 'about'), { ...record, ...patch }));
+  }
+  const images = Array.from({ length: 5 }, (_,i) => ({ src: `/images/photo-${i}.webp`, alt: `Photo ${i}`, caption: '' }));
+  for (const src of ['javascript:alert(1)', '//evil.invalid/image.webp', '']) {
+    await assertFails(setDoc(doc(adminDb(), 'pages', 'about'), { ...record, images: images.map((v,i) => i === 4 ? { ...v, src } : v) }));
+  }
+  await assertSucceeds(setDoc(doc(adminDb(), 'pages', 'about'), { ...record, images }));
+});
 
 test('anonymous reads allow published/legacy posts and deny drafts, admin records and unfiltered lists', async () => {
   const db = environment.unauthenticatedContext().firestore();

@@ -1,0 +1,3332 @@
+{
+  "home": [
+    {
+      "key": "home_1_14jrdls",
+      "label": "Hero name",
+      "group": "home",
+      "kind": "text",
+      "value": "John Clark Semblante"
+    },
+    {
+      "key": "home_2_1oafbmx",
+      "label": "Hero location",
+      "group": "home",
+      "kind": "text",
+      "value": "/ Philippines"
+    },
+    {
+      "key": "home_3_6qqro",
+      "label": "Hero title",
+      "group": "home",
+      "kind": "text",
+      "value": "Cebu Web Developer"
+    },
+    {
+      "key": "home_4_ddshuy",
+      "label": "Hero subtitle",
+      "group": "home",
+      "kind": "text",
+      "value": "WordPress/Full Stack Developer"
+    },
+    {
+      "key": "home_5_1w5104x",
+      "label": "Hero introduction",
+      "group": "home",
+      "kind": "text",
+      "value": "I’m John Clark Semblante, a web developer in Mandaue City, Cebu. I turn Figma designs into WordPress websites, customize WooCommerce stores, and help fix sites that aren’t working as they should. I’ve worked in web development since 2013."
+    },
+    {
+      "key": "button_href_na0cib",
+      "label": "Button destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "home_6_1to57ad",
+      "label": "Discuss your project",
+      "group": "home",
+      "kind": "text",
+      "value": "Discuss your project"
+    },
+    {
+      "key": "button_href_189y0ck",
+      "label": "Button destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/work/"
+    },
+    {
+      "key": "home_7_1c951mu",
+      "label": "View my portfolio",
+      "group": "home",
+      "kind": "text",
+      "value": "View my portfolio"
+    },
+    {
+      "key": "home_8_3nl292",
+      "label": "</>",
+      "group": "home",
+      "kind": "text",
+      "value": "</>"
+    },
+    {
+      "key": "home_9_1em1hln",
+      "label": "From design to website",
+      "group": "home",
+      "kind": "text",
+      "value": "From design to website"
+    },
+    {
+      "key": "home_10_32k602",
+      "label": "Custom WordPress development from your Figma designs.",
+      "group": "home",
+      "kind": "text",
+      "value": "Custom WordPress development from your Figma designs."
+    },
+    {
+      "key": "home_11_tmvrev",
+      "label": "Layouts for different screens",
+      "group": "home",
+      "kind": "text",
+      "value": "Layouts for different screens"
+    },
+    {
+      "key": "home_12_r6adkt",
+      "label": "Responsive layouts and cross-browser improvements.",
+      "group": "home",
+      "kind": "text",
+      "value": "Responsive layouts and cross-browser improvements."
+    },
+    {
+      "key": "home_13_yw8zbl",
+      "label": "Help with an existing site",
+      "group": "home",
+      "kind": "text",
+      "value": "Help with an existing site"
+    },
+    {
+      "key": "home_14_p29vdn",
+      "label": "UI fixes, integrations, and performance improvements.",
+      "group": "home",
+      "kind": "text",
+      "value": "UI fixes, integrations, and performance improvements."
+    },
+    {
+      "key": "home_15_1riil8c",
+      "label": "The portfolio",
+      "group": "home",
+      "kind": "text",
+      "value": "The portfolio"
+    },
+    {
+      "key": "home_16_csbbkw",
+      "label": "A few websites from my portfolio.",
+      "group": "home",
+      "kind": "text",
+      "value": "A few websites from my portfolio."
+    },
+    {
+      "key": "home_17_189y0ck",
+      "label": "Link destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/work/"
+    },
+    {
+      "key": "home_18_5bz8pw",
+      "label": "View all work ",
+      "group": "home",
+      "kind": "text",
+      "value": "View all work "
+    },
+    {
+      "key": "home_19_3nl292",
+      "label": "</>",
+      "group": "home",
+      "kind": "text",
+      "value": "</>"
+    },
+    {
+      "key": "home_20_17hso3y",
+      "label": "Looking for a relevant example?",
+      "group": "home",
+      "kind": "text",
+      "value": "Looking for a relevant example?"
+    },
+    {
+      "key": "home_21_1ut34o9",
+      "label": "Tell me what you need to build, and I can discuss the experience relevant to your project.",
+      "group": "home",
+      "kind": "text",
+      "value": "Tell me what you need to build, and I can discuss the experience relevant to your project."
+    },
+    {
+      "key": "home_22_1rnbgjz",
+      "label": "Beyond the screen",
+      "group": "home",
+      "kind": "text",
+      "value": "Beyond the screen"
+    },
+    {
+      "key": "home_23_1ozvvij",
+      "label": "Independent ventures.",
+      "group": "home",
+      "kind": "text",
+      "value": "Independent ventures."
+    },
+    {
+      "key": "home_24_1k17t7",
+      "label": "Link destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/ventures/"
+    },
+    {
+      "key": "home_25_2x8243",
+      "label": "View all ventures ",
+      "group": "home",
+      "kind": "text",
+      "value": "View all ventures "
+    },
+    {
+      "key": "home_26_iw5pe7",
+      "label": "Take a coffee break with Lazy Barista, plan a Cebu trip with Golden Travel and Tours, or e",
+      "group": "home",
+      "kind": "text",
+      "value": "Take a coffee break with Lazy Barista, plan a Cebu trip with Golden Travel and Tours, or explore the Lapse Hub photography archive."
+    },
+    {
+      "key": "home_27_src_1mof72t",
+      "label": "Image",
+      "group": "home",
+      "kind": "image",
+      "value": "/images/profile/john-enhanced.webp"
+    },
+    {
+      "key": "home_28_sx8dw0",
+      "label": "About me",
+      "group": "home",
+      "kind": "text",
+      "value": "About me"
+    },
+    {
+      "key": "home_29_1o24k7p",
+      "label": "Hi, I’m John Semblante.",
+      "group": "home",
+      "kind": "text",
+      "value": "Hi, I’m John Semblante."
+    },
+    {
+      "key": "home_30_1qezbir",
+      "label": "I’m John Clark Semblante, a WordPress/Full Stack Developer based in Mandaue City, Cebu. I ",
+      "group": "home",
+      "kind": "text",
+      "value": "I’m John Clark Semblante, a WordPress/Full Stack Developer based in Mandaue City, Cebu. I started at Cebu Rent A Car in 2013, working on websites and on-page SEO. Since then, my work has included custom WordPress themes, ecommerce stores, and front-end interfaces for business and legal technology teams."
+    },
+    {
+      "key": "home_31_1qve3se",
+      "label": "Alongside client work, I’ve built websites for my own coffee and travel ventures. You can ",
+      "group": "home",
+      "kind": "text",
+      "value": "Alongside client work, I’ve built websites for my own coffee and travel ventures. You can explore those projects here, along with my earlier WordPress work."
+    },
+    {
+      "key": "button_href_gssft4",
+      "label": "Button destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/about/"
+    },
+    {
+      "key": "home_32_1va0zjt",
+      "label": "More about me",
+      "group": "home",
+      "kind": "text",
+      "value": "More about me"
+    },
+    {
+      "key": "home_33_hu55i2",
+      "label": "Notes from the work",
+      "group": "home",
+      "kind": "text",
+      "value": "Notes from the work"
+    },
+    {
+      "key": "home_34_1ti21g3",
+      "label": "What I’m working on and learning.",
+      "group": "home",
+      "kind": "text",
+      "value": "What I’m working on and learning."
+    },
+    {
+      "key": "home_35_1oiaxt7",
+      "label": "Link destination",
+      "group": "home",
+      "kind": "url",
+      "value": "/blog/"
+    },
+    {
+      "key": "home_36_1ima6qr",
+      "label": "Visit the blog ",
+      "group": "home",
+      "kind": "text",
+      "value": "Visit the blog "
+    },
+    {
+      "key": "home_38_87ga2a",
+      "label": "I share development notes here when there is something useful to write about. In the meant",
+      "group": "home",
+      "kind": "text",
+      "value": "I share development notes here when there is something useful to write about. In the meantime, you can browse my website projects."
+    },
+    {
+      "key": "home_39_o7hpnb",
+      "label": "Let’s work together",
+      "group": "home",
+      "kind": "text",
+      "value": "Let’s work together"
+    },
+    {
+      "key": "home_40_15fbgvd",
+      "label": "Have a project in mind?",
+      "group": "home",
+      "kind": "text",
+      "value": "Have a project in mind?"
+    },
+    {
+      "key": "home_41_u5764r",
+      "label": "Send me a link and a few lines about what you want to build or improve. If you’re hiring f",
+      "group": "home",
+      "kind": "text",
+      "value": "Send me a link and a few lines about what you want to build or improve. If you’re hiring for a remote role, tell me about the team, responsibilities, and working hours."
+    },
+    {
+      "key": "home_42_1to57ad",
+      "label": "Discuss your project",
+      "group": "home",
+      "kind": "text",
+      "value": "Discuss your project"
+    },
+    {
+      "key": "development_services_1_1nanxqn",
+      "label": "How I can help",
+      "group": "development_services",
+      "kind": "text",
+      "value": "How I can help"
+    },
+    {
+      "key": "development_services_2_9pfz7x",
+      "label": "WordPress development & website support.",
+      "group": "development_services",
+      "kind": "text",
+      "value": "WordPress development & website support."
+    },
+    {
+      "key": "development_services_3_1479wnr",
+      "label": "Figma to WordPress",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Figma to WordPress"
+    },
+    {
+      "key": "development_services_3_1sen97m",
+      "label": "WooCommerce development",
+      "group": "development_services",
+      "kind": "text",
+      "value": "WooCommerce development"
+    },
+    {
+      "key": "development_services_3_1cuk3w8",
+      "label": "Website fixes & improvements",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Website fixes & improvements"
+    },
+    {
+      "key": "development_services_4_11rc4x7",
+      "label": "Have a design ready to build? I turn Figma layouts into custom WordPress themes, including",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Have a design ready to build? I turn Figma layouts into custom WordPress themes, including the pages and reusable sections your site needs. We’ll review how the design should work on smaller screens and which content you need to edit yourself."
+    },
+    {
+      "key": "development_services_4_u71jdo",
+      "label": "If your store’s theme doesn’t quite fit the way you sell, I can help with product pages, s",
+      "group": "development_services",
+      "kind": "text",
+      "value": "If your store’s theme doesn’t quite fit the way you sell, I can help with product pages, shop layouts, theme behavior, and third-party integrations. Start by showing me the current store and what you want customers to be able to do."
+    },
+    {
+      "key": "development_services_4_22b49o",
+      "label": "You don’t always need a new website. I investigate broken layouts, plugin conflicts, and s",
+      "group": "development_services",
+      "kind": "text",
+      "value": "You don’t always need a new website. I investigate broken layouts, plugin conflicts, and slow pages, then work on the affected parts. Send the page link and a description of the problem so we can decide where to start."
+    },
+    {
+      "key": "development_services_5_1camxh9",
+      "label": "Design implementation · Custom themes",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Design implementation · Custom themes"
+    },
+    {
+      "key": "development_services_5_3prayx",
+      "label": "Storefronts · Theme customization · Integrations",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Storefronts · Theme customization · Integrations"
+    },
+    {
+      "key": "development_services_5_19eyrlp",
+      "label": "UI debugging · Mobile usability · Performance",
+      "group": "development_services",
+      "kind": "text",
+      "value": "UI debugging · Mobile usability · Performance"
+    },
+    {
+      "key": "development_services_6_187iq0",
+      "label": "Not sure which service fits? Tell me what you want visitors to do and what is getting in t",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Not sure which service fits? Tell me what you want visitors to do and what is getting in their way. A website link or screenshot is a useful starting point. "
+    },
+    {
+      "key": "development_services_7_na0cib",
+      "label": "Link destination",
+      "group": "development_services",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "development_services_8_yeez6v",
+      "label": "Tell me about your website ",
+      "group": "development_services",
+      "kind": "text",
+      "value": "Tell me about your website "
+    },
+    {
+      "key": "workflow_1_15fwn7u",
+      "label": "Working together",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Working together"
+    },
+    {
+      "key": "workflow_2_t5znsp",
+      "label": "How I approach a website project.",
+      "group": "workflow",
+      "kind": "text",
+      "value": "How I approach a website project."
+    },
+    {
+      "key": "workflow_3_94wj3u",
+      "label": "01",
+      "group": "workflow",
+      "kind": "text",
+      "value": "01"
+    },
+    {
+      "key": "workflow_3_8uwxev",
+      "label": "02",
+      "group": "workflow",
+      "kind": "text",
+      "value": "02"
+    },
+    {
+      "key": "workflow_3_8kxbpw",
+      "label": "03",
+      "group": "workflow",
+      "kind": "text",
+      "value": "03"
+    },
+    {
+      "key": "workflow_3_8axq0x",
+      "label": "04",
+      "group": "workflow",
+      "kind": "text",
+      "value": "04"
+    },
+    {
+      "key": "workflow_4_ph4ged",
+      "label": "Start with your website",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Start with your website"
+    },
+    {
+      "key": "workflow_4_2lblol",
+      "label": "Define the scope",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Define the scope"
+    },
+    {
+      "key": "workflow_4_akuij2",
+      "label": "Build and test",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Build and test"
+    },
+    {
+      "key": "workflow_4_14g1a33",
+      "label": "Review before launch",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Review before launch"
+    },
+    {
+      "key": "workflow_5_1b846ed",
+      "label": "Show me the current site or design files. Tell me who uses it, what they need to do, and w",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Show me the current site or design files. Tell me who uses it, what they need to do, and where you need help."
+    },
+    {
+      "key": "workflow_5_dvdcu5",
+      "label": "We’ll identify the pages and features involved, discuss your deadline, and check which exi",
+      "group": "workflow",
+      "kind": "text",
+      "value": "We’ll identify the pages and features involved, discuss your deadline, and check which existing tools the work depends on."
+    },
+    {
+      "key": "workflow_5_7kh3b2",
+      "label": "I work through the agreed changes and check the affected layouts and interactions, includi",
+      "group": "workflow",
+      "kind": "text",
+      "value": "I work through the agreed changes and check the affected layouts and interactions, including mobile screens and keyboard use."
+    },
+    {
+      "key": "workflow_5_hsxvco",
+      "label": "You review the changes against the scope. We’ll work through feedback and agree on any rem",
+      "group": "workflow",
+      "kind": "text",
+      "value": "You review the changes against the scope. We’ll work through feedback and agree on any remaining items before handover."
+    },
+    {
+      "key": "project_questions_1_1xcxbqy",
+      "label": "Before we start",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Before we start"
+    },
+    {
+      "key": "project_questions_2_t8nwwk",
+      "label": "Questions about working together.",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Questions about working together."
+    },
+    {
+      "key": "project_questions_3_10wum5u",
+      "label": "Can you work on my existing WordPress website?",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Can you work on my existing WordPress website?"
+    },
+    {
+      "key": "project_questions_3_zkrbjc",
+      "label": "Do I need finished designs before getting in touch?",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Do I need finished designs before getting in touch?"
+    },
+    {
+      "key": "project_questions_3_1m9pz8",
+      "label": "Can we work together remotely?",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Can we work together remotely?"
+    },
+    {
+      "key": "project_questions_3_iamv5n",
+      "label": "What should I send to discuss cost and timing?",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "What should I send to discuss cost and timing?"
+    },
+    {
+      "key": "project_questions_4_o3b42x",
+      "label": "Yes. My work includes theme changes, WooCommerce customization, layout fixes, and plugin-r",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Yes. My work includes theme changes, WooCommerce customization, layout fixes, and plugin-related issues. Send the website link and describe the change or problem. I’ll need to review the current setup before agreeing on the work."
+    },
+    {
+      "key": "project_questions_4_1hlh60h",
+      "label": "No. Figma files are helpful for a design-to-development project, but you can also start wi",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "No. Figma files are helpful for a design-to-development project, but you can also start with an existing website and a list of changes. Tell me what content and designs you already have so we can identify what else the project needs."
+    },
+    {
+      "key": "project_questions_4_63cp9g",
+      "label": "I’m based in Cebu, Philippines, on UTC+8, and welcome remote projects and development role",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "I’m based in Cebu, Philippines, on UTC+8, and welcome remote projects and development roles. Share your team’s time zone, required working hours, and preferred way to communicate so we can check whether the arrangement fits."
+    },
+    {
+      "key": "project_questions_4_o6cvh8",
+      "label": "Include your website or design link, the pages or features involved, your preferred deadli",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Include your website or design link, the pages or features involved, your preferred deadline, and a budget range if you have one. Cost and timing depend on the scope, the existing setup, and what is ready to use. You don’t need to know all the technical details to start the conversation."
+    },
+    {
+      "key": "project_questions_5_1q8h9ug",
+      "label": "Have a different question? ",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Have a different question? "
+    },
+    {
+      "key": "project_questions_6_na0cib",
+      "label": "Link destination",
+      "group": "project_questions",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "project_questions_7_ssh7nf",
+      "label": "Send me a message",
+      "group": "project_questions",
+      "kind": "text",
+      "value": "Send me a message"
+    },
+    {
+      "key": "browser_illustration_1_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "browser_illustration_2_1u2hlxp",
+      "label": "THE PERSON BEHIND THE PIXELS",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "THE PERSON BEHIND THE PIXELS"
+    },
+    {
+      "key": "browser_illustration_3_1wqlvtw",
+      "label": "Hello, I’m",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Hello, I’m"
+    },
+    {
+      "key": "browser_illustration_4_14jrdls",
+      "label": "John Clark Semblante",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "John Clark Semblante"
+    },
+    {
+      "key": "browser_illustration_5_ddshuy",
+      "label": "WordPress/Full Stack Developer",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "WordPress/Full Stack Developer"
+    },
+    {
+      "key": "browser_illustration_6_src_1mof72t",
+      "label": "Image",
+      "group": "browser_illustration",
+      "kind": "image",
+      "value": "/images/profile/john-enhanced.webp"
+    },
+    {
+      "key": "browser_illustration_8_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "browser_illustration_9_s9k3pe",
+      "label": "A personal approach. From design to your next website.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "A personal approach. From design to your next website."
+    },
+    {
+      "key": "venture_cards_1_51eg0f",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/lazy-barista/"
+    },
+    {
+      "key": "venture_cards_1_1b10q5s",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/golden-travel-and-tours/"
+    },
+    {
+      "key": "venture_cards_1_12ugzgj",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/lapse-hub/"
+    },
+    {
+      "key": "venture_cards_2_src_1cyryf8",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/lazy-barista/logo.webp"
+    },
+    {
+      "key": "venture_cards_2_src_17bc2qh",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/golden-travel-and-tours/logo.webp"
+    },
+    {
+      "key": "venture_cards_2_src_1bimbzt",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/lapse-hub/logo.jpg"
+    },
+    {
+      "key": "venture_cards_3_qvqtll",
+      "label": "LH",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "LH"
+    },
+    {
+      "key": "venture_cards_4_1074p14",
+      "label": "PHOTOGRAPHY",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "PHOTOGRAPHY"
+    },
+    {
+      "key": "venture_cards_5_1mw3r9d",
+      "label": "Coffee",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Coffee"
+    },
+    {
+      "key": "venture_cards_5_o5dct8",
+      "label": "Travel & rentals",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Travel & rentals"
+    },
+    {
+      "key": "venture_cards_5_1woxc1k",
+      "label": "Photography",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Photography"
+    },
+    {
+      "key": "venture_cards_6_1s7o0ar",
+      "label": "/ Independent venture",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "/ Independent venture"
+    },
+    {
+      "key": "venture_cards_7_1nnhg0l",
+      "label": "Lazy Barista",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Lazy Barista"
+    },
+    {
+      "key": "venture_cards_7_3aikza",
+      "label": "Golden Travel and Tours",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Golden Travel and Tours"
+    },
+    {
+      "key": "venture_cards_7_1bznvyd",
+      "label": "Lapse Hub",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Lapse Hub"
+    },
+    {
+      "key": "venture_cards_8_10gks81",
+      "label": "Browse the menu & order",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Browse the menu & order"
+    },
+    {
+      "key": "venture_cards_8_19ow01k",
+      "label": "Explore services & request a quote",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Explore services & request a quote"
+    },
+    {
+      "key": "venture_cards_8_jvr6iu",
+      "label": "Explore the photography archive",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Explore the photography archive"
+    },
+    {
+      "key": "home_27_alt_asset_1mof72t_146wxor",
+      "label": "Description: Image",
+      "group": "home",
+      "kind": "text",
+      "value": "John Clark Semblante, web developer based in Cebu"
+    },
+    {
+      "key": "browser_illustration_6_alt_asset_1mof72t_ztntfp",
+      "label": "Description: Image",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "venture_cards_2_alt_asset_1cyryf8_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "venture_cards_2_alt_asset_17bc2qh_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "venture_cards_2_alt_asset_1bimbzt_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    }
+  ],
+  "about": [
+    {
+      "key": "about_1_1iopwfz",
+      "label": "Hero eyebrow",
+      "group": "about",
+      "kind": "text",
+      "value": "WordPress/Full Stack Developer / Mandaue City, Cebu, Philippines"
+    },
+    {
+      "key": "about_2_re68cl",
+      "label": "Hero title",
+      "group": "about",
+      "kind": "text",
+      "value": "I’m John, a web developer based in Cebu."
+    },
+    {
+      "key": "about_3_1qezbir",
+      "label": "Hero introduction",
+      "group": "about",
+      "kind": "text",
+      "value": "I’m John Clark Semblante, a WordPress/Full Stack Developer based in Mandaue City, Cebu. I started at Cebu Rent A Car in 2013, working on websites and on-page SEO. Since then, my work has included custom WordPress themes, ecommerce stores, and front-end interfaces for business and legal technology teams."
+    },
+    {
+      "key": "button_href_189y0ck",
+      "label": "Button destination",
+      "group": "about",
+      "kind": "url",
+      "value": "/work/"
+    },
+    {
+      "key": "about_4_1ctetfb",
+      "label": "Explore my work",
+      "group": "about",
+      "kind": "text",
+      "value": "Explore my work"
+    },
+    {
+      "key": "button_href_na0cib",
+      "label": "Button destination",
+      "group": "about",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "about_5_1to57ad",
+      "label": "Discuss your project",
+      "group": "about",
+      "kind": "text",
+      "value": "Discuss your project"
+    },
+    {
+      "key": "about_6_src_1mof72t",
+      "label": "Image",
+      "group": "about",
+      "kind": "image",
+      "value": "/images/profile/john-enhanced.webp"
+    },
+    {
+      "key": "about_7_1klyod3",
+      "label": "WordPress work,",
+      "group": "about",
+      "kind": "text",
+      "value": "WordPress work,"
+    },
+    {
+      "key": "about_8_1g709aa",
+      "label": "from designs to fixes.",
+      "group": "about",
+      "kind": "text",
+      "value": "from designs to fixes."
+    },
+    {
+      "key": "about_9_hhvl9q",
+      "label": "A lot of my work begins with a design file or a specific problem: a page looks wrong on a ",
+      "group": "about",
+      "kind": "text",
+      "value": "A lot of my work begins with a design file or a specific problem: a page looks wrong on a phone, a plugin change breaks a layout, or a store needs a feature its theme doesn’t offer. I use PHP, JavaScript, and CSS to work through those requirements. That includes building custom WordPress themes, adjusting WooCommerce storefronts, and checking how changes behave across browsers and screen sizes."
+    },
+    {
+      "key": "about_10_1oww6zp",
+      "label": "My own ventures have given me another reason to keep websites straightforward. On Lazy Bar",
+      "group": "about",
+      "kind": "text",
+      "value": "My own ventures have given me another reason to keep websites straightforward. On Lazy Barista, visitors need to find the menu and ordering details. On Golden Travel and Tours, they need to explain their trip and request a quote. Those are the kinds of practical questions I think about when building a page."
+    },
+    {
+      "key": "button_href_1k17t7",
+      "label": "Button destination",
+      "group": "about",
+      "kind": "url",
+      "value": "/ventures/"
+    },
+    {
+      "key": "about_11_1h3qi6j",
+      "label": "Meet the ventures",
+      "group": "about",
+      "kind": "text",
+      "value": "Meet the ventures"
+    },
+    {
+      "key": "about_12_atlif6",
+      "label": "The toolkit",
+      "group": "about",
+      "kind": "text",
+      "value": "The toolkit"
+    },
+    {
+      "key": "about_13_cnvpox",
+      "label": "Skills & technologies.",
+      "group": "about",
+      "kind": "text",
+      "value": "Skills & technologies."
+    },
+    {
+      "key": "about_14_1w8gcbd",
+      "label": "My background",
+      "group": "about",
+      "kind": "text",
+      "value": "My background"
+    },
+    {
+      "key": "about_15_14b5c11",
+      "label": "Experience.",
+      "group": "about",
+      "kind": "text",
+      "value": "Experience."
+    },
+    {
+      "key": "about_16_wra5pw",
+      "label": "October 2021 – Present",
+      "group": "about",
+      "kind": "text",
+      "value": "October 2021 – Present"
+    },
+    {
+      "key": "about_16_19vragt",
+      "label": "March 2019 – September 2021",
+      "group": "about",
+      "kind": "text",
+      "value": "March 2019 – September 2021"
+    },
+    {
+      "key": "about_16_wgw7mv",
+      "label": "May 2017 – February 2019",
+      "group": "about",
+      "kind": "text",
+      "value": "May 2017 – February 2019"
+    },
+    {
+      "key": "about_16_19a43oa",
+      "label": "February 2016 – May 2017",
+      "group": "about",
+      "kind": "text",
+      "value": "February 2016 – May 2017"
+    },
+    {
+      "key": "about_16_cbb69t",
+      "label": "January 2015 – January 2016",
+      "group": "about",
+      "kind": "text",
+      "value": "January 2015 – January 2016"
+    },
+    {
+      "key": "about_16_1tngaox",
+      "label": "May 2014 – November 2014",
+      "group": "about",
+      "kind": "text",
+      "value": "May 2014 – November 2014"
+    },
+    {
+      "key": "about_16_n5nb7s",
+      "label": "June 2013 – May 2014",
+      "group": "about",
+      "kind": "text",
+      "value": "June 2013 – May 2014"
+    },
+    {
+      "key": "about_18_qitmed",
+      "label": "Link365 by CreateIT",
+      "group": "about",
+      "kind": "text",
+      "value": "Link365 by CreateIT"
+    },
+    {
+      "key": "about_18_10qkrrl",
+      "label": "LegalMatch PH",
+      "group": "about",
+      "kind": "text",
+      "value": "LegalMatch PH"
+    },
+    {
+      "key": "about_18_1iejpdl",
+      "label": "Titan Digital",
+      "group": "about",
+      "kind": "text",
+      "value": "Titan Digital"
+    },
+    {
+      "key": "about_18_5djxrv",
+      "label": "Supporting Enterprise – Odusee",
+      "group": "about",
+      "kind": "text",
+      "value": "Supporting Enterprise – Odusee"
+    },
+    {
+      "key": "about_18_1siu26a",
+      "label": "SAASASSIST",
+      "group": "about",
+      "kind": "text",
+      "value": "SAASASSIST"
+    },
+    {
+      "key": "about_18_1jk4d82",
+      "label": "PHILWEBSERVICES",
+      "group": "about",
+      "kind": "text",
+      "value": "PHILWEBSERVICES"
+    },
+    {
+      "key": "about_18_15jt2xi",
+      "label": "Cebu Rent A Car",
+      "group": "about",
+      "kind": "text",
+      "value": "Cebu Rent A Car"
+    },
+    {
+      "key": "about_19_so6j1m",
+      "label": "Develop and maintain custom WordPress and WooCommerce websites from Figma designs.",
+      "group": "about",
+      "kind": "text",
+      "value": "Develop and maintain custom WordPress and WooCommerce websites from Figma designs."
+    },
+    {
+      "key": "about_19_1q63ajp",
+      "label": "Investigate technical bugs, fix cross-browser interface issues, and address website perfor",
+      "group": "about",
+      "kind": "text",
+      "value": "Investigate technical bugs, fix cross-browser interface issues, and address website performance bottlenecks."
+    },
+    {
+      "key": "about_19_993nhg",
+      "label": "Use Cursor, Claude, and Docker to support development, debugging, and code review workflow",
+      "group": "about",
+      "kind": "text",
+      "value": "Use Cursor, Claude, and Docker to support development, debugging, and code review workflows."
+    },
+    {
+      "key": "about_19_nrve45",
+      "label": "Engineered responsive front-end layouts and custom WordPress themes for high-traffic enter",
+      "group": "about",
+      "kind": "text",
+      "value": "Engineered responsive front-end layouts and custom WordPress themes for high-traffic enterprise legal tech platforms."
+    },
+    {
+      "key": "about_19_vwszi6",
+      "label": "Translated UI/UX designs into reusable front-end components with attention to accessibilit",
+      "group": "about",
+      "kind": "text",
+      "value": "Translated UI/UX designs into reusable front-end components with attention to accessibility and responsive behavior."
+    },
+    {
+      "key": "about_19_90ck2i",
+      "label": "Maintained core website functionality, supported security requirements, and integrated thi",
+      "group": "about",
+      "kind": "text",
+      "value": "Maintained core website functionality, supported security requirements, and integrated third-party APIs and plugins."
+    },
+    {
+      "key": "about_19_13gp0kg",
+      "label": "Built custom, responsive WordPress websites from design files.",
+      "group": "about",
+      "kind": "text",
+      "value": "Built custom, responsive WordPress websites from design files."
+    },
+    {
+      "key": "about_19_1pm307o",
+      "label": "Resolved client support issues through technical fixes and theme and plugin customizations",
+      "group": "about",
+      "kind": "text",
+      "value": "Resolved client support issues through technical fixes and theme and plugin customizations."
+    },
+    {
+      "key": "about_19_186dl54",
+      "label": "Developed and managed client WordPress platforms, improving overall site performance, navi",
+      "group": "about",
+      "kind": "text",
+      "value": "Developed and managed client WordPress platforms, improving overall site performance, navigation, and mobile responsiveness."
+    },
+    {
+      "key": "about_19_1lqm4uc",
+      "label": "Converted design mockups into semantic, responsive HTML/CSS and custom WordPress templates",
+      "group": "about",
+      "kind": "text",
+      "value": "Converted design mockups into semantic, responsive HTML/CSS and custom WordPress templates."
+    },
+    {
+      "key": "about_19_dl120",
+      "label": "Provided technical customer support through Zendesk and resolved client platform issues.",
+      "group": "about",
+      "kind": "text",
+      "value": "Provided technical customer support through Zendesk and resolved client platform issues."
+    },
+    {
+      "key": "about_19_w7j9p9",
+      "label": "Built cross-platform compatible web interfaces and custom WordPress themes from scratch ba",
+      "group": "about",
+      "kind": "text",
+      "value": "Built cross-platform compatible web interfaces and custom WordPress themes from scratch based on project design specs."
+    },
+    {
+      "key": "about_19_12x8sff",
+      "label": "Managed website design, content publishing, on-page SEO optimization, and web performance ",
+      "group": "about",
+      "kind": "text",
+      "value": "Managed website design, content publishing, on-page SEO optimization, and web performance tuning to enhance search visibility."
+    },
+    {
+      "key": "about_20_1k5751x",
+      "label": "Foundations",
+      "group": "about",
+      "kind": "text",
+      "value": "Foundations"
+    },
+    {
+      "key": "about_21_1bq1ta9",
+      "label": "Education.",
+      "group": "about",
+      "kind": "text",
+      "value": "Education."
+    },
+    {
+      "key": "about_22_1i4k5h5",
+      "label": "1999 – 2005",
+      "group": "about",
+      "kind": "text",
+      "value": "1999 – 2005"
+    },
+    {
+      "key": "about_22_5bzbjq",
+      "label": "2005 – 2009",
+      "group": "about",
+      "kind": "text",
+      "value": "2005 – 2009"
+    },
+    {
+      "key": "about_22_1b3n6b1",
+      "label": "2009 – 2013",
+      "group": "about",
+      "kind": "text",
+      "value": "2009 – 2013"
+    },
+    {
+      "key": "about_23_1040jij",
+      "label": "Primary Education",
+      "group": "about",
+      "kind": "text",
+      "value": "Primary Education"
+    },
+    {
+      "key": "about_23_1kmor3n",
+      "label": "Secondary Education",
+      "group": "about",
+      "kind": "text",
+      "value": "Secondary Education"
+    },
+    {
+      "key": "about_23_cbj4t0",
+      "label": "Bachelor of Information Technology",
+      "group": "about",
+      "kind": "text",
+      "value": "Bachelor of Information Technology"
+    },
+    {
+      "key": "about_24_19oykwc",
+      "label": "Banilad Elementary School",
+      "group": "about",
+      "kind": "text",
+      "value": "Banilad Elementary School"
+    },
+    {
+      "key": "about_24_10zcfpm",
+      "label": "Saint Louis School of Mandaue",
+      "group": "about",
+      "kind": "text",
+      "value": "Saint Louis School of Mandaue"
+    },
+    {
+      "key": "about_24_13jb8w5",
+      "label": "University of Lapu-Lapu and Mandaue",
+      "group": "about",
+      "kind": "text",
+      "value": "University of Lapu-Lapu and Mandaue"
+    },
+    {
+      "key": "about_25_o7hpnb",
+      "label": "Let’s work together",
+      "group": "about",
+      "kind": "text",
+      "value": "Let’s work together"
+    },
+    {
+      "key": "about_26_rwkld3",
+      "label": "Looking for help with a website?",
+      "group": "about",
+      "kind": "text",
+      "value": "Looking for help with a website?"
+    },
+    {
+      "key": "about_27_1whmd87",
+      "label": "Tell me about your website, design, or technical challenge at ",
+      "group": "about",
+      "kind": "text",
+      "value": "Tell me about your website, design, or technical challenge at "
+    },
+    {
+      "key": "about_28_17dd8v3",
+      "label": "Link destination",
+      "group": "about",
+      "kind": "url",
+      "value": "mailto:johnmsemblante@gmail.com"
+    },
+    {
+      "key": "about_29_1iaseoh",
+      "label": "johnmsemblante@gmail.com",
+      "group": "about",
+      "kind": "text",
+      "value": "johnmsemblante@gmail.com"
+    },
+    {
+      "key": "about_30_19ngcg0",
+      "label": "Start a project inquiry",
+      "group": "about",
+      "kind": "text",
+      "value": "Start a project inquiry"
+    },
+    {
+      "key": "skills_toolkit_1_ywaqbi",
+      "label": "The platforms, languages, and tools behind my work. Hover, focus, or tap an item to learn ",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "The platforms, languages, and tools behind my work. Hover, focus, or tap an item to learn more."
+    },
+    {
+      "key": "skills_toolkit_2_wnjk2s",
+      "label": "All",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "All"
+    },
+    {
+      "key": "skills_toolkit_2_4ajoo3",
+      "label": "CMS & commerce",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "CMS & commerce"
+    },
+    {
+      "key": "skills_toolkit_2_ib6m3g",
+      "label": "Front-end",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Front-end"
+    },
+    {
+      "key": "skills_toolkit_2_1sre7t4",
+      "label": "Design & quality",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Design & quality"
+    },
+    {
+      "key": "skills_toolkit_2_1sd7qpm",
+      "label": "Integrations",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Integrations"
+    },
+    {
+      "key": "skills_toolkit_2_1s6fxtc",
+      "label": "Tools & AI",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Tools & AI"
+    },
+    {
+      "key": "skills_toolkit_3_s4902n",
+      "label": "skills",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "skills"
+    },
+    {
+      "key": "skills_toolkit_4_1yt97bk",
+      "label": "All categories",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "All categories"
+    },
+    {
+      "key": "skills_toolkit_5_4ajoo3",
+      "label": "CMS & commerce",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "CMS & commerce"
+    },
+    {
+      "key": "skills_toolkit_5_ib6m3g",
+      "label": "Front-end",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Front-end"
+    },
+    {
+      "key": "skills_toolkit_5_1sre7t4",
+      "label": "Design & quality",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Design & quality"
+    },
+    {
+      "key": "skills_toolkit_5_1sd7qpm",
+      "label": "Integrations",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Integrations"
+    },
+    {
+      "key": "skills_toolkit_5_1s6fxtc",
+      "label": "Tools & AI",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Tools & AI"
+    },
+    {
+      "key": "skills_toolkit_6_src_1gcvn2f",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/wordpress.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1kjao8",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/woocommerce.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_emc03d",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/prestashop.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_ieve5k",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/php.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_lpe2jk",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/html5.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1w01k53",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/css.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1t8qb0r",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/javascript.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_15uuvyv",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/tailwindcss.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_pm13ae",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/bootstrap.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1yrjmrg",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/figma.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_dvahv7",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/devices.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1x3s1i5",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/globe.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_nqf1sz",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/speed.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1kjakmc",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/search.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_5wabbm",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/bug.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_xj4qly",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/connect.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_p3vdon",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/mail.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1kolzmo",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/zendesk.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_1lzyxts",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/git.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_19v5mzw",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/docker.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_icaef0",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/test.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_mu8b22",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/cursor.svg"
+    },
+    {
+      "key": "skills_toolkit_6_src_w6b7ea",
+      "label": "Image",
+      "group": "skills_toolkit",
+      "kind": "image",
+      "value": "/icons/skills/claude.svg"
+    },
+    {
+      "key": "skills_toolkit_7_ato6ho",
+      "label": "WordPress",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "WordPress"
+    },
+    {
+      "key": "skills_toolkit_7_jo2uf3",
+      "label": "WooCommerce",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "WooCommerce"
+    },
+    {
+      "key": "skills_toolkit_7_1qvd46k",
+      "label": "PrestaShop",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "PrestaShop"
+    },
+    {
+      "key": "skills_toolkit_7_18dydcf",
+      "label": "PHP",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "PHP"
+    },
+    {
+      "key": "skills_toolkit_7_176iuf3",
+      "label": "HTML5",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "HTML5"
+    },
+    {
+      "key": "skills_toolkit_7_ki5cix",
+      "label": "CSS3",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "CSS3"
+    },
+    {
+      "key": "skills_toolkit_7_sczm2y",
+      "label": "JavaScript",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "JavaScript"
+    },
+    {
+      "key": "skills_toolkit_7_15g5lhu",
+      "label": "Tailwind CSS",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Tailwind CSS"
+    },
+    {
+      "key": "skills_toolkit_7_17vsdx5",
+      "label": "Bootstrap",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Bootstrap"
+    },
+    {
+      "key": "skills_toolkit_7_1479wnr",
+      "label": "Figma to WordPress",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Figma to WordPress"
+    },
+    {
+      "key": "skills_toolkit_7_108hm71",
+      "label": "Responsive web design",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Responsive web design"
+    },
+    {
+      "key": "skills_toolkit_7_kkhhps",
+      "label": "Cross-browser and mobile optimization",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Cross-browser and mobile optimization"
+    },
+    {
+      "key": "skills_toolkit_7_1mt2irj",
+      "label": "Core Web Vitals",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Core Web Vitals"
+    },
+    {
+      "key": "skills_toolkit_7_ubqq3x",
+      "label": "On-page SEO",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "On-page SEO"
+    },
+    {
+      "key": "skills_toolkit_7_o9l1hr",
+      "label": "UI debugging",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "UI debugging"
+    },
+    {
+      "key": "skills_toolkit_7_1bieki9",
+      "label": "Third-party APIs and plugins",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Third-party APIs and plugins"
+    },
+    {
+      "key": "skills_toolkit_7_515wb5",
+      "label": "ActiveCampaign",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "ActiveCampaign"
+    },
+    {
+      "key": "skills_toolkit_7_5cf5ms",
+      "label": "GetResponse",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "GetResponse"
+    },
+    {
+      "key": "skills_toolkit_7_11bp5nf",
+      "label": "Zendesk",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Zendesk"
+    },
+    {
+      "key": "skills_toolkit_7_1ep0t1n",
+      "label": "Git",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Git"
+    },
+    {
+      "key": "skills_toolkit_7_1x5p1pp",
+      "label": "Docker",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Docker"
+    },
+    {
+      "key": "skills_toolkit_7_ikdfeu",
+      "label": "Playwright",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Playwright"
+    },
+    {
+      "key": "skills_toolkit_7_1kqyr6n",
+      "label": "Figma MCP",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Figma MCP"
+    },
+    {
+      "key": "skills_toolkit_7_nqfrqn",
+      "label": "Cursor",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Cursor"
+    },
+    {
+      "key": "skills_toolkit_7_r1jcyx",
+      "label": "Claude AI workflows",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Claude AI workflows"
+    },
+    {
+      "key": "skills_toolkit_8_1thtbr8",
+      "label": "i",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "i"
+    },
+    {
+      "key": "skills_toolkit_9_mw27ws",
+      "label": "Custom themes, site development, and ongoing WordPress maintenance.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Custom themes, site development, and ongoing WordPress maintenance."
+    },
+    {
+      "key": "skills_toolkit_9_14o2bl2",
+      "label": "Building and maintaining ecommerce experiences on WordPress.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Building and maintaining ecommerce experiences on WordPress."
+    },
+    {
+      "key": "skills_toolkit_9_1anpglt",
+      "label": "Working with PrestaShop ecommerce websites.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Working with PrestaShop ecommerce websites."
+    },
+    {
+      "key": "skills_toolkit_9_28agyw",
+      "label": "Server-side development for WordPress themes and custom functionality.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Server-side development for WordPress themes and custom functionality."
+    },
+    {
+      "key": "skills_toolkit_9_1gwzqkp",
+      "label": "Semantic page structure for clear, accessible web interfaces.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Semantic page structure for clear, accessible web interfaces."
+    },
+    {
+      "key": "skills_toolkit_9_1spnele",
+      "label": "Responsive styling, layouts, and visual detail.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Responsive styling, layouts, and visual detail."
+    },
+    {
+      "key": "skills_toolkit_9_1aqg4hv",
+      "label": "Interactive interfaces and browser-side functionality.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Interactive interfaces and browser-side functionality."
+    },
+    {
+      "key": "skills_toolkit_9_c1kbss",
+      "label": "Utility-based styling for responsive interfaces.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Utility-based styling for responsive interfaces."
+    },
+    {
+      "key": "skills_toolkit_9_n9q4cj",
+      "label": "Responsive layouts and reusable interface components.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Responsive layouts and reusable interface components."
+    },
+    {
+      "key": "skills_toolkit_9_18aorev",
+      "label": "Translating Figma designs into custom WordPress websites.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Translating Figma designs into custom WordPress websites."
+    },
+    {
+      "key": "skills_toolkit_9_279qul",
+      "label": "Adapting layouts for desktop, tablet, and mobile screens.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Adapting layouts for desktop, tablet, and mobile screens."
+    },
+    {
+      "key": "skills_toolkit_9_ciccgw",
+      "label": "Checking and refining interfaces across browsers and mobile devices.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Checking and refining interfaces across browsers and mobile devices."
+    },
+    {
+      "key": "skills_toolkit_9_8ga3lp",
+      "label": "Improving loading performance, responsiveness, and layout stability.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Improving loading performance, responsiveness, and layout stability."
+    },
+    {
+      "key": "skills_toolkit_9_1vobe0s",
+      "label": "Optimizing page structure and content for search visibility.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Optimizing page structure and content for search visibility."
+    },
+    {
+      "key": "skills_toolkit_9_1gq5huj",
+      "label": "Finding and resolving layout, styling, and interaction defects.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Finding and resolving layout, styling, and interaction defects."
+    },
+    {
+      "key": "skills_toolkit_9_wnif77",
+      "label": "Connecting website features with external services and plugins.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Connecting website features with external services and plugins."
+    },
+    {
+      "key": "skills_toolkit_9_18btqta",
+      "label": "Integrating ActiveCampaign marketing tools with websites.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Integrating ActiveCampaign marketing tools with websites."
+    },
+    {
+      "key": "skills_toolkit_9_512iec",
+      "label": "Connecting GetResponse email marketing tools with website workflows.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Connecting GetResponse email marketing tools with website workflows."
+    },
+    {
+      "key": "skills_toolkit_9_1n3q2rc",
+      "label": "Supporting customers and resolving website issues with Zendesk.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Supporting customers and resolving website issues with Zendesk."
+    },
+    {
+      "key": "skills_toolkit_9_1w9888z",
+      "label": "Version control for tracking and managing code changes.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Version control for tracking and managing code changes."
+    },
+    {
+      "key": "skills_toolkit_9_1xswtrr",
+      "label": "Container-based development environments.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Container-based development environments."
+    },
+    {
+      "key": "skills_toolkit_9_h231yq",
+      "label": "Browser automation for checking website behavior.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Browser automation for checking website behavior."
+    },
+    {
+      "key": "skills_toolkit_9_gtvlpz",
+      "label": "Bringing Figma design context into development workflows.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "Bringing Figma design context into development workflows."
+    },
+    {
+      "key": "skills_toolkit_9_mcq7dz",
+      "label": "AI-assisted code editing and development workflows.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "AI-assisted code editing and development workflows."
+    },
+    {
+      "key": "skills_toolkit_9_1r9juod",
+      "label": "AI-assisted development, debugging, and code review workflows.",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": "AI-assisted development, debugging, and code review workflows."
+    },
+    {
+      "key": "about_6_alt_asset_1mof72t_146wxor",
+      "label": "Description: Image",
+      "group": "about",
+      "kind": "text",
+      "value": "John Clark Semblante, web developer based in Cebu"
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1gcvn2f_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1kjao8_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_emc03d_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_ieve5k_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_lpe2jk_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1w01k53_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1t8qb0r_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_15uuvyv_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_pm13ae_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1yrjmrg_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_dvahv7_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1x3s1i5_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_nqf1sz_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1kjakmc_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_5wabbm_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_xj4qly_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_p3vdon_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1kolzmo_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_1lzyxts_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_19v5mzw_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_icaef0_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_mu8b22_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "skills_toolkit_6_alt_asset_w6b7ea_ztntfp",
+      "label": "Description: Image",
+      "group": "skills_toolkit",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "about_role_Link365_by_CreateIT_ddshuy",
+      "label": "Link365 by CreateIT: role",
+      "group": "about",
+      "kind": "text",
+      "value": "WordPress/Full Stack Developer"
+    },
+    {
+      "key": "about_role_LegalMatch_PH_1ikhkt3",
+      "label": "LegalMatch PH: role",
+      "group": "about",
+      "kind": "text",
+      "value": "Front End Developer"
+    },
+    {
+      "key": "about_role_Titan_Digital_1r2k8l2",
+      "label": "Titan Digital: role",
+      "group": "about",
+      "kind": "text",
+      "value": "WordPress Developer"
+    },
+    {
+      "key": "about_role_Supporting_Enterprise___Odusee_1hfmadf",
+      "label": "Supporting Enterprise – Odusee: role",
+      "group": "about",
+      "kind": "text",
+      "value": "Web Developer"
+    },
+    {
+      "key": "about_role_SAASASSIST_1hfmadf",
+      "label": "SAASASSIST: role",
+      "group": "about",
+      "kind": "text",
+      "value": "Web Developer"
+    },
+    {
+      "key": "about_role_PHILWEBSERVICES_1ikhkt3",
+      "label": "PHILWEBSERVICES: role",
+      "group": "about",
+      "kind": "text",
+      "value": "Front End Developer"
+    },
+    {
+      "key": "about_role_Cebu_Rent_A_Car_v9hgg0",
+      "label": "Cebu Rent A Car: role",
+      "group": "about",
+      "kind": "text",
+      "value": "Web Developer / SEO Specialist"
+    }
+  ],
+  "work": [
+    {
+      "key": "work_1_7azz87",
+      "label": "Hero eyebrow",
+      "group": "work",
+      "kind": "text",
+      "value": "John Clark Semblante / Selected work"
+    },
+    {
+      "key": "work_2_1oksnyy",
+      "label": "Hero title",
+      "group": "work",
+      "kind": "text",
+      "value": "WordPress portfolio & projects."
+    },
+    {
+      "key": "work_3_vq8h5a",
+      "label": "Hero introduction",
+      "group": "work",
+      "kind": "text",
+      "value": "Browse websites I’ve worked on since 2013, along with projects for my own ventures in Cebu. Each entry includes a screenshot, the technologies used, and the details I can share. Use them to get a sense of my work before we discuss your website."
+    },
+    {
+      "key": "button_href_na0cib",
+      "label": "Button destination",
+      "group": "work",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "work_4_1to57ad",
+      "label": "Discuss your project",
+      "group": "work",
+      "kind": "text",
+      "value": "Discuss your project"
+    },
+    {
+      "key": "button_href_pfarhc",
+      "label": "Button destination",
+      "group": "work",
+      "kind": "url",
+      "value": "#projects"
+    },
+    {
+      "key": "work_5_wqfajm",
+      "label": "Browse by industry",
+      "group": "work",
+      "kind": "text",
+      "value": "Browse by industry"
+    },
+    {
+      "key": "work_6_1omp77z",
+      "label": "The public collection",
+      "group": "work",
+      "kind": "text",
+      "value": "The public collection"
+    },
+    {
+      "key": "work_7_igtifr",
+      "label": "Websites I’ve worked on.",
+      "group": "work",
+      "kind": "text",
+      "value": "Websites I’ve worked on."
+    },
+    {
+      "key": "work_8_vn3xf8",
+      "label": "Search by keyword or use the filters to find a relevant example. The screenshots show my e",
+      "group": "work",
+      "kind": "text",
+      "value": "Search by keyword or use the filters to find a relevant example. The screenshots show my earlier work; live websites may have changed since then."
+    },
+    {
+      "key": "work_9_5pult6",
+      "label": "Project collection",
+      "group": "work",
+      "kind": "text",
+      "value": "Project collection"
+    },
+    {
+      "key": "work_10_1r2uwbb",
+      "label": "Looking for relevant experience?",
+      "group": "work",
+      "kind": "text",
+      "value": "Looking for relevant experience?"
+    },
+    {
+      "key": "work_11_xkxg8a",
+      "label": "Tell me what you are building and I can discuss the experience relevant to your project.",
+      "group": "work",
+      "kind": "text",
+      "value": "Tell me what you are building and I can discuss the experience relevant to your project."
+    },
+    {
+      "key": "work_12_810gzd",
+      "label": "From the project collection",
+      "group": "work",
+      "kind": "text",
+      "value": "From the project collection"
+    },
+    {
+      "key": "work_13_1dzmqda",
+      "label": "Explore the project",
+      "group": "work",
+      "kind": "text",
+      "value": "Explore the project"
+    },
+    {
+      "key": "work_14_2kjj20",
+      "label": "Work category",
+      "group": "work",
+      "kind": "text",
+      "value": "Work category"
+    },
+    {
+      "key": "work_15_15c5osv",
+      "label": "Technology",
+      "group": "work",
+      "kind": "text",
+      "value": "Technology"
+    },
+    {
+      "key": "work_16_spdxv",
+      "label": "Outcome",
+      "group": "work",
+      "kind": "text",
+      "value": "Outcome"
+    },
+    {
+      "key": "work_17_1jnp7ql",
+      "label": "A new conversation",
+      "group": "work",
+      "kind": "text",
+      "value": "A new conversation"
+    },
+    {
+      "key": "work_18_8xql25",
+      "label": "See something relevant to your website?",
+      "group": "work",
+      "kind": "text",
+      "value": "See something relevant to your website?"
+    },
+    {
+      "key": "work_19_1m189ab",
+      "label": "Send me the project link and tell me which part interests you, whether it’s the layout, Wo",
+      "group": "work",
+      "kind": "text",
+      "value": "Send me the project link and tell me which part interests you, whether it’s the layout, WordPress work, or a feature you need."
+    },
+    {
+      "key": "work_20_na0cib",
+      "label": "Link destination",
+      "group": "work",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "work_21_gow3tk",
+      "label": "Discuss your project ↗",
+      "group": "work",
+      "kind": "text",
+      "value": "Discuss your project ↗"
+    },
+    {
+      "key": "workflow_1_15fwn7u",
+      "label": "Working together",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Working together"
+    },
+    {
+      "key": "workflow_2_t5znsp",
+      "label": "How I approach a website project.",
+      "group": "workflow",
+      "kind": "text",
+      "value": "How I approach a website project."
+    },
+    {
+      "key": "workflow_3_94wj3u",
+      "label": "01",
+      "group": "workflow",
+      "kind": "text",
+      "value": "01"
+    },
+    {
+      "key": "workflow_3_8uwxev",
+      "label": "02",
+      "group": "workflow",
+      "kind": "text",
+      "value": "02"
+    },
+    {
+      "key": "workflow_3_8kxbpw",
+      "label": "03",
+      "group": "workflow",
+      "kind": "text",
+      "value": "03"
+    },
+    {
+      "key": "workflow_3_8axq0x",
+      "label": "04",
+      "group": "workflow",
+      "kind": "text",
+      "value": "04"
+    },
+    {
+      "key": "workflow_4_ph4ged",
+      "label": "Start with your website",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Start with your website"
+    },
+    {
+      "key": "workflow_4_2lblol",
+      "label": "Define the scope",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Define the scope"
+    },
+    {
+      "key": "workflow_4_akuij2",
+      "label": "Build and test",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Build and test"
+    },
+    {
+      "key": "workflow_4_14g1a33",
+      "label": "Review before launch",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Review before launch"
+    },
+    {
+      "key": "workflow_5_1b846ed",
+      "label": "Show me the current site or design files. Tell me who uses it, what they need to do, and w",
+      "group": "workflow",
+      "kind": "text",
+      "value": "Show me the current site or design files. Tell me who uses it, what they need to do, and where you need help."
+    },
+    {
+      "key": "workflow_5_dvdcu5",
+      "label": "We’ll identify the pages and features involved, discuss your deadline, and check which exi",
+      "group": "workflow",
+      "kind": "text",
+      "value": "We’ll identify the pages and features involved, discuss your deadline, and check which existing tools the work depends on."
+    },
+    {
+      "key": "workflow_5_7kh3b2",
+      "label": "I work through the agreed changes and check the affected layouts and interactions, includi",
+      "group": "workflow",
+      "kind": "text",
+      "value": "I work through the agreed changes and check the affected layouts and interactions, including mobile screens and keyboard use."
+    },
+    {
+      "key": "workflow_5_hsxvco",
+      "label": "You review the changes against the scope. We’ll work through feedback and agree on any rem",
+      "group": "workflow",
+      "kind": "text",
+      "value": "You review the changes against the scope. We’ll work through feedback and agree on any remaining items before handover."
+    },
+    {
+      "key": "experience_spotlight_1_11wkyky",
+      "label": "Beyond the public portfolio",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Beyond the public portfolio"
+    },
+    {
+      "key": "experience_spotlight_2_8p4r5o",
+      "label": "Some work stays",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Some work stays"
+    },
+    {
+      "key": "experience_spotlight_3_tn97jz",
+      "label": "behind the scenes.",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "behind the scenes."
+    },
+    {
+      "key": "experience_spotlight_4_q0v1wp",
+      "label": "Some of my professional work is covered by confidentiality agreements, so it isn’t shown h",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Some of my professional work is covered by confidentiality agreements, so it isn’t shown here. I can still talk about the kinds of development problems I work on and how that experience relates to your project."
+    },
+    {
+      "key": "experience_spotlight_5_pn1vsr",
+      "label": "Confidential professional work",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Confidential professional work"
+    },
+    {
+      "key": "experience_spotlight_6_81ccw0",
+      "label": "Ask about the experience",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Ask about the experience"
+    },
+    {
+      "key": "experience_spotlight_7_e4grno",
+      "label": "your project needs.",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "your project needs."
+    },
+    {
+      "key": "experience_spotlight_8_123u218",
+      "label": "Tell me about the WordPress customization, responsive layout, or performance issue you’re ",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Tell me about the WordPress customization, responsive layout, or performance issue you’re facing. We can discuss my approach without sharing another client’s private information."
+    },
+    {
+      "key": "experience_spotlight_9_1a6licd",
+      "label": "Custom WordPress",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Custom WordPress"
+    },
+    {
+      "key": "experience_spotlight_10_1hv1ql9",
+      "label": "Responsive interfaces",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Responsive interfaces"
+    },
+    {
+      "key": "experience_spotlight_11_ypnzyq",
+      "label": "Performance & quality",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Performance & quality"
+    },
+    {
+      "key": "experience_spotlight_12_qynypc",
+      "label": "Link destination",
+      "group": "experience_spotlight",
+      "kind": "url",
+      "value": "/contact/?topic=experience#inquiry"
+    },
+    {
+      "key": "experience_spotlight_13_675gfm",
+      "label": "Discuss relevant experience ",
+      "group": "experience_spotlight",
+      "kind": "text",
+      "value": "Discuss relevant experience "
+    },
+    {
+      "key": "browser_illustration_1_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "browser_illustration_8_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "browser_illustration_2_1oz52dt",
+      "label": "Hero illustration label",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "FROM THE PUBLIC COLLECTION"
+    },
+    {
+      "key": "browser_illustration_9_427tv5",
+      "label": "Hero illustration caption",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Examples from my website development work."
+    },
+    {
+      "key": "browser_illustration_7_src_1ny6rwh",
+      "label": "Roar Fitness hero image",
+      "group": "browser_illustration",
+      "kind": "image",
+      "value": "/images/projects/roarfitness.jpg"
+    },
+    {
+      "key": "browser_asset_name_1gvvdpx",
+      "label": "Hero image name",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Roar Fitness"
+    },
+    {
+      "key": "browser_illustration_7_src_1iqnxn0",
+      "label": "Perth Cosmetic Surgery hero image",
+      "group": "browser_illustration",
+      "kind": "image",
+      "value": "/images/projects/perthcosmetics.jpg"
+    },
+    {
+      "key": "browser_asset_name_x3sg54",
+      "label": "Hero image name",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Perth Cosmetic Surgery"
+    },
+    {
+      "key": "browser_illustration_7_alt_asset_1ny6rwh_ztntfp",
+      "label": "Description: Roar Fitness hero image",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "browser_illustration_7_alt_asset_1iqnxn0_ztntfp",
+      "label": "Description: Perth Cosmetic Surgery hero image",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": ""
+    }
+  ],
+  "blog": [
+    {
+      "key": "blog_1_hu55i2",
+      "label": "Hero eyebrow",
+      "group": "blog",
+      "kind": "text",
+      "value": "Notes from the work"
+    },
+    {
+      "key": "blog_2_ej074z",
+      "label": "Hero title",
+      "group": "blog",
+      "kind": "text",
+      "value": "Development notes & lessons learned."
+    },
+    {
+      "key": "blog_3_1llhg4h",
+      "label": "Hero introduction",
+      "group": "blog",
+      "kind": "text",
+      "value": "Notes from my work as a web developer in Cebu: how I got started, what I’m learning, and the decisions behind the websites I build. For project screenshots and details, you can also explore my portfolio."
+    },
+    {
+      "key": "blog_4_1rbb5x7",
+      "label": "A fresh page",
+      "group": "blog",
+      "kind": "text",
+      "value": "A fresh page"
+    },
+    {
+      "key": "blog_5_676co4",
+      "label": "The first article is in progress.",
+      "group": "blog",
+      "kind": "text",
+      "value": "The first article is in progress."
+    },
+    {
+      "key": "blog_6_ztpwun",
+      "label": "In the meantime, explore my projects or get in touch about a website you want to build or ",
+      "group": "blog",
+      "kind": "text",
+      "value": "In the meantime, explore my projects or get in touch about a website you want to build or improve."
+    },
+    {
+      "key": "managed_blog_4_wnjk2s",
+      "label": "All",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "All"
+    },
+    {
+      "key": "managed_blog_5_1olt4wp",
+      "label": "(Cebu)",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "(Cebu)"
+    },
+    {
+      "key": "managed_blog_6_hx3dx",
+      "label": "Loading blog…",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "Loading blog…"
+    },
+    {
+      "key": "managed_blog_7_m5vvnd",
+      "label": "JavaScript is needed to load the latest articles.",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "JavaScript is needed to load the latest articles."
+    },
+    {
+      "key": "managed_blog_15_1m27chh",
+      "label": "Loading latest articles…",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "Loading latest articles…"
+    },
+    {
+      "key": "managed_blog_16_1748tap",
+      "label": "No articles published yet.",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "No articles published yet."
+    },
+    {
+      "key": "managed_blog_17_hmx3ek",
+      "label": "Check back for new notes from the work.",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "Check back for new notes from the work."
+    },
+    {
+      "key": "managed_blog_18_x3xyy1",
+      "label": "Load more articles",
+      "group": "managed_blog",
+      "kind": "text",
+      "value": "Load more articles"
+    }
+  ],
+  "ventures": [
+    {
+      "key": "ventures_1_o8581o",
+      "label": "Hero eyebrow",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Outside my development work"
+    },
+    {
+      "key": "ventures_2_1urnwtt",
+      "label": "Hero title",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Ventures."
+    },
+    {
+      "key": "ventures_3_1prmv45",
+      "label": "Hero introduction",
+      "group": "ventures",
+      "kind": "text",
+      "value": "My interests outside web development have led to coffee, travel, and photography ventures. Here you’ll find Lazy Barista’s menu, Golden Travel and Tours’ Cebu trip inquiries, and photographs from my Lapse Hub archive."
+    },
+    {
+      "key": "ventures_4_1fjemak",
+      "label": "For orders and travel quotes, use the contact links on each venture’s page.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "For orders and travel quotes, use the contact links on each venture’s page."
+    },
+    {
+      "key": "ventures_5_1t8fiab",
+      "label": "Your next step",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Your next step"
+    },
+    {
+      "key": "ventures_6_55pk96",
+      "label": "Find the details for your visit.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Find the details for your visit."
+    },
+    {
+      "key": "ventures_7_epw9f3",
+      "label": "0",
+      "group": "ventures",
+      "kind": "text",
+      "value": "0"
+    },
+    {
+      "key": "ventures_8_15il3sl",
+      "label": "Find what you need",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Find what you need"
+    },
+    {
+      "key": "ventures_8_1l2khks",
+      "label": "Talk to the team",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Talk to the team"
+    },
+    {
+      "key": "ventures_8_1weyzga",
+      "label": "Confirm the details",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Confirm the details"
+    },
+    {
+      "key": "ventures_8_7zuf0u",
+      "label": "Explore a collaboration",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Explore a collaboration"
+    },
+    {
+      "key": "ventures_9_j41ggt",
+      "label": "Explore coffee, travel services or the Lapse Hub photography archive.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Explore coffee, travel services or the Lapse Hub photography archive."
+    },
+    {
+      "key": "ventures_9_1mg93n7",
+      "label": "Use each venture’s contact links for orders, quotes, and practical questions.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Use each venture’s contact links for orders, quotes, and practical questions."
+    },
+    {
+      "key": "ventures_9_65xl3x",
+      "label": "Check availability, pricing, and arrangements with the team before paying or booking.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Check availability, pricing, and arrangements with the team before paying or booking."
+    },
+    {
+      "key": "ventures_9_1k14kdl",
+      "label": "Have an idea that fits one of the businesses? Get in touch to discuss it.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Have an idea that fits one of the businesses? Get in touch to discuss it."
+    },
+    {
+      "key": "ventures_10_1sngbvh",
+      "label": "Partnerships and collaborations",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Partnerships and collaborations"
+    },
+    {
+      "key": "ventures_11_1odjflr",
+      "label": "Start a conversation.",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Start a conversation."
+    },
+    {
+      "key": "ventures_12_gpi0r",
+      "label": "For partnerships or collaboration ideas, tell me which venture you have in mind and how we",
+      "group": "ventures",
+      "kind": "text",
+      "value": "For partnerships or collaboration ideas, tell me which venture you have in mind and how we could work together."
+    },
+    {
+      "key": "button_href_na0cib",
+      "label": "Button destination",
+      "group": "ventures",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "ventures_13_s95lil",
+      "label": "Get in touch",
+      "group": "ventures",
+      "kind": "text",
+      "value": "Get in touch"
+    },
+    {
+      "key": "browser_illustration_1_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "browser_illustration_8_100g9m4",
+      "label": "js.",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "js."
+    },
+    {
+      "key": "venture_cards_1_51eg0f",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/lazy-barista/"
+    },
+    {
+      "key": "venture_cards_1_1b10q5s",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/golden-travel-and-tours/"
+    },
+    {
+      "key": "venture_cards_1_12ugzgj",
+      "label": "Link destination",
+      "group": "venture_cards",
+      "kind": "url",
+      "value": "/ventures/lapse-hub/"
+    },
+    {
+      "key": "venture_cards_2_src_1cyryf8",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/lazy-barista/logo.webp"
+    },
+    {
+      "key": "venture_cards_2_src_17bc2qh",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/golden-travel-and-tours/logo.webp"
+    },
+    {
+      "key": "venture_cards_2_src_1bimbzt",
+      "label": "Image",
+      "group": "venture_cards",
+      "kind": "image",
+      "value": "/ventures/lapse-hub/logo.jpg"
+    },
+    {
+      "key": "venture_cards_3_qvqtll",
+      "label": "LH",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "LH"
+    },
+    {
+      "key": "venture_cards_4_1074p14",
+      "label": "PHOTOGRAPHY",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "PHOTOGRAPHY"
+    },
+    {
+      "key": "venture_cards_5_1mw3r9d",
+      "label": "Coffee",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Coffee"
+    },
+    {
+      "key": "venture_cards_5_o5dct8",
+      "label": "Travel & rentals",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Travel & rentals"
+    },
+    {
+      "key": "venture_cards_5_1woxc1k",
+      "label": "Photography",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Photography"
+    },
+    {
+      "key": "venture_cards_6_1s7o0ar",
+      "label": "/ Independent venture",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "/ Independent venture"
+    },
+    {
+      "key": "venture_cards_7_1nnhg0l",
+      "label": "Lazy Barista",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Lazy Barista"
+    },
+    {
+      "key": "venture_cards_7_3aikza",
+      "label": "Golden Travel and Tours",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Golden Travel and Tours"
+    },
+    {
+      "key": "venture_cards_7_1bznvyd",
+      "label": "Lapse Hub",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Lapse Hub"
+    },
+    {
+      "key": "venture_cards_8_10gks81",
+      "label": "Browse the menu & order",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Browse the menu & order"
+    },
+    {
+      "key": "venture_cards_8_19ow01k",
+      "label": "Explore services & request a quote",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Explore services & request a quote"
+    },
+    {
+      "key": "venture_cards_8_jvr6iu",
+      "label": "Explore the photography archive",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": "Explore the photography archive"
+    },
+    {
+      "key": "browser_illustration_2_3xejwv",
+      "label": "Hero illustration label",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "COFFEE, TRAVEL AND PHOTOGRAPHY"
+    },
+    {
+      "key": "browser_illustration_9_1mkpu5v",
+      "label": "Hero illustration caption",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "A look at my interests outside development."
+    },
+    {
+      "key": "browser_illustration_7_src_17bc2qh",
+      "label": "Golden Travel and Tours hero image",
+      "group": "browser_illustration",
+      "kind": "image",
+      "value": "/ventures/golden-travel-and-tours/logo.webp"
+    },
+    {
+      "key": "browser_asset_name_3aikza",
+      "label": "Hero image name",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Golden Travel and Tours"
+    },
+    {
+      "key": "browser_illustration_7_src_1cyryf8",
+      "label": "Lazy Barista hero image",
+      "group": "browser_illustration",
+      "kind": "image",
+      "value": "/ventures/lazy-barista/logo.webp"
+    },
+    {
+      "key": "browser_asset_name_1nnhg0l",
+      "label": "Hero image name",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": "Lazy Barista"
+    },
+    {
+      "key": "venture_cards_2_alt_asset_1cyryf8_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "venture_cards_2_alt_asset_17bc2qh_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "venture_cards_2_alt_asset_1bimbzt_ztntfp",
+      "label": "Description: Image",
+      "group": "venture_cards",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "browser_illustration_7_alt_asset_17bc2qh_ztntfp",
+      "label": "Description: Golden Travel and Tours hero image",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "browser_illustration_7_alt_asset_1cyryf8_ztntfp",
+      "label": "Description: Lazy Barista hero image",
+      "group": "browser_illustration",
+      "kind": "text",
+      "value": ""
+    }
+  ],
+  "contact": [
+    {
+      "key": "contact_1_1twjpcd",
+      "label": "Hero eyebrow",
+      "group": "contact",
+      "kind": "text",
+      "value": "Contact / Let’s connect"
+    },
+    {
+      "key": "contact_2_1lxfji9",
+      "label": "Hero title",
+      "group": "contact",
+      "kind": "text",
+      "value": "Let’s talk about your website."
+    },
+    {
+      "key": "contact_3_2swb23",
+      "label": "Hero introduction",
+      "group": "contact",
+      "kind": "text",
+      "value": "Have a WordPress project, a WooCommerce store that needs changes, or a website problem you can’t pin down? Tell me what you’re working on. I’m based in Mandaue City, Cebu, and also welcome remote development roles. A short description and a link are enough to start."
+    },
+    {
+      "key": "contact_4_1icg68a",
+      "label": "Find me here",
+      "group": "contact",
+      "kind": "text",
+      "value": "Find me here"
+    },
+    {
+      "key": "contact_5_115f13f",
+      "label": "Prefer email? Reach me here.",
+      "group": "contact",
+      "kind": "text",
+      "value": "Prefer email? Reach me here."
+    },
+    {
+      "key": "contact_6_inbfc7",
+      "label": "Email",
+      "group": "contact",
+      "kind": "text",
+      "value": "Email"
+    },
+    {
+      "key": "contact_7_17dd8v3",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "mailto:johnmsemblante@gmail.com"
+    },
+    {
+      "key": "contact_8_1iaseoh",
+      "label": "johnmsemblante@gmail.com",
+      "group": "contact",
+      "kind": "text",
+      "value": "johnmsemblante@gmail.com"
+    },
+    {
+      "key": "contact_9_kb2lhr",
+      "label": "Phone",
+      "group": "contact",
+      "kind": "text",
+      "value": "Phone"
+    },
+    {
+      "key": "contact_10_825sj6",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "tel:+639770928769"
+    },
+    {
+      "key": "contact_11_1jh21x",
+      "label": "0977 092 8769",
+      "group": "contact",
+      "kind": "text",
+      "value": "0977 092 8769"
+    },
+    {
+      "key": "contact_12_9kl40j",
+      "label": "Based in",
+      "group": "contact",
+      "kind": "text",
+      "value": "Based in"
+    },
+    {
+      "key": "contact_13_1avh28r",
+      "label": "Mandaue City, Cebu, Philippines",
+      "group": "contact",
+      "kind": "text",
+      "value": "Mandaue City, Cebu, Philippines"
+    },
+    {
+      "key": "contact_14_1naqs28",
+      "label": "Elsewhere online.",
+      "group": "contact",
+      "kind": "text",
+      "value": "Elsewhere online."
+    },
+    {
+      "key": "contact_15_1auqm7e",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "https://www.facebook.com/johnmsemblante"
+    },
+    {
+      "key": "contact_15_1dk50mi",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "https://www.instagram.com/johnsemblante/"
+    },
+    {
+      "key": "contact_15_1sd48ug",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "https://www.linkedin.com/in/johnsemblante/"
+    },
+    {
+      "key": "contact_15_63bsoq",
+      "label": "Link destination",
+      "group": "contact",
+      "kind": "url",
+      "value": "https://twitter.com/johnmsemblante"
+    },
+    {
+      "key": "contact_16_1bs8hg1",
+      "label": "Facebook",
+      "group": "contact",
+      "kind": "text",
+      "value": "Facebook"
+    },
+    {
+      "key": "contact_16_4bnti3",
+      "label": "Instagram",
+      "group": "contact",
+      "kind": "text",
+      "value": "Instagram"
+    },
+    {
+      "key": "contact_16_d4yke7",
+      "label": "LinkedIn",
+      "group": "contact",
+      "kind": "text",
+      "value": "LinkedIn"
+    },
+    {
+      "key": "contact_16_50g9r1",
+      "label": "X / Twitter",
+      "group": "contact",
+      "kind": "text",
+      "value": "X / Twitter"
+    },
+    {
+      "key": "contact_17_1gg9sp2",
+      "label": "@johnmsemblante",
+      "group": "contact",
+      "kind": "text",
+      "value": "@johnmsemblante"
+    },
+    {
+      "key": "contact_17_hnodo3",
+      "label": "@johnsemblante",
+      "group": "contact",
+      "kind": "text",
+      "value": "@johnsemblante"
+    },
+    {
+      "key": "contact_17_rdyjn9",
+      "label": "John Semblante",
+      "group": "contact",
+      "kind": "text",
+      "value": "John Semblante"
+    },
+    {
+      "key": "inquiry_form_1_1y4jwr",
+      "label": "What would you like to build or improve?",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "What would you like to build or improve?"
+    },
+    {
+      "key": "inquiry_form_2_1nn1jfs",
+      "label": "Include your website or design link, the work you need, and your preferred timeline. A bud",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Include your website or design link, the work you need, and your preferred timeline. A budget range is helpful if you have one. Please leave out passwords and private client materials."
+    },
+    {
+      "key": "inquiry_form_3_qizrtm",
+      "label": "Leave this blank",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Leave this blank"
+    },
+    {
+      "key": "inquiry_form_4_1vztbtz",
+      "label": "Your name ",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Your name "
+    },
+    {
+      "key": "inquiry_form_5_csfeo1",
+      "label": "(required)",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "(required)"
+    },
+    {
+      "key": "inquiry_form_6_1std7nt",
+      "label": "Email address ",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Email address "
+    },
+    {
+      "key": "inquiry_form_7_csfeo1",
+      "label": "(required)",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "(required)"
+    },
+    {
+      "key": "inquiry_form_8_kxcy9e",
+      "label": "What’s it about?",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "What’s it about?"
+    },
+    {
+      "key": "inquiry_form_9_1tf5htk",
+      "label": "Web development",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Web development"
+    },
+    {
+      "key": "inquiry_form_10_1rbpydq",
+      "label": "Career opportunity",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Career opportunity"
+    },
+    {
+      "key": "inquiry_form_11_1ad6v52",
+      "label": "Discuss relevant experience",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Discuss relevant experience"
+    },
+    {
+      "key": "inquiry_form_12_1nnhg0l",
+      "label": "Lazy Barista",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Lazy Barista"
+    },
+    {
+      "key": "inquiry_form_13_3aikza",
+      "label": "Golden Travel and Tours",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Golden Travel and Tours"
+    },
+    {
+      "key": "inquiry_form_14_1cg81ue",
+      "label": "Collaboration",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Collaboration"
+    },
+    {
+      "key": "inquiry_form_15_1hxniya",
+      "label": "General inquiry",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "General inquiry"
+    },
+    {
+      "key": "inquiry_form_16_gbnufb",
+      "label": "Your message ",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Your message "
+    },
+    {
+      "key": "inquiry_form_17_csfeo1",
+      "label": "(required)",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "(required)"
+    },
+    {
+      "key": "inquiry_form_18_po5xd3",
+      "label": "Send project inquiry",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Send project inquiry"
+    },
+    {
+      "key": "inquiry_form_19_ztntfp",
+      "label": "",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": ""
+    },
+    {
+      "key": "inquiry_form_20_eua5ie",
+      "label": "Your name, email, and message are processed by ",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Your name, email, and message are processed by "
+    },
+    {
+      "key": "inquiry_form_21_vwzsoq",
+      "label": "Link destination",
+      "group": "inquiry_form",
+      "kind": "url",
+      "value": "https://formspree.io/legal/privacy-policy/"
+    },
+    {
+      "key": "inquiry_form_22_14wg99c",
+      "label": "Formspree",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Formspree"
+    },
+    {
+      "key": "inquiry_form_23_f4ifo9",
+      "label": "to deliver your inquiry.",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "to deliver your inquiry."
+    },
+    {
+      "key": "inquiry_form_24_1xdxwf6",
+      "label": "Having trouble sending? Email ",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "Having trouble sending? Email "
+    },
+    {
+      "key": "inquiry_form_25_17dd8v3",
+      "label": "Link destination",
+      "group": "inquiry_form",
+      "kind": "url",
+      "value": "mailto:johnmsemblante@gmail.com"
+    },
+    {
+      "key": "inquiry_form_26_1iaseoh",
+      "label": "johnmsemblante@gmail.com",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "johnmsemblante@gmail.com"
+    },
+    {
+      "key": "inquiry_form_27_zmdd1b",
+      "label": "directly.",
+      "group": "inquiry_form",
+      "kind": "text",
+      "value": "directly."
+    }
+  ]
+}

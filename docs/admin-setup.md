@@ -6,6 +6,8 @@ The site still exports static files to Firebase Hosting. Firebase Authentication
 
 ## One-time Firebase setup
 
+Landing-page editing is available under **Pages**. See [Pages administration](pages-admin.md) for editable fields, source defaults, image uploads, rules deployment, and static metadata publishing.
+
 Perform these steps in the existing `johnmsemblanteapp` project. No paid plan or billing change is required by this implementation. Check the Firebase console's current Spark quotas and monitor database reads/writes; quotas and third-party availability still apply.
 
 1. In Firebase Console, register a **Web app** if the project has none, then open its SDK configuration. Do not create or download a service-account key.
@@ -216,12 +218,16 @@ See [SEO setup and editing](seo.md) for the current workflow. Production builds 
 
 Clean `/blog/slug/` pages retain their deployed article HTML for SEO, then anonymously check Firestore for the latest published revision when opened. Visible pages also check on focus, visibility changes and every 60 seconds. A successful save/delete notifies other public blog tabs in the same browser; the listing explicitly reads from the server. Draft, deleted and future-scheduled articles hide their old rendered copy after a successful public availability check. Network failures show a warning while keeping the last available copy.
 
-The Overview at `/adminauth/` includes **Refresh live blog content**. It requests fresh reads in open public blog tabs in that browser. It stores only a small refresh signal, does not clear sign-in data, bookmarks or job-feed preferences, and does not reload an unsaved editor. When browser storage is blocked, it explains that other tabs could not be notified. Other devices refresh on load/focus or their next visible interval.
+The Overview at `/adminauth/` includes **Refresh live site content** under **Site-wide content refresh**. It requests fresh managed page, blog, work and venture content in local tabs and writes a timestamped public version signal to `siteState/content`. Connected visitors in other browsers/devices receive the request through a listener. It does not clear sign-in data, bookmarks or job-feed preferences, and does not reload an unsaved editor. The UI reports a failed global signal separately from its local notification. Offline visitors receive current content on their next successful load/focus/read. Deploy the reviewed Firestore rules to enable the new signal.
 
 This control is not a Firebase CDN purge or a deployment trigger. Search crawlers without JavaScript, social previews and the initial HTML continue to use the deployed snapshot. Rebuild and redeploy for those copies, newly created clean article URLs, sitemap updates and removal of previously published HTML. Clearing browser storage cannot replace that deployment. Live refresh uses public reads under the existing rules; no billing upgrade or admin credentials are needed, and normal Firestore read quotas apply.
 
-Firebase Hosting also revalidates `/blog/**` HTML using `Cache-Control: public,max-age=0,must-revalidate`. Fingerprinted Next.js assets keep their existing immutable cache policy. This header prevents a browser from treating article HTML as fresh for an hour; it still cannot generate new HTML from Firestore without a deployment.
+Firebase Hosting also revalidates Home, About, Contact, Ventures, Blog and Work HTML using `Cache-Control: public,max-age=0,must-revalidate`. Fingerprinted Next.js assets keep their existing immutable cache policy. This header prevents a browser from treating article HTML as fresh for an hour; it still cannot generate new HTML from Firestore without a deployment.
 
 ## Works editor
 
 The Works sidebar entry manages portfolio projects using the same approved-admin gate. See [Works administration](works-admin.md) for source overrides, private drafts, atomic published copies, Cloudinary image uploads and static export limitations. The media upload endpoint is configured by the public `NEXT_PUBLIC_MEDIA_UPLOAD_URL` build variable; Cloudinary credentials belong only in Worker secrets. Deploy the reviewed Works rules before the normal build so its anonymous snapshot can load. Existing blog and bookmark access rules remain covered by the shared emulator suite.
+
+## Ventures editor
+
+Manage individual venture pages under **Ventures**. See [Ventures administration](ventures-admin.md) for drafts, publishing, structured sections, uploads, live views, clean URLs, SEO and rules deployment.

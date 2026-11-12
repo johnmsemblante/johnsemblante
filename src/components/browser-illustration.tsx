@@ -1,3 +1,4 @@
+import { PageText, PageImage } from "@/components/page-content";
 import { profile } from "@/content/profile";
 
 type Portrait = { src: string; name: string };
@@ -15,18 +16,18 @@ export function BrowserIllustration({ portrait, showcase }: { portrait?: Portrai
     <div className="study-window">
       <div className="study-toolbar"><i /><i /><i /><span /></div>
       <div className="study-content">
-        <div className="study-sidebar"><b>js.</b><i /><i /><i /></div>
+        <div className="study-sidebar"><b><PageText scope="browser_illustration_1" fallback={"js."} /></b><i /><i /><i /></div>
         <div className="study-canvas">
-          <div className="study-label">{portrait ? "THE PERSON BEHIND THE PIXELS" : showcase?.label ?? "IDEA → EXPERIENCE"}</div>
+          <div className="study-label"><PageText scope="browser_illustration_2" fallback={portrait ? "THE PERSON BEHIND THE PIXELS" : showcase?.label ?? "IDEA → EXPERIENCE"} /></div>
           {portrait ? <div className="study-introduction">
-            <div className="study-person-copy"><span>Hello, I’m</span><strong>{portrait.name}</strong><span className="study-person-role">{profile.title}</span><div className="study-button" /></div>
-            <div className="study-portrait-frame"><img src={portrait.src} alt="" width={1103} height={1426} /></div>
-          </div> : showcase ? <div className="study-showcase">{showcase.images.map(asset => <div className="study-showcase-card" key={asset.src}><div className="study-showcase-image"><img src={asset.src} alt="" width={asset.width} height={asset.height} /></div><span>{asset.name}</span></div>)}</div> : <><div className="study-headline" /><div className="study-headline short" /><div className="study-line" /><div className="study-line short" /><div className="study-button" /></>}
+            <div className="study-person-copy"><span><PageText scope="browser_illustration_3" fallback={"Hello, I’m"} /></span><strong><PageText scope="browser_illustration_4" fallback={portrait.name} /></strong><span className="study-person-role"><PageText scope="browser_illustration_5" fallback={profile.title} /></span><div className="study-button" /></div>
+            <div className="study-portrait-frame"><PageImage scope="browser_illustration_6" src={portrait.src} alt="" width={1103} height={1426} /></div>
+          </div> : showcase ? <div className="study-showcase">{showcase.images.map(asset => <div className="study-showcase-card" key={asset.src}><div className="study-showcase-image"><PageImage scope="browser_illustration_7" src={asset.src} alt="" width={asset.width} height={asset.height} /></div><span><PageText scope="browser_asset_name" fallback={asset.name} /></span></div>)}</div> : <><div className="study-headline" /><div className="study-headline short" /><div className="study-line" /><div className="study-line short" /><div className="study-button" /></>}
           <div className="study-tiles"><span /><span /><span /></div>
         </div>
       </div>
     </div>
-    <div className="study-phone"><span /><b>js.</b><div /><i /><i /><em /></div>
-    <p>{portrait ? "A personal approach. From design to your next website." : showcase?.caption ?? "Thoughtful interfaces. Built for every screen."}</p>
+    <div className="study-phone"><span /><b><PageText scope="browser_illustration_8" fallback={"js."} /></b><div /><i /><i /><em /></div>
+    <p><PageText scope="browser_illustration_9" fallback={portrait ? "A personal approach. From design to your next website." : showcase?.caption ?? "Thoughtful interfaces. Built for every screen."} /></p>
   </div>;
 }

@@ -16,13 +16,15 @@ See the [SEO audit and editing guide](docs/seo.md) for findings, meta title/desc
 
 Builds now export published dashboard articles to clean `/blog/slug/` pages with HTML and metadata. The instant `/blog/?post=slug` view remains available. **Rebuild and deploy after publishing, editing, unpublishing or deleting:** previously exported article copies stay public until redeployment. No paid SEO service or Firebase billing upgrade is required.
 
-Public article views now refresh saved content automatically on load, focus and while visible. The admin Overview includes **Refresh live blog content** for open tabs in the same browser. SEO/social HTML still updates through a build and Hosting deployment. See the [live update details](docs/admin-setup.md#live-article-updates-and-dashboard-refresh).
+Public content refreshes on load, focus and while visible. The admin Overview includes **Refresh live site content** to request fresh managed page, blog, work and venture content across connected visitors' browsers. SEO/social HTML still updates through a build and Hosting deployment. See the [live update details](docs/admin-setup.md#live-article-updates-and-dashboard-refresh) and [Ventures editor](docs/ventures-admin.md).
 
 Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
 
 The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante** and H1 **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
 ### Editing public copy
+
+Use **Pages** in `/adminauth/` to edit landing-page content, images, links, meta titles, and descriptions. Existing code content remains the default. Individual venture pages use **Ventures**; posts and projects stay in Blog and Works. See [Pages administration](docs/pages-admin.md) for setup and publishing. Deploy the new Firestore rules before building this enhancement; metadata changes require rebuilding and redeploying Hosting.
 
 Use specific, first-person descriptions of the work John actually does. Keep **Cebu Web Developer** as the homepage focus and use service terms where they help explain the offer. Avoid repeated keywords, invented client results, fixed turnaround promises, and claims that wording can pass an AI detector. Public copy uses sentences, commas or colons instead of em dashes, as an editorial preference.
 
@@ -464,13 +466,14 @@ The Work directory now adds debounced keyword search, grouped multi-select Indus
 
 Dropdown options without a match in the other selected groups are now disabled, with live contextual counts. Clicking an option's label or count also checks its checkbox. Search and dropdowns work separately: typing clears dropdown selections; filtering clears the search input. Shared links follow the same rule, with a keyword taking priority over group parameters in older combined URLs.
 
-## 15. Current feature and documentation summary - 6 November 2026
+## 15. Current feature and documentation summary - 12 November 2026
 
 This section describes the current implementation; dated notes above record earlier releases. The current professional title is **WordPress/Full Stack Developer**. Google Search Console ownership was verified by the owner. Crawlability checks passed, but indexing and rankings are Google decisions; the earlier sitemap fetch warning is not a confirmed successful sitemap-processing result.
 
-- **Blog:** the admin library, slide-in editor, automatic slugs and labels, formatting, featured images, scheduling, deletion, SEO overrides and live refresh are implemented. Clean article pages are exported during builds. Dashboard refresh requests new public reads in the same browser; it does not purge a CDN or deploy updated SEO HTML.
+- **Blog:** the admin library, slide-in editor, automatic slugs and labels, formatting, featured images, scheduling, deletion, SEO overrides and live refresh are implemented. Clean article pages are exported during builds. Dashboard site-wide refresh requests new public reads across connected browsers and devices; it does not purge a CDN or deploy updated SEO HTML.
 - **Work:** original projects remain alongside clearly labeled personal ventures. Keyword search and grouped multi-select filters are separate modes. Unavailable combinations are disabled; clicking an enabled label or count toggles the checkbox and keeps the dropdown open.
-- **Ventures:** Lazy Barista, Golden Travel and Tours, and Lapse Hub are live. Lapse Hub uses its Facebook profile logo locally and a curated external Flickr gallery with popup viewing and source links; new Flickr uploads are not automatically imported.
+- **Pages:** landing-page copy, links, images and metadata can be edited in the dashboard, with live content reads and code defaults.
+- **Ventures:** the dashboard supports creating, drafting, publishing, editing, renaming and deleting individual venture pages, including uploads and SEO fields. Lazy Barista, Golden Travel and Tours, and Lapse Hub are live. Lapse Hub uses its Facebook profile logo locally and a curated external Flickr gallery with popup viewing and source links; new Flickr uploads are not automatically imported.
 - **Sharing:** venture detail pages use their logo and Work detail pages use their project image. Missing or blank image configuration falls back to `site.socialImage`. Social platforms may cache previews; see the SEO guide.
 - **Inquiries:** confirmed Formspree submissions clear name, email and message. Travel submissions also reset planner choices and trip fields while retaining a success notice. Failures and itinerary reviews preserve input. Location fields are plain text, without autocomplete or interactive maps.
 - **Travel quotation link:** share [the expanded trip planner](https://johnsemblante.com/ventures/golden-travel-and-tours/#trip-estimator). The planner prepares an inquiry; it does not confirm a booking or take payment.

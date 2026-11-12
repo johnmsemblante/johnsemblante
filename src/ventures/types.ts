@@ -3,6 +3,7 @@ export type VentureGalleryImage = VentureImage & { title: string; thumbnailSrc: 
 export type Venture = {
   slug: string; name: string; category: string; description: string;
   theme: "coffee" | "travel" | "photography"; title: string; tagline: string; canonicalBase?: string;
+  seo?: { title?: string; description?: string };
   logo?: VentureImage; hero?: VentureImage; storyImage?: VentureImage;
   story?: string;
   gallery?: VentureGalleryImage[];

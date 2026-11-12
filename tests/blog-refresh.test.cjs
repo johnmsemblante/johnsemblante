@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
 function load(file, mocks = {}) { const exports = {}; new Function('require', 'exports', ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017 } }).outputText)(name => mocks[name] ?? require(name), exports); return exports; }
-const { articleRefresher, requestBlogRefresh, subscribeBlogRefresh } = load('src/lib/blog-refresh.ts');
+const { articleRefresher, requestBlogRefresh, subscribeBlogRefresh } = load('src/lib/blog-refresh.ts', { './site-refresh': load('src/lib/site-refresh.ts') });
 
 test('overlapping refreshes suppress the old read and deliver the latest saved version', async () => {
   let resolve; let reads = 0; const received = [];

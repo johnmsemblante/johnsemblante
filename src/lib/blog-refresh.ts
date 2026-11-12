@@ -1,3 +1,4 @@
+import { subscribeSiteRefresh } from "./site-refresh";
 const eventName = "portfolio:blog-refresh";
 const storageKey = "portfolio:blog-refresh-request";
 
@@ -13,10 +14,11 @@ export function requestBlogRefresh(): boolean {
 }
 
 export function subscribeBlogRefresh(refresh: () => void): () => void {
+  const stopSiteRefresh = subscribeSiteRefresh(refresh);
   const storage = (event: StorageEvent) => { if (event.key === storageKey && event.newValue) refresh(); };
   window.addEventListener(eventName, refresh);
   window.addEventListener("storage", storage);
-  return () => { window.removeEventListener(eventName, refresh); window.removeEventListener("storage", storage); };
+  return () => { stopSiteRefresh(); window.removeEventListener(eventName, refresh); window.removeEventListener("storage", storage); };
 }
 
 /** Coalesce overlapping refreshes; a save during an old read forces a fresh read. */

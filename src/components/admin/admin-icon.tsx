@@ -1,4 +1,6 @@
 const paths = {
+  ventures: ["M12 3v18M3 12h18", "M5 5h5v5H5zM14 14h5v5h-5z"],
+  pages: ["M8 3h12v15H8z", "M4 7v14h12", "M11 7h6M11 11h6M11 15h4"],
   overview: ["M3 3h7v7H3z", "M14 3h7v7h-7z", "M3 14h7v7H3z", "M14 14h7v7h-7z"],
   blog: ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M8 12h8M8 16h8"],
   works: ["M3 4h18v16H3z", "M3 9h18M8 9v11"],
