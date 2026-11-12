@@ -16,11 +16,21 @@ function load(file, mocks = {}) {
 const { donationConfig } = load('src/config/donations.ts');
 const { configuredDonationMethods } = load('src/lib/donation-methods.ts');
 const { toolVentures } = load('src/config/tool-ventures.ts');
-const fixture = () => structuredClone(donationConfig);
+const fixture = () => ({
+  gcash: { enabled: false, qrImagePath: '', allowDownload: true },
+  international: { enabled: false, providerName: '', url: '' },
+});
 
-test('production donation methods stay hidden until official details are configured', () => {
-  assert.deepEqual(configuredDonationMethods(donationConfig, () => true), []);
+test('approved production GCash asset and PayPal link are configured for the opted-in tool', () => {
+  const methods = configuredDonationMethods(donationConfig, path => fs.existsSync('public' + path));
+  assert.deepEqual(methods.map(method => method.id), ['gcash', 'international']);
+  assert.equal(methods[0].qrImagePath, '/images/donations/gcash.jpg');
+  assert.equal(methods[1].url, 'https://paypal.me/johnmsemblante');
   assert.equal(toolVentures.find(tool => tool.id === 'qr-code-generator').donationsEnabled, true);
+});
+
+test('unconfigured or disabled methods produce no public payment options', () => {
+  assert.deepEqual(configuredDonationMethods(fixture(), () => true), []);
 });
 
 test('GCash requires an enabled method, an allowed local raster image and an existing asset', () => {

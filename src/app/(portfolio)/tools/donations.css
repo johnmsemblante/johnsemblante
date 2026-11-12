@@ -61,7 +61,7 @@
 .donation-payment { border: 1px solid var(--line); border-radius: 4px; padding: 20px; margin-top: 24px; }
 .donation-payment h3 { font-size: 21px; margin-bottom: 16px; }
 .donation-payment .donation-recipient { color: var(--ink); }
-.donation-qr { display: block; max-width: 100%; width: auto; height: auto; max-height: min(40dvh, 320px); object-fit: contain; margin: 0 auto 18px; }
+.donation-qr { display: block; max-width: 100%; width: 300px; height: auto; object-fit: contain; margin: 0 auto 18px; }
 .donation-payment .button { min-height: 44px; gap: 14px; justify-content: center; }
 .donation-modal-footer { padding-top: 24px; text-align: center; }
 .donation-modal-footer p { font-size: 12px; }

@@ -17,13 +17,13 @@ export type DonationConfig = {
 // public display. GCash assets belong in public/images/donations/.
 export const donationConfig: DonationConfig = {
   gcash: {
-    enabled: false,
-    qrImagePath: "",
+    enabled: true,
+    qrImagePath: "/images/donations/gcash.jpg",
     allowDownload: true,
   },
   international: {
-    enabled: false,
-    providerName: "",
-    url: "",
+    enabled: true,
+    providerName: "PayPal",
+    url: "https://paypal.me/johnmsemblante",
   },
 };
