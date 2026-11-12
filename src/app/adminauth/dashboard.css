@@ -177,3 +177,19 @@
 @media(max-width:700px){.admin-shell .page-admin-row{grid-template-columns:minmax(0,1fr) auto;gap:16px}.page-admin-row>span:nth-child(2){display:none}.page-field-group{padding:14px}}
 @media(prefers-reduced-motion:reduce){.page-editor-drawer[open]{animation:none}}
 .venture-object-field{min-width:0}.venture-object-field>h4{text-transform:capitalize;margin:28px 0 8px}.venture-array{border-top:1px solid var(--line);padding-top:20px}.venture-array>h3{text-transform:capitalize}.venture-object>button,.venture-object-field>button,.venture-array>button{margin:12px 12px 12px 0}.venture-object label{text-transform:capitalize}
+
+/* Keep admin fields compact without stacking label margins and grid gaps. */
+.admin-shell label{margin:12px 0 6px}
+.admin-shell .work-editor{gap:16px}
+.admin-shell .work-editor fieldset{gap:12px}
+.admin-shell .work-editor label{margin:0;gap:6px}
+.admin-shell .work-editor-columns{gap:12px}
+.admin-shell .page-field-group{margin:16px 0;padding:16px}
+.admin-shell .page-field-group fieldset{margin-top:16px}
+.admin-shell .page-content-field{margin-bottom:0}
+.admin-shell .page-content-field>label{margin:0 0 6px}
+.admin-shell .venture-object{display:grid;gap:12px}
+.admin-shell .venture-object-field>h4{margin:12px 0 6px}
+.admin-shell .venture-array{padding-top:12px}
+.admin-shell .job-search label,.admin-shell .job-filters label{margin-top:0}
+.admin-shell .job-checkbox{margin:0}
