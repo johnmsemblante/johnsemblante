@@ -31,6 +31,7 @@ test('homepage includes managed and source article previews in publication order
     '@/lib/build-works': { buildWorks: () => [] }, '@/components/ui': { Button: noop, Arrow: noop },
     '@/components/development-services': { DevelopmentServices: noop }, '@/components/browser-illustration': { BrowserIllustration: noop },
     '@/components/workflow': { Workflow: noop }, '@/components/project-grid': { ProjectGrid: noop },
+    '@/components/home-tools-showcase': { HomeToolsShowcase: noop },
     '@/ventures/cards': { VentureCards: noop }, '@/components/project-questions': { ProjectQuestions: noop },
   };
   mocks['@/components/live-home-content'] = load('src/components/live-home-content.tsx', {

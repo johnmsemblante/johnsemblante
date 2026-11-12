@@ -316,3 +316,57 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 
 .work-editor{display:grid;gap:22px}.work-editor fieldset{border:0;margin:0;padding:0;display:grid;gap:20px;min-width:0}.work-editor label,.work-library-search{display:grid;gap:8px}.work-editor input,.work-editor textarea,.work-editor select,.work-library-search input{width:100%;padding:12px;border:1px solid #b8c3bc;background:#fff;border-radius:3px;font:inherit}.work-editor textarea{resize:vertical}.work-editor-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}.work-editor .work-industries{display:grid;grid-template-columns:1fr 1fr;gap:10px}.work-editor .work-industries label{display:flex;align-items:center;gap:10px}.work-editor .work-industries input{width:auto}.work-editor-preview{max-width:100%;max-height:260px;object-fit:contain}.work-gallery-edit{display:grid;gap:12px;padding:16px;border:1px solid #ddd}.work-admin-list{display:grid;margin-top:24px}.work-admin-row{display:grid;grid-template-columns:100px minmax(0,1fr) 130px 70px;gap:20px;align-items:center;text-align:left;padding:20px 0;border:0;border-bottom:1px solid #d7ded8;background:transparent;color:inherit;cursor:pointer;font:inherit}.work-admin-row small{display:block;margin-top:6px;color:#56645d}.work-admin-row img{width:100px;height:66px;object-fit:cover}.work-admin-row:hover strong{text-decoration:underline}.work-library-search{max-width:600px;margin:24px 0}@media(max-width:650px){.work-admin-row{grid-template-columns:70px minmax(0,1fr);gap:12px}.work-admin-row img{width:70px;height:50px}.work-admin-row>span:nth-child(n+3){grid-column:2}.work-editor-columns{grid-template-columns:1fr}.work-editor .work-industries{grid-template-columns:1fr}}
 .page-image-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px}.page-image-gallery figure{margin:0}.page-image-gallery img{display:block;max-width:100%;height:auto}.page-image-gallery figcaption{margin-top:12px;color:var(--muted);font-size:14px}
+
+.home-tools .section-heading { align-items: center; gap: 24px; }
+.home-tools-intro { max-width: 660px; margin: 18px 0 0; color: var(--muted); font-size: 14px; }
+.home-tools-directory { min-height: 44px; }
+.home-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.home-tool-grid-single { grid-template-columns: minmax(0, 1fr); }
+.home-tool-card {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 20px 24px;
+  align-items: center;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  transition: border-color .2s, background-color .2s;
+}
+.home-tool-card:hover { border-color: #8ba69a; background: #f0f4f0; }
+.home-tool-card:focus-visible { outline: 3px solid #32766c; outline-offset: 5px; }
+.home-tool-icon {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border: 1px solid #c9d5cd;
+  border-radius: 3px;
+  background: #e7efec;
+  color: #32766c;
+  font-family: Arial, sans-serif;
+  font-size: 66px;
+  line-height: 1;
+}
+.home-tool-copy { min-width: 0; }
+.home-tool-icon img { display: block; width: 66%; height: 66%; }
+.home-tool-copy h3 { margin: 0 0 12px; font-size: 27px; line-height: 1.2; }
+.home-tool-copy p { margin: 0; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.home-tool-cta { grid-column: 2; justify-self: start; gap: 20px; min-height: 48px; }
+.home-tool-card:hover .home-tool-cta { background: #414747; }
+.home-tool-grid-single .home-tool-card { grid-template-columns: 88px minmax(0, 1fr) auto; gap: 30px; }
+.home-tool-grid-single .home-tool-cta { grid-column: auto; }
+@media (max-width: 850px) {
+  .home-tool-grid { grid-template-columns: minmax(0, 1fr); }
+  .home-tool-grid-single .home-tool-card { grid-template-columns: 88px minmax(0, 1fr); gap: 20px 24px; }
+  .home-tool-grid-single .home-tool-cta { grid-column: 2; }
+}
+@media (max-width: 620px) {
+  .home-tools .section-heading { align-items: start; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .home-tool-card, .home-tool-grid-single .home-tool-card { padding: 22px; grid-template-columns: 60px minmax(0, 1fr); gap: 18px; }
+  .home-tool-icon { width: 60px; height: 60px; font-size: 45px; align-self: start; }
+  .home-tool-copy h3 { font-size: 24px; }
+  .home-tool-cta, .home-tool-grid-single .home-tool-cta { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-tool-card { transition: none; }
+}
