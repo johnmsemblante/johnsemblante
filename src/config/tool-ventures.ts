@@ -10,6 +10,7 @@ export type ToolVenture = {
   homeDescription?: string;
   ctaLabel?: string;
   iconImage?: string;
+  donationsEnabled?: boolean;
 };
 export const toolVentures: ToolVenture[] = [{
   id: "qr-code-generator", slug: "qr-code-generator",
@@ -23,6 +24,7 @@ export const toolVentures: ToolVenture[] = [{
   homeDescription: "Create custom QR codes for websites, Wi-Fi, text, emails, and more. Customize your design and download your QR code instantly.",
   ctaLabel: "Create a QR Code",
   iconImage: "/tools/qr-code-generator/icon.svg",
+  donationsEnabled: true,
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 

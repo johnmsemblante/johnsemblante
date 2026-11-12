@@ -10,6 +10,18 @@ Only published, featured entries appear. The selection removes duplicate IDs and
 
 Run `node --test tests/home-tools.test.cjs` for registry filtering, ordering, deduplication, limits, empty behavior and card rendering. Local review uses `npm.cmd run dev` at `http://localhost:3000/`, or `npm.cmd run preview` at `http://127.0.0.1:3100/` after a successful build.
 
+## Optional support widget
+
+Payment setup lives in `src/config/donations.ts`. Both methods ship disabled because no approved receiving details have been supplied. With no complete payment method, the shared `/tools/` layout renders no public donation trigger. Tool eligibility is controlled by `donationsEnabled: true` on a published entry in the existing registry. QR Code Generator has opted in. The Tools and Ventures directories, homepage, admin and other portfolio routes do not display the widget.
+
+To activate GCash, add the official receiving QR image under `public/images/donations/`, set `gcash.qrImagePath` to its public path, and set `gcash.enabled` to `true`. Accepted formats are PNG, JPG/JPEG and WebP. For example, an approved file named `gcash-receive.png` uses `/images/donations/gcash-receive.png`. Optional `displayName` and `instructions` are displayed publicly. `allowDownload` controls the Save GCash QR image link. The build checks the local asset exists and omits GCash if its path is invalid or the file is missing. A failed image request after deployment shows an error and removes the download link. Review the actual QR's recipient information before publishing because the provider may reveal the receiving identity.
+
+To activate international support, set the official `international.providerName` and HTTPS `international.url`, then set `international.enabled` to `true`. URLs with embedded credentials or unsafe schemes are rejected. Contributions take place on the configured external provider, opened with `noopener noreferrer`. Set either method's `enabled` flag to `false` to disable it, then rebuild and redeploy.
+
+The shared `tools/layout.tsx` validates payment configuration on the server. `ToolDonationWidget` matches the current path against published, opted-in registry routes. One `DonationWidget` opens one native `DonationModal` on explicit activation. The dialog supports close, Maybe Later, Escape, backdrop dismissal, keyboard focus wrapping/restoration, background inertness and scroll locking. Safe-area offsets and a compact mobile label keep the trigger small. It temporarily yields when a tool control overlaps its fixed position. Styles respect reduced motion. The modal uses a static receiving image and external links, with no payment SDK, transaction collection, analytics events or backend integration.
+
+Run `node --test tests/donations.test.cjs` for configuration, unsafe/missing destinations, exact route gating and admin separation. Enabled modal states were tested in a local isolated fixture using a nonpayment image and a reserved test-domain URL. No test payment destination or fixture is included in the production application. The official GCash asset, recipient verification and real payment flow remain manual checks after receiving details are supplied. The optional post-download entry point is omitted.
+
 ## QR generator
 
 `/tools/qr-code-generator/` supports HTTP(S), text, Wi-Fi (WPA/WPA2, WEP, open, hidden), email, and phone numbers. Settings include two colors, square/rounded dots, 512/1024/2048px output, reset and PNG/SVG downloads. Input stays in React state; generation and Blob downloads run locally, with no requests, uploads, persistent storage, logging or scan analytics. Recipients can read the data in a downloaded code, including Wi-Fi passwords.
