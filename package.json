@@ -10,6 +10,7 @@
     "test:qr": "node --test tests/qr-content.test.cjs",
     "test:seo": "node --test tests/seo.test.cjs tests/live-seo.test.mjs",
     "audit:seo": "node scripts/check-seo.mjs",
+    "audit:seo:qr": "node scripts/check-qr-seo.mjs",
     "sync:blog": "node scripts/sync-blog-snapshot.cjs",
     "preview": "node scripts/preview.mjs",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
