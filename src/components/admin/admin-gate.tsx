@@ -9,6 +9,8 @@ import { firebaseConfigured, firebaseMessage, getAdminAuth, getFirebase } from "
 import { safeAdminDestination } from "@/lib/admin-navigation";
 import { SitePublishControl } from "./site-publish-control";
 import { DashboardShell } from "./dashboard-shell";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
+import { clearAdminNotices, notifyAdmin } from "@/lib/admin-feedback";
 
 const AdminContext = createContext<{ user: User; db: Firestore } | null>(null);
 export function useAdmin() {
@@ -23,8 +25,13 @@ export function AdminGate({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<"checking" | "signedout" | "denied" | "ready" | "error">("checking");
   const [session, setSession] = useState<{ user: User; db: Firestore } | null>(null);
   const [identity, setIdentity] = useState<User | null>(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useAdminMessage("error");
   const [busy, setBusy] = useState(false);
+  useAdminActivity(firebaseConfigured && (busy || phase === "checking"), "Checking your administrator session…");
+  useEffect(() => {
+    if (phase === "ready") notifyAdmin("Admin access verified. Your workspace is ready.", "info");
+    if (phase === "denied") { clearAdminNotices(); notifyAdmin("This Google account is not an approved administrator. Sign out to use your approved account.", "error"); }
+  }, [phase]);
 
   useEffect(() => {
     const atLogin = pathname.replace(/\/$/, "") === "/adminauth";
@@ -43,6 +50,7 @@ export function AdminGate({ children }: { children: ReactNode }) {
       const { db } = getFirebase();
       stopAuth = onAuthStateChanged(getAdminAuth(), user => {
         stopAccess?.();
+        clearAdminNotices();
         setSession(null); setIdentity(user); setError("");
         if (!user) { setPhase("signedout"); return; }
         setPhase("checking");
@@ -51,9 +59,9 @@ export function AdminGate({ children }: { children: ReactNode }) {
           if (snapshot.exists() && snapshot.data().enabled === true && user.emailVerified) {
             setSession({ user, db }); setPhase("ready");
           } else { setSession(null); setPhase("denied"); }
-        }, () => { setSession(null); setPhase("error"); setError("Admin access could not be verified. Check your connection or contact the site owner."); });
-      }, () => { setSession(null); setPhase("error"); setError("The sign-in session could not be verified. Reload to try again."); });
-    } catch (cause) { setPhase("error"); setError(firebaseMessage(cause)); }
+        }, () => { clearAdminNotices(); setSession(null); setPhase("error"); setError("Admin access could not be verified. Check your connection or contact the site owner."); });
+      }, () => { clearAdminNotices(); setSession(null); setPhase("error"); setError("The sign-in session could not be verified. Reload to try again."); });
+    } catch (cause) { clearAdminNotices(); setPhase("error"); setError(firebaseMessage(cause)); }
     return () => { stopAuth?.(); stopAccess?.(); };
   }, []);
 

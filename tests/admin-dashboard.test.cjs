@@ -5,6 +5,7 @@ const ts = require('typescript');
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 function load(file, dependencies = {}) {
+  dependencies['./use-admin-feedback'] ??= { useAdminMessage: () => React.useState(''), useAdminActivity() {} };
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
   const exported = {};
   new Function('require', 'exports', code)(name => name in dependencies ? dependencies[name] : ['react', 'react/jsx-runtime'].includes(name) ? require(name) : {}, exported);

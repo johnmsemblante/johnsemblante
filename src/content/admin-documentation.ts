@@ -28,6 +28,16 @@ export const documentationGuides: DocumentationGuide[] = [
     ],
   },
   {
+    id: "admin-action-feedback", title: "Follow admin progress and save notifications", category: "Getting started", updated: reviewed,
+    summary: "See progress at the top and success/error notices at the bottom without scrolling away from your editor.",
+    tags: ["notifications", "toast", "loading bar", "saving", "progress", "error", "success", "refresh", "upload"], sources: ["docs/admin-feedback.md", "src/lib/admin-feedback.ts"],
+    sections: [
+      { heading: "What you see during an action", paragraphs: ["A slim bar stays at the top while the dashboard is loading or performing an asynchronous action, including saves, deletes, uploads, job requests and session checks. It is an activity indicator, not a measured completion percentage. Local typing and filtering do not pretend to be background processing.", "Success, information and error notices appear at the bottom-right, including while an editor drawer is open. They stay visible as you scroll, and move above bottom editor actions when needed. The original inline explanations remain available too."] },
+      { heading: "Read and dismiss a result", steps: ["Wait for the action to finish and read the outcome notice. A failed or invalid save does not mean your changes were saved; correct the highlighted issue and retry.", "Use the dismiss button to close a notice. Success/information notices also dismiss after a short reading period; hovering or focusing a notice pauses that timer. Errors remain until dismissed, although only the four most recent notices are retained.", "A saved-content notice confirms the editor operation. It does not confirm a Hosting deployment. Check Automatic website publishing for the later clean-URL, metadata and sitemap build.", "If several actions run together, the top bar stays active until the remaining tracked work finishes. Leaving a feature clears its activity; signing out or losing access clears session notices."] },
+      { heading: "When something fails", paragraphs: ["Your existing inline validation and error messages remain in the editor. Repeating the same failed action can show a new notice even when the message is unchanged. For connection or permission errors, follow the specific notice and the sign-in/publishing troubleshooting guides. No popup takes focus away from your form."] },
+    ],
+  },
+  {
     id: "pages-editor", title: "Edit homepage and landing-page content", category: "Content management", updated: reviewed,
     summary: "Change page copy, images, links and metadata with Pages, and restore code defaults.",
     tags: ["Pages", "Home", "About", "Contact", "gallery", "reset", "SEO"], sources: ["docs/pages-admin.md"],

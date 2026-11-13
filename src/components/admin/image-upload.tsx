@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { useAdmin } from "./admin-gate";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
+import { notifyAdmin } from "@/lib/admin-feedback";
 
 export function ImageUpload({ onUpload, onBusy, label = "Upload an image", successMessage = "Image uploaded. Save your changes to use it.", disabled = false }: {
   onUpload: (url: string) => void;
@@ -11,8 +13,9 @@ export function ImageUpload({ onUpload, onBusy, label = "Upload an image", succe
 }) {
   const { user } = useAdmin();
   const id = useId();
-  const [error, setError] = useState("");
+  const [error, setError] = useAdminMessage("error");
   const [status, setStatus] = useState<"idle" | "uploading" | "uploaded">("idle");
+  useAdminActivity(status === "uploading", "Uploading image… Keep the editor open.", 1);
   const request = useRef<AbortController | null>(null);
   const mounted = useRef(true);
   const endpoint = process.env.NEXT_PUBLIC_MEDIA_UPLOAD_URL;
@@ -41,7 +44,7 @@ export function ImageUpload({ onUpload, onBusy, label = "Upload an image", succe
         if (!response.ok) throw new Error(typeof result?.message === "string" ? result.message : "The image upload failed. Please try again.");
         const url = typeof result?.url === "string" ? new URL(result.url) : null;
         if (!url || url.protocol !== "https:" || url.hostname !== "res.cloudinary.com" || url.username || url.password || !/^\/[^/]+\/image\/upload\//.test(url.pathname)) throw new Error("The upload service returned an invalid image URL. Please try again.");
-        if (mounted.current && !controller.signal.aborted) { onUpload(url.href); setStatus("uploaded"); }
+        if (mounted.current && !controller.signal.aborted) { onUpload(url.href); setStatus("uploaded"); notifyAdmin(successMessage); }
       } catch (cause) {
         if (mounted.current) {
           setError(controller.signal.aborted ? "The upload timed out. Your fields are preserved; try again." : cause instanceof Error ? cause.message : "The image upload failed. Your fields are preserved; try again.");

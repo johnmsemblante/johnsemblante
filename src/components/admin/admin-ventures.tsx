@@ -1,6 +1,7 @@
 "use client";
 
 import { notifySitePublish } from "@/lib/site-publish";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { collection, getDocsFromServer } from "firebase/firestore";
 import { ventures as source } from "@/ventures/registry";
@@ -14,7 +15,8 @@ import { BlogEditorDrawer } from "./blog-editor-drawer";
 import { VentureFields } from "./venture-fields";
 function editable(v:Venture):Venture {return {...v,story:v.story??"",offerings:v.offerings??[],offeringsNote:v.offeringsNote??"",questions:v.questions??[],phones:v.phones??[],socials:v.socials??[],gallery:v.gallery??[],artwork:v.artwork??[],vehicles:v.vehicles??[],ordering:v.ordering??{title:"How to get in touch",steps:[],note:""},contact:v.contact??{label:"Get in touch",url:"/contact/"},seo:{title:v.seo?.title??"",description:v.seo?.description??""}};}
 export function AdminVentures(){
-  const {db}=useAdmin();const [records,setRecords]=useState<VentureRecord[]>([]),[hidden,setHidden]=useState<string[]>([]),[input,setInput]=useState<VentureRecord|null>(null),[original,setOriginal]=useState<string|null>(null),[baseline,setBaseline]=useState(""),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[uploads,setUploads]=useState(0),[error,setError]=useState(""),[notice,setNotice]=useState(""),[search,setSearch]=useState("");
+  const {db}=useAdmin();const [records,setRecords]=useState<VentureRecord[]>([]),[hidden,setHidden]=useState<string[]>([]),[input,setInput]=useState<VentureRecord|null>(null),[original,setOriginal]=useState<string|null>(null),[baseline,setBaseline]=useState(""),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[uploads,setUploads]=useState(0),[error,setError]=useAdminMessage("error"),[notice,setNotice]=useAdminMessage("success"),[search,setSearch]=useState("");
+  useAdminActivity(loading || saving, loading ? "Loading ventures…" : "Working on your venture…");
   const lock=useRef(false),busy=saving||uploads>0,dirty=!!input&&JSON.stringify(input)!==baseline;
   useEffect(()=>{let disposed=false;(async()=>{const [managed,publics]=await Promise.all([getDocsFromServer(collection(db,'managedVentures')),getDocsFromServer(collection(db,'publicVentures'))]);const items=managed.docs.map(d=>{const r=d.data(),venture=parseVenture(r.content,d.id);if(!venture||!['draft','published'].includes(r.status)||!Number.isInteger(r.revision))throw new Error('Invalid venture record.');return{venture,status:r.status,revision:r.revision} as VentureRecord;});if(!disposed){setRecords(items);setHidden(publics.docs.filter(d=>d.data().deleted).map(d=>d.id));setLoading(false);}})().catch(e=>{if(!disposed){setError((e as {code?:string}).code?firebaseMessage(e):(e as Error).message);setLoading(false);}});return()=>{disposed=true;};},[db]);
   useEffect(()=>{const warn=(e:BeforeUnloadEvent)=>{if(dirty||busy){e.preventDefault();e.returnValue="";}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[dirty,busy]);

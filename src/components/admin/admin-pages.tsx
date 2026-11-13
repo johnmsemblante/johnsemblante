@@ -1,6 +1,7 @@
 "use client";
 
 import { notifySitePublish } from "@/lib/site-publish";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { doc, getDocFromServer, runTransaction } from "firebase/firestore";
@@ -18,8 +19,9 @@ export function AdminPages() {
   const [baseline, setBaseline] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploads, setUploads] = useState(0);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
+  const [error, setError] = useAdminMessage("error");
+  const [notice, setNotice] = useAdminMessage("success");
+  useAdminActivity(busy, "Working on page content…");
   const [search, setSearch] = useState("");
   const lock = useRef(false);
   const mounted = useRef(true);

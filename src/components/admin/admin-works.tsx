@@ -1,6 +1,7 @@
 "use client";
 
 import { notifySitePublish } from "@/lib/site-publish";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { collection, getDocsFromServer, limit, orderBy, query, startAfter, type QueryDocumentSnapshot } from "firebase/firestore";
 import type { Project } from "@/content/site";
@@ -19,7 +20,8 @@ export function AdminWorks({ source }: { source: Project[] }) {
   const [input,setInput] = useState<Project | null>(null), [revision,setRevision] = useState<number | null>(null);
   const [originalSlug,setOriginalSlug] = useState<string | null>(null), [customSlug,setCustomSlug] = useState(false);
   const [baseline,setBaseline] = useState(""), [busy,setBusy] = useState(false), [loading,setLoading] = useState(true);
-  const [error,setError] = useState(""), [notice,setNotice] = useState("");
+  const [error,setError] = useAdminMessage("error"), [notice,setNotice] = useAdminMessage("success");
+  useAdminActivity(busy || loading, loading ? "Loading portfolio projects…" : "Working on your portfolio…");
   const [search,setSearch] = useState("");
   const lock = useRef(false);
   const dirty = !!input && JSON.stringify(input) !== baseline;

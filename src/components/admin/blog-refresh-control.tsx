@@ -4,10 +4,13 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { requestSiteRefresh } from "@/lib/site-refresh";
 import { firebaseMessage } from "@/lib/firebase-client";
 import { useAdmin } from "./admin-gate";
+import { useAdminActivity } from "./use-admin-feedback";
+import { notifyAdmin } from "@/lib/admin-feedback";
 
 export function BlogRefreshControl() {
   const { db } = useAdmin();
   const [message, setMessage] = useState(""), [busy, setBusy] = useState(false);
+  useAdminActivity(busy, "Requesting site-wide content refresh…");
   const lock = useRef(false);
   async function refresh() {
     if (lock.current) return;
@@ -16,7 +19,8 @@ export function BlogRefreshControl() {
     try {
       await setDoc(doc(db, "siteState", "content"), { token: crypto.randomUUID(), updatedAt: serverTimestamp() });
       setMessage("Site-wide refresh requested. Connected visitors will reload the latest managed page, blog, work, and venture content. Other visitors receive the latest content when they open or refresh a page.");
-    } catch (error) { setMessage("This browser was notified, but the site-wide request failed. " + firebaseMessage(error)); }
+      notifyAdmin("Site-wide content refresh requested. Connected visitors will fetch the latest saved content. This does not deploy the website.");
+    } catch (error) { const message = "This browser was notified, but the site-wide request failed. " + firebaseMessage(error); setMessage(message); notifyAdmin(message, "error"); }
     finally { lock.current = false; setBusy(false); }
   }
   return <section className="admin-card blog-refresh-control" aria-labelledby="site-refresh-title">

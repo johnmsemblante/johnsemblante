@@ -1,6 +1,7 @@
 "use client";
 
 import { notifySitePublish } from "@/lib/site-publish";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -36,8 +37,9 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
   const [baseline, setBaseline] = useState(() => JSON.stringify(emptyPost()));
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
+  const [error, setError] = useAdminMessage("error");
+  const [notice, setNotice] = useAdminMessage("success");
+  useAdminActivity(busy || loading, loading ? "Loading articles…" : "Working on your article…");
   const [cursor, setCursor] = useState<QueryDocumentSnapshot | null>(null);
   const [more, setMore] = useState(false);
   const [clock, setClock] = useState(Date.now);

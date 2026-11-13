@@ -5,6 +5,7 @@ const ts = require('typescript');
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 function load(file, mocks = {}) {
+  mocks['./use-admin-feedback'] ??= { useAdminMessage: () => React.useState(''), useAdminActivity() {} };
   const exports = {};
   new Function('require', 'exports', ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX } }).outputText)(name => mocks[name] ?? require(name), exports);
   return exports;

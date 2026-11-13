@@ -1,4 +1,6 @@
 "use client";
+import { useAdminActivity, useAdminMessage } from "./use-admin-feedback";
+import { notifyAdmin } from "@/lib/admin-feedback";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HIMALAYAS_PROXY, jobFeed } from "@/lib/job-feed";
@@ -18,7 +20,8 @@ export function JobFinder() {
   const [search, setSearch] = useState<JobSearch>(defaultSearch);
   const [filters, setFilters] = useState<JobFilters>(defaults);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useAdminMessage("error");
+  useAdminActivity(loading, "Loading remote job listings…");
   const [cursor, setCursor] = useState<string | null>(null);
   const [fetchedAt, setFetchedAt] = useState<number | null>(null);
   const [stale, setStale] = useState(false);
@@ -39,6 +42,7 @@ export function JobFinder() {
       if (!alive.current || id !== requestId.current) return;
       setJobs(existing => [...new Map([...(next ? existing : []), ...result.jobs].map(job => [job.sourceId, job])).values()]);
       setCursor(result.nextCursor === next ? null : result.nextCursor); setFetchedAt(result.fetchedAt); setStale(current => next ? current || result.stale : result.stale);
+      notifyAdmin(result.stale ? "Showing cached job listings because fresh results are unavailable. Check the source before applying." : `${result.jobs.length} job listings loaded. Use the filters to narrow your results.`, result.stale ? "info" : "success");
     } catch (cause) { if (alive.current && id === requestId.current) setError(cause instanceof Error ? cause.message : "Jobs could not be loaded. Please try again later."); }
     finally { if (alive.current && id === requestId.current) setLoading(false); }
   }

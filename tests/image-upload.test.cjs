@@ -16,7 +16,7 @@ function harness({ token = async () => 'test-token', fetcher, endpoint = 'https:
   };
   const out={};
   const source=ts.transpileModule(fs.readFileSync('src/components/admin/image-upload.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  new Function('require','exports',source)(name=>name==='react'?hooks:name==='./admin-gate'?{useAdmin:()=>({user:{getIdToken:token}})}:require(name),out);
+  new Function('require','exports',source)(name=>name==='react'?hooks:name==='./use-admin-feedback'?{useAdminMessage:()=>hooks.useState(''),useAdminActivity(){}}:name==='@/lib/admin-feedback'?{notifyAdmin(){}}:name==='./admin-gate'?{useAdmin:()=>({user:{getIdToken:token}})}:require(name),out);
   function nodes(n){return !n||typeof n!=='object'?[]:Array.isArray(n)?n.flatMap(nodes):[n,...nodes(n.props?.children)];}
   function render(){index=0;return nodes(out.ImageUpload({onUpload:url=>uploaded.push(url),onBusy:value=>busy.push(value)}));}
   function choose(file){return render().find(n=>n.type==='input').props.onChange({target:{files:file?[file]:[],value:'selected'}});}
