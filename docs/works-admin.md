@@ -4,7 +4,7 @@ Implemented on 6 November 2026; Cloudinary secrets connected on 8 November 2026.
 
 ## Editor
 
-`/adminauth/works/` uses the existing approved Google administrator gate. The sidebar has Overview, Blog, Works and Job Finder; only the old Blog Management sidebar label was shortened.
+`/adminauth/works/` uses the existing approved Google administrator gate and shared dashboard navigation. Open Documentation for searchable owner-facing instructions, including the current Work editing workflow.
 
 The full-width library includes existing source projects and saved managed projects. New work opens a blank right-side panel; choosing a project prepopulates it. Changes can be saved as Draft or Published. **URL slug** is editable, with **Generate from title** to use an updated title. New titles generate slugs until you edit the slug manually; saved URLs stay stable when only the title changes. Slugs must use lowercase letters, numbers and single hyphens between words (100 characters maximum). Existing source, managed and deleted-marker slugs cannot be reused for another work; `industry` is reserved for collection routes. Closing a dirty editor or leaving the page asks before discarding edits. Saves and deletes use transactions with revision checks to prevent overwriting a newer edit.
 

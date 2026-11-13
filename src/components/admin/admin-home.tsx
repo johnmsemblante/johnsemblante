@@ -16,6 +16,7 @@ export function AdminHome() {
       <Link href="/adminauth/works/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="works" /></span><p className="eyebrow">Portfolio</p><h2>Works</h2><p>Add, edit and publish projects in your portfolio.</p><span className="dashboard-app-action">Manage works <AdminIcon name="arrow" /></span></Link>
       <Link href="/adminauth/ventures/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="ventures" /></span><p className="eyebrow">Independent businesses</p><h2>Ventures</h2><p>Edit venture pages, images, offerings, and search metadata.</p><span className="dashboard-app-action">Manage ventures <AdminIcon name="arrow" /></span></Link>
       <Link href="/adminauth/jobs/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="jobs" /></span><p className="eyebrow">Career opportunities</p><h2>Job Finder</h2><p>Discover real opportunities, filter listings, and keep a private shortlist.</p><span className="dashboard-app-action">Explore jobs <AdminIcon name="arrow" /></span></Link>
+      <Link href="/adminauth/documentation/" className="dashboard-app-card"><span className="dashboard-app-icon"><AdminIcon name="documentation" /></span><p className="eyebrow">Website handbook</p><h2>Documentation</h2><p>Search guides for managing content, publishing updates, using tools and troubleshooting.</p><span className="dashboard-app-action">Read documentation <AdminIcon name="arrow" /></span></Link>
     </div>
     <BlogRefreshControl />
   </>;

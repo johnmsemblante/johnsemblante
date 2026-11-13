@@ -1,6 +1,6 @@
 # Ventures administration
 
-The dashboard order is **Overview, Pages, Blog, Works, Ventures, Job Finder**. Open **Ventures** to manage the individual business/photography sites. **Pages → Ventures** continues to manage the portfolio's Ventures landing page.
+The dashboard order is **Overview, Pages, Blog, Works, Ventures, Job Finder, Documentation**. Open **Ventures** to manage the individual business/photography sites. **Pages → Ventures** continues to manage the portfolio's Ventures landing page. **Documentation** provides searchable current operating guides.
 
 Select a venture to open the shared drawer, or choose **New venture**. Edit its name, URL slug, category, layout, hero copy, description, story, images, contact links, SEO title/description and the sections used by its layout. Coffee/travel layouts support offerings, optional prices/images, artwork, vehicles, ordering instructions and FAQs. Photography supports its gallery, image titles, thumbnails and source links. Add/remove repeated entries with the section controls. Existing local/Flickr image paths are preserved until replaced. Uploads use the existing authenticated Cloudinary service, shared with Blog and Works.
 

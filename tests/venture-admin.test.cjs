@@ -49,7 +49,7 @@ test('live venture pages server-render edited content and original image paths w
   const html=renderToStaticMarkup(React.createElement(LiveVentureDetail,{initial:[v]}));assert.match(html,/<h1>Updated venture name<\/h1>/);assert.match(html,/Updated story/);assert.ok(html.includes(v.hero.src));
 });
 test('sidebar uses the requested order and permits only known admin destinations',()=>{
-  const nav=load('src/lib/admin-navigation.ts');assert.deepEqual(nav.adminLinks.map(v=>v.label),['Overview','Pages','Blog','Works','Ventures','Job Finder']);assert.equal(nav.safeAdminDestination('/adminauth/ventures'),'/adminauth/ventures/');
+  const nav=load('src/lib/admin-navigation.ts');assert.deepEqual(nav.adminLinks.map(v=>v.label),['Overview','Pages','Blog','Works','Ventures','Job Finder','Documentation']);assert.equal(nav.safeAdminDestination('/adminauth/ventures'),'/adminauth/ventures/');
 });
 test('site-wide refresh reaches page and blog subscribers, preserves unrelated storage and cleans up',()=>{
   const prior=global.window,events=new EventTarget(),writes=[];
