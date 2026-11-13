@@ -13,3 +13,24 @@ test('inputs reset only after provider acknowledgement and duplicate pending sub
 test('invalid submissions keep form content without calling the provider',async()=>browser(async()=>{let calls=0;const h=inquiry({initialMessage:'Keep this'},async()=>{calls++;return{ok:true};});const native=form();native.values.name=' ';await h.form().onSubmit({preventDefault(){},currentTarget:native});h.render();assert.equal(calls,0);assert.equal(native.resets,0);assert.equal(h.field('inquiry-message').value,'Keep this');}));
 
 test('HTTP success without provider acknowledgement does not count as successful delivery',async()=>{const{submitInquiry}=load('src/lib/submit-inquiry.ts');const previous=global.fetch;try{global.fetch=async()=>({ok:true,status:200,json:async()=>({})});assert.equal((await submitInquiry('https://example.invalid',{},new AbortController().signal)).ok,false);global.fetch=async()=>({ok:true,status:200,json:async()=>({ok:true})});assert.equal((await submitInquiry('https://example.invalid',{},new AbortController().signal)).ok,true);}finally{global.fetch=previous;}});
+
+test('form transport preserves POST payload and abort signal and reports provider rejection accurately',async()=>{
+  const{submitInquiry}=load('src/lib/submit-inquiry.ts');const previous=global.fetch;
+  try{
+    const data=new FormData(),signal=new AbortController().signal;data.set('message','Synthetic regression test');
+    for(const status of [400,422,429,500]){
+      global.fetch=async(endpoint,options)=>{assert.equal(endpoint,'https://example.invalid');assert.equal(options.method,'POST');assert.equal(options.body,data);assert.equal(options.signal,signal);assert.equal(options.headers.Accept,'application/json');return{ok:false,status,json:async()=>({ok:true})};};
+      const result=await submitInquiry('https://example.invalid',data,signal);assert.equal(result.ok,false);assert.match(result.message,/message is still here/i);
+      if(status===429)assert.match(result.message,/too many requests/i);
+    }
+  }finally{global.fetch=previous;}
+});
+
+test('form network interruption and malformed acknowledgements never report successful delivery',async()=>{
+  const{submitInquiry}=load('src/lib/submit-inquiry.ts');const previous=global.fetch;
+  try{
+    for(const fetcher of [async()=>{throw new Error('AbortError');},async()=>({ok:true,status:200,json:async()=>{throw new Error('invalid json');}}),async()=>({ok:true,status:200,json:async()=>({ok:'true'})})]){
+      global.fetch=fetcher;const result=await submitInquiry('https://example.invalid',new FormData(),new AbortController().signal);assert.equal(result.ok,false);assert.match(result.message,/message is still here/i);
+    }
+  }finally{global.fetch=previous;}
+});

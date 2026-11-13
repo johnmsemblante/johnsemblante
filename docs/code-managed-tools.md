@@ -1,12 +1,14 @@
 # Code-managed tools
 
+Free PDF Editor is the third published/featured tool at `/tools/pdf-editor/`, with the shared donation widget enabled. See [PDF editor](pdf-editor.md) for its private browser workflow, limits, dependencies, coordinate model and generated worker assets. It uses the same registry and remains excluded from admin CRUD.
+
 Utilities live in `src/config/tool-ventures.ts` with routes under `src/app/(portfolio)/tools/`. Published entries appear in tool cards and the sitemap. Keep them out of the managed venture registry, venture store, Firestore, and editable page catalog. `ToolVentureCards` uses plain links/text to bypass admin page editing. The Ventures page retains its original live cards and adds a separate tools section using the same card classes. Future tools reuse this registry without altering admin schemas.
 
 ## Homepage showcase
 
 `HomeToolsShowcase` renders immediately after the homepage hero. To feature a tool, add `featuredOnHome: true` to its existing registry entry. `featuredOrder` controls homepage order and defaults to the directory's `order`. Optional `shortName`, `homeDescription`, `ctaLabel` and `iconImage` customize the card. Otherwise it uses the existing name, description and icon, with an Open tool link label.
 
-Only published, featured entries appear. The selection removes duplicate IDs and routes, keeps the first four tools in display order, and omits the entire section when none qualify. One tool uses a wide featured card. Multiple tools use a two-column grid that stacks below 850px. The section renders static links and copy from source, without admin-editable fields or tool functionality imports. The QR illustration is a small decorative SVG with reserved dimensions.
+Only published, featured entries appear. The selection removes duplicate IDs and routes, keeps the first four tools in display order, and omits the entire section when none qualify. One tool uses a wide featured card. Three or more tools use three columns at viewport widths of 1100px and above, with each card's icon, copy and action stacked vertically; a fourth card starts another row. Two tools retain the two-column layout. Below 1100px the grid uses two columns, and at 850px or below it stacks into one column. The section renders static links and copy from source, without admin-editable fields or tool functionality imports. The QR illustration is a small decorative SVG with reserved dimensions.
 
 Run `node --test tests/home-tools.test.cjs` for registry filtering, ordering, deduplication, limits, empty behavior and card rendering. Local review uses `npm.cmd run dev` at `http://localhost:3000/`, or `npm.cmd run preview` at `http://127.0.0.1:3100/` after a successful build.
 

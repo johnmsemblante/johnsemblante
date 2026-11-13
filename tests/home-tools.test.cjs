@@ -36,7 +36,7 @@ test('home tools require published status and explicit homepage visibility', () 
     tool('visible'),
   ];
   assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['visible']);
-  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['qr-code-generator', 'image-compressor']);
+  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['qr-code-generator', 'image-compressor', 'pdf-editor']);
 });
 
 test('home tools honor feature order, fall back to directory order and leave input unchanged', () => {

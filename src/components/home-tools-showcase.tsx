@@ -14,7 +14,7 @@ export function HomeToolsShowcase() {
       </div>
       <Link className="text-link home-tools-directory" href="/tools/">Explore All Tools <Arrow /></Link>
     </div>
-    <div className={`home-tool-grid${tools.length === 1 ? " home-tool-grid-single" : ""}`}>
+    <div className={`home-tool-grid${tools.length === 1 ? " home-tool-grid-single" : tools.length >= 3 ? " home-tool-grid-three" : ""}`}>
       {tools.map(tool => <Link
         key={tool.id}
         className="home-tool-card"

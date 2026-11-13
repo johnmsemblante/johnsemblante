@@ -39,6 +39,16 @@ export const toolVentures: ToolVenture[] = [{
   ctaLabel: "Compress an Image",
   iconImage: "/tools/image-compressor/icon.svg",
   donationsEnabled: true, navigationLabel: "Image Compressor",
+}, {
+  id: "pdf-editor", slug: "pdf-editor",
+  name: "Free PDF Editor by John Semblante",
+  description: "Add text and drawn signatures, rotate or remove pages, and download an edited PDF privately in your browser.",
+  route: "/tools/pdf-editor/", category: "Free online tool",
+  icon: "PDF", status: "published", order: 3,
+  featuredOnHome: true, featuredOrder: 3, shortName: "Free PDF Editor",
+  homeDescription: "Add text, draw a signature and manage PDF pages. Edit and download locally, with no account or watermark.",
+  ctaLabel: "Edit a PDF", iconImage: "/tools/pdf-editor/icon.svg",
+  donationsEnabled: true, navigationLabel: "PDF Editor",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 

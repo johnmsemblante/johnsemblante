@@ -357,6 +357,11 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .home-tool-card:hover .home-tool-cta { background: #414747; }
 .home-tool-grid-single .home-tool-card { grid-template-columns: 88px minmax(0, 1fr) auto; gap: 30px; }
 .home-tool-grid-single .home-tool-cta { grid-column: auto; }
+@media (min-width: 1100px) {
+  .home-tool-grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-tool-grid-three .home-tool-card { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto; align-items: start; }
+  .home-tool-grid-three .home-tool-cta { grid-column: 1; }
+}
 @media (max-width: 850px) {
   .home-tool-grid { grid-template-columns: minmax(0, 1fr); }
   .home-tool-grid-single .home-tool-card { grid-template-columns: 88px minmax(0, 1fr); gap: 20px 24px; }
