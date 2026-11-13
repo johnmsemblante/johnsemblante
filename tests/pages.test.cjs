@@ -91,7 +91,7 @@ test('real About page renders edited hero and experience fields in exported HTML
   const routeLoad = loader({ '@/lib/firebase-client': { firebaseConfigured: false }, '@/lib/build-pages': { buildPage: () => record, withPageMetadata: (_,v) => v }, 'next/link': { __esModule: true, default: ({ href, children, ...props }) => React.createElement('a', { href, ...props }, children) } });
   const About = routeLoad('src/app/(portfolio)/about/page.tsx').default;
   const html = renderToStaticMarkup(React.createElement(About));
-  assert.match(html, /<h1>Updated About heading<\/h1>/); assert.match(html, /Updated company/); assert.match(html, /\/images\/profile\/john-about-gray-blazer.webp/);
+  assert.match(html, /<h1>Updated About heading<\/h1>/); assert.match(html, /Updated company/); assert.match(html, /\/images\/profile\/john-about-doodle-sketch.webp/);
 });
 
 function adminHarness() {

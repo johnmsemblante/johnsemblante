@@ -197,11 +197,11 @@
       "value": "Take a coffee break with Lazy Barista, plan a Cebu trip with Golden Travel and Tours, or explore the Lapse Hub photography archive."
     },
     {
-      "key": "home_27_src_15x7453",
+      "key": "home_27_src_16jizyx",
       "label": "Image",
       "group": "home",
       "kind": "image",
-      "value": "/images/profile/john-home-black-smile.webp"
+      "value": "/images/profile/john-doodle-sketch.webp"
     },
     {
       "key": "home_28_sx8dw0",
@@ -631,11 +631,11 @@
       "value": "WordPress/Full Stack Developer"
     },
     {
-      "key": "browser_illustration_6_src_15x7453",
+      "key": "browser_illustration_6_src_16jizyx",
       "label": "Image",
       "group": "browser_illustration",
       "kind": "image",
-      "value": "/images/profile/john-home-black-smile.webp"
+      "value": "/images/profile/john-doodle-sketch.webp"
     },
     {
       "key": "browser_illustration_8_100g9m4",
@@ -778,14 +778,14 @@
       "value": "Explore the photography archive"
     },
     {
-      "key": "home_27_alt_asset_15x7453_146wxor",
+      "key": "home_27_alt_asset_16jizyx_146wxor",
       "label": "Description: Image",
       "group": "home",
       "kind": "text",
       "value": "John Clark Semblante, web developer based in Cebu"
     },
     {
-      "key": "browser_illustration_6_alt_asset_15x7453_ztntfp",
+      "key": "browser_illustration_6_alt_asset_16jizyx_ztntfp",
       "label": "Description: Image",
       "group": "browser_illustration",
       "kind": "text",
@@ -864,11 +864,11 @@
       "value": "Discuss your project"
     },
     {
-      "key": "about_6_src_xuinr9",
+      "key": "about_6_src_1xk3jtp",
       "label": "Image",
       "group": "about",
       "kind": "image",
-      "value": "/images/profile/john-about-gray-blazer.webp"
+      "value": "/images/profile/john-about-doodle-sketch.webp"
     },
     {
       "key": "about_7_1klyod3",
@@ -1865,7 +1865,7 @@
       "value": "AI-assisted development, debugging, and code review workflows."
     },
     {
-      "key": "about_6_alt_asset_xuinr9_146wxor",
+      "key": "about_6_alt_asset_1xk3jtp_146wxor",
       "label": "Description: Image",
       "group": "about",
       "kind": "text",

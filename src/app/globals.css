@@ -161,6 +161,7 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .study-person-copy>.study-person-role{font-size:9px;line-height:1.7}
 .study-person-copy .study-button{width:54px;height:14px;margin-top:14px;background:#32766c}
 .study-portrait-frame{padding:0;background:white;border:0;border-radius:0;max-width:140px;justify-self:end}
+.mockup-hero .study-portrait-frame{background:transparent}
 .study-portrait-frame img{display:block;width:100%;height:auto;object-fit:contain;border-radius:0}
 .personal-study .study-tiles{margin-top:22px;gap:8px}
 .personal-study .study-tiles span{height:35px}
@@ -171,6 +172,7 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 .about-intro .profile-portrait{width:100%;max-width:460px;max-height:none;height:auto;object-fit:contain;border:0;border-radius:0;justify-self:end}
 .home-about{grid-template-columns:minmax(0,340px) minmax(0,1fr)}
 .home-about .home-portrait{max-width:340px;max-height:none;height:auto;aspect-ratio:1103/1426}
+.home-about .home-portrait,.about-intro .profile-portrait,.mockup-hero .study-portrait-frame img{background:transparent;mix-blend-mode:multiply}
 @media(max-width:700px){.about-intro{grid-template-columns:1fr;gap:32px}.about-intro .profile-portrait{max-width:380px;justify-self:center}.home-about{grid-template-columns:1fr}.home-about .home-portrait{max-width:300px;justify-self:start}}
 
 /* Page-specific imagery within the same minimalist browser illustration. */
