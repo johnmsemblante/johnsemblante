@@ -122,6 +122,15 @@
             "value": "public,max-age=0,must-revalidate"
           }
         ]
+      },
+      {
+        "source": "/content-deployment.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
       }
     ],
     "site": "johnmsemblanteapp",

@@ -1,5 +1,8 @@
 ﻿# SEO setup and editing guide
 
+Automatic publishing on Spark is implemented in [the publishing workflow](automatic-publishing.md). Once activated, it builds clean URLs and SEO HTML after detecting saved public changes; manual local rebuilding is no longer required for content edits.
+
+
 This guide covers the technical SEO audit and implementation of 6 November 2026 (Asia/Manila). The current production domain is **https://johnsemblante.com** (changed on 10 November 2026). These changes need a production build and Hosting deployment before they become live.
 
 ## Navigation and breadcrumbs

@@ -7,6 +7,7 @@ import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type 
 import { doc, onSnapshot, type Firestore } from "firebase/firestore";
 import { firebaseConfigured, firebaseMessage, getAdminAuth, getFirebase } from "@/lib/firebase-client";
 import { safeAdminDestination } from "@/lib/admin-navigation";
+import { SitePublishControl } from "./site-publish-control";
 import { DashboardShell } from "./dashboard-shell";
 
 const AdminContext = createContext<{ user: User; db: Firestore } | null>(null);
@@ -77,7 +78,7 @@ export function AdminGate({ children }: { children: ReactNode }) {
   }
 
   if (!firebaseConfigured) return <main id="admin-main" tabIndex={-1} className="admin-entry"><section className="admin-card"><h1>Admin access</h1><p>Administration is not configured yet. Complete the Firebase setup in the project documentation before signing in.</p><Link href="/">Back to the website</Link></section></main>;
-  if (phase === "ready" && session) return <AdminContext.Provider value={session}><DashboardShell name={session.user.displayName} email={session.user.email} busy={busy} error={error} logout={logout}>{children}</DashboardShell></AdminContext.Provider>;
+  if (phase === "ready" && session) return <AdminContext.Provider value={session}><DashboardShell name={session.user.displayName} email={session.user.email} busy={busy} error={error} logout={logout}><SitePublishControl />{children}</DashboardShell></AdminContext.Provider>;
   return <main id="admin-main" tabIndex={-1} className="admin-entry">
     <Link href="/" className="admin-entry-brand" aria-label="John Semblante home">js.</Link>
     <div className="admin-session"><Link href="/adminauth/">Admin home</Link><Link href="/">View website</Link>{identity && <><span>{identity.email}</span><button type="button" data-admin-signout="true" disabled={busy} onClick={logout}>Sign out</button></>}</div>

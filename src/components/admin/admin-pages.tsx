@@ -1,5 +1,7 @@
 "use client";
 
+import { notifySitePublish } from "@/lib/site-publish";
+
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { doc, getDocFromServer, runTransaction } from "firebase/firestore";
 import { pageCatalog } from "@/lib/page-catalog";
@@ -70,7 +72,7 @@ export function AdminPages() {
         if ((snapshot.exists() ? snapshot.data().revision : 0) !== input.revision) throw new Error("This page changed in another tab. Copy your edits, close the editor, and reopen it before saving.");
         tx.set(ref, next);
       });
-      if (mounted.current) { setInput(next); setBaseline(JSON.stringify(next)); setNotice("Page saved. Content updates live. Rebuild and deploy to update exported HTML, search metadata, and social previews."); }
+      if (mounted.current) { setInput(next); setBaseline(JSON.stringify(next)); notifySitePublish(); setNotice("Page saved. Content updates live. Automatic publishing updates exported HTML, search metadata, and social previews after the next check and build."); }
     } catch (e) { if (mounted.current) setError((e as { code?: string }).code ? firebaseMessage(e) : (e as Error).message); }
     finally { lock.current = false; if (mounted.current) setBusy(false); }
   }

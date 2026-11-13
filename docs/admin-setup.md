@@ -1,5 +1,8 @@
 # Admin access and blog publishing
 
+Automatic publishing on Spark is implemented in [the publishing workflow](automatic-publishing.md). Once activated, it builds clean URLs and SEO HTML after detecting saved public changes; manual local rebuilding is no longer required for content edits.
+
+
 `/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Blog at `/adminauth/blog/`, Works at `/adminauth/works/` and Job Finder at `/adminauth/jobs/`, with a collapsible mobile sidebar and Logout. Existing blog records and editor workflows are preserved.
 
 The site still exports static files to Firebase Hosting. Firebase Authentication verifies Google accounts; Firestore rules authorize access to stored posts. Admin HTML and JavaScript are publicly downloadable, as on any static site, but contain no drafts or credentials. Private records are fetched only after authorization. Hiding a link or adding `noindex` is not the data-access boundary.

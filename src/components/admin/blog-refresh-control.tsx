@@ -24,6 +24,6 @@ export function BlogRefreshControl() {
     <p>Ask connected public pages across browsers and devices to fetch the latest saved content.</p>
     <button type="button" className="button secondary" disabled={busy} onClick={() => void refresh()}>{busy ? "Requesting refresh?" : "Refresh live site content"}</button>
     <p role="status" className="admin-notice">{message}</p>
-    <p className="form-note">This refreshes managed content. Rebuild and deploy to update exported HTML, new clean URLs, search metadata, and Firebase Hosting?s CDN cache. Browser image caches and social-platform previews are managed separately.</p>
+    <p className="form-note">This refreshes managed content. Automatic publishing checks saved public content every five minutes and builds clean URLs, initial HTML and SEO metadata when needed. See Automatic website publishing for progress. Social platforms manage their own preview caches.</p>
   </section>;
 }

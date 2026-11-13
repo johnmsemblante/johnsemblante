@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/next/dist/bin/next dev --webpack",
-    "build": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs && node node_modules/next/dist/bin/next build --webpack",
+    "build": "npm run sync:content && npm run build:prepared && node scripts/content-deployment.cjs write",
     "test:forms": "node --test tests/inquiry-reset.test.cjs",
     "test:ventures": "node --test tests/ventures.test.cjs",
     "test:qr": "node --test tests/qr-content.test.cjs",
@@ -24,7 +24,10 @@
     "test:pages": "node --test tests/pages.test.cjs",
     "sync:ventures": "node scripts/sync-ventures.cjs",
     "test:venture-admin": "node --test tests/venture-admin.test.cjs",
-    "audit:search-branding": "node scripts/check-search-branding.mjs"
+    "audit:search-branding": "node scripts/check-search-branding.mjs",
+    "sync:content": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs",
+    "build:prepared": "node node_modules/next/dist/bin/next build --webpack",
+    "test:publish": "node --test tests/site-publish.test.cjs"
   },
   "dependencies": {
     "firebase": "13.2.0",

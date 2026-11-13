@@ -1,0 +1,57 @@
+name: Publish saved website content
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  # Public content changes, including newly released scheduled posts. GitHub may delay runs.
+  schedule:
+    - cron: '3-58/5 * * * *'
+
+permissions:
+  contents: read
+
+# Never interrupt a deployment. GitHub retains the newest pending build;
+# each check reads all current public content, so intermediate saves are included.
+concurrency:
+  group: production-hosting
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ vars.NEXT_PUBLIC_FIREBASE_API_KEY }}
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ vars.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: johnmsemblanteapp
+      NEXT_PUBLIC_FIREBASE_APP_ID: ${{ vars.NEXT_PUBLIC_FIREBASE_APP_ID }}
+      NEXT_PUBLIC_MEDIA_UPLOAD_URL: ${{ vars.NEXT_PUBLIC_MEDIA_UPLOAD_URL }}
+      NEXT_PUBLIC_HIMALAYAS_PROXY_URL: ${{ vars.NEXT_PUBLIC_HIMALAYAS_PROXY_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Validate public configuration
+        run: node scripts/check-publish-config.cjs
+      - run: npm ci
+      - name: Read published content
+        run: npm run sync:content
+      - name: Check whether a scheduled build is needed
+        id: content
+        run: node scripts/content-deployment.cjs check
+      - name: Build static SEO pages
+        if: github.event_name != 'schedule' || steps.content.outputs.changed == 'true'
+        run: npm run build:prepared
+      - name: Include public deployment receipt
+        if: github.event_name != 'schedule' || steps.content.outputs.changed == 'true'
+        run: node scripts/content-deployment.cjs write
+      - name: Deploy to existing Firebase Hosting site
+        if: github.event_name != 'schedule' || steps.content.outputs.changed == 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JOHNMSEMBLANTEAPP }}
+          projectId: johnmsemblanteapp
+          channelId: live
+          firebaseToolsVersion: '15.35.0'

@@ -1,5 +1,7 @@
 "use client";
 
+import { notifySitePublish } from "@/lib/site-publish";
+
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { collection, doc, getDocFromServer, getDocs, limit, orderBy, query, startAfter, type QueryDocumentSnapshot } from "firebase/firestore";
@@ -127,7 +129,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
     const problem = validatePost(next);
     if (problem) { setError(problem); return; }
     const renaming = saved && next.slug !== saved.slug;
-    if (renaming && !window.confirm(`Change the article URL from /blog/${saved.slug}/ to /blog/${next.slug}/? Old links will need a redirect. Rebuild and deploy to update the exported pages and sitemap.`)) return;
+    if (renaming && !window.confirm(`Change the article URL from /blog/${saved.slug}/ to /blog/${next.slug}/? Old links will need a redirect. Automatic publishing will update the exported pages and sitemap after the next check and build.`)) return;
     saving.current = true; setBusy(true); setError(""); setNotice("");
     try {
       const updated = await saveManagedPost(db, next, saved, reservedSlugs, customSlug || saved ? { slug: next.slug } : {});
@@ -135,9 +137,9 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
       const fields = editablePost(updated);
       setInput(fields); setSaved(updated); setCustomSlug(true); setBaseline(JSON.stringify(fields));
       setPosts(values => [updated, ...values.filter(item => item.slug !== updated.slug && item.slug !== saved?.slug)]);
-      requestBlogRefresh();
-      setNotice(updated.status === "scheduled" ? `Scheduled for ${dateLabel(updated.publishedAt)} (Cebu/Manila).` : updated.status === "published" ? "Post published. It is now available on the public blog." : "Draft saved in Firestore. Rebuild and redeploy to remove any previously exported public copy.");
-      if (renaming) setNotice(`Slug changed to ${updated.slug}. Rebuild/deploy to replace the old exported page and update the sitemap. Add a redirect for any shared old URL.`);
+      requestBlogRefresh(); notifySitePublish();
+      setNotice(updated.status === "scheduled" ? `Scheduled for ${dateLabel(updated.publishedAt)} (Cebu/Manila).` : updated.status === "published" ? "Post saved and available in the live blog view. Its clean URL and SEO HTML update after deployment. Check Automatic website publishing above for build status." : "Draft saved. Check Automatic website publishing above for the build that removes any previously exported public copy.");
+      if (renaming) setNotice(`Slug changed to ${updated.slug}. The next automated build replaces the old exported page and updates the sitemap. Add a redirect for any shared old URL.`);
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
   }
@@ -148,7 +150,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
     try {
       await deleteManagedPost(db, saved);
       if (!mounted.current) return;
-      setPosts(values => values.filter(post => post.slug !== saved.slug)); requestBlogRefresh(); reset(); setEditorOpen(false); setNotice("Article deleted from Firestore. Rebuild and redeploy to remove any previously exported public page.");
+      setPosts(values => values.filter(post => post.slug !== saved.slug)); requestBlogRefresh(); notifySitePublish(); reset(); setEditorOpen(false); setNotice("Article deleted from Firestore. The next automated build removes any previously exported public page.");
     } catch (cause) { if (mounted.current) setError(operationError(cause)); }
     finally { saving.current = false; if (mounted.current) setBusy(false); }
   }
@@ -188,12 +190,12 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
         <p className="form-note">{dirty ? "You have unsaved changes." : saved ? "All changes saved." : "Start writing below."}</p>
         {error && <p role="alert" className="form-error">{error}</p>}
         <p role="status" className="admin-notice">{busy ? "Working?" : notice}</p>
-        <p className="form-note">Readers automatically check for saved public edits on article pages. Saving also refreshes open blog tabs in this browser. Rebuild and deploy to update the initial article HTML, search/social previews and sitemap. Previously exported HTML stays public until that deployment, even after unpublishing or deleting.</p>
+        <p className="form-note">Readers automatically check for saved public edits on article pages. Saving also refreshes open blog tabs in this browser. Automatic checks pick up saved public changes and build the initial article HTML, search/social previews and sitemap. See Automatic website publishing above for timing. Previously exported HTML stays public until that deployment, even after unpublishing or deleting.</p>
         <form onSubmit={save} aria-busy={busy}><fieldset disabled={busy}>
           <label htmlFor="post-title">Title</label><input id="post-title" value={input.title} required maxLength={160} onChange={e => field("title", e.target.value)} />
           <label htmlFor="post-slug">URL slug</label><input id="post-slug" value={input.slug} required maxLength={100} pattern="[a-z0-9]+(-[a-z0-9]+)*" autoCapitalize="none" autoCorrect="off" spellCheck={false} aria-describedby="post-slug-help" onChange={e => { setCustomSlug(true); field("slug", e.target.value); }} />
           <button type="button" disabled={!input.title.trim()} onClick={() => { setCustomSlug(true); field("slug", slugForTitle(input.title)); }}>Generate from title</button>
-          <p id="post-slug-help" className="form-note">Use lowercase letters, numbers and hyphens. URL: <code>/blog/{input.slug || "your-slug"}/</code>. Changing a saved title keeps its URL unless you edit the slug or generate it again. Renaming needs a rebuild/deploy; old links need a redirect configured separately.</p>
+          <p id="post-slug-help" className="form-note">Use lowercase letters, numbers and hyphens. URL: <code>/blog/{input.slug || "your-slug"}/</code>. Changing a saved title keeps its URL unless you edit the slug or generate it again. Renaming is picked up by automatic publishing; old links need a redirect configured separately.</p>
           <label htmlFor="post-excerpt">Short introduction</label><textarea id="post-excerpt" value={input.excerpt} rows={3} required maxLength={500} onChange={e => field("excerpt", e.target.value)} />
           <label htmlFor="post-featured-image">Featured image URL (optional)</label><input id="post-featured-image" value={input.featuredImage} maxLength={2000} aria-describedby="post-image-help" placeholder="https://example.com/photo.webp or /images/photo.webp" onChange={e => field("featuredImage", e.target.value)} />
           <p id="post-image-help" className="form-note">Upload a featured image below, or use a public HTTPS or site-relative image URL. The blog card uses the site logo when this is empty or the image cannot load.</p>
@@ -219,7 +221,7 @@ function BlogEditor({ reservedSlugs, exportedSlugs }: { reservedSlugs: string[];
           <fieldset className="seo-fields"><legend>SEO metadata</legend><label htmlFor="post-seo-title">Meta title (optional)</label><input id="post-seo-title" value={input.seoTitle} maxLength={160} placeholder={input.title || "Uses the post title"} onChange={e => field("seoTitle", e.target.value)} /><label htmlFor="post-seo-description">Meta description (optional)</label><textarea id="post-seo-description" value={input.seoDescription} maxLength={500} rows={3} placeholder={input.excerpt || "Uses the short introduction"} onChange={e => field("seoDescription", e.target.value)} /><p className="form-note">Blank fields use the title and short introduction. Preview: <strong>{seo.title || "Post title"}</strong> — {seo.description || "Short introduction"}</p></fieldset>
           <button type="submit" className="button">{input.status === "scheduled" ? "Save schedule" : input.status === "published" ? "Save and publish" : "Save draft"}</button>
           {saved && effectiveStatus(saved, clock) === "published" && <div className="admin-post-sharing">
-            {exportedSlugs.includes(saved.slug) ? <><Link className="text-link" href={`/blog/${saved.slug}/`} target="_blank" rel="noopener noreferrer">View published post ↗</Link><ArticleShareLink url={`${site.url}/blog/${saved.slug}/`} /><p className="form-note">Use the copied article URL for social previews. Rebuild and deploy after edits to update its title, image and content.</p></> : <p className="form-note">Rebuild and deploy to create this article’s shareable page with its own preview title and image.</p>}
+            {exportedSlugs.includes(saved.slug) ? <><Link className="text-link" href={`/blog/${saved.slug}/`} target="_blank" rel="noopener noreferrer">View published post ↗</Link><ArticleShareLink url={`${site.url}/blog/${saved.slug}/`} /><p className="form-note">Use the copied article URL for social previews. The automatic build updates its title, image and content after saved edits.</p></> : <p className="form-note">The automatic build creates this article’s shareable page with its own preview title and image. See Automatic website publishing above for timing.</p>}
             <Link className="text-link" href={`/blog/?post=${encodeURIComponent(saved.slug)}`} target="_blank" rel="noopener noreferrer">View latest database version ↗</Link>
           </div>}
         </fieldset></form>
