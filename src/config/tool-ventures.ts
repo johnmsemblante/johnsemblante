@@ -27,6 +27,18 @@ export const toolVentures: ToolVenture[] = [{
   iconImage: "/tools/qr-code-generator/icon.svg",
   donationsEnabled: true,
   navigationLabel: "QR Generator",
+}, {
+  id: "image-compressor", slug: "image-compressor",
+  name: "Free Image Compressor by John Semblante",
+  description: "Compress JPG, PNG and WebP locally in your browser. Choose 50KB, 100KB, 200KB, 500KB or a custom target and download for free.",
+  route: "/tools/image-compressor/", category: "Free online tool",
+  icon: "▧", status: "published", order: 2,
+  featuredOnHome: true, featuredOrder: 2,
+  shortName: "Free Image Compressor",
+  homeDescription: "Reduce JPG, PNG and WebP file sizes privately in your browser. Choose a target size, compare your result and download for free.",
+  ctaLabel: "Compress an Image",
+  iconImage: "/tools/image-compressor/icon.svg",
+  donationsEnabled: true, navigationLabel: "Image Compressor",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 

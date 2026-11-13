@@ -36,7 +36,7 @@ test('home tools require published status and explicit homepage visibility', () 
     tool('visible'),
   ];
   assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['visible']);
-  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['qr-code-generator']);
+  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['qr-code-generator', 'image-compressor']);
 });
 
 test('home tools honor feature order, fall back to directory order and leave input unchanged', () => {
@@ -70,7 +70,8 @@ test('the QR card has crawlable copy, H2/H3 headings, a single card link and a t
   assert.ok(html.includes('<h3 id="home-tool-qr-code-generator-title">Free QR Code Generator</h3>'));
   assert.ok(html.includes(qr.homeDescription));
   assert.ok(html.includes('Create a QR Code'));
-  assert.ok(html.includes('home-tool-grid-single'));
+  assert.ok(!html.includes('home-tool-grid-single'));
+  assert.ok(html.includes('href="/tools/image-compressor/"'));
   assert.ok(html.includes('src="/tools/qr-code-generator/icon.svg"'));
   assert.ok(fs.existsSync('public' + qr.iconImage));
   assert.equal((html.match(/href="\/tools\/qr-code-generator\/"/g) || []).length, 1);

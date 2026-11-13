@@ -1,0 +1,33 @@
+import Link from "next/link";
+import { PageIntro } from "@/components/ui";
+import { ImageCompressor } from "@/components/image-compressor";
+import { pageMetadata } from "@/lib/metadata";
+import { jsonLd } from "@/lib/seo";
+import { site } from "@/content/site";
+import "./image-compressor.css";
+
+const title = "Free Image Compressor to 100KB & 200KB | John Semblante";
+const description = "Compress JPG, PNG and WebP images online for free. Reduce photos to 50KB, 100KB, 200KB or a custom size. No sign-up or server uploads required.";
+export const metadata = { ...pageMetadata(title, description, "/tools/image-compressor/"), title: { absolute: title }, robots: { index: true, follow: true } };
+const questions = [
+  ["Is this image compressor free?", "Yes. Compress and download one image at a time without an account, subscription, watermark or paid download limit."],
+  ["Can I compress an image to exactly 100KB?", "The target is a maximum, not an exact file size. Choose 100KB and the tool attempts an output of 100,000 bytes or less. The result reports its actual byte size and whether the target was achieved."],
+  ["Why did my image dimensions change?", "Target mode reduces dimensions when quality adjustments alone cannot reach the limit. Re-encoded output is capped at 4,096 pixels on its longest side to limit memory use. Keep your original if you need full resolution."],
+  ["Will PNG compression preserve transparency?", "PNG and WebP output preserve transparency. PNG is lossless, so target mode reduces dimensions instead of changing a quality setting. Selecting JPG explicitly replaces transparent areas with white."],
+  ["What if my image is already smaller than the target?", "When the selected output format matches the original, the tool keeps the original file without re-encoding. If you explicitly select another format, it creates that format and reports the resulting size."],
+  ["Why can’t every image meet a tiny target?", "Image detail, dimensions, format and transparency affect size. Processing uses bounded attempts and a time budget. If it cannot meet your target, you can download the smallest result, choose a larger limit, or select another format. Inspect the preview for lost detail."],
+  ["Can I use this on my phone?", "Yes, use the file picker in a current mobile browser. Encoding support varies by browser; if WebP export is unavailable, select PNG or JPG. Very large images may exceed your device’s available memory."],
+];
+export default function ImageCompressorPage() {
+  return <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({ "@context": "https://schema.org", "@type": "WebApplication", name: "Free Image Compressor by John Semblante", url: `${site.url}/tools/image-compressor/`, description, applicationCategory: "UtilitiesApplication", operatingSystem: "Any modern web browser", browserRequirements: "Requires JavaScript and Canvas image encoding", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, creator: { "@type": "Person", name: "John Semblante", url: `${site.url}/about/` } }) }} />
+    <PageIntro eyebrow="Free tools / Built for everyday use" title="Free Image Compressor"><p>Reduce your image file size without uploading it to a server. Compress JPG, PNG and WebP images for free, or choose a target like 100KB or 200KB. No sign-up required.</p></PageIntro>
+    <section className="section" aria-label="Image compression tool"><ImageCompressor /><noscript><p>Enable JavaScript to compress images locally in your browser.</p></noscript></section>
+    <section className="section ic-guide"><h2>How to Compress an Image Online for Free</h2><ol><li>Choose or drop one JPG, PNG or WebP image from your device.</li><li>Select a target size or adjust JPG/WebP quality. Keep the original format, or explicitly choose another output format.</li><li>Press Compress Image, compare the previews and actual file sizes, then download your result.</li></ol></section>
+    <section className="section ic-guide"><h2>How to Compress an Image to 100KB or 200KB</h2><p>Choose the 100KB or 200KB preset in target-size mode. You can also compress an image to 50KB or 500KB, or enter a custom limit in KB or MB. Here, 1 KB means 1,000 bytes and 1 MB means 1,000,000 bytes. The tool verifies the generated file’s actual size before reporting that a target was achieved.</p><p>Smaller targets can require lower quality and fewer pixels. A target is an attempt, with no guarantee that every image can meet every limit at acceptable quality. Check the final dimensions and preview before submitting an image to a form.</p></section>
+    <section className="section ic-guide"><h2>Supported Image Formats</h2><p>Compress JPG online for photos, PNG for graphics with transparency, or WebP for a balance of file size and transparency. Input and output support JPG, PNG and WebP still images. Animated PNG and WebP are rejected. Export depends on your browser’s encoder; an unsupported format produces an error rather than a mislabeled download.</p></section>
+    <section className="section ic-guide"><h2>Image Quality vs File Size</h2><p>JPG and WebP support adjustable lossy quality. Target mode searches for a suitable quality at each resolution, then reduces dimensions if needed. Quality mode lets you choose 10–100%. PNG export is lossless and its quality slider is disabled; use target mode to reduce its dimensions. Selecting JPG replaces transparency with white.</p><p>Re-encoded results may lose metadata such as camera information. Keep your original separately. Uploads are limited to 20 MB, 24 megapixels and 12,000 pixels per side; re-encoded images use at most 4,096 pixels on the longest side. Processing stops after bounded attempts or a practical time limit.</p></section>
+    <section className="section ic-guide"><h2>Privacy and Security</h2><p>Your images are compressed directly in your browser. They are not uploaded to our servers. The tool uses temporary browser resources, with no image storage in localStorage, IndexedDB, Firebase or Cloudinary. Selecting a new file, removing it or leaving the page releases its temporary image URLs. Downloading this website’s code and static assets still uses ordinary hosting bandwidth.</p></section>
+    <section className="section ic-guide"><h2>Frequently Asked Questions</h2>{questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}<p>Built <Link href="/about/">by John Semblante</Link> · <Link href="/tools/qr-code-generator/">Create a free QR code</Link> · <Link href="/tools/">Explore free tools</Link></p></section>
+  </>;
+}

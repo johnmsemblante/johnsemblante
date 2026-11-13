@@ -50,7 +50,7 @@ export default function QrCodePage() {
         <summary>{question}</summary>
         <p>{answer}</p>
       </details>)}
-      <p><Link className="qr-attribution" href="/about/">Built by John Semblante</Link> · <Link href="/tools/">Explore free tools</Link></p>
+      <p><Link className="qr-attribution" href="/about/">Built by John Semblante</Link> · <Link href="/tools/image-compressor/">Compress an image for free</Link> · <Link href="/tools/">Explore free tools</Link></p>
     </section>
   </>;
 }
