@@ -2,6 +2,8 @@
 
 For current owner-facing instructions, open **Documentation** in the dashboard at `/adminauth/documentation/`. Search and topic filters cover editors, publishing, integrations, tools, SEO and troubleshooting. Maintainers must follow [handbook maintenance](admin-documentation.md) whenever a workflow changes.
 
+If sign-in reports invalid deployed configuration, check the existing public build values in GitHub Actions. Each variable’s Value must contain only its value, not a complete `NAME=value` assignment. Correcting a build variable requires a successful manual/push build and Hosting deployment; a scheduled check may skip rebuilding unchanged content. The publishing validator checks syntax and Firebase’s live project-config response before deployment. Do not rotate keys or relax Firestore rules to work around a formatting error. See the [publishing configuration incident](automatic-publishing.md#sign-in-configuration-incident-13-november-2026).
+
 Automatic publishing on Spark is implemented in [the publishing workflow](automatic-publishing.md). Once activated, it builds clean URLs and SEO HTML after detecting saved public changes; manual local rebuilding is no longer required for content edits.
 
 

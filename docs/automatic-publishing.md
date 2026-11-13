@@ -8,7 +8,7 @@ GitHub schedules can be delayed or skipped; allow the next check plus build/depl
 
 ## Activation status
 
-The project owner manually configured the dedicated service account, GitHub deployment secret and five public build variables. Their presence was verified. Publishing is activated by the workflow on `main`; check the latest GitHub Actions run for deployment status.
+The dedicated service account, GitHub deployment secret and five public build variables are configured. Publishing is activated by the workflow on `main`; check the latest GitHub Actions run for deployment status. Validation checks value formats and the live public Firebase sign-in project configuration before building.
 
 ## One-time account setup
 
@@ -16,12 +16,17 @@ Target repository: `johnmsemblante/johnsemblante`, public, default branch `main`
 
 1. Create service account `github-hosting-publish@johnmsemblanteapp.iam.gserviceaccount.com` in the existing Firebase project. Grant `roles/firebasehosting.admin`, `roles/serviceusage.apiKeysViewer` and `roles/serviceusage.serviceUsageConsumer`. Do not grant Owner, Editor, Authentication admin, Firestore admin or Cloud Functions permissions. This identity can deploy Hosting; it cannot use admin-only Firestore reads with the supplied roles. Public snapshots use anonymous REST reads.
 2. Generate its JSON credential and encrypt it directly into repository Actions secret `FIREBASE_SERVICE_ACCOUNT_JOHNMSEMBLANTEAPP`. The prepared setup script keeps the credential in memory, encrypts it with GitHub's repository public key and writes no private-key file. If storing the secret fails, it revokes the newly created key. This is a long-lived deployment credential: keep it in GitHub Secrets, revoke/rotate it when needed, and never commit it, embed it in `NEXT_PUBLIC_*`, or paste it into chat.
-3. Copy these existing public values from local build configuration to repository **Actions variables**: `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_APP_ID`, `NEXT_PUBLIC_MEDIA_UPLOAD_URL`, `NEXT_PUBLIC_HIMALAYAS_PROXY_URL`. The workflow fixes the project to `johnmsemblanteapp`. The validation step prevents publishing a build with missing sign-in/upload/job-feed configuration.
+3. Copy these existing public values from local build configuration to repository **Actions variables**: `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_APP_ID`, `NEXT_PUBLIC_MEDIA_UPLOAD_URL`, `NEXT_PUBLIC_HIMALAYAS_PROXY_URL`. GitHub has separate Name and Value fields: enter only the right-hand value in Value, without `NAME=`, quotes or whitespace. Do not paste an entire `.env` assignment. The workflow fixes the project to `johnmsemblanteapp`. Validation rejects missing/malformed settings and checks that Firebase accepts the public API key and authorizes the production domain. Failed validation stops deployment rather than replacing the working site.
+
 4. Push the tested changes, including `.github/workflows/publish-site.yml`, to `main`. Enable GitHub Actions if disabled. The push runs an initial build/deployment. It deploys only Hosting, using the existing `out/` configuration; it does not deploy Firestore rules, Authentication settings or billing changes.
 5. Verify the initial run succeeds. Open `/content-deployment.json`, a public receipt containing only a content hash and build timestamp. Open a clean article URL and inspect its raw HTML for the heading, canonical, Open Graph metadata and Article JSON-LD. Check `/sitemap.xml`.
 6. Save a public change from `/adminauth/` on a phone. Close the editor after the save succeeds. Confirm a subsequent scheduled run detects it, deploys successfully and changes the clean page without any local build. Delete/unpublish a temporary test record and verify the next deployment removes its exported page. Do not use a real article for destructive verification.
 
 The preparation script is in ignored `tmp/setup-publish-accounts.cjs`; its `inspect` mode performs read-only access checks. Run `configure` only after approving the specific account, role and credential changes above. It reuses an existing secret rather than rotating it unexpectedly. Existing Firebase/GitHub sign-ins are available on this machine; no additional plugin is required for this setup.
+
+## Sign-in configuration incident, 13 November 2026
+
+The five GitHub Actions variables had complete `NAME=value` assignments stored in their Value fields. The old presence-only check passed them, so subsequent builds embedded an invalid Firebase key/domain/app ID and malformed media/job endpoints. A real popup test reproduced HTTP 400 `API_KEY_INVALID` from Firebase; the existing local key was accepted and the production domain was authorized. The variables were corrected to their verified existing values without rotating credentials or changing authorization rules. Validation now checks formats and performs a read-only Firebase project-config preflight. This was a publishing-environment problem, independent of venture/blog content. Previous signed-out gate checks did not exercise the popup and therefore did not detect it.
 
 ## What the workflow does
 

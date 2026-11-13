@@ -27,7 +27,7 @@
     "audit:search-branding": "node scripts/check-search-branding.mjs",
     "sync:content": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs",
     "build:prepared": "node node_modules/next/dist/bin/next build --webpack",
-    "test:publish": "node --test tests/site-publish.test.cjs"
+    "test:publish": "node --test tests/site-publish.test.cjs tests/publish-config.test.cjs"
   },
   "dependencies": {
     "firebase": "13.2.0",

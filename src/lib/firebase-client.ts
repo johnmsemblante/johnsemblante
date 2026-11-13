@@ -37,6 +37,8 @@ export function firebaseMessage(error: unknown): string {
   if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "Sign-in was canceled. You can try again.";
   if (code === "auth/popup-blocked") return "Allow the Google sign-in popup for this website, then try again.";
   if (code === "auth/unauthorized-domain") return "This website domain has not been authorized for Firebase sign-in.";
+  if (code === "auth/invalid-api-key" || code === "auth/api-key-not-valid.-please-pass-a-valid-api-key.") return "The deployed Firebase sign-in configuration is invalid. The site owner needs to correct the build settings and redeploy.";
+  if (code === "auth/operation-not-allowed" || code === "auth/configuration-not-found") return "Google sign-in is not enabled or configured for this Firebase project. Contact the site owner.";
   if (code === "permission-denied") return "Access was denied. Your account may no longer have admin access. Your unsaved changes are still here.";
   if (code === "unavailable" || code === "auth/network-request-failed") return "The service is unavailable. Check your connection and try again.";
   return "The request could not be completed. Check the Firebase setup and your connection, then try again.";
