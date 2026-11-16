@@ -9,7 +9,7 @@ If sign-in reports invalid deployed configuration, check the existing public bui
 Automatic publishing on Spark is implemented in [the publishing workflow](automatic-publishing.md). Once activated, it builds clean URLs and SEO HTML after detecting saved public changes; manual local rebuilding is no longer required for content edits.
 
 
-`/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Pages, Blog, Works, Ventures, Job Finder and Documentation, with a collapsible mobile sidebar and Logout. Documentation lives at `/adminauth/documentation/` and provides searchable owner-facing instructions. Existing content records and editor workflows are preserved.
+`/adminauth/` is the private-workspace gateway and dashboard overview. The shared dashboard provides Pages, Blog, Works, Ventures, Job Finder, Résumé Generator and Documentation, with a collapsible mobile sidebar and Logout. Documentation lives at `/adminauth/documentation/` and provides searchable owner-facing instructions. [Résumé Generator](resume-generator.md) at `/adminauth/resume/` stores an optional local browser draft and exports through native Print / Save PDF, without additional Firestore operations or paid services. Local résumé drafts persist after logout until cleared. Existing content records and editor workflows are preserved.
 
 The site still exports static files to Firebase Hosting. Firebase Authentication verifies Google accounts; Firestore rules authorize access to stored posts. Admin HTML and JavaScript are publicly downloadable, as on any static site, but contain no drafts or credentials. Private records are fetched only after authorization. Hiding a link or adding `noindex` is not the data-access boundary.
 

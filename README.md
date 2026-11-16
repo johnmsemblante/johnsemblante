@@ -487,6 +487,7 @@ This section describes the current implementation; dated notes above record earl
 | Guide | Use it for |
 | --- | --- |
 | [Admin setup](docs/admin-setup.md) | Google sign-in, approved admins, Firestore, blog editing, scheduling, live refresh and the Cloudflare Job Finder feed. |
+| [Résumé Generator](docs/resume-generator.md) | `/adminauth/resume/`: local résumé editing, two layouts, live preview, free browser PDF export and editable JSON backups. Run `npm run test:resume` for feature checks. |
 | [SEO](docs/seo.md) | Titles/descriptions, sharing images, clean article URLs, build-time publishing, Search Console and keywords. |
 | [Writing](docs/writing.md) | Source-based article content and writing guidance. |
 | [Portfolio industries](docs/portfolio-industries.md) | Project records, industry collections, grouped filtering and sharing filter results. |

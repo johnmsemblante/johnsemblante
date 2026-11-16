@@ -1,4 +1,5 @@
 const paths = {
+  resume: ["M14 2H5v20h14V7z", "M14 2v5h5M8 11h8M8 15h8M8 18h5", "M8 6h2"],
   documentation: ["M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1z", "M12 5v15M6 8h3M6 12h3M15 8h3M15 12h3"],
   ventures: ["M12 3v18M3 12h18", "M5 5h5v5H5zM14 14h5v5h-5z"],
   pages: ["M8 3h12v15H8z", "M4 7v14h12", "M11 7h6M11 11h6M11 15h4"],
