@@ -21,6 +21,10 @@ Each page has an optional meta title (160 characters) and description (500 chara
 
 ## Maintaining fields
 
+The centered homepage hero retains its original name, title, subtitle, introduction, location suffix and button fields. Its fitted animated portrait is code-managed and cannot be replaced through Pages; the former Home `browser_illustration` fields are retired. The lower Home portrait and About portrait remain independently editable. See [homepage portrait behavior and maintenance](hero-portrait.md).
+
+As of 17 November 2026, the full GLB renderer/import workflow is prepared but inactive pending the real portrait export. The handbook's **Generate and maintain the hero portrait** guide explains the free TRELLIS.2 workflow. Generation runs only during asset preparation; visitors never call it. Import and calibrate the GLB in code before activating it; changing Pages image fields cannot do this.
+
 `src/content/page-fields.json` lists the editor fields, grouped by page. `PageText`, `PageImage`, and `PageLink` read the corresponding override through `PageContent`; outside a managed landing page they render their source defaults. No stored HTML is executed. URL rendering validates destinations.
 
 Field keys combine the explicit source scope and a hash of the original value, allowing repeated components to have separate page overrides. When changing source copy or adding a section in code, update the associated catalog entry/key along with the component fallback. Existing overrides for a changed default need an explicit key migration if they should be preserved. Blog/Work record content stays authoritative in its own editor.

@@ -1,0 +1,83 @@
+/* Homepage only. Text remains in document flow; the portrait never covers links. */
+main > .portrait-hero {
+  width: min(1440px, calc(100% - 80px));
+  display: grid;
+  grid-template-columns: 0.95fr 1.4fr 0.85fr;
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 0;
+  padding-block: 38px 0;
+  isolation: isolate;
+}
+.portrait-hero-intro, .portrait-hero-notes { position: relative; z-index: 1; min-width: 0; }
+.portrait-hero-intro { padding-bottom: 65px; }
+.portrait-hero .eyebrow { font-size: 10px; letter-spacing: 0.18em; margin-bottom: 24px; }
+.portrait-hero h1 { font-size: clamp(44px, 4.7vw, 72px); line-height: 1.04; letter-spacing: -0.065em; margin-bottom: 24px; max-width: 7em; overflow-wrap: anywhere; }
+.portrait-hero .hero-specialty { font-size: clamp(12px, 1.2vw, 17px); line-height: 1.65; color: var(--muted); max-width: 22em; margin-bottom: 0; }
+.portrait-hero .actions { margin-top: 30px; }
+.portrait-hero .button { font-size: 12px; gap: 16px; padding: 14px 18px; max-width: 100%; overflow-wrap: anywhere; }
+.portrait-hero-craft { margin-top: 52px; }
+.portrait-hero-craft > .eyebrow { display: flex; align-items: center; gap: 9px; font-size: 9px; margin-bottom: 18px; }
+.portrait-hero-craft > .eyebrow::after { content: ""; height: 1px; width: 48px; background: #8a946c; }
+.portrait-hero-craft ul { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.portrait-hero-craft li { border: 1px solid #929b7d; padding: 6px 12px; font-size: 10px; border-radius: 30px; }
+.hero-portrait { position: relative; min-width: 0; width: calc(100% + 80px); margin: 0 -40px; align-self: end; }
+.hero-portrait::before { content: ""; position: absolute; bottom: 50px; left: 12%; right: 12%; height: 28px; background: radial-gradient(ellipse, #30372925, transparent 65%); }
+.hero-portrait-art { position: relative; aspect-ratio: 4 / 5; width: 100%; mask-image: linear-gradient(#000 88%, transparent 100%); }
+.hero-portrait-art img, .hero-portrait-art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
+.hero-portrait-art canvas { opacity: 0; }
+.hero-portrait[data-animated="true"] canvas { opacity: 1; }
+/* The accessible, high-priority image remains the no-JS and graphics-error fallback. */
+.hero-portrait[data-animated="true"] img { opacity: 0; }
+.portrait-hero-notes { padding: 0 0 70px 12px; display: flex; flex-direction: column; gap: clamp(48px, 6vw, 100px); }
+.portrait-hero-location .eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 9px; letter-spacing: 0.11em; margin-bottom: 18px; }
+.portrait-hero-location > p:last-child { font-size: clamp(23px, 2.3vw, 34px); letter-spacing: -0.045em; line-height: 1.22; margin: 0; }
+.portrait-hero-story .lede { font-size: 14px; line-height: 1.8; margin-bottom: 22px; }
+.portrait-hero-story .button.secondary { background: #d1e78b65; border-color: transparent; padding: 8px 12px; }
+.portrait-hero-footer { grid-column: 1 / -1; border-top: 1px solid #959d83; display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 9px; letter-spacing: 0.08em; padding-block: 16px 28px; }
+.portrait-hero-footer > a { text-transform: uppercase; letter-spacing: 0.14em; min-height: 32px; align-content: center; }
+.portrait-hero-footer > a > span { display: inline-block; margin-left: 9px; }
+#home-tools-title { scroll-margin-top: 30px; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .portrait-hero-intro > .eyebrow, .portrait-hero h1, .portrait-hero-location, .portrait-hero-craft li { transition: translate 240ms ease, color 240ms ease; }
+  .portrait-hero-intro > .eyebrow:hover, .portrait-hero h1:hover, .portrait-hero-location:hover { translate: 0 -3px; color: #667647; }
+  .portrait-hero-craft li:hover { translate: 0 -3px; background: #d1e78b40; }
+  .portrait-hero .button { transition: translate 220ms ease, background 220ms ease, box-shadow 220ms ease; }
+  .portrait-hero .button:hover { translate: 0 -3px; box-shadow: 0 7px 18px #252b2510; }
+  .portrait-hero-story .button.secondary:hover { background: var(--accent); }
+}
+@media (min-width: 1700px) {
+  main > .portrait-hero { padding-top: 45px; }
+  .hero-portrait { max-width: 710px; }
+}
+@media (max-width: 1100px) and (min-width: 761px) {
+  main > .portrait-hero { width: calc(100% - 48px); grid-template-columns: 1fr 1.25fr 0.9fr; gap: 14px; padding-top: 45px; }
+  .portrait-hero h1 { font-size: clamp(37px, 4.6vw, 50px); }
+  .portrait-hero .eyebrow { font-size: 9px; letter-spacing: 0.1em; }
+  .portrait-hero-intro { padding-bottom: 35px; }
+  .portrait-hero-craft { margin-top: 32px; }
+  .portrait-hero-craft > .eyebrow::after { display: none; }
+  .portrait-hero .button { font-size: 10px; padding: 12px; gap: 10px; }
+  .hero-portrait { width: calc(100% + 60px); margin-inline: -30px; }
+  .portrait-hero-notes { gap: 30px; padding: 0 0 35px 4px; }
+  .portrait-hero-location .eyebrow { font-size: 8px; }
+  .portrait-hero-location > p:last-child { font-size: 24px; }
+  .portrait-hero-story .lede { font-size: 12px; line-height: 1.7; }
+}
+@media (max-width: 760px) {
+  main > .portrait-hero { width: calc(100% - 36px); grid-template-columns: 1fr; gap: 0; padding-top: 40px; }
+  .portrait-hero-intro { text-align: center; padding: 0; }
+  .portrait-hero .eyebrow { margin-bottom: 18px; }
+  .portrait-hero h1 { font-size: clamp(46px, 9vw, 66px); max-width: 9em; margin: 0 auto 18px; }
+  .portrait-hero .hero-specialty { font-size: 14px; max-width: none; }
+  .portrait-hero .actions { justify-content: center; margin-top: 22px; }
+  .portrait-hero .button { font-size: 12px; }
+  .portrait-hero-craft { display: none; }
+  .hero-portrait { width: min(100%, 460px); margin: 18px auto 0; }
+  .portrait-hero-notes { padding: 8px 0 30px; gap: 24px; text-align: center; width: min(100%, 460px); margin: auto; }
+  .portrait-hero-location .eyebrow { justify-content: center; font-size: 9px; }
+  .portrait-hero-location > p:last-child { font-size: 26px; }
+  .portrait-hero-location br { display: none; }
+  .portrait-hero-story .lede { font-size: 14px; }
+  .portrait-hero-footer { gap: 12px; padding-bottom: 22px; font-size: 8px; }
+}

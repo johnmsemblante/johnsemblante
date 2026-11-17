@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { site } from "@/content/site";
 import { homePageTitle } from "@/content/profile";
 import "./globals.css";
+import "./portrait-hero.css";
 import { SiteRefreshListener } from "@/components/site-refresh-listener";
 const montserrat = Montserrat({ subsets: ["latin"], display: "swap", variable: "--font-montserrat", style: ["normal", "italic"] });
 export const metadata: Metadata = { metadataBase: new URL(site.url), title: { default: homePageTitle, template: `%s | ${site.name}` }, description: site.description,

@@ -29,7 +29,7 @@ test('homepage includes managed and source article previews in publication order
     '@/content/profile': profile, '@/content/site': { site }, '@/lib/metadata': metadata, '@/lib/seo': seo,
     '@/content/blog': { publishedPosts: () => [source] }, '@/lib/build-blog': { buildBlogPosts: () => [managed] },
     '@/lib/build-works': { buildWorks: () => [] }, '@/components/ui': { Button: noop, Arrow: noop },
-    '@/components/development-services': { DevelopmentServices: noop }, '@/components/browser-illustration': { BrowserIllustration: noop },
+    '@/components/development-services': { DevelopmentServices: noop }, '@/components/hero-portrait': { HeroPortrait: noop },
     '@/components/workflow': { Workflow: noop }, '@/components/project-grid': { ProjectGrid: noop },
     '@/components/home-tools-showcase': { HomeToolsShowcase: noop },
     '@/ventures/cards': { VentureCards: noop }, '@/components/project-questions': { ProjectQuestions: noop },

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "portrait:import": "node scripts/import-portrait-model.cjs",
+    "test:portrait": "node --test tests/portrait.test.cjs tests/portrait-import.test.cjs",
     "predev": "node scripts/prepare-pdf-assets.cjs",
     "prebuild:prepared": "node scripts/prepare-pdf-assets.cjs",
     "test:pdf": "node --test tests/pdf-editor.test.cjs",
@@ -40,7 +42,8 @@
     "pdfjs-dist": "6.5.438",
     "qr-code-styling": "1.9.2",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "6.0.0",
@@ -48,6 +51,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.187.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

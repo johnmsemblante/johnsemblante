@@ -4,7 +4,7 @@ import { buildPage, withPageMetadata } from "@/lib/build-pages";
 import { PageText, PageImage, PageLink } from "@/components/page-content";
 import { DevelopmentServices } from "@/components/development-services";
 import { Button, Arrow } from "@/components/ui";
-import { BrowserIllustration } from "@/components/browser-illustration";
+import { HeroPortrait } from "@/components/hero-portrait";
 import { Workflow } from "@/components/workflow";
 import { LiveHomeWorks, LiveHomeWriting } from "@/components/live-home-content";
 import { LiveVentureCards } from "@/components/live-ventures";
@@ -31,7 +31,21 @@ export default function Home() {
   ].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 2);
   return <PageContent id="home" initial={buildPage("home")}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(websiteSchema()) }} />
-    <section className="hero mockup-hero"><div><p className="eyebrow"><PageText scope="home_1" fallback={profile.fullName} /> <PageText scope="home_2" fallback={"/ Philippines"} /></p><h1><PageText scope="home_3" fallback={"Cebu Web Developer"} /></h1><p className="hero-specialty"><PageText scope="home_4" fallback={profile.title} /></p><p className="lede"><PageText scope="home_5" fallback={profile.homeSummary} /></p><div className="actions"><Button href="/contact/"><PageText scope="home_6" fallback={"Discuss your project"} /></Button><Button href="/work/" secondary><PageText scope="home_7" fallback={"View my portfolio"} /></Button></div></div><BrowserIllustration portrait={{ src: "/images/profile/john-doodle-sketch.webp", name: profile.fullName }} /></section>
+    <section className="hero portrait-hero" aria-labelledby="home-hero-title">
+      <div className="portrait-hero-intro">
+        <p className="eyebrow"><PageText scope="home_1" fallback={profile.fullName} /></p>
+        <h1 id="home-hero-title"><PageText scope="home_3" fallback={"Cebu Web Developer"} /></h1>
+        <p className="hero-specialty"><PageText scope="home_4" fallback={profile.title} /></p>
+        <div className="actions"><Button href="/work/"><PageText scope="home_7" fallback={"View my portfolio"} /></Button></div>
+        <div className="portrait-hero-craft"><span className="eyebrow">Design <span aria-hidden="true">→</span> development</span><ul aria-label="Development specialties"><li>WordPress</li><li>WooCommerce</li></ul></div>
+      </div>
+      <HeroPortrait />
+      <div className="portrait-hero-notes">
+        <div className="portrait-hero-location"><p className="eyebrow">Based in Cebu <PageText scope="home_2" fallback={"/ Philippines"} /></p><p>Building for the web<br />since 2013.</p></div>
+        <div className="portrait-hero-story"><p className="lede"><PageText scope="home_5" fallback={profile.homeSummary} /></p><Button href="/contact/" secondary><PageText scope="home_6" fallback={"Discuss your project"} /></Button></div>
+      </div>
+      <div className="portrait-hero-footer"><a href="#home-tools-title">Scroll to explore <span aria-hidden="true">↓</span></a><span>Development &amp; ventures</span></div>
+    </section>
     <HomeToolsShowcase />
     <div className="portfolio-strip" aria-label="Portfolio focus"><div><span className="strip-symbol" aria-hidden="true"><PageText scope="home_8" fallback={"</>"} /></span><p><strong><PageText scope="home_9" fallback={"From design to website"} /></strong><span><PageText scope="home_10" fallback={"Custom WordPress development from your Figma designs."} /></span></p></div><div><span className="strip-symbol" aria-hidden="true">↗</span><p><strong><PageText scope="home_11" fallback={"Layouts for different screens"} /></strong><span><PageText scope="home_12" fallback={"Responsive layouts and cross-browser improvements."} /></span></p></div><div><span className="strip-symbol" aria-hidden="true">✎</span><p><strong><PageText scope="home_13" fallback={"Help with an existing site"} /></strong><span><PageText scope="home_14" fallback={"UI fixes, integrations, and performance improvements."} /></span></p></div></div>
     <DevelopmentServices /><section className="section"><div className="section-heading"><div><p className="eyebrow"><PageText scope="home_15" fallback={"The portfolio"} /></p><h2><PageText scope="home_16" fallback={"A few websites from my portfolio."} /></h2></div><PageLink scope="home_17" className="text-link" href="/work/"><PageText scope="home_18" fallback={"View all work "} /><Arrow /></PageLink></div><LiveHomeWorks initial={projects} /></section>

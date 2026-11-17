@@ -596,62 +596,6 @@
       "value": "Send me a message"
     },
     {
-      "key": "browser_illustration_1_100g9m4",
-      "label": "js.",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "js."
-    },
-    {
-      "key": "browser_illustration_2_1u2hlxp",
-      "label": "THE PERSON BEHIND THE PIXELS",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "THE PERSON BEHIND THE PIXELS"
-    },
-    {
-      "key": "browser_illustration_3_1wqlvtw",
-      "label": "Hello, I’m",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "Hello, I’m"
-    },
-    {
-      "key": "browser_illustration_4_14jrdls",
-      "label": "John Clark Semblante",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "John Clark Semblante"
-    },
-    {
-      "key": "browser_illustration_5_ddshuy",
-      "label": "WordPress/Full Stack Developer",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "WordPress/Full Stack Developer"
-    },
-    {
-      "key": "browser_illustration_6_src_16jizyx",
-      "label": "Image",
-      "group": "browser_illustration",
-      "kind": "image",
-      "value": "/images/profile/john-doodle-sketch.webp"
-    },
-    {
-      "key": "browser_illustration_8_100g9m4",
-      "label": "js.",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "js."
-    },
-    {
-      "key": "browser_illustration_9_s9k3pe",
-      "label": "A personal approach. From design to your next website.",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": "A personal approach. From design to your next website."
-    },
-    {
       "key": "venture_cards_1_51eg0f",
       "label": "Link destination",
       "group": "venture_cards",
@@ -783,13 +727,6 @@
       "group": "home",
       "kind": "text",
       "value": "John Clark Semblante, web developer based in Cebu"
-    },
-    {
-      "key": "browser_illustration_6_alt_asset_16jizyx_ztntfp",
-      "label": "Description: Image",
-      "group": "browser_illustration",
-      "kind": "text",
-      "value": ""
     },
     {
       "key": "venture_cards_2_alt_asset_1cyryf8_ztntfp",
