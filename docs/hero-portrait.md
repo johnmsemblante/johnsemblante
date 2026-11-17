@@ -2,6 +2,8 @@
 
 The homepage hero places a large graphite portrait between the introduction and supporting copy. Existing `home_1` through `home_7` and button destination keys are preserved. Retired Home `browser_illustration` fields are removed from the editor catalog only; saved records are not rewritten. Work and Ventures retain their illustrations. Supporting labels and experience copy are code-managed.
 
+The base `main > .portrait-hero` rule uses `padding-block: 0` as of 17 November 2026. Existing mobile, tablet and extra-wide `padding-top` overrides remain. Spacing is code-managed, not a Pages field.
+
 ## Asset and limitations
 
 `public/images/profile/john-hero-graphite.webp` is a 1000 × 1250 transparent WebP (about 281 KiB), generated using the built-in image generation tool from `john-doodle-sketch.webp`. Prompt: front-facing, recognizable graphite head-and-shoulders bust, neutral gaze, gray blazer, soft studio lighting, transparent background, no text. The original is preserved. This artwork was optimized with Sharp; no runtime image-generation service is used.
