@@ -25,10 +25,11 @@ main > .portrait-hero {
 .hero-portrait::before { content: ""; position: absolute; bottom: 50px; left: 12%; right: 12%; height: 28px; background: radial-gradient(ellipse, #30372925, transparent 65%); }
 .hero-portrait-art { position: relative; aspect-ratio: 4 / 5; width: 100%; mask-image: linear-gradient(#000 88%, transparent 100%); }
 .hero-portrait-art img, .hero-portrait-art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
-.hero-portrait-art canvas { opacity: 0; }
-.hero-portrait[data-animated="true"] canvas { opacity: 1; }
-/* The accessible, high-priority image remains the no-JS and graphics-error fallback. */
-.hero-portrait[data-animated="true"] img { opacity: 0; }
+.hero-portrait-art img { mask-size: 100% 100%; mask-repeat: no-repeat; }
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .hero-portrait-art canvas { display: none; }
+  .hero-portrait-art img { mask-image: none !important; }
+}
 .portrait-hero-notes { padding: 0 0 70px 12px; display: flex; flex-direction: column; gap: clamp(48px, 6vw, 100px); }
 .portrait-hero-location .eyebrow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 9px; letter-spacing: 0.11em; margin-bottom: 18px; }
 .portrait-hero-location > p:last-child { font-size: clamp(23px, 2.3vw, 34px); letter-spacing: -0.045em; line-height: 1.22; margin: 0; }
