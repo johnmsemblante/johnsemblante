@@ -74,7 +74,7 @@ export const documentationGuides: DocumentationGuide[] = [
     tags: ["portrait", "hero", "pencil", "sketch", "cursor", "motion"],
     sources: ["docs/hero-portrait.md", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "src/lib/portrait-sketch.ts"],
     sections: [
-      { heading: "Review the portrait", steps: ["Open or reload Home. Watch the eyes and brows take shape in light graphite before the pencil works around the hair and jaw and deepens the shading.", "Scroll away during the drawing, then return. The animation resumes where it paused and finishes with the original sketch.", "Enable reduced motion and reload to check the static portrait. On desktop, check that the black dot and trailing ring stay visible over the portrait and that the ring expands over a link."] },
+      { heading: "Review the portrait", steps: ["Open or reload Home. Follow the pencil from the first eye to the temple and cheek, then back to the nose and jaw. It lifts between strokes before gradually shading the portrait.", "Scroll away during the drawing, then return. The animation resumes where it paused and finishes with the original sketch.", "Enable reduced motion and reload to check the static portrait. On desktop, check that the black dot and trailing ring stay visible over the portrait and that the ring expands over a link. Open a venture page to check the same cursor there."] },
       { heading: "Maintain the sketch", paragraphs: ["The hero uses the original homepage sketch. The lower About portrait has its own Pages field. A developer maintains the hero artwork, fitted drawing paths and timing together, then publishes through the normal code deployment."] },
     ],
   },

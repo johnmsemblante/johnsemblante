@@ -1,14 +1,14 @@
 .portfolio-cursor-ring { display: none; }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) and (forced-colors: none) {
-  .portfolio-shell[data-mouse] {
+  body[data-mouse] {
     --dot-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='3.5' fill='black' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 8 8;
     cursor: var(--dot-cursor), auto;
   }
-  .portfolio-shell[data-mouse] :is(a, button:enabled, summary, [role="button"]) {
+  body[data-mouse] :is(a, button:enabled, summary, [role="button"]) {
     cursor: var(--dot-cursor), pointer;
   }
-  .portfolio-shell[data-mouse] .portfolio-cursor-ring {
+  body[data-mouse] .portfolio-cursor-ring {
     display: block;
     position: fixed;
     inset: 0 auto auto 0;
@@ -28,10 +28,10 @@
     transition: scale 180ms ease, opacity 180ms ease;
     transform-origin: 0 0;
   }
-  .portfolio-shell:has(:is(a, button:enabled, summary, [role="button"]):hover) .portfolio-cursor-ring::after {
+  body:has(:is(a, button:enabled, summary, [role="button"]):hover) .portfolio-cursor-ring::after {
     scale: 1.45;
     opacity: .6;
   }
-  .portfolio-shell:has(:is(input, textarea, select, [contenteditable="true"], button:disabled):hover) .portfolio-cursor-ring { visibility: hidden; }
-  .portfolio-shell[data-mouse] :is(input, textarea, select, [contenteditable="true"]) { cursor: auto; }
+  body:has(:is(input, textarea, select, [contenteditable="true"], button:disabled):hover) .portfolio-cursor-ring { visibility: hidden; }
+  body[data-mouse] :is(input, textarea, select, [contenteditable="true"]) { cursor: auto; }
 }
