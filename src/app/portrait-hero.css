@@ -23,7 +23,8 @@ main > .portrait-hero {
 .portrait-hero-craft li { border: 1px solid #929b7d; padding: 6px 12px; font-size: 10px; border-radius: 30px; }
 .hero-portrait { position: relative; min-width: 0; width: calc(100% + 80px); margin: 0 -40px; align-self: end; }
 .hero-portrait::before { content: ""; position: absolute; bottom: 50px; left: 12%; right: 12%; height: 28px; background: radial-gradient(ellipse, #30372925, transparent 65%); }
-.hero-portrait-art { position: relative; aspect-ratio: 4 / 5; width: 100%; mask-image: linear-gradient(#000 88%, transparent 100%); }
+/* Fit the sketch and its particle canvas into the existing 4:5 hero footprint. */
+.hero-portrait-art { position: relative; aspect-ratio: 640 / 827; width: calc(100% * 800 / 827); margin-inline: auto; mask-image: linear-gradient(#000 88%, transparent 100%); }
 .hero-portrait-art img, .hero-portrait-art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
 .hero-portrait-art img { mask-size: 100% 100%; mask-repeat: no-repeat; }
 @media (max-width: 760px), (prefers-reduced-motion: reduce) {

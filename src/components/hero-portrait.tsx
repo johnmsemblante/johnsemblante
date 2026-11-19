@@ -1,7 +1,6 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef } from "react";
-import { portraitArtwork } from "@/lib/portrait-model";
 
 export function HeroPortrait() {
   const image = useRef<HTMLImageElement>(null);
@@ -55,7 +54,7 @@ export function HeroPortrait() {
 
   return <figure className="hero-portrait">
     <div className="hero-portrait-art">
-      <img ref={image} src={portraitArtwork} alt="Graphite portrait of John Clark Semblante" width={1000} height={1250} fetchPriority="high" decoding="async" />
+      <img ref={image} src="/images/profile/john-doodle-sketch.webp" alt="Graphite portrait of John Clark Semblante" width={640} height={827} fetchPriority="high" decoding="async" />
       <canvas ref={canvas} aria-hidden="true" />
     </div>
   </figure>;
