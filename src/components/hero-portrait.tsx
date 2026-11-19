@@ -11,11 +11,11 @@ export function HeroPortrait() {
     const layer = canvas.current;
     if (!photo || !layer) return;
 
-    const enabled = matchMedia("(min-width: 761px) and (prefers-reduced-motion: no-preference)");
+    const enabled = matchMedia("(prefers-reduced-motion: no-preference)");
     let visible = false;
     let generation = 0;
     let pending = false;
-    let renderer: ReturnType<typeof import("@/lib/portrait-dispersion").createDispersion> | undefined;
+    let renderer: ReturnType<typeof import("@/lib/portrait-sketch").createPortraitSketch> | undefined;
 
     function sync() {
       if (!enabled.matches) {
@@ -31,9 +31,9 @@ export function HeroPortrait() {
       } else if (active && !pending && photo && layer) {
         pending = true;
         const request = ++generation;
-        void Promise.all([import("@/lib/portrait-dispersion"), photo.decode()]).then(([module]) => {
+        void Promise.all([import("@/lib/portrait-sketch"), photo.decode()]).then(([module]) => {
           if (request !== generation) return;
-          renderer = module.createDispersion(photo, layer);
+          renderer = module.createPortraitSketch(photo, layer);
           renderer.setActive(visible && !document.hidden);
         }).catch(() => { /* The original portrait is also the graphics fallback. */ });
       }

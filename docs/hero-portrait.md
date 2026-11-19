@@ -1,15 +1,17 @@
 # Homepage portrait
 
-The homepage hero uses the existing transparent 1000 × 1250 `public/images/profile/john-hero-graphite.webp` between the introduction and supporting copy. The hero portrait is managed in code. Its particle canvas follows the sketch proportions within the existing hero footprint. Pages provides the existing Home copy, location and button fields plus a separate image field for the lower Home About section.
+The hero uses the transparent 640 ? 827 `public/images/profile/john-doodle-sketch.webp`, also used by default in the lower Home About section. Its canvas shares the image proportions and the existing hero footprint.
 
-## Particle dispersion
+## Pencil drawing
 
-The viewer-left hair, face and jacket stay intact. A ragged fracture runs through the viewer-right forehead, cheek and shoulder, shedding angular fragments into fine dust. Dust thins toward the upper right, with smaller, fainter grains farther from their source. The full-resolution image keeps the facial features sharp. Move the mouse across the fractured side to gather fragments into the missing hair, cheek and jacket. An irregular patch of original detail tracks the cursor, with small clusters of graphite breaking up its edge. Sweep quickly to send stronger waves around the ragged edge. Hold the cursor still to see crests travel around the outline. Loose shards curl sideways and drift outward at the rim while the centre stays sharp. Move away to let the portrait disperse again. On a tablet the renderer uses fewer particles and a narrower reveal. Phones at 760 CSS pixels or narrower and visitors with reduced motion see the original image.
+On each homepage mount, the moving pencil traces the hair, facial features and jacket. Short, overlapping shading passes reveal the original graphite texture. The pencil lifts away and the full-resolution source image takes over. Move the portrait out of view or switch tabs to pause the drawing. Return to resume. After completion it stays still until the next homepage mount. Reduced motion presents the finished portrait immediately.
 
-The client component loads the Canvas 2D renderer after the image decodes and the portrait enters view. A grain-textured alpha mask uses a curved boundary and several scales of noise to define the breakup. Particles sample colour from visible pixels in the eroded region and use spring motion to return to their scattered resting positions. Each shard remembers its source pixel and springs toward it during hover. A grain-textured mask with a cached band of animated edge pixels guides shard assembly and composites the missing high-resolution texture at the same scale as the base portrait. The renderer sleeps after the cursor leaves and the particles settle, offscreen and in hidden tabs. If rendering is unavailable the portrait remains visible.
-
-Tune particle count, size, fracture position and width, scatter, interaction radius, reveal core, gather/release timing, edge cycle, ripple amplitudes and shard drift, spring and damping in `dispersionSettings` in `src/lib/portrait-dispersion.ts`. Fracture position and width are fractions of portrait width. Scatter uses sampling-grid pixels. Particle sizes and cursor distances use CSS pixels. Review hair and jacket edges, touch scrolling, resizing and reduced motion before publishing.
+The contour paths and shading regions in `src/lib/portrait-sketch.ts` use the source image coordinates. Tune contour speed, shading-pass duration, pencil appearance and final blend there. If the source changes, review stroke alignment with the eyes, mouth, hairline and lapels. The renderer loads on demand after image decode. The image also serves as the fallback for missing canvas support or JavaScript.
 
 ## Portfolio cursor
 
-Desktop mouse users see a black dot and a trailing ring on the public portfolio. The ring expands over links and buttons. Both disappear over the portrait once the particle renderer is ready and return on exit. Form fields retain native pointers. Touch, reduced motion and forced colours use native cursor behaviour. The cursor component and stylesheet live in `src/components/portfolio-cursor.*`.
+The public portfolio uses a black dot and trailing ring for desktop mouse input. The ring expands over links. Both disappear over the hero once its sketch renderer is ready and return on exit. Form fields, touch, forced colours and reduced motion retain native pointer behaviour.
+
+## Comparing versions locally
+
+With a clean checkout, use `git switch particle_effect` to preview the saved interactive particle portrait or `git switch sketch_effect` for the drawing. Rebuild when comparing static exports.
