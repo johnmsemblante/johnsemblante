@@ -27,10 +27,9 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
   if (!ctx) throw new Error("Canvas 2D unavailable");
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
-  const settled = surface(WIDTH, HEIGHT);
-  settled.drawImage(photo, 0, 0, WIDTH, HEIGHT);
-  const pixels = settled.getImageData(0, 0, WIDTH, HEIGHT).data;
-  settled.clearRect(0, 0, WIDTH, HEIGHT);
+  const source = surface(WIDTH, HEIGHT);
+  source.drawImage(photo, 0, 0, WIDTH, HEIGHT);
+  const pixels = source.getImageData(0, 0, WIDTH, HEIGHT).data;
 
   // Stratified samples retain the eyes and hairline without a visible dot grid.
   const bands: Grain[][] = Array.from({ length: 32 }, () => []);
@@ -48,7 +47,8 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
     for (let col = 0; col < WIDTH - step; col += step) {
       const x = col + random() * step, y = row + random() * step;
       const offset = 4 * (Math.floor(y) * WIDTH + Math.floor(x));
-      if (pixels[offset + 3] < 100) continue;
+      const coverage = pixels[offset + 3] / 255;
+      if (!coverage) continue;
       const light = (pixels[offset] * .3 + pixels[offset + 1] * .59 + pixels[offset + 2] * .11) / 255;
       const angle = random() * Math.PI * 2;
       const depth = random();
@@ -58,7 +58,7 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
         x, y, startX: 393 + radius * Math.cos(angle),
         startY: 452 + radius * Math.sin(angle) * .77 - 34 * Math.cos(angle),
         bend: (depth - .4) * 175, delay: .06 + .19 * random() + .13 * y / HEIGHT,
-        size: step * (.62 + .52 * (1 - light)) * (.75 + random() * .42),
+        size: step * Math.sqrt(coverage) * (.62 + .52 * (1 - light)) * (.75 + random() * .42),
       });
     }
   }
@@ -76,87 +76,39 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
       }
     }
   }
-  // A faint photographic base keeps fine features legible through the grains.
-  const undertone = surface(WIDTH, HEIGHT);
-  undertone.filter = "grayscale(1)";
-  undertone.globalAlpha = .46;
-  undertone.drawImage(photo, 0, 0, WIDTH, HEIGHT);
-  settled.drawImage(undertone.canvas, 0, 0);
-  grains(settled, 1);
+  let frame = 0, elapsed = 0, previous = 0;
+  let complete = false;
 
-  // Offset soft lobes expose a continuous patch of the same photograph.
-  const brush = surface(320, 320);
-  for (const [x, y, radius] of [[157, 153, 145], [192, 161, 108], [138, 197, 94]]) {
-    const fade = brush.createRadialGradient(x, y, radius * .35, x, y, radius);
-    fade.addColorStop(0, "#000"); fade.addColorStop(1, "transparent");
-    brush.fillStyle = fade;
-    brush.fillRect(0, 0, 320, 320);
-  }
-  const patch = surface(320, 320);
-  let frame = 0, active = false, elapsed = 0, previous = 0;
-  let x = 400, y = 430, targetX = x, targetY = y, strength = 0, hovered = false;
-  function queue() { if (active && !frame) frame = requestAnimationFrame(draw); }
   function draw(now: number) {
-    frame = 0;
-    const dt = previous ? Math.min(70, now - previous) : 16;
+    const dt = previous ? Math.min(70, now - previous) : 0;
     previous = now;
-    elapsed = Math.min(FORMATION_MS, elapsed + dt);
-    const progress = elapsed / FORMATION_MS;
-    const gain = 1 - Math.exp(-dt / 85);
-    x += (targetX - x) * gain; y += (targetY - y) * gain;
-    const goal = hovered ? 1 : 0;
-    strength += (goal - strength) * (1 - Math.exp(-dt / 145));
+    elapsed += dt;
+    const progress = Math.min(1, elapsed / FORMATION_MS);
     ctx!.clearRect(0, 0, WIDTH, HEIGHT);
-    if (progress === 1) ctx!.drawImage(settled.canvas, 0, 0);
-    else {
-      const base = smooth((progress - .67) / .33);
-      if (base > 0) {
-        ctx!.globalAlpha = base;
-        ctx!.drawImage(undertone.canvas, 0, 0);
-        ctx!.globalAlpha = 1;
-      }
-      grains(ctx!, progress);
+    grains(ctx!, progress);
+    if (progress === 1) {
+      frame = 0;
+      complete = true;
+      art.dataset.portrait = "complete";
+    } else {
+      frame = requestAnimationFrame(draw);
     }
-    const opacity = strength * smooth((progress - .57) / .43);
-    if (opacity > .002) {
-      patch.clearRect(0, 0, 320, 320);
-      patch.drawImage(photo, 160 - x, 160 - y, WIDTH, HEIGHT);
-      patch.globalCompositeOperation = "destination-in";
-      patch.drawImage(brush.canvas, 0, 0);
-      patch.globalCompositeOperation = "source-over";
-      ctx!.globalAlpha = opacity;
-      ctx!.drawImage(patch.canvas, x - 160, y - 160);
-      ctx!.globalAlpha = 1;
-    }
-    if (progress < 1 || Math.abs(goal - strength) > .002 || Math.abs(x-targetX) + Math.abs(y-targetY) > .25) queue();
-    else previous = 0;
   }
-  function move(e: PointerEvent) {
-    if (e.pointerType === "touch") return;
-    const bounds = art.getBoundingClientRect();
-    targetX = (e.clientX - bounds.left) * WIDTH / bounds.width;
-    targetY = (e.clientY - bounds.top) * HEIGHT / bounds.height;
-    if (strength < .002) { x = targetX; y = targetY; }
-    hovered = true; queue();
-  }
-  function leave() { hovered = false; queue(); }
+
   grains(ctx, 0);
-  art.setAttribute("data-particles", "");
-  art.addEventListener("pointermove", move);
-  art.addEventListener("pointerleave", leave);
-  art.addEventListener("pointercancel", leave);
+  art.dataset.portrait = "forming";
   return {
-    setActive(value: boolean) {
-      active = value;
-      if (active) queue();
-      else { cancelAnimationFrame(frame); frame = previous = 0; hovered = false; strength = 0; }
+    setActive(active: boolean) {
+      if (!active) {
+        cancelAnimationFrame(frame);
+        frame = previous = 0;
+      } else if (!complete && !frame) {
+        frame = requestAnimationFrame(draw);
+      }
     },
     dispose() {
-      active = false; cancelAnimationFrame(frame);
-      art.removeEventListener("pointermove", move);
-      art.removeEventListener("pointerleave", leave);
-      art.removeEventListener("pointercancel", leave);
-      art.removeAttribute("data-particles");
+      cancelAnimationFrame(frame);
+      delete art.dataset.portrait;
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
     },
   };

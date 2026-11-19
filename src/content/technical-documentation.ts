@@ -5,12 +5,12 @@ const updated = "2026-11-19";
 export const technicalGuides: DocumentationGuide[] = [
   {
     id: "particle-formation", title: "How particles form the homepage portrait", category: "Interface", updated,
-    summary: "Follow a grain from an irregular cloud to its location on the face, then reveal the source photograph with a mouse.",
-    tags: ["Canvas 2D", "portrait", "particles", "requestAnimationFrame", "hover"],
+    summary: "Follow a grain from an irregular cloud to its location on the face, through to the full-sketch reveal.",
+    tags: ["Canvas 2D", "portrait", "particles", "requestAnimationFrame", "crossfade"],
     sections: [
-      { heading: "Sampling the photograph", paragraphs: ["React loads the Canvas 2D renderer when the decoded portrait enters view. getImageData reads the transparent cutout. A seeded sampler chooses a point in each grid cell, skips the background and uses the sampled brightness to set each grain's tone and size."] },
-      { heading: "Assembly and reveal", paragraphs: ["Each grain starts on a distorted band with a curved path and a staggered arrival. Once assembled, the renderer caches the point portrait in an offscreen canvas. Pointer movement blends a feathered patch of the original color photograph over the matching coordinates. Frames stop when the portrait and reveal settle."] },
-      { heading: "Preview and tune", steps: ["Reload Home and follow the grains into the hair, eyes and shoulders.", "Move slowly across the face, then leave the portrait to check the return to grains.", "Tune formation duration, sampling interval and brush falloff in portrait-particles.ts. Enable reduced motion to review the source photograph."] },
+      { heading: "Sampling the sketch", paragraphs: ["React loads the Canvas 2D renderer when the decoded portrait enters view. getImageData reads the transparent cutout. A seeded sampler chooses a point in each grid cell, skips the background and uses the sampled brightness and opacity to set each grain's tone and size."] },
+      { heading: "Assembly and reveal", paragraphs: ["Each grain starts on a distorted band with a curved path and a staggered arrival. The motion-enabled stylesheet hides the source image from the first paint. When the last grain arrives, the renderer stops requesting frames and starts an 850ms crossfade to the original sketch."] },
+      { heading: "Preview and tune", steps: ["Reload Home and follow the grains into the hair, eyes and shoulders.", "Wait for the whole sketch to appear, then move across the face to check that it stays fully visible.", "Tune formation duration and sampling interval in portrait-particles.ts. Enable reduced motion to review the source sketch."] },
     ],
     sources: ["src/lib/portrait-particles.ts", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
   },

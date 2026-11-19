@@ -9,7 +9,8 @@ export function HeroPortrait() {
   useEffect(() => {
     const photo = image.current;
     const layer = canvas.current;
-    if (!photo || !layer) return;
+    const art = layer?.parentElement;
+    if (!photo || !layer || !art) return;
 
     const enabled = matchMedia("(prefers-reduced-motion: no-preference)");
     let visible = false;
@@ -35,10 +36,16 @@ export function HeroPortrait() {
           if (request !== generation) return;
           renderer = module.createParticlePortrait(photo, layer);
           renderer.setActive(visible && !document.hidden);
-        }).catch(() => { /* The original portrait is also the graphics fallback. */ });
+        }).catch(() => {
+          if (request === generation && art) art.dataset.portrait = "fallback";
+        });
       }
     }
 
+    if (!("IntersectionObserver" in window)) {
+      art.dataset.portrait = "fallback";
+      return;
+    }
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
     observer.observe(layer);
     enabled.addEventListener("change", sync);
@@ -49,12 +56,13 @@ export function HeroPortrait() {
       enabled.removeEventListener("change", sync);
       document.removeEventListener("visibilitychange", sync);
       renderer?.dispose();
+      delete art.dataset.portrait;
     };
   }, []);
 
   return <figure className="hero-portrait">
     <div className="hero-portrait-art">
-      <img ref={image} src="/images/profile/john-particle-portrait.webp" alt="Portrait of John Clark Semblante" width={800} height={1034} fetchPriority="high" decoding="async" />
+      <img ref={image} src="/images/profile/john-doodle-sketch.webp" alt="Graphite portrait of John Clark Semblante" width={640} height={827} fetchPriority="high" decoding="async" />
       <canvas ref={canvas} aria-hidden="true" />
     </div>
   </figure>;
