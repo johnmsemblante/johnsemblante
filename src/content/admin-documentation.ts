@@ -29,13 +29,14 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Free PDF Editor", href: "/tools/pdf-editor/" }],
   },
   {
-    id: "site-overview", title: "How the website fits together", category: "Getting started", updated: "2026-11-16",
+    id: "site-overview", title: "How the website fits together", category: "Getting started", updated: "2026-11-19",
     summary: "Understand the public portfolio, admin workspace, saved content and static publishing.",
     tags: ["architecture", "Next.js", "Firebase", "Firestore", "hosting", "dashboard"], sources: ["docs/admin-setup.md", "docs/automatic-publishing.md"],
     sections: [
       { heading: "The two parts", paragraphs: ["The public website includes Home, About, Work, Ventures, Blog, Contact and Free Tools. This dashboard manages page content, articles, portfolio projects, business ventures and a private job shortlist. Résumé Generator provides a separate local résumé editor with browser PDF export; it does not publish your résumé or save it to Firestore.", "The website is built with Next.js and exported as static files to Firebase Hosting. Firebase Authentication checks your Google sign-in; Firestore rules control access to private records and writing content. Some public sections also read published content in the browser."] },
       { heading: "What a save changes", paragraphs: ["An editor saves content to Firestore. Public readers can show published updates before the next deployment. Clean URLs, initial page HTML, social previews and sitemap entries are regenerated together by the publishing workflow. A successful save and a successful deployment are separate events.", "Free tools, shared navigation, integrations, layouts and this documentation are maintained in source code. They are not editable content records."] },
-    ], links: [{ label: "Dashboard overview", href: "/adminauth/" }],
+      { heading: "Look up an implementation", steps: ["Open Technical Documentation from the dashboard menu or Overview.", "Search for a library or feature such as Canvas, or filter by topic. Expand a guide to read its implementation and locate the relevant source files."] },
+    ], links: [{ label: "Dashboard overview", href: "/adminauth/" }, { label: "Technical Documentation", href: "/adminauth/technical-documentation/" }],
   },
   {
     id: "admin-access", title: "Signing in, access and signing out", category: "Getting started", updated: reviewed,

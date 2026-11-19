@@ -11,6 +11,7 @@ function load(file, mocks = {}) {
   return exports;
 }
 const { documentationGuides: guides } = load('src/content/admin-documentation.ts');
+const { technicalGuides } = load('src/content/technical-documentation.ts');
 const { searchDocumentation: search } = load('src/lib/documentation-search.ts');
 const navigation = load('src/lib/admin-navigation.ts');
 test('full-text documentation search combines tokens, ignores case/accents and filters by topic', () => {
@@ -26,7 +27,7 @@ test('full-text documentation search combines tokens, ignores case/accents and f
 });
 test('handbook IDs, review dates, references and related links remain valid and credential-free', () => {
   assert.equal(new Set(guides.map(guide => guide.id)).size, guides.length);
-  for (const guide of guides) {
+  for (const guide of [...guides, ...technicalGuides]) {
     assert.match(guide.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.match(guide.updated, /^\d{4}-\d{2}-\d{2}$/);
     assert.equal(new Date(guide.updated).toISOString().slice(0, 10), guide.updated);
@@ -38,7 +39,7 @@ test('handbook IDs, review dates, references and related links remain valid and 
       assert.ok(!new URL(href, 'https://johnsemblante.com').username);
     }
   }
-  assert.ok(!/BEGIN (?:RSA )?PRIVATE KEY|ghp_[a-zA-Z0-9]{20}|AIza[a-zA-Z0-9_-]{30}/.test(JSON.stringify(guides)));
+  assert.ok(!/BEGIN (?:RSA )?PRIVATE KEY|ghp_[a-zA-Z0-9]{20}|AIza[a-zA-Z0-9_-]{30}/.test(JSON.stringify([...guides, ...technicalGuides])));
 });
 test('handbook renders accessible search, native disclosures, guide steps and safe external links', () => {
   const { AdminDocumentation } = load('src/components/admin/admin-documentation.tsx', {
@@ -47,6 +48,14 @@ test('handbook renders accessible search, native disclosures, guide steps and sa
   });
   const html = renderToStaticMarkup(React.createElement(AdminDocumentation));
   assert.ok(html.includes('<h1>Documentation</h1>'));
+  const technical = renderToStaticMarkup(React.createElement(AdminDocumentation, { technicalGuides }));
+  assert.ok(technical.includes('<h1>Technical Documentation</h1>'));
+  assert.equal((technical.match(/<details /g) ?? []).length, technicalGuides.length);
+  assert.ok(technical.includes('<code>src/lib/portrait-sketch.ts</code>'));
+  assert.equal(search(technicalGuides, 'getPointAtLength', 'Interface')[0].id, 'pencil-drawing');
+  assert.deepEqual(search(technicalGuides, 'getPointAtLength', 'Architecture'), []);
+  assert.equal(navigation.safeAdminDestination('/adminauth/technical-documentation'), '/adminauth/technical-documentation/');
+
   assert.ok(html.includes('for="documentation-query"')); assert.ok(html.includes('for="documentation-category"'));
   assert.ok(html.includes('aria-live="polite"')); assert.ok(html.includes('Expand results')); assert.ok(html.includes('Collapse results'));
   assert.equal((html.match(/<details /g) ?? []).length, guides.length);

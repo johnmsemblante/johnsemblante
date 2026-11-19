@@ -7,6 +7,7 @@ export const adminLinks = [
   { href: "/adminauth/jobs/", label: "Job Finder", icon: "jobs" },
   { href: "/adminauth/resume/", label: "Résumé Generator", icon: "resume" },
   { href: "/adminauth/documentation/", label: "Documentation", icon: "documentation" },
+  { href: "/adminauth/technical-documentation/", label: "Technical Documentation", icon: "documentation" },
 ] as const;
 
 export function activeAdminLink(pathname: string, href: string) {

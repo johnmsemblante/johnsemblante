@@ -6,6 +6,10 @@ Open **Documentation** from the dashboard menu or Overview card at `/adminauth/d
 
 Search matches the entire guide: title, summary, category, tags, section headings, paragraphs, steps and related-link labels. Matching is case/diacritic insensitive. Every whitespace-separated query token must occur somewhere in the same guide. Category filtering combines with search; title and tag matches rank first, preserving source order for equal scores. Native details/summary disclosures support keyboard expansion, with Expand/Collapse results and a clear no-results state. No search request or persistent query storage is used.
 
+## Technical documentation
+
+The dashboard menu and Overview link to `/adminauth/technical-documentation/`. This section shares the handbook search and disclosure component with a separate guide collection in `src/content/technical-documentation.ts`. Maintain the libraries, implementation steps, trade-offs and repository paths alongside relevant feature changes. Check that source paths exist and that both documentation routes inherit the admin gate and noindex metadata. All guide content must be safe for public static export.
+
 ## Required maintenance workflow
 
 1. When changing behavior, identify affected owner guides and technical notes. Add a guide when introducing a new operational workflow.
