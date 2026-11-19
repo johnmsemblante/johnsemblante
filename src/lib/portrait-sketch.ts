@@ -1,17 +1,22 @@
 type Point = { x: number; y: number };
 type Stroke = { points: Point[]; shade: boolean; width: number; duration: number };
 
-// These contours are fitted to the 640 x 827 homepage sketch.
+// Guide the tip through local features. The visible marks come from the source artwork.
 const contours = [
-  "M141 357 Q112 230 162 135 Q188 77 249 77 Q286 31 355 51 Q427 36 466 103 Q520 168 503 346",
-  "M148 344 Q159 422 176 464 Q199 553 271 581 Q319 608 374 580 Q449 548 472 461 Q491 422 496 353",
-  "M193 318 Q230 288 278 312 M356 312 Q404 286 447 321",
-  "M202 351 Q244 323 279 349 Q242 376 202 351",
-  "M234 344 Q232 357 244 358 Q256 356 252 343",
-  "M355 350 Q397 321 432 350 Q397 375 355 350",
-  "M384 344 Q383 357 395 358 Q407 355 403 343",
-  "M301 354 Q301 393 279 423 Q277 438 301 436 Q317 446 336 436 Q351 429 362 436",
-  "M264 485 Q297 469 318 477 Q337 469 375 483 Q321 510 264 485",
+  "M197 316 Q229 292 277 312 Q248 300 214 315",
+  "M203 352 Q244 327 278 350 Q245 370 208 354 M233 344 Q238 363 251 348",
+  "M287 320 Q301 350 292 393 Q289 412 279 425 Q280 440 307 435",
+  "M356 314 Q391 291 439 317 Q401 300 371 315",
+  "M355 350 Q395 328 431 349 Q397 372 358 352 M384 344 Q392 362 402 346",
+  "M348 359 Q341 396 355 421 Q371 443 344 434 Q329 441 313 439",
+  "M261 486 Q292 470 317 478 Q346 471 376 485 Q323 503 282 491",
+  "M141 342 Q136 285 154 232 Q171 188 200 170 M156 242 Q172 198 218 166",
+  "M180 173 Q193 123 248 106 Q271 101 293 115 M227 117 Q255 68 310 79",
+  "M283 83 Q318 42 359 62 Q396 72 412 107 M340 83 Q382 61 424 117",
+  "M407 112 Q459 106 478 169 Q502 220 492 281 M466 160 Q488 191 494 234",
+  "M148 352 Q138 390 166 428 M165 417 Q173 463 193 495",
+  "M192 493 Q206 534 259 561 M242 553 Q310 599 370 572",
+  "M373 571 Q430 547 459 496 M456 501 Q487 453 494 373",
   "M197 534 L191 604 Q121 635 45 653 L18 689",
   "M462 532 L474 603 Q557 632 617 658",
   "M189 611 L131 653 L166 679 L115 705 L189 794",
@@ -26,7 +31,7 @@ function pencilStrokes(): Stroke[] {
     path.setAttribute("d", d);
     const length = path.getTotalLength();
     const points = Array.from({ length: Math.ceil(length / 4) + 1 }, (_, i) => path.getPointAtLength(Math.min(i * 4, length)));
-    strokes.push({ points, shade: false, width: 1.6, duration: length * 0.72 });
+    strokes.push({ points, shade: false, width: 35, duration: length * 0.96 });
   }
   for (const contour of contours) {
     for (const segment of contour.split(/ (?=M)/)) trace(segment);
@@ -65,7 +70,24 @@ export function createPortraitSketch(image: HTMLImageElement, canvas: HTMLCanvas
     layer.height = canvas.height;
     return layer.getContext("2d")!;
   };
-  const lines = makeLayer(), mask = makeLayer();
+  const lines = makeLayer(), mask = makeLayer(), graphite = makeLayer();
+  // Compare each pixel to the surrounding tone to isolate the real pencil grain.
+  graphite.fillStyle = "white";
+  graphite.fillRect(0, 0, canvas.width, canvas.height);
+  graphite.filter = "blur(5px)";
+  graphite.drawImage(image, 0, 0);
+  const localTone = graphite.getImageData(0, 0, canvas.width, canvas.height).data;
+  graphite.filter = "none";
+  graphite.clearRect(0, 0, canvas.width, canvas.height);
+  graphite.drawImage(image, 0, 0);
+  const marks = graphite.getImageData(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < marks.data.length; i += 4) {
+    const tone = marks.data[i + 1];
+    const pressure = Math.max(0, localTone[i + 1] - tone) * 3 + (255 - tone) * 0.23;
+    marks.data[i + 3] *= Math.min(1, pressure / 180);
+  }
+  graphite.putImageData(marks, 0, 0);
+  const shadeComposite = makeLayer();
   const strokes = pencilStrokes();
   const art = canvas.parentElement!;
   let index = 0, step = 0, elapsed = 0, last = 0, frame = 0, finished = false;
@@ -97,10 +119,10 @@ export function createPortraitSketch(image: HTMLImageElement, canvas: HTMLCanvas
       const stroke = strokes[index];
       const end = Math.min(1, elapsed / stroke.duration) * (stroke.points.length - 1);
       const layer = stroke.shade ? mask : lines;
-      layer.strokeStyle = stroke.shade ? "white" : "rgba(59,55,52,.55)";
+      layer.strokeStyle = "white";
       layer.lineWidth = stroke.width;
       layer.lineCap = layer.lineJoin = "round";
-      if (stroke.shade) layer.filter = "blur(6px)";
+      layer.filter = stroke.shade ? "blur(6px)" : "blur(4px)";
       const start = stroke.points[Math.floor(step)];
       layer.beginPath();
       layer.moveTo(start.x, start.y);
@@ -110,31 +132,24 @@ export function createPortraitSketch(image: HTMLImageElement, canvas: HTMLCanvas
       tip = { x: a.x + (b.x - a.x) * (end - lo), y: a.y + (b.y - a.y) * (end - lo) };
       layer.lineTo(tip.x, tip.y);
       layer.stroke();
-      if (!stroke.shade) {
-        // Pick up the actual graphite grain beneath each contour as the tip passes.
-        mask.filter = "blur(2px)";
-        mask.strokeStyle = "white";
-        mask.lineWidth = 13;
-        mask.lineCap = mask.lineJoin = "round";
-        mask.beginPath();
-        mask.moveTo(start.x, start.y);
-        for (let i = Math.floor(step) + 1; i <= end; i++) mask.lineTo(stroke.points[i].x, stroke.points[i].y);
-        mask.lineTo(tip.x, tip.y);
-        mask.stroke();
-      }
       step = end;
       if (elapsed < stroke.duration) break;
       elapsed -= stroke.duration; index++; step = 0;
     }
     const finish = index === strokes.length ? Math.min(1, elapsed / 480) : 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(mask.canvas, 0, 0);
-    ctx.globalCompositeOperation = "source-in";
-    ctx.drawImage(image, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = (1 - finish) * (index < contours.length ? 1 : 0.55);
     ctx.drawImage(lines.canvas, 0, 0);
-    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-in";
+    ctx.drawImage(graphite.canvas, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
+    // Composite the shaded artwork above the faint construction drawing.
+    const shading = shadeComposite;
+    shading.clearRect(0, 0, canvas.width, canvas.height);
+    shading.drawImage(mask.canvas, 0, 0);
+    shading.globalCompositeOperation = "source-in";
+    shading.drawImage(image, 0, 0);
+    shading.globalCompositeOperation = "source-over";
+    ctx.drawImage(shading.canvas, 0, 0);
     if (finish) {
       ctx.globalAlpha = finish; ctx.drawImage(image, 0, 0); ctx.globalAlpha = 1;
     }

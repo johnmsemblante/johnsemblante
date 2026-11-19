@@ -32,7 +32,6 @@
     scale: 1.45;
     opacity: .6;
   }
-  .portfolio-shell[data-mouse] .hero-portrait-art[data-sketch-ready] { cursor: none; }
-  .portfolio-shell:has(:is(.hero-portrait-art[data-sketch-ready], input, textarea, select, [contenteditable="true"], button:disabled):hover) .portfolio-cursor-ring { visibility: hidden; }
+  .portfolio-shell:has(:is(input, textarea, select, [contenteditable="true"], button:disabled):hover) .portfolio-cursor-ring { visibility: hidden; }
   .portfolio-shell[data-mouse] :is(input, textarea, select, [contenteditable="true"]) { cursor: auto; }
 }
