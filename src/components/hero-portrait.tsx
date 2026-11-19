@@ -15,7 +15,7 @@ export function HeroPortrait() {
     let visible = false;
     let generation = 0;
     let pending = false;
-    let renderer: ReturnType<typeof import("@/lib/portrait-sketch").createPortraitSketch> | undefined;
+    let renderer: ReturnType<typeof import("@/lib/portrait-particles").createParticlePortrait> | undefined;
 
     function sync() {
       if (!enabled.matches) {
@@ -31,9 +31,9 @@ export function HeroPortrait() {
       } else if (active && !pending && photo && layer) {
         pending = true;
         const request = ++generation;
-        void Promise.all([import("@/lib/portrait-sketch"), photo.decode()]).then(([module]) => {
+        void Promise.all([import("@/lib/portrait-particles"), photo.decode()]).then(([module]) => {
           if (request !== generation) return;
-          renderer = module.createPortraitSketch(photo, layer);
+          renderer = module.createParticlePortrait(photo, layer);
           renderer.setActive(visible && !document.hidden);
         }).catch(() => { /* The original portrait is also the graphics fallback. */ });
       }
@@ -54,7 +54,7 @@ export function HeroPortrait() {
 
   return <figure className="hero-portrait">
     <div className="hero-portrait-art">
-      <img ref={image} src="/images/profile/john-doodle-sketch.webp" alt="Graphite portrait of John Clark Semblante" width={640} height={827} fetchPriority="high" decoding="async" />
+      <img ref={image} src="/images/profile/john-particle-portrait.webp" alt="Portrait of John Clark Semblante" width={800} height={1034} fetchPriority="high" decoding="async" />
       <canvas ref={canvas} aria-hidden="true" />
     </div>
   </figure>;

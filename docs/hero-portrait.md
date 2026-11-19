@@ -1,16 +1,14 @@
 # Homepage portrait
 
-The hero uses the transparent 640 ? 827 `public/images/profile/john-doodle-sketch.webp`, also used by default in the lower Home About section. Its canvas shares the image proportions and the existing hero footprint.
+## Particle formation and hover
 
-## Pencil drawing
+On the particle_effect branch the hero uses a transparent cutout derived from the existing john-enhanced.webp photograph. The lower Home About portrait remains independently editable. Reload Home to replay the roughly four-second formation. On desktop, move over a feature to reveal its original colour and detail, then move away to return to the point portrait. Touch devices show the formation. Reduced motion, disabled JavaScript and unavailable canvas show the source photograph.
 
-On each homepage mount, the moving pencil traces the hair, facial features and jacket. Short, overlapping shading passes reveal the original graphite texture. The pencil lifts away and the full-resolution source image takes over. Move the portrait out of view or switch tabs to pause the drawing. Return to resume. After completion it stays still until the next homepage mount. Reduced motion presents the finished portrait immediately.
-
-The opening alternates small facial studies with nearby outlines: the first eye leads into the temple and cheek, then the nose and jaw, followed by the other eye and hairline. Between strokes the pencil lifts and travels without marking the paper. A local contrast filter extracts pencil marks from the source sketch. The contour paths and shading regions in `src/lib/portrait-sketch.ts` use the source image coordinates. Tune contour speed, shading-pass duration, pencil appearance and final blend there. If the source changes, review stroke alignment with the eyes, mouth, hairline and lapels. The renderer loads on demand after image decode. The image also serves as the fallback for missing canvas support or JavaScript.
+The renderer in `src/lib/portrait-particles.ts` uses Canvas 2D. It samples opaque pixels at jittered intervals, groups the grains by brightness and places them in an irregular band. Staggered eased paths carry them to their sampled coordinates. The settled point field is cached. A feathered brush composites the matching area of the photograph as the pointer moves. The component pauses offscreen or in a hidden tab and disposes its listeners on unmount. Change the sampling step for density, FORMATION_MS for timing and the brush gradients for reveal size. Use a transparent portrait in the same aspect ratio when replacing the source.
 
 ## Site-wide cursor
 
-The root layout, shared by the main portfolio, venture pages, tools and dashboard, provides a black dot and trailing ring for desktop mouse input. The ring expands over links. The dot and ring stay visible over the portrait during drawing and after completion. Form fields, touch, forced colours and reduced motion retain native pointer behaviour.
+The root layout, shared by the main portfolio, venture pages, tools and dashboard, provides a black dot and trailing ring for desktop mouse input. The ring expands over links. The dot and ring stay visible over the portrait during formation and after completion. Form fields, touch, forced colours and reduced motion retain native pointer behaviour.
 
 ## Comparing versions locally
 

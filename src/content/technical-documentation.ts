@@ -4,16 +4,15 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
-    id: "pencil-drawing", title: "How the homepage portrait is drawn", category: "Interface", updated,
-    summary: "Follow one pencil stroke from its fitted path to the graphite pixels on screen.",
-    tags: ["Canvas 2D", "SVG", "requestAnimationFrame", "portrait", "sketch"],
+    id: "particle-formation", title: "How particles form the homepage portrait", category: "Interface", updated,
+    summary: "Follow a grain from an irregular cloud to its location on the face, then reveal the source photograph with a mouse.",
+    tags: ["Canvas 2D", "portrait", "particles", "requestAnimationFrame", "hover"],
     sections: [
-      { heading: "Libraries and artwork", paragraphs: ["React manages the component lifecycle. The browser supplies Canvas 2D, SVG path measurement and requestAnimationFrame. The renderer loads on demand after the transparent 640 × 827 homepage sketch decodes and enters view."] },
-      { heading: "From path to pencil tip", paragraphs: ["The contour paths are fitted to features in the source portrait. getTotalLength and getPointAtLength sample each SVG curve into points. Elapsed time determines how far the pencil travels along a stroke. Between strokes it follows a short lifted arc without adding marks. The tip and the end of the visible mark use the same interpolated point."] },
-      { heading: "Graphite and shading", paragraphs: ["An offscreen canvas compares each source pixel with a blurred neighbourhood to isolate graphite texture. One mask reveals this fine detail as the eyes, brows and nearby contours take shape. A second mask uses overlapping hatch passes to bring in the original tones across the hair, skin and jacket. A short blend hands off to the original accessible image."] },
-      { heading: "Tuning and checking", steps: ["Change stroke order, duration and shading regions in portrait-sketch.ts. Keep coordinates in the source image space.", "Reload Home and check the pencil tip against an eye, a cheek contour and a lapel. Scroll away and back to test pause and resume.", "Enable reduced motion and reload. The finished image should appear immediately."] },
+      { heading: "Sampling the photograph", paragraphs: ["React loads the Canvas 2D renderer when the decoded portrait enters view. getImageData reads the transparent cutout. A seeded sampler chooses a point in each grid cell, skips the background and uses the sampled brightness to set each grain's tone and size."] },
+      { heading: "Assembly and reveal", paragraphs: ["Each grain starts on a distorted band with a curved path and a staggered arrival. Once assembled, the renderer caches the point portrait in an offscreen canvas. Pointer movement blends a feathered patch of the original color photograph over the matching coordinates. Frames stop when the portrait and reveal settle."] },
+      { heading: "Preview and tune", steps: ["Reload Home and follow the grains into the hair, eyes and shoulders.", "Move slowly across the face, then leave the portrait to check the return to grains.", "Tune formation duration, sampling interval and brush falloff in portrait-particles.ts. Enable reduced motion to review the source photograph."] },
     ],
-    sources: ["src/lib/portrait-sketch.ts", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
+    sources: ["src/lib/portrait-particles.ts", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
   },
   {
     id: "global-cursor", title: "How the site-wide cursor follows the mouse", category: "Interface", updated,
