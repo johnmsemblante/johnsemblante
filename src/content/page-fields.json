@@ -64,69 +64,6 @@
       "value": "View my portfolio"
     },
     {
-      "key": "home_8_3nl292",
-      "label": "</>",
-      "group": "home",
-      "kind": "text",
-      "value": "</>"
-    },
-    {
-      "key": "home_9_1em1hln",
-      "label": "From design to website",
-      "group": "home",
-      "kind": "text",
-      "value": "From design to website"
-    },
-    {
-      "key": "home_10_32k602",
-      "label": "Custom WordPress development from your Figma designs.",
-      "group": "home",
-      "kind": "text",
-      "value": "Custom WordPress development from your Figma designs."
-    },
-    {
-      "key": "home_11_tmvrev",
-      "label": "Layouts for different screens",
-      "group": "home",
-      "kind": "text",
-      "value": "Layouts for different screens"
-    },
-    {
-      "key": "home_12_r6adkt",
-      "label": "Responsive layouts and cross-browser improvements.",
-      "group": "home",
-      "kind": "text",
-      "value": "Responsive layouts and cross-browser improvements."
-    },
-    {
-      "key": "home_13_yw8zbl",
-      "label": "Help with an existing site",
-      "group": "home",
-      "kind": "text",
-      "value": "Help with an existing site"
-    },
-    {
-      "key": "home_14_p29vdn",
-      "label": "UI fixes, integrations, and performance improvements.",
-      "group": "home",
-      "kind": "text",
-      "value": "UI fixes, integrations, and performance improvements."
-    },
-    {
-      "key": "home_15_1riil8c",
-      "label": "The portfolio",
-      "group": "home",
-      "kind": "text",
-      "value": "The portfolio"
-    },
-    {
-      "key": "home_16_csbbkw",
-      "label": "A few websites from my portfolio.",
-      "group": "home",
-      "kind": "text",
-      "value": "A few websites from my portfolio."
-    },
-    {
       "key": "home_17_189y0ck",
       "label": "Link destination",
       "group": "home",
@@ -162,20 +99,6 @@
       "value": "Tell me what you need to build, and I can discuss the experience relevant to your project."
     },
     {
-      "key": "home_22_1rnbgjz",
-      "label": "Beyond the screen",
-      "group": "home",
-      "kind": "text",
-      "value": "Beyond the screen"
-    },
-    {
-      "key": "home_23_1ozvvij",
-      "label": "Independent ventures.",
-      "group": "home",
-      "kind": "text",
-      "value": "Independent ventures."
-    },
-    {
       "key": "home_24_1k17t7",
       "label": "Link destination",
       "group": "home",
@@ -190,48 +113,6 @@
       "value": "View all ventures "
     },
     {
-      "key": "home_26_iw5pe7",
-      "label": "Take a coffee break with Lazy Barista, plan a Cebu trip with Golden Travel and Tours, or e",
-      "group": "home",
-      "kind": "text",
-      "value": "Take a coffee break with Lazy Barista, plan a Cebu trip with Golden Travel and Tours, or explore the Lapse Hub photography archive."
-    },
-    {
-      "key": "home_27_src_16jizyx",
-      "label": "Image",
-      "group": "home",
-      "kind": "image",
-      "value": "/images/profile/john-doodle-sketch.webp"
-    },
-    {
-      "key": "home_28_sx8dw0",
-      "label": "About me",
-      "group": "home",
-      "kind": "text",
-      "value": "About me"
-    },
-    {
-      "key": "home_29_1o24k7p",
-      "label": "Hi, I’m John Semblante.",
-      "group": "home",
-      "kind": "text",
-      "value": "Hi, I’m John Semblante."
-    },
-    {
-      "key": "home_30_1qezbir",
-      "label": "I’m John Clark Semblante, a WordPress/Full Stack Developer based in Mandaue City, Cebu. I ",
-      "group": "home",
-      "kind": "text",
-      "value": "I’m John Clark Semblante, a WordPress/Full Stack Developer based in Mandaue City, Cebu. I started at Cebu Rent A Car in 2013, working on websites and on-page SEO. Since then, my work has included custom WordPress themes, ecommerce stores, and front-end interfaces for business and legal technology teams."
-    },
-    {
-      "key": "home_31_1qve3se",
-      "label": "Alongside client work, I’ve built websites for my own coffee and travel ventures. You can ",
-      "group": "home",
-      "kind": "text",
-      "value": "Alongside client work, I’ve built websites for my own coffee and travel ventures. You can explore those projects here, along with my earlier WordPress work."
-    },
-    {
       "key": "button_href_gssft4",
       "label": "Button destination",
       "group": "home",
@@ -239,25 +120,11 @@
       "value": "/about/"
     },
     {
-      "key": "home_32_1va0zjt",
-      "label": "More about me",
-      "group": "home",
-      "kind": "text",
-      "value": "More about me"
-    },
-    {
       "key": "home_33_hu55i2",
       "label": "Notes from the work",
       "group": "home",
       "kind": "text",
       "value": "Notes from the work"
-    },
-    {
-      "key": "home_34_1ti21g3",
-      "label": "What I’m working on and learning.",
-      "group": "home",
-      "kind": "text",
-      "value": "What I’m working on and learning."
     },
     {
       "key": "home_35_1oiaxt7",
@@ -279,34 +146,6 @@
       "group": "home",
       "kind": "text",
       "value": "I share development notes here when there is something useful to write about. In the meantime, you can browse my website projects."
-    },
-    {
-      "key": "home_39_o7hpnb",
-      "label": "Let’s work together",
-      "group": "home",
-      "kind": "text",
-      "value": "Let’s work together"
-    },
-    {
-      "key": "home_40_15fbgvd",
-      "label": "Have a project in mind?",
-      "group": "home",
-      "kind": "text",
-      "value": "Have a project in mind?"
-    },
-    {
-      "key": "home_41_u5764r",
-      "label": "Send me a link and a few lines about what you want to build or improve. If you’re hiring f",
-      "group": "home",
-      "kind": "text",
-      "value": "Send me a link and a few lines about what you want to build or improve. If you’re hiring for a remote role, tell me about the team, responsibilities, and working hours."
-    },
-    {
-      "key": "home_42_1to57ad",
-      "label": "Discuss your project",
-      "group": "home",
-      "kind": "text",
-      "value": "Discuss your project"
     },
     {
       "key": "development_services_1_1nanxqn",
@@ -344,53 +183,25 @@
       "value": "Website fixes & improvements"
     },
     {
-      "key": "development_services_4_11rc4x7",
-      "label": "Have a design ready to build? I turn Figma layouts into custom WordPress themes, including",
+      "key": "development_services_4_1trcu5b",
+      "label": "I turn Figma designs into responsive WordPress themes you can edit yourself.",
       "group": "development_services",
       "kind": "text",
-      "value": "Have a design ready to build? I turn Figma layouts into custom WordPress themes, including the pages and reusable sections your site needs. We’ll review how the design should work on smaller screens and which content you need to edit yourself."
+      "value": "I turn Figma designs into responsive WordPress themes you can edit yourself."
     },
     {
-      "key": "development_services_4_u71jdo",
-      "label": "If your store’s theme doesn’t quite fit the way you sell, I can help with product pages, s",
+      "key": "development_services_4_1mfk1gf",
+      "label": "I tailor product pages, checkout flows and integrations to the way your store sells.",
       "group": "development_services",
       "kind": "text",
-      "value": "If your store’s theme doesn’t quite fit the way you sell, I can help with product pages, shop layouts, theme behavior, and third-party integrations. Start by showing me the current store and what you want customers to be able to do."
+      "value": "I tailor product pages, checkout flows and integrations to the way your store sells."
     },
     {
-      "key": "development_services_4_22b49o",
-      "label": "You don’t always need a new website. I investigate broken layouts, plugin conflicts, and s",
+      "key": "development_services_4_18l8q45",
+      "label": "I diagnose slow pages, broken layouts and plugin conflicts, then fix the affected parts.",
       "group": "development_services",
       "kind": "text",
-      "value": "You don’t always need a new website. I investigate broken layouts, plugin conflicts, and slow pages, then work on the affected parts. Send the page link and a description of the problem so we can decide where to start."
-    },
-    {
-      "key": "development_services_5_1camxh9",
-      "label": "Design implementation · Custom themes",
-      "group": "development_services",
-      "kind": "text",
-      "value": "Design implementation · Custom themes"
-    },
-    {
-      "key": "development_services_5_3prayx",
-      "label": "Storefronts · Theme customization · Integrations",
-      "group": "development_services",
-      "kind": "text",
-      "value": "Storefronts · Theme customization · Integrations"
-    },
-    {
-      "key": "development_services_5_19eyrlp",
-      "label": "UI debugging · Mobile usability · Performance",
-      "group": "development_services",
-      "kind": "text",
-      "value": "UI debugging · Mobile usability · Performance"
-    },
-    {
-      "key": "development_services_6_187iq0",
-      "label": "Not sure which service fits? Tell me what you want visitors to do and what is getting in t",
-      "group": "development_services",
-      "kind": "text",
-      "value": "Not sure which service fits? Tell me what you want visitors to do and what is getting in their way. A website link or screenshot is a useful starting point. "
+      "value": "I diagnose slow pages, broken layouts and plugin conflicts, then fix the affected parts."
     },
     {
       "key": "development_services_7_na0cib",
@@ -720,13 +531,6 @@
       "group": "venture_cards",
       "kind": "text",
       "value": "Explore the photography archive"
-    },
-    {
-      "key": "home_27_alt_asset_16jizyx_146wxor",
-      "label": "Description: Image",
-      "group": "home",
-      "kind": "text",
-      "value": "John Clark Semblante, web developer based in Cebu"
     },
     {
       "key": "venture_cards_2_alt_asset_1cyryf8_ztntfp",

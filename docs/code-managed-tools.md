@@ -4,11 +4,11 @@ Free PDF Editor is the third published/featured tool at `/tools/pdf-editor/`, wi
 
 Utilities live in `src/config/tool-ventures.ts` with routes under `src/app/(portfolio)/tools/`. Published entries appear in tool cards and the sitemap. Keep them out of the managed venture registry, venture store, Firestore, and editable page catalog. `ToolVentureCards` uses plain links/text to bypass admin page editing. The Ventures page retains its original live cards and adds a separate tools section using the same card classes. Future tools reuse this registry without altering admin schemas.
 
+The fourth featured entry is [Negosyo Startup Calculator PH](negosyo-calculator.md). It uses browser storage for plans and the native print dialog for reports.
+
 ## Homepage showcase
 
-`HomeToolsShowcase` renders immediately after the homepage hero. To feature a tool, add `featuredOnHome: true` to its existing registry entry. `featuredOrder` controls homepage order and defaults to the directory's `order`. Optional `shortName`, `homeDescription`, `ctaLabel` and `iconImage` customize the card. Otherwise it uses the existing name, description and icon, with an Open tool link label.
-
-Only published, featured entries appear. The selection removes duplicate IDs and routes, keeps the first four tools in display order, and omits the entire section when none qualify. One tool uses a wide featured card. Three or more tools use three columns at viewport widths of 1100px and above, with each card's icon, copy and action stacked vertically; a fourth card starts another row. Two tools retain the two-column layout. Below 1100px the grid uses two columns, and at 850px or below it stacks into one column. The section renders static links and copy from source, without admin-editable fields or tool functionality imports. The QR illustration is a small decorative SVG with reserved dimensions.
+After the service overview and full-width project gallery, Home pairs the online tools and ventures. Tool thumbnails use iconImage from the registry and venture thumbnails use the published venture logo. The tools column takes up to three published entries with `featuredOnHome` enabled, deduplicated by ID and route. Give each new release a higher `featuredOrder` (falling back to directory order). The work and venture columns use public document creation time where available. Legacy works use project year and legacy ventures use reverse registry order. Each column links to its full directory. On narrow screens the lists stack. Below Working together, the full-width blog preview uses each published article?s featured image. The FAQ closes the homepage.
 
 Run `node --test tests/home-tools.test.cjs` for registry filtering, ordering, deduplication, limits, empty behavior and card rendering. Local review uses `npm.cmd run dev` at `http://localhost:3000/`, or `npm.cmd run preview` at `http://127.0.0.1:3100/` after a successful build.
 

@@ -49,13 +49,18 @@ export const toolVentures: ToolVenture[] = [{
   homeDescription: "Add text, draw a signature and manage PDF pages. Edit and download locally, with no account or watermark.",
   ctaLabel: "Edit a PDF", iconImage: "/tools/pdf-editor/icon.svg",
   donationsEnabled: true, navigationLabel: "PDF Editor",
+}, {
+  id: "business-startup-calculator", slug: "business-startup-calculator", name: "Negosyo Startup Calculator PH",
+  description: "Plan startup funding, estimate monthly sales and compare break-even and cash recovery for a Philippine business.",
+  route: "/tools/business-startup-calculator/", category: "Business planning", icon: "₱", status: "published", order: 4,
+  iconImage: "/tools/business-startup-calculator/icon.svg", navigationLabel: "Startup Calculator", featuredOnHome: true, featuredOrder: 4, ctaLabel: "Plan a business",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 
 export function featuredHomeTools(items: readonly ToolVenture[] = toolVentures): ToolVenture[] {
   const eligible = items
     .filter(tool => tool.status === "published" && tool.featuredOnHome)
-    .sort((a, b) => (a.featuredOrder ?? a.order) - (b.featuredOrder ?? b.order));
+    .sort((a, b) => (b.featuredOrder ?? b.order) - (a.featuredOrder ?? a.order));
   const selected: ToolVenture[] = [];
   const ids = new Set<string>();
   const routes = new Set<string>();
@@ -65,7 +70,7 @@ export function featuredHomeTools(items: readonly ToolVenture[] = toolVentures):
     ids.add(tool.id);
     routes.add(tool.route);
     selected.push(tool);
-    if (selected.length === 4) break;
+    if (selected.length === 3) break;
   }
   return selected;
 }

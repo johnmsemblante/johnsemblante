@@ -2,7 +2,7 @@ import type { Project } from "@/content/site";
 import { industries } from "@/content/industries";
 
 export type WorkRecord = { project: Project; revision: number };
-export type PublicWork = { slug: string; deleted: boolean; project?: Project };
+export type PublicWork = { createdAt?: string; slug: string; deleted: boolean; project?: Project };
 export const workSlug = (title: string) => title.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90).replace(/-$/, "");
 export const assetUrl = (url: string) => /^https:\/\/[^\s<>]+$/.test(url) || /^\/[^/\s<>][^\s<>]*$/.test(url);
 export function emptyWork(): Project { return { slug: "", title: "", summary: "", role: "", technologies: [], industries: ["other"], projectType: "client", publication: "draft", status: "live" }; }
@@ -21,11 +21,17 @@ export function validateWork(p: Project): string {
   if ((p.seo?.title?.length ?? 0) > 160 || (p.seo?.description?.length ?? 0) > 500) return "SEO title/description must be at most 160/500 characters.";
   return "";
 }
-export function mergeWorks(source: Project[], records: PublicWork[]): Project[] {
+export function mergeWorks(source: Project[], records: PublicWork[], newestFirst = false): Project[] {
   const all = new Map(source.filter(p => p.publication === "published").map(p => [p.slug, p]));
   for (const record of records) {
     if (!record.deleted && record.project?.publication === "published" && !validateWork(record.project)) all.set(record.slug, record.project);
     else all.delete(record.slug);
   }
-  return [...all.values()];
+  const items = [...all.values()];
+  if (newestFirst) {
+    const dates = new Map(records.map(record => [record.slug, record.createdAt ?? ""]));
+    items.sort((a,b)=>(b.year ?? 0)-(a.year ?? 0));
+    items.sort((a,b)=>(dates.get(b.slug) ?? "").localeCompare(dates.get(a.slug) ?? ""));
+  }
+  return items;
 }

@@ -412,3 +412,21 @@ body,button,input,select,textarea,h1,h2,h3,h4,h5,h6,.serif,.venture-name,.vehicl
 @media (max-width: 620px) {
   .breadcrumbs { width: calc(100% - 36px); padding-top: 20px; font-size: 11px; }
 }
+
+.home-directory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,6vw,80px)}
+.home-directory h2{font-size:clamp(26px,3vw,38px);margin:0 0 18px}
+.home-index,.home-projects{list-style:none;margin:0;padding:0}
+.home-index{margin-bottom:16px}
+.home-index li{border-top:1px solid var(--line)}
+.home-index a{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:16px;padding:10px 0;font-weight:550}
+.directory-logo{width:48px;height:48px;background:#e7efec;border-radius:8px;display:grid;place-items:center;color:var(--ink);font:600 25px Georgia,serif;overflow:hidden}
+.directory-logo img{width:100%;height:100%;object-fit:contain}
+.home-projects,.home-note-list{display:grid;gap:clamp(18px,3vw,36px)}
+.home-projects{grid-template-columns:repeat(3,minmax(0,1fr))}
+.home-note-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+.home-projects a,.home-note a{display:block}
+.home-project-thumb,.home-note img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#e7efec;margin-bottom:15px}
+.home-projects h3,.home-note h3{font-size:clamp(18px,2vw,25px);line-height:1.25;margin:0}
+.home-note .eyebrow{margin:0 0 8px}
+.home-index a:hover,.home-projects a:hover h3,.home-note a:hover h3{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:700px){.home-directory,.home-projects,.home-note-list{grid-template-columns:1fr}.home-projects,.home-note-list{gap:26px}}

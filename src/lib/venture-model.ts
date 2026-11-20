@@ -1,7 +1,7 @@
 import type { Venture } from "@/ventures/types";
 import { pageUrl } from "./page-model";
 export type VentureRecord = { venture: Venture; status: "draft" | "published"; revision: number };
-export type PublicVenture = { slug: string; deleted: boolean; content?: string };
+export type PublicVenture = { createdAt?: string; slug: string; deleted: boolean; content?: string };
 export const ventureSlug = (name: string) => name.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0,90).replace(/-$/, "");
 const optionalKeys = ["canonicalBase","logo","hero","storyImage","story","gallery","offerings","offeringsNote","artwork","vehicles","ordering","contact","phones","socials","questions","seo"];
 const requiredKeys = ["slug","name","category","description","theme","title","tagline"];
@@ -38,9 +38,15 @@ export function parseVenture(content: unknown, slug: string): Venture | null {
   if (typeof content !== "string" || content.length>400000) return null;
   try { const v = JSON.parse(content); return v?.slug === slug && !validateVenture(v) ? v : null; } catch { return null; }
 }
-export function mergeVentures(source: Venture[], records: PublicVenture[]) {
+export function mergeVentures(source: Venture[], records: PublicVenture[], newestFirst = false) {
   const all = new Map(source.map(v=>[v.slug,v]));
   for (const record of records) { if (record.deleted) all.delete(record.slug); else { const v=parseVenture(record.content,record.slug); if(v)all.set(record.slug,v); } }
-  return [...all.values()];
+  const items = [...all.values()];
+  if (newestFirst) {
+    const dates = new Map(records.map(record => [record.slug, record.createdAt ?? ""]));
+    items.reverse();
+    items.sort((a,b)=>(dates.get(b.slug) ?? "").localeCompare(dates.get(a.slug) ?? ""));
+  }
+  return items;
 }
 export function emptyVenture(): Venture { return {slug:"",name:"",category:"",description:"",theme:"coffee",title:"",tagline:"",story:"",offerings:[],questions:[],socials:[],phones:[],artwork:[],vehicles:[],gallery:[],seo:{title:"",description:""}}; }

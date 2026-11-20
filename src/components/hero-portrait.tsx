@@ -9,7 +9,7 @@ export function HeroPortrait() {
   useEffect(() => {
     const photo = image.current;
     const layer = canvas.current;
-    const art = layer?.parentElement;
+    const art = photo?.parentElement;
     if (!photo || !layer || !art) return;
 
     const enabled = matchMedia("(prefers-reduced-motion: no-preference)");
@@ -60,10 +60,9 @@ export function HeroPortrait() {
     };
   }, []);
 
-  return <figure className="hero-portrait">
+  return <><figure className="hero-portrait">
     <div className="hero-portrait-art">
       <img ref={image} src="/images/profile/john-doodle-sketch.webp" alt="Graphite portrait of John Clark Semblante" width={640} height={827} fetchPriority="high" decoding="async" />
-      <canvas ref={canvas} aria-hidden="true" />
     </div>
-  </figure>;
+  </figure><canvas className="portrait-particle-field" ref={canvas} aria-hidden="true" /></>;
 }

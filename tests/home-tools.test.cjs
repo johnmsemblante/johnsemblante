@@ -36,7 +36,7 @@ test('home tools require published status and explicit homepage visibility', () 
     tool('visible'),
   ];
   assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['visible']);
-  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['qr-code-generator', 'image-compressor', 'pdf-editor']);
+  assert.deepEqual(registry.featuredHomeTools().map(item => item.id), ['business-startup-calculator', 'pdf-editor', 'image-compressor']);
 });
 
 test('home tools honor feature order, fall back to directory order and leave input unchanged', () => {
@@ -46,36 +46,22 @@ test('home tools honor feature order, fall back to directory order and leave inp
     tool('first', { featuredOrder: 0 }),
   ];
   const original = structuredClone(items);
-  assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['first', 'fallback', 'later']);
+  assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['later', 'fallback', 'first']);
   assert.deepEqual(items, original);
 });
 
-test('home tools deduplicate IDs and destinations before applying the four-card limit', () => {
+test('home tools deduplicate IDs and destinations before applying the three-item limit', () => {
   const items = [tool('one'), tool('one'), tool('alias', { route: '/tools/one/' }),
     ...['two', 'three', 'four', 'five', 'six'].map(id => tool(id))];
-  assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['one', 'two', 'three', 'four']);
+  assert.deepEqual(registry.featuredHomeTools(items).map(item => item.id), ['one', 'two', 'three']);
 });
 
-test('empty eligibility omits the whole section and multiple tools use the grid', () => {
+test('compact tool list links to the latest eligible tools and the full directory', () => {
   assert.equal(showcase([]), '');
-  assert.equal(showcase([tool('draft', { status: 'draft' })]), '');
-  const html = showcase([tool('one'), tool('two')]);
-  assert.ok(!html.includes('home-tool-grid-single'));
-  assert.equal((html.match(/class="home-tool-card"/g) || []).length, 2);
-});
-
-test('the QR card has crawlable copy, H2/H3 headings, a single card link and a tools directory link', () => {
   const html = showcase(registry.toolVentures);
   assert.ok(html.includes('<h2 id="home-tools-title">Free Online Tools</h2>'));
-  assert.ok(html.includes('<h3 id="home-tool-qr-code-generator-title">Free QR Code Generator</h3>'));
-  assert.ok(html.includes(qr.homeDescription));
-  assert.ok(html.includes('Create a QR Code'));
-  assert.ok(!html.includes('home-tool-grid-single'));
-  assert.ok(html.includes('href="/tools/image-compressor/"'));
-  assert.ok(html.includes('src="/tools/qr-code-generator/icon.svg"'));
-  assert.ok(fs.existsSync('public' + qr.iconImage));
-  assert.equal((html.match(/href="\/tools\/qr-code-generator\/"/g) || []).length, 1);
+  assert.equal((html.match(/<li>/g) || []).length, 3);
+  assert.ok(html.includes('href="/tools/business-startup-calculator/"'));
   assert.ok(html.includes('href="/tools/"'));
-  assert.ok(!html.includes('target="_blank"'));
-  assert.ok(html.includes('aria-labelledby="home-tool-qr-code-generator-title home-tool-qr-code-generator-cta"'));
+  assert.ok(!html.includes('href="/tools/qr-code-generator/"'));
 });

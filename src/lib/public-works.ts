@@ -8,7 +8,7 @@ export async function fetchPublicWorks(projectId: string, fetcher: typeof fetch 
     const response = await fetcher(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/publicWorks?pageSize=200${pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : ""}`, { cache: "no-store", credentials: "omit" });
     if (!response.ok) throw new Error("Public Works could not be refreshed. Check access rules and your connection.");
     const body = await response.json();
-    for (const document of body.documents ?? []) { const data = Object.fromEntries(Object.entries(document.fields ?? {}).map(([k,v]) => [k,decode(v as Wire)])) as unknown as PublicWork; if (data.slug !== document.name.split("/").at(-1) || typeof data.deleted !== "boolean" || (!data.deleted && (!data.project || data.project.slug !== data.slug || data.project.publication !== "published" || validateWork(data.project)))) throw new Error("Invalid public project record."); result.push(data); }
+    for (const document of body.documents ?? []) { const data = Object.fromEntries(Object.entries(document.fields ?? {}).map(([k,v]) => [k,decode(v as Wire)])) as unknown as PublicWork; if (data.slug !== document.name.split("/").at(-1) || typeof data.deleted !== "boolean" || (!data.deleted && (!data.project || data.project.slug !== data.slug || data.project.publication !== "published" || validateWork(data.project)))) throw new Error("Invalid public project record."); result.push(document.createTime ? {...data,createdAt:document.createTime} : data); }
     pageToken = body.nextPageToken ?? "";
   } while (pageToken);
   return result;

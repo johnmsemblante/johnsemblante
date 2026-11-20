@@ -4,12 +4,21 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
-    id: "particle-formation", title: "How particles form the homepage portrait", category: "Interface", updated,
-    summary: "Follow a grain from an irregular cloud to its location on the face, through to the full-sketch reveal.",
+    id: "negosyo-model", title: "How the startup planner models profit and cash", category: "Browser tools", updated: "2026-11-20",
+    summary: "Trace a supplier quote through startup funding, break-even and cash recovery.",
+    tags: ["Negosyo", "centavos", "working capital", "local storage"],
+    sections: [
+      {heading: "Calculation and storage", paragraphs: ["A three-field estimate divides monthly bills by contribution per sale in centavos and rounds up. Its figures can seed a detailed plan. The six-step client wizard holds versioned plans locally. The template model validates editable amounts and imported JSON. The financial module converts prices to centavos and computes weighted contribution separately from monthly cash receipts and payments.", "Opening inventory and deposits count towards launch funding. Monthly sales generate replenishment costs. Reserves cover the maximum cumulative cash deficit in the selected period, and loan principal only affects the cash forecast."]},
+      {heading: "Check a change", steps: ["Run the calculator unit tests and build the static export.", "Review an incomplete plan, switch the cost method, reload a saved plan and print a populated report at phone and desktop widths."]},
+    ], sources: ["src/lib/negosyo/plan.ts", "src/lib/negosyo/finance.ts", "src/components/negosyo/calculator.tsx", "docs/negosyo-calculator.md"],
+  },
+  {
+    id: "particle-formation", title: "How particles form the homepage portrait", category: "Interface", updated: "2026-11-20",
+    summary: "Follow a grain from the edge of the hero to its location on the face, through to the full-sketch reveal.",
     tags: ["Canvas 2D", "portrait", "particles", "requestAnimationFrame", "crossfade"],
     sections: [
       { heading: "Sampling the sketch", paragraphs: ["React loads the Canvas 2D renderer when the decoded portrait enters view. getImageData reads the transparent cutout. A seeded sampler chooses a point in each grid cell, skips the background and uses the sampled brightness and opacity to set each grain's tone and size."] },
-      { heading: "Assembly and reveal", paragraphs: ["Each grain starts on a distorted band with a curved path and a staggered arrival. The motion-enabled stylesheet hides the source image from the first paint. When the last grain arrives, the renderer stops requesting frames and starts an 850ms crossfade to the original sketch."] },
+      { heading: "Assembly and reveal", paragraphs: ["A transparent canvas fills the hero. A ResizeObserver maps the portrait bounds into canvas coordinates. Each grain can start anywhere in the hero, with a smooth bias toward its destination. The paths overlap across the centerlines. The target expands gently around the portrait center during the second half of assembly. The motion-enabled stylesheet hides the source image from the first paint. When the last grain arrives, the renderer stops requesting frames and starts an 850ms crossfade to the original sketch."] },
       { heading: "Preview and tune", steps: ["Reload Home and follow the grains into the hair, eyes and shoulders.", "Wait for the whole sketch to appear, then move across the face to check that it stays fully visible.", "Tune formation duration and sampling interval in portrait-particles.ts. Enable reduced motion to review the source sketch."] },
     ],
     sources: ["src/lib/portrait-particles.ts", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],

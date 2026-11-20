@@ -9,6 +9,16 @@ export type DocumentationGuide = {
 const reviewed = "2026-11-13";
 export const documentationGuides: DocumentationGuide[] = [
   {
+    id: "negosyo-planner", title: "Plan a Philippine business launch", category: "Free tools", updated: "2026-11-20",
+    summary: "Build a startup checklist, forecast sales and print a local feasibility report.",
+    tags: ["Negosyo", "startup", "break-even", "PHP", "cash flow", "JSON", "print"],
+    sources: ["docs/negosyo-calculator.md", "src/lib/negosyo/plan.ts", "src/lib/negosyo/finance.ts"],
+    sections: [
+      {heading: "Prepare the plan", steps: ["Enter a selling price, cost per sale and monthly fixed bills for one offering. The quick estimate rounds the break-even volume up to whole sales. Use these figures in a plan carries them into editable product and expense rows. Open detailed planner resumes the current plan. In the detailed planner, choose a business type and enter owner capital.", "Open the checklist rows and enter supplier estimates. Exclude items you already own. Add monthly bills, then choose either a shared variable budget or individual product costs.", "Enter prices and volumes, adjust the forecast and confirm your cash assumptions. Review any incomplete-input messages before using the figures."]},
+      {heading: "Keep a copy", paragraphs: ["The browser saves up to 12 plans locally. Use Manage plans to export JSON before clearing site data. Import adds a separate plan. The report offers Print / Save as PDF.", "For a change to templates or formulas, update the source and calculator tests. The public tool registry supplies the listings."]},
+    ], links: [{label: "Open startup calculator", href: "/tools/business-startup-calculator/"}],
+  },
+  {
     id: "resume-generator", title: "Build, back up and export a résumé", category: "Career tools", updated: "2026-11-16",
     summary: "Create a résumé with a live preview and free browser PDF export, with an optional draft saved on your device.",
     tags: ["resume", "résumé", "CV", "PDF", "career", "backup", "local draft", "print"], sources: ["docs/resume-generator.md", "src/components/admin/resume-generator.tsx", "src/components/admin/use-resume-draft.ts", "src/lib/resume-model.ts", "src/lib/resume-document.ts"],
@@ -59,24 +69,24 @@ export const documentationGuides: DocumentationGuide[] = [
     ],
   },
   {
-    id: "pages-editor", title: "Edit homepage and landing-page content", category: "Content management", updated: "2026-11-19",
+    id: "pages-editor", title: "Edit homepage and landing-page content", category: "Content management", updated: "2026-11-20",
     summary: "Change page copy, images, links and metadata with Pages, and restore code defaults.",
     tags: ["Pages", "Home", "About", "Contact", "gallery", "reset", "SEO"], sources: ["docs/pages-admin.md", "docs/design-direction.md", "docs/hero-portrait.md"],
     sections: [
       { heading: "Make a page change", steps: ["Open Pages and select Home, About, Work, Blog, Ventures or Contact.", "Use the editor search to find a field by section or original text. Edit its text, image or link. For an image, supply the required description.", "Optionally add gallery images or edit the page meta title and description. Blank metadata fields keep their existing defaults.", "Choose Save page. Pages has no draft status: saving publishes the overrides.", "Review the public page, then confirm the automated publishing build succeeds for updated initial HTML and search previews."] },
       { heading: "Defaults and boundaries", paragraphs: ["Reset to code default removes that field’s saved override. Other saved fields remain. Closing unsaved edits prompts before discarding; active uploads block closing or saving.", "Use Blog for articles, Works for project records and Ventures for individual venture sites. Shared navigation/footer, form behavior and free tools remain code-managed. If another tab changed the same record, a conflict prevents overwriting its newer revision; keep your text before reloading."] },
-      { heading: "Homepage portrait and motion", paragraphs: ["The homepage has a large centered portrait with introductory text on either side. Existing Home name, title, subtitle, introduction, location and button fields still work in Pages. The location suffix appears beside Based in Cebu. The supporting experience line, specialty labels, layout and portrait artwork are maintained in code. The portrait has 25px of space above and below it. On phones it sits between the introduction and the location details. Retired Home browser_illustration fields no longer control the hero; previously saved values are ignored, not deleted.", "The hero assembles a portrait from particles on arrival. With reduced motion enabled, visitors immediately see the finished image. See Maintain the homepage portrait for review steps."] },
-      { heading: "Other sketch portraits", paragraphs: ["The lower Home About section and the About page keep their own independently editable portrait Image fields. Use transparent WebP or PNG replacements and review desktop and phone layouts. Their multiply blending can change the appearance of colored photographs. Reset to code default restores the selected field's sketch; these fields do not change the animated hero."] },
+      { heading: "Homepage portrait and motion", paragraphs: ["The homepage has a large centered portrait with introductory text on either side. Existing Home name, title, subtitle, introduction, location and button fields still work in Pages. The location suffix appears beside Based in Cebu. The supporting experience line, specialty labels, layout and portrait artwork are maintained in code. The portrait has 25px of space above and below it. On phones it sits between the introduction and the location details. Retired Home browser_illustration fields no longer control the hero; previously saved values are ignored, not deleted.", "Home opens with services and three project thumbnails, followed by tool and venture logos. After Working together, the latest articles show their featured images, followed by the FAQ. Update thumbnails in Works, Ventures or Blog. The hero assembles a portrait from particles on arrival. With reduced motion enabled, visitors immediately see the finished image. See Maintain the homepage portrait for review steps."] },
+      { heading: "Other sketch portraits", paragraphs: ["The About page has its own editable portrait Image field. Use transparent WebP or PNG replacements and review desktop and phone layouts. Their multiply blending can change the appearance of colored photographs. Reset to code default restores the selected field's sketch; these fields do not change the animated hero."] },
     ], links: [{ label: "Open Pages", href: "/adminauth/pages/" }],
   },
   {
-    id: "hero-portrait", title: "Maintain the homepage portrait", category: "Content management", updated: "2026-11-19",
+    id: "hero-portrait", title: "Maintain the homepage portrait", category: "Content management", updated: "2026-11-20",
     summary: "Preview the particle formation, watch the full graphite sketch appear, and check the reduced-motion view.",
     tags: ["portrait", "hero", "particles", "sketch", "cursor", "motion"],
     sources: ["docs/hero-portrait.md", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "src/lib/portrait-particles.ts"],
     sections: [
-      { heading: "Review the portrait", steps: ["Open or reload Home. Watch the loose cloud gather into the face and jacket. Once the particles settle, the whole sketch fades in automatically and stays visible.", "Scroll away during assembly, then return. The particles resume from their paused positions.", "Enable reduced motion and reload to check the static portrait. On desktop, check that the black dot and trailing ring stay visible over the portrait and that the ring expands over a link. Open a venture page to check the same cursor there."] },
-      { heading: "Maintain the particle portrait", paragraphs: ["The hero samples the transparent john-doodle-sketch.webp artwork. Its source, grain density and timing are maintained in code. The lower About portrait has its own Pages field."] },
+      { heading: "Review the portrait", steps: ["Open or reload Home. Watch the graphite particles gather smoothly through the middle of the face as the portrait eases into its final size at the center. Once the particles settle, the whole sketch fades in automatically and stays visible.", "Scroll away during assembly, then return. The particles resume from their paused positions.", "Enable reduced motion and reload to check the static portrait. On desktop, check that the black dot and trailing ring stay visible over the portrait and that the ring expands over a link. Open a venture page to check the same cursor there."] },
+      { heading: "Maintain the particle portrait", paragraphs: ["The hero samples the transparent john-doodle-sketch.webp artwork. Its source, grain density and timing are maintained in code. The standalone About portrait has its own Pages field."] },
     ],
   },
   {
@@ -170,11 +180,11 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Job Finder", href: "/adminauth/jobs/" }],
   },
   {
-    id: "free-tools", title: "How free tools are listed and maintained", category: "Free tools", updated: reviewed,
+    id: "free-tools", title: "How free tools are listed and maintained", category: "Free tools", updated: "2026-11-20",
     summary: "Understand tool cards, homepage order, code-only management and optional support.",
     tags: ["registry", "homepage", "QR", "compressor", "donations", "ventures", "source code"], sources: ["docs/code-managed-tools.md", "src/config/tool-ventures.ts"],
     sections: [
-      { heading: "One source of truth", paragraphs: ["Published tools come from one source-code registry. That registry supplies Tools, public Ventures cards, navigation, sitemap and homepage eligibility. QR Code Generator is first; Image Compressor is second; PDF Editor is third. Homepage selection is ordered, deduplicated and limited to four featured tools. With three or more featured tools, cards use three columns on wide screens (1100px and above), two columns on smaller desktop screens and one column at 850px or below. A fourth card starts a second row on wide screens.", "Free tools deliberately have no admin CRUD records. Adding a tool, changing its logic, editing its registry description or enabling homepage featuring requires a reviewed code change and deployment. Pages does not edit their tool cards."] },
+      { heading: "One source of truth", paragraphs: ["Published tools come from one source-code registry. That registry supplies Tools, public Ventures cards, navigation, sitemap and homepage eligibility. QR Code Generator is first; Image Compressor is second; PDF Editor is third and Negosyo Startup Calculator PH is fourth. The homepage shows three compact links in descending featured order. Give a new release the highest featured order. The directory still shows every published tool.", "Free tools deliberately have no admin CRUD records. Adding a tool, changing its logic, editing its registry description or enabling homepage featuring requires a reviewed code change and deployment. Pages does not edit their tool cards."] },
       { heading: "Request a change", steps: ["Describe the tool behavior or listing copy you want changed, with the affected public URL.", "Implement and validate the code change, keeping existing tools and business-venture CRUD intact.", "Update the corresponding owner guide and technical documentation, then deploy through the existing workflow and verify the public route and listing links."] },
     ], links: [{ label: "Explore free tools", href: "/tools/" }],
   },

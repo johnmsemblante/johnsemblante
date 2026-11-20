@@ -4,12 +4,18 @@ const FORMATION_MS = 4100;
 
 type Grain = {
   x: number; y: number; startX: number; startY: number;
-  bend: number; delay: number; size: number;
+  delay: number; size: number; depth: number; star: boolean;
 };
 
 function smooth(value: number) {
   const t = Math.max(0, Math.min(1, value));
   return t * t * (3 - 2 * t);
+}
+
+// Bias the full start range toward the destination while allowing overlap
+// everywhere, including across the horizontal and vertical centerlines.
+function startCoordinate(sample: number, destination: number) {
+  return sample + (2 * destination - 1) * sample * (1 - sample);
 }
 
 function surface(width: number, height: number) {
@@ -22,11 +28,25 @@ function surface(width: number, height: number) {
 }
 
 export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanvasElement) {
-  const art = canvas.parentElement!;
+  const art = photo.parentElement!;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas 2D unavailable");
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+  let width = 1, height = 1, left = 0, top = 0, scaleX = 1, scaleY = 1;
+  function measure() {
+    const field = canvas.getBoundingClientRect();
+    const portrait = photo.getBoundingClientRect();
+    width = field.width;
+    height = field.height;
+    left = portrait.left - field.left;
+    top = portrait.top - field.top;
+    scaleX = portrait.width / WIDTH;
+    scaleY = portrait.height / HEIGHT;
+    const density = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.max(1, Math.round(width * density));
+    canvas.height = Math.max(1, Math.round(height * density));
+    ctx!.setTransform(density, 0, 0, density, 0, 0);
+  }
+  measure();
   const source = surface(WIDTH, HEIGHT);
   source.drawImage(photo, 0, 0, WIDTH, HEIGHT);
   const pixels = source.getImageData(0, 0, WIDTH, HEIGHT).data;
@@ -50,31 +70,39 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
       const coverage = pixels[offset + 3] / 255;
       if (!coverage) continue;
       const light = (pixels[offset] * .3 + pixels[offset + 1] * .59 + pixels[offset + 2] * .11) / 255;
-      const angle = random() * Math.PI * 2;
       const depth = random();
-      const lobe = 1 + .21 * Math.sin(3 * angle + .7) + .13 * Math.cos(5 * angle);
-      const radius = (70 + depth * 124 + random() * 40 + 22 * Math.sin(2 * angle + depth * 6)) * lobe;
+      const startX = startCoordinate(random(), x / WIDTH);
+      const startY = startCoordinate(random(), y / HEIGHT);
       bands[Math.round(light * 31)].push({
-        x, y, startX: 393 + radius * Math.cos(angle),
-        startY: 452 + radius * Math.sin(angle) * .77 - 34 * Math.cos(angle),
-        bend: (depth - .4) * 175, delay: .06 + .19 * random() + .13 * y / HEIGHT,
+        x, y, depth, star: random() < .055, startX, startY,
+        delay: random() * .17,
         size: step * Math.sqrt(coverage) * (.62 + .52 * (1 - light)) * (.75 + random() * .42),
       });
     }
   }
 
   function grains(target: CanvasRenderingContext2D, progress: number) {
+    const zoom = .89 + .11 * smooth((progress - .48) / .52);
+    const centerX = left + WIDTH * scaleX / 2;
+    const centerY = top + HEIGHT * scaleY / 2;
     for (const [i, band] of bands.entries()) {
       target.fillStyle = colors[i];
       for (const g of band) {
+        if (!g.star && progress <= g.delay) continue;
         const t = progress === 1 ? 1 : smooth((progress - g.delay) / (1 - g.delay));
-        const flying = 1 - t, arc = 4 * t * flying;
-        const x = g.x + (g.startX - g.x) * flying + g.bend * arc;
-        const y = g.y + (g.startY - g.y) * flying - (g.bend * .48 + 38) * arc;
-        const size = g.size * (1 - .65 * flying);
+        const flying = 1 - t;
+        const fromX = g.startX * width, fromY = g.startY * height;
+        const toX = centerX + (g.x - WIDTH / 2) * scaleX * zoom;
+        const toY = centerY + (g.y - HEIGHT / 2) * scaleY * zoom;
+        const x = fromX * flying + toX * t;
+        const y = fromY * flying + toY * t;
+        const size = (.65 + g.depth * 1.9) * flying + g.size * scaleX * zoom * t;
+        const arrival = smooth(t / .75);
+        target.globalAlpha = g.star ? (.24 + .48 * g.depth) * (1 - arrival) + arrival : arrival;
         target.fillRect(x - size / 2, y - size / 2, size, size * .93);
       }
     }
+    target.globalAlpha = 1;
   }
   let frame = 0, elapsed = 0, previous = 0;
   let complete = false;
@@ -84,7 +112,7 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
     previous = now;
     elapsed += dt;
     const progress = Math.min(1, elapsed / FORMATION_MS);
-    ctx!.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx!.clearRect(0, 0, width, height);
     grains(ctx!, progress);
     if (progress === 1) {
       frame = 0;
@@ -95,6 +123,12 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
     }
   }
 
+  const observer = new ResizeObserver(() => {
+    measure();
+    grains(ctx!, complete ? 1 : Math.min(1, elapsed / FORMATION_MS));
+  });
+  observer.observe(canvas);
+  observer.observe(photo);
   grains(ctx, 0);
   art.dataset.portrait = "forming";
   return {
@@ -108,8 +142,9 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
     },
     dispose() {
       cancelAnimationFrame(frame);
+      observer.disconnect();
       delete art.dataset.portrait;
-      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      ctx.clearRect(0, 0, width, height);
     },
   };
 }

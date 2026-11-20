@@ -8,18 +8,19 @@ import { mergeVentures } from "@/lib/venture-model";
 import { fetchPublicVentures } from "@/lib/public-ventures";
 import { articleRefresher } from "@/lib/blog-refresh";
 import { subscribeSiteRefresh } from "@/lib/site-refresh";
+import { Arrow } from "./ui";
 import { BrowserIllustration } from "./browser-illustration";
-function useVentures(initial:Venture[]) {
+function useVentures(initial:Venture[], newestFirst=false) {
   const [items,setItems]=useState(initial),[error,setError]=useState(false),[loading,setLoading]=useState(true);
   useEffect(()=>{
     setItems(initial);setLoading(true);
     const project=process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
     if(!project){setLoading(false);return;}
-    const reader=articleRefresher(()=>fetchPublicVentures(project),records=>{setItems(mergeVentures(source,records));setError(false);setLoading(false);},()=>{setError(true);setLoading(false);});
+    const reader=articleRefresher(()=>fetchPublicVentures(project),records=>{setItems(mergeVentures(source,records,newestFirst));setError(false);setLoading(false);},()=>{setError(true);setLoading(false);});
     const refresh=()=>{if(document.visibilityState!=="hidden")void reader.refresh();};
     refresh();const stop=subscribeSiteRefresh(refresh);window.addEventListener('focus',refresh);document.addEventListener('visibilitychange',refresh);const timer=window.setInterval(refresh,60000);
     return()=>{reader.dispose();stop();window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',refresh);window.clearInterval(timer);};
-  },[initial]);
+  },[initial,newestFirst]);
   return{items,error,loading};
 }
 function RefreshError(){return <p role="status" className="article-refresh-notice">The latest venture content could not be loaded. Showing the last available copy. <button type="button" onClick={()=>window.dispatchEvent(new Event('focus'))}>Try again</button></p>;}
@@ -27,8 +28,9 @@ export function LiveVentureIllustration({initial}:{initial:Venture[]}){
   const {items}=useVentures(initial);const images=['golden-travel-and-tours','lazy-barista'].flatMap(slug=>{const v=items.find(v=>v.slug===slug);return v?.logo?[{...v.logo,name:v.name}]:[];});
   return <BrowserIllustration showcase={{kind:'ventures',label:'COFFEE, TRAVEL AND PHOTOGRAPHY',caption:'A look at my interests outside development.',images}}/>;
 }
-export function LiveVentureCards({initial,compact=false,headingLevel=3}:{initial:Venture[];compact?:boolean;headingLevel?:2|3}){
-  const {items,error}=useVentures(initial);const exported=new Set(initial.map(v=>v.slug));
+export function LiveVentureCards({initial,compact=false,homeList=false,headingLevel=3}:{initial:Venture[];compact?:boolean;homeList?:boolean;headingLevel?:2|3}){
+  const {items,error}=useVentures(initial,homeList);const exported=new Set(initial.map(v=>v.slug));
+  if(homeList) return <>{error&&<RefreshError/>}<ul className="home-index">{items.slice(0,3).map(v=><li key={v.slug}><a href={exported.has(v.slug)?`/ventures/${v.slug}/`:`/ventures/view/?venture=${encodeURIComponent(v.slug)}`}><span className="directory-logo" aria-hidden="true">{v.logo ? <img src={v.logo.src} alt="" width={48} height={48} loading="lazy" /> : v.name.charAt(0)}</span>{v.name}<Arrow /></a></li>)}</ul></>;
   return <>{error&&<RefreshError/>}<VentureCards items={items} compact={compact} headingLevel={headingLevel} linkFor={v=>exported.has(v.slug)?`/ventures/${v.slug}/`:`/ventures/view/?venture=${encodeURIComponent(v.slug)}`}/></>;
 }
 function VentureMetadata({venture}:{venture:Venture|null}){
