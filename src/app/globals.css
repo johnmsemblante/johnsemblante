@@ -78,7 +78,7 @@ a:focus-visible,button:focus-visible{outline-color:var(--night-teal,#32766c)}.si
 html{scroll-padding-top:120px}
 .site-header,.venture-header{position:sticky;top:0;z-index:40;width:100%;padding-inline:max(24px,calc((100% - 1200px)/2));background:var(--paper);box-shadow:0 4px 20px #00000006}
 .coffee .venture-header{background:var(--night-warm-panel,#f0e7da)}.travel .venture-header{background:var(--night-surface,#edf1f2)}
-.header-navigation{margin-left:auto}
+.header-navigation{margin-left:auto;display:flex;align-items:center;gap:12px}
 .menu-toggle{display:none}
 .venture-section{scroll-margin-top:16px}
 .site-header nav a[aria-current=page]{text-decoration:underline;text-underline-offset:6px}
@@ -87,8 +87,9 @@ html{scroll-padding-top:120px}
   .site-header,.venture-header{flex-wrap:nowrap;align-items:center;gap:12px;padding:14px 18px;min-height:76px}
   .venture-header .venture-name{font-size:clamp(16px,3.5vw,22px);max-width:calc(100% - 64px);min-width:0;line-height:1.25}
   .venture-header-logo{width:40px;height:40px}
-  .header-navigation{flex-shrink:0}
-  .menu-toggle{display:grid;place-items:center;width:48px;height:48px;padding:0;border:1px solid currentColor;border-radius:50%;color:inherit;background:transparent;cursor:pointer}
+  .header-navigation{flex-shrink:0;gap:4px;reading-flow:flex-visual}
+  .header-navigation>.theme-toggle{order:-1}
+  .menu-toggle{display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:0;color:inherit;background:transparent;cursor:pointer}
   .menu-toggle-icon{position:relative;display:block;width:22px;height:18px}
   .menu-toggle-icon span{position:absolute;left:0;width:22px;height:2px;border-radius:2px;background:currentColor;transition:transform .25s ease,opacity .15s ease,top .25s ease}
   .menu-toggle-icon span:nth-child(1){top:0}.menu-toggle-icon span:nth-child(2){top:8px}.menu-toggle-icon span:nth-child(3){top:16px}

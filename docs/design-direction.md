@@ -2,7 +2,7 @@
 
 ## Light and dark appearance
 
-The portfolio and venture navigation menus include an icon-only yin-yang switch labeled Dark mode for assistive technology. Its orientation indicates the selected theme. Administration has the same switch above its content. The root layout reads the browser's `portfolio-theme` local storage entry before the first paint. Without an explicit choice the site follows the system color preference. Open tabs synchronize through storage events. The switch still works on the current page when browser storage is unavailable.
+The portfolio and venture headers place the switch beside the navigation links on desktop and immediately to the left of the borderless menu button on mobile. Both layouts use an icon-only yin-yang switch labeled Dark mode for assistive technology. Its orientation indicates the selected theme. Administration has the same switch above its content. The root layout reads the browser's `portfolio-theme` local storage entry before the first paint. Without an explicit choice the site follows the system color preference. Open tabs synchronize through storage events. The switch still works on the current page when browser storage is unavailable.
 
 UI colors use the palette in `src/app/theme.css` with their light colors as fallbacks. Check form controls, menu states and keyboard focus when changing colors. Review photos and generated documents in their original colors. Dark palette overrides apply only on screen, so print layouts keep their light colors.
 

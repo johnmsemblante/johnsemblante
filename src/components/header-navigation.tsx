@@ -83,7 +83,7 @@ export function HeaderNavigation({ links, label = "Main navigation" }: { links: 
           </div>
         </div>;
       })}
-      <ThemeToggle />
     </nav>
+    <ThemeToggle />
   </div>;
 }
