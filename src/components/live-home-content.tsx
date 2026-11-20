@@ -11,6 +11,11 @@ import { subscribeSiteRefresh } from "@/lib/site-refresh";
 import { Arrow } from "./ui";
 import { PageText } from "./page-content";
 import Link from "next/link";
+const workThumbnails: Record<string,string> = {
+  "/images/projects/edeemonnen.jpg": "/images/projects/edeemonnen-thumb.webp",
+  "/images/projects/impacthygiene.jpg": "/images/projects/impacthygiene-thumb.webp",
+  "/images/projects/sharoon.jpg": "/images/projects/sharoon-thumb.webp",
+};
 type Writing = {slug:string;title:string;excerpt:string;category:string;publishedAt:string;featuredImage?:string;featuredImageAlt?:string};
 function useLive<T>(initial:T, read:(project:string)=>Promise<T>) {
   const [value,setValue]=useState(initial),[error,setError]=useState(false);
@@ -21,7 +26,7 @@ const readWorks=async(project:string)=>mergeWorks(workSource,await fetchPublicWo
 const readWriting=async(project:string):Promise<Writing[]> => (await fetchPublicBlogSnapshot(project)).map(p=>({slug:p.slug,title:p.title,excerpt:p.excerpt,category:p.categories.join(' / '),publishedAt:p.publishedAt,featuredImage:p.featuredImage,featuredImageAlt:p.featuredImageAlt}));
 export function LiveHomeWorks({initial}:{initial:Project[]}) {
   const {value,error}=useLive(initial,readWorks);const exported=new Set(initial.map(v=>v.slug));
-  return <>{error&&<p role="status">The latest projects could not be loaded. Showing the last available copy.</p>}{value.length?<ul className="home-projects">{value.slice(0,3).map(p=><li key={p.slug}><Link href={exported.has(p.slug)?`/work/${p.slug}/`:`/work/?project=${encodeURIComponent(p.slug)}`}>{p.image && <img className="home-project-thumb" src={p.image.src} alt={p.image.alt} loading="lazy" width={560} height={350} />}<h3>{p.title} <Arrow /></h3></Link></li>)}</ul>:<div className="work-pending"><span className="work-pending-mark" aria-hidden="true"><PageText scope="home_19" fallback="</>"/></span><div><h3><PageText scope="home_20" fallback="Looking for a relevant example?"/></h3><p><PageText scope="home_21" fallback="Tell me what you need to build, and I can discuss the experience relevant to your project."/></p></div></div>}</>;
+  return <>{error&&<p role="status">The latest projects could not be loaded. Showing the last available copy.</p>}{value.length?<ul className="home-projects">{value.slice(0,3).map(p=><li key={p.slug}><Link href={exported.has(p.slug)?`/work/${p.slug}/`:`/work/?project=${encodeURIComponent(p.slug)}`}>{p.image && <img className="home-project-thumb" src={workThumbnails[p.image.src] ?? p.image.src} alt={p.image.alt} loading="lazy" width={560} height={350} />}<h3>{p.title} <Arrow /></h3></Link></li>)}</ul>:<div className="work-pending"><span className="work-pending-mark" aria-hidden="true"><PageText scope="home_19" fallback="</>"/></span><div><h3><PageText scope="home_20" fallback="Looking for a relevant example?"/></h3><p><PageText scope="home_21" fallback="Tell me what you need to build, and I can discuss the experience relevant to your project."/></p></div></div>}</>;
 }
 export function LiveHomeWriting({initial,source}:{initial:Writing[];source:Writing[]}) {
   // Only explicitly published source summaries cross the server/client boundary.

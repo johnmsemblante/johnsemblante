@@ -10,6 +10,11 @@ import { articleRefresher } from "@/lib/blog-refresh";
 import { subscribeSiteRefresh } from "@/lib/site-refresh";
 import { Arrow } from "./ui";
 import { BrowserIllustration } from "./browser-illustration";
+const logoThumbnails: Record<string,string> = {
+  "/ventures/lazy-barista/logo.webp": "/ventures/lazy-barista/logo-thumb.webp",
+  "/ventures/golden-travel-and-tours/logo.webp": "/ventures/golden-travel-and-tours/logo-thumb.webp",
+  "/ventures/lapse-hub/logo.jpg": "/ventures/lapse-hub/logo-thumb.webp",
+};
 function useVentures(initial:Venture[], newestFirst=false) {
   const [items,setItems]=useState(initial),[error,setError]=useState(false),[loading,setLoading]=useState(true);
   useEffect(()=>{
@@ -30,7 +35,7 @@ export function LiveVentureIllustration({initial}:{initial:Venture[]}){
 }
 export function LiveVentureCards({initial,compact=false,homeList=false,headingLevel=3}:{initial:Venture[];compact?:boolean;homeList?:boolean;headingLevel?:2|3}){
   const {items,error}=useVentures(initial,homeList);const exported=new Set(initial.map(v=>v.slug));
-  if(homeList) return <>{error&&<RefreshError/>}<ul className="home-index">{items.slice(0,3).map(v=><li key={v.slug}><a href={exported.has(v.slug)?`/ventures/${v.slug}/`:`/ventures/view/?venture=${encodeURIComponent(v.slug)}`}><span className="directory-logo" aria-hidden="true">{v.logo ? <img src={v.logo.src} alt="" width={48} height={48} loading="lazy" /> : v.name.charAt(0)}</span>{v.name}<Arrow /></a></li>)}</ul></>;
+  if(homeList) return <>{error&&<RefreshError/>}<ul className="home-index">{items.slice(0,3).map(v=><li key={v.slug}><a href={exported.has(v.slug)?`/ventures/${v.slug}/`:`/ventures/view/?venture=${encodeURIComponent(v.slug)}`}><span className="directory-logo" aria-hidden="true">{v.logo ? <img src={logoThumbnails[v.logo.src] ?? v.logo.src} alt="" width={48} height={48} loading="lazy" /> : v.name.charAt(0)}</span>{v.name}<Arrow /></a></li>)}</ul></>;
   return <>{error&&<RefreshError/>}<VentureCards items={items} compact={compact} headingLevel={headingLevel} linkFor={v=>exported.has(v.slug)?`/ventures/${v.slug}/`:`/ventures/view/?venture=${encodeURIComponent(v.slug)}`}/></>;
 }
 function VentureMetadata({venture}:{venture:Venture|null}){

@@ -13,15 +13,13 @@ export const technicalGuides: DocumentationGuide[] = [
     ], sources: ["src/lib/negosyo/plan.ts", "src/lib/negosyo/finance.ts", "src/components/negosyo/calculator.tsx", "docs/negosyo-calculator.md"],
   },
   {
-    id: "particle-formation", title: "How particles form the homepage portrait", category: "Interface", updated: "2026-11-20",
-    summary: "Follow a grain from the edge of the hero to its location on the face, through to the full-sketch reveal.",
-    tags: ["Canvas 2D", "portrait", "particles", "requestAnimationFrame", "crossfade"],
+    id: "homepage-portrait", title: "How the homepage portrait loads", category: "Interface", updated: "2026-11-20",
+    summary: "Understand how the homepage serves a static responsive portrait.",
+    tags: ["portrait", "responsive image", "AVIF", "WebP"],
     sections: [
-      { heading: "Sampling the sketch", paragraphs: ["React loads the Canvas 2D renderer when the decoded portrait enters view. getImageData reads the transparent cutout. A seeded sampler chooses a point in each grid cell, skips the background and uses the sampled brightness and opacity to set each grain's tone and size."] },
-      { heading: "Assembly and reveal", paragraphs: ["A transparent canvas fills the hero. A ResizeObserver maps the portrait bounds into canvas coordinates. Continuous offsets across the sketch and Gaussian scatter give each wisp a soft, uneven outline. Neighbors travel inward along overlapping paths and settle at different times. The target expands gently around the portrait center during the second half of assembly. The motion-enabled stylesheet hides the source image from the first paint. When the last grain arrives, the renderer stops requesting frames and starts an 850ms crossfade to the original sketch."] },
-      { heading: "Preview and tune", steps: ["Reload Home and follow the grains into the hair, eyes and shoulders.", "Wait for the whole sketch to appear, then move across the face to check that it stays fully visible.", "Tune formation duration and sampling interval in portrait-particles.ts. Enable reduced motion to review the source sketch."] },
+      { heading: "Responsive artwork", paragraphs: ["The server renders a picture element with 400px and 640px AVIF candidates and a transparent WebP fallback. The preload uses the same size hints as the image. Width and height reserve space while the file downloads."] },
     ],
-    sources: ["src/lib/portrait-particles.ts", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
+    sources: ["src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
   },
   {
     id: "global-cursor", title: "How the site-wide cursor follows the mouse", category: "Interface", updated,

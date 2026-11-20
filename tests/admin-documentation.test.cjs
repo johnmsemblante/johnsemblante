@@ -51,9 +51,9 @@ test('handbook renders accessible search, native disclosures, guide steps and sa
   const technical = renderToStaticMarkup(React.createElement(AdminDocumentation, { technicalGuides }));
   assert.ok(technical.includes('<h1>Technical Documentation</h1>'));
   assert.equal((technical.match(/<details /g) ?? []).length, technicalGuides.length);
-  assert.ok(technical.includes('<code>src/lib/portrait-particles.ts</code>'));
-  assert.equal(search(technicalGuides, 'getImageData', 'Interface')[0].id, 'particle-formation');
-  assert.deepEqual(search(technicalGuides, 'getImageData', 'Architecture'), []);
+  assert.ok(technical.includes('<code>src/components/hero-portrait.tsx</code>'));
+  assert.equal(search(technicalGuides, 'responsive artwork', 'Interface')[0].id, 'homepage-portrait');
+  assert.deepEqual(search(technicalGuides, 'responsive artwork', 'Architecture'), []);
   assert.equal(navigation.safeAdminDestination('/adminauth/technical-documentation'), '/adminauth/technical-documentation/');
 
   assert.ok(html.includes('for="documentation-query"')); assert.ok(html.includes('for="documentation-category"'));
