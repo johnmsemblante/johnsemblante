@@ -37,23 +37,23 @@ export default function Home() {
         <h1 id="home-hero-title"><PageText scope="home_3" fallback={"Cebu Web Developer"} /></h1>
         <p className="hero-specialty"><PageText scope="home_4" fallback={profile.title} /></p>
         <div className="actions"><Button href="/work/"><PageText scope="home_7" fallback={"View my portfolio"} /></Button></div>
-        <div className="portrait-hero-craft"><span className="eyebrow">Design <span aria-hidden="true">→</span> development</span><ul aria-label="Development specialties"><li>WordPress</li><li>WooCommerce</li></ul></div>
+        <div className="portrait-hero-craft"><span className="eyebrow"><PageText scope="home_craft_start" fallback="Design" /> <span aria-hidden="true">→</span> <PageText scope="home_craft_end" fallback="development" /></span><ul aria-label="Development specialties"><li><PageText scope="home_skill_one" fallback="WordPress" /></li><li><PageText scope="home_skill_two" fallback="WooCommerce" /></li></ul></div>
       </div>
       <HeroPortrait />
       <div className="portrait-hero-notes">
-        <div className="portrait-hero-location"><p className="eyebrow">Based in Cebu <PageText scope="home_2" fallback={"/ Philippines"} /></p><p>Building for the web<br />since 2013.</p></div>
+        <div className="portrait-hero-location"><p className="eyebrow"><PageText scope="home_location_prefix" fallback="Based in Cebu" /> <PageText scope="home_2" fallback={"/ Philippines"} /></p><p><PageText scope="home_experience_line" fallback="Building for the web" /><br /><PageText scope="home_experience_year" fallback="since 2013." /></p></div>
         <div className="portrait-hero-story"><p className="lede"><PageText scope="home_5" fallback={profile.homeSummary} /></p><Button href="/contact/" secondary><PageText scope="home_6" fallback={"Discuss your project"} /></Button></div>
       </div>
-      <div className="portrait-hero-footer"><a href="#services-title">Scroll to explore <span aria-hidden="true">↓</span></a><span>Development &amp; ventures</span></div>
+      <div className="portrait-hero-footer"><PageLink scope="home_scroll_url" href="#services-title"><PageText scope="home_scroll" fallback="Scroll to explore" /> <span aria-hidden="true">↓</span></PageLink><span><PageText scope="home_footer" fallback="Development &amp; ventures" /></span></div>
     </section>
     <DevelopmentServices />
     <section className="section home-works">
-      <div className="section-heading"><h2>Works</h2><PageLink scope="home_17" className="text-link" href="/work/"><PageText scope="home_18" fallback="View all work " /><Arrow /></PageLink></div>
+      <div className="section-heading"><h2><PageText scope="home_works_title" fallback="Works" /></h2><PageLink scope="home_17" className="text-link" href="/work/"><PageText scope="home_18" fallback="View all work " /><Arrow /></PageLink></div>
       <LiveHomeWorks initial={projects} />
     </section>
     <div className="section home-directory">
       <HomeToolsShowcase />
-      <section><h2>Ventures</h2><LiveVentureCards initial={buildVentures(true)} homeList /><PageLink scope="home_24" className="text-link" href="/ventures/"><PageText scope="home_25" fallback="View all ventures " /><Arrow /></PageLink></section>
+      <section><h2><PageText scope="home_ventures_title" fallback="Ventures" /></h2><LiveVentureCards initial={buildVentures(true)} homeList /><PageLink scope="home_24" className="text-link" href="/ventures/"><PageText scope="home_25" fallback="View all ventures " /><Arrow /></PageLink></section>
     </div>
     <Workflow />
     <section className="section home-notes">

@@ -2,556 +2,507 @@
   "home": [
     {
       "key": "home_1_14jrdls",
-      "label": "Hero name",
-      "group": "home",
+      "label": "Name",
+      "group": "Hero",
       "kind": "text",
       "value": "John Clark Semblante"
     },
     {
-      "key": "home_2_1oafbmx",
-      "label": "Hero location",
-      "group": "home",
-      "kind": "text",
-      "value": "/ Philippines"
-    },
-    {
       "key": "home_3_6qqro",
-      "label": "Hero title",
-      "group": "home",
+      "label": "Headline",
+      "group": "Hero",
       "kind": "text",
       "value": "Cebu Web Developer"
     },
     {
       "key": "home_4_ddshuy",
-      "label": "Hero subtitle",
-      "group": "home",
+      "label": "Professional title",
+      "group": "Hero",
       "kind": "text",
       "value": "WordPress/Full Stack Developer"
     },
     {
-      "key": "home_5_1w5104x",
-      "label": "Hero introduction",
-      "group": "home",
-      "kind": "text",
-      "value": "I’m John Clark Semblante, a web developer in Mandaue City, Cebu. I turn Figma designs into WordPress websites, customize WooCommerce stores, and help fix sites that aren’t working as they should. I’ve worked in web development since 2013."
-    },
-    {
-      "key": "button_href_na0cib",
-      "label": "Button destination",
-      "group": "home",
-      "kind": "url",
-      "value": "/contact/"
-    },
-    {
-      "key": "home_6_1to57ad",
-      "label": "Discuss your project",
-      "group": "home",
-      "kind": "text",
-      "value": "Discuss your project"
-    },
-    {
-      "key": "button_href_189y0ck",
-      "label": "Button destination",
-      "group": "home",
-      "kind": "url",
-      "value": "/work/"
-    },
-    {
       "key": "home_7_1c951mu",
-      "label": "View my portfolio",
-      "group": "home",
+      "label": "Portfolio button text",
+      "group": "Hero",
       "kind": "text",
       "value": "View my portfolio"
     },
     {
-      "key": "home_17_189y0ck",
-      "label": "Link destination",
-      "group": "home",
+      "key": "button_href_189y0ck",
+      "label": "Portfolio button destination",
+      "group": "Hero",
       "kind": "url",
       "value": "/work/"
     },
     {
-      "key": "home_18_5bz8pw",
-      "label": "View all work ",
-      "group": "home",
+      "key": "home_craft_start_1sivvfz",
+      "label": "Craft label before arrow",
+      "group": "Hero",
       "kind": "text",
-      "value": "View all work "
+      "value": "Design"
     },
     {
-      "key": "home_19_3nl292",
-      "label": "</>",
-      "group": "home",
+      "key": "home_craft_end_6eg8a2",
+      "label": "Craft label after arrow",
+      "group": "Hero",
       "kind": "text",
-      "value": "</>"
+      "value": "development"
     },
     {
-      "key": "home_20_17hso3y",
-      "label": "Looking for a relevant example?",
-      "group": "home",
+      "key": "home_skill_one_ato6ho",
+      "label": "First specialty",
+      "group": "Hero",
       "kind": "text",
-      "value": "Looking for a relevant example?"
+      "value": "WordPress"
     },
     {
-      "key": "home_21_1ut34o9",
-      "label": "Tell me what you need to build, and I can discuss the experience relevant to your project.",
-      "group": "home",
+      "key": "home_skill_two_jo2uf3",
+      "label": "Second specialty",
+      "group": "Hero",
       "kind": "text",
-      "value": "Tell me what you need to build, and I can discuss the experience relevant to your project."
+      "value": "WooCommerce"
     },
     {
-      "key": "home_24_1k17t7",
-      "label": "Link destination",
-      "group": "home",
+      "key": "home_location_prefix_ha7guc",
+      "label": "Location prefix",
+      "group": "Hero",
+      "kind": "text",
+      "value": "Based in Cebu"
+    },
+    {
+      "key": "home_2_1oafbmx",
+      "label": "Location suffix",
+      "group": "Hero",
+      "kind": "text",
+      "value": "/ Philippines"
+    },
+    {
+      "key": "home_experience_line_loyptb",
+      "label": "Experience statement",
+      "group": "Hero",
+      "kind": "text",
+      "value": "Building for the web"
+    },
+    {
+      "key": "home_experience_year_7grdo1",
+      "label": "Experience start",
+      "group": "Hero",
+      "kind": "text",
+      "value": "since 2013."
+    },
+    {
+      "key": "home_5_1w5104x",
+      "label": "Introduction",
+      "group": "Hero",
+      "kind": "text",
+      "value": "I’m John Clark Semblante, a web developer in Mandaue City, Cebu. I turn Figma designs into WordPress websites, customize WooCommerce stores, and help fix sites that aren’t working as they should. I’ve worked in web development since 2013."
+    },
+    {
+      "key": "home_6_1to57ad",
+      "label": "Contact button text",
+      "group": "Hero",
+      "kind": "text",
+      "value": "Discuss your project"
+    },
+    {
+      "key": "button_href_na0cib",
+      "label": "Contact button destination",
+      "group": "Hero",
       "kind": "url",
-      "value": "/ventures/"
+      "value": "/contact/"
     },
     {
-      "key": "home_25_2x8243",
-      "label": "View all ventures ",
-      "group": "home",
+      "key": "home_scroll_14bl0uy",
+      "label": "Scroll link text",
+      "group": "Hero",
       "kind": "text",
-      "value": "View all ventures "
+      "value": "Scroll to explore"
     },
     {
-      "key": "button_href_gssft4",
-      "label": "Button destination",
-      "group": "home",
+      "key": "home_scroll_url_i8vg3p",
+      "label": "Scroll link destination",
+      "group": "Hero",
       "kind": "url",
-      "value": "/about/"
+      "value": "#services-title"
     },
     {
-      "key": "home_33_hu55i2",
-      "label": "Notes from the work",
-      "group": "home",
+      "key": "home_footer_sqfcrs",
+      "label": "Footer caption",
+      "group": "Hero",
       "kind": "text",
-      "value": "Notes from the work"
-    },
-    {
-      "key": "home_35_1oiaxt7",
-      "label": "Link destination",
-      "group": "home",
-      "kind": "url",
-      "value": "/blog/"
-    },
-    {
-      "key": "home_36_1ima6qr",
-      "label": "Visit the blog ",
-      "group": "home",
-      "kind": "text",
-      "value": "Visit the blog "
-    },
-    {
-      "key": "home_38_87ga2a",
-      "label": "I share development notes here when there is something useful to write about. In the meant",
-      "group": "home",
-      "kind": "text",
-      "value": "I share development notes here when there is something useful to write about. In the meantime, you can browse my website projects."
+      "value": "Development & ventures"
     },
     {
       "key": "development_services_1_1nanxqn",
-      "label": "How I can help",
-      "group": "development_services",
+      "label": "Section label",
+      "group": "How I can help",
       "kind": "text",
       "value": "How I can help"
     },
     {
       "key": "development_services_2_9pfz7x",
-      "label": "WordPress development & website support.",
-      "group": "development_services",
+      "label": "Heading",
+      "group": "How I can help",
       "kind": "text",
       "value": "WordPress development & website support."
     },
     {
       "key": "development_services_3_1479wnr",
-      "label": "Figma to WordPress",
-      "group": "development_services",
+      "label": "Service 1 title",
+      "group": "How I can help",
       "kind": "text",
       "value": "Figma to WordPress"
     },
     {
-      "key": "development_services_3_1sen97m",
-      "label": "WooCommerce development",
-      "group": "development_services",
-      "kind": "text",
-      "value": "WooCommerce development"
-    },
-    {
-      "key": "development_services_3_1cuk3w8",
-      "label": "Website fixes & improvements",
-      "group": "development_services",
-      "kind": "text",
-      "value": "Website fixes & improvements"
-    },
-    {
       "key": "development_services_4_1trcu5b",
-      "label": "I turn Figma designs into responsive WordPress themes you can edit yourself.",
-      "group": "development_services",
+      "label": "Service 1 description",
+      "group": "How I can help",
       "kind": "text",
       "value": "I turn Figma designs into responsive WordPress themes you can edit yourself."
     },
     {
+      "key": "development_services_3_1sen97m",
+      "label": "Service 2 title",
+      "group": "How I can help",
+      "kind": "text",
+      "value": "WooCommerce development"
+    },
+    {
       "key": "development_services_4_1mfk1gf",
-      "label": "I tailor product pages, checkout flows and integrations to the way your store sells.",
-      "group": "development_services",
+      "label": "Service 2 description",
+      "group": "How I can help",
       "kind": "text",
       "value": "I tailor product pages, checkout flows and integrations to the way your store sells."
     },
     {
+      "key": "development_services_3_1cuk3w8",
+      "label": "Service 3 title",
+      "group": "How I can help",
+      "kind": "text",
+      "value": "Website fixes & improvements"
+    },
+    {
       "key": "development_services_4_18l8q45",
-      "label": "I diagnose slow pages, broken layouts and plugin conflicts, then fix the affected parts.",
-      "group": "development_services",
+      "label": "Service 3 description",
+      "group": "How I can help",
       "kind": "text",
       "value": "I diagnose slow pages, broken layouts and plugin conflicts, then fix the affected parts."
     },
     {
-      "key": "development_services_7_na0cib",
-      "label": "Link destination",
-      "group": "development_services",
-      "kind": "url",
-      "value": "/contact/"
-    },
-    {
       "key": "development_services_8_yeez6v",
-      "label": "Tell me about your website ",
-      "group": "development_services",
+      "label": "Contact link text",
+      "group": "How I can help",
       "kind": "text",
       "value": "Tell me about your website "
     },
     {
+      "key": "development_services_7_na0cib",
+      "label": "Contact link destination",
+      "group": "How I can help",
+      "kind": "url",
+      "value": "/contact/"
+    },
+    {
+      "key": "home_works_title_1t0gyvd",
+      "label": "Heading",
+      "group": "Works",
+      "kind": "text",
+      "value": "Works"
+    },
+    {
+      "key": "home_18_5bz8pw",
+      "label": "Directory link text",
+      "group": "Works",
+      "kind": "text",
+      "value": "View all work "
+    },
+    {
+      "key": "home_17_189y0ck",
+      "label": "Directory link destination",
+      "group": "Works",
+      "kind": "url",
+      "value": "/work/"
+    },
+    {
+      "key": "home_19_3nl292",
+      "label": "Empty list symbol",
+      "group": "Works",
+      "kind": "text",
+      "value": "</>"
+    },
+    {
+      "key": "home_20_17hso3y",
+      "label": "Empty list heading",
+      "group": "Works",
+      "kind": "text",
+      "value": "Looking for a relevant example?"
+    },
+    {
+      "key": "home_21_1ut34o9",
+      "label": "Empty list message",
+      "group": "Works",
+      "kind": "text",
+      "value": "Tell me what you need to build, and I can discuss the experience relevant to your project."
+    },
+    {
+      "key": "home_tools_title_nj8bud",
+      "label": "Heading",
+      "group": "Online tools",
+      "kind": "text",
+      "value": "Free Online Tools"
+    },
+    {
+      "key": "home_tools_cta_awdc6s",
+      "label": "Directory link text",
+      "group": "Online tools",
+      "kind": "text",
+      "value": "Explore All Tools"
+    },
+    {
+      "key": "home_tools_url_1r0sbqy",
+      "label": "Directory link destination",
+      "group": "Online tools",
+      "kind": "url",
+      "value": "/tools/"
+    },
+    {
+      "key": "home_ventures_title_tfsbt1",
+      "label": "Heading",
+      "group": "Ventures",
+      "kind": "text",
+      "value": "Ventures"
+    },
+    {
+      "key": "home_25_2x8243",
+      "label": "Directory link text",
+      "group": "Ventures",
+      "kind": "text",
+      "value": "View all ventures "
+    },
+    {
+      "key": "home_24_1k17t7",
+      "label": "Directory link destination",
+      "group": "Ventures",
+      "kind": "url",
+      "value": "/ventures/"
+    },
+    {
       "key": "workflow_1_15fwn7u",
-      "label": "Working together",
-      "group": "workflow",
+      "label": "Section label",
+      "group": "Working together",
       "kind": "text",
       "value": "Working together"
     },
     {
       "key": "workflow_2_t5znsp",
-      "label": "How I approach a website project.",
-      "group": "workflow",
+      "label": "Heading",
+      "group": "Working together",
       "kind": "text",
       "value": "How I approach a website project."
     },
     {
       "key": "workflow_3_94wj3u",
-      "label": "01",
-      "group": "workflow",
+      "label": "Step 1 number",
+      "group": "Working together",
       "kind": "text",
       "value": "01"
     },
     {
-      "key": "workflow_3_8uwxev",
-      "label": "02",
-      "group": "workflow",
-      "kind": "text",
-      "value": "02"
-    },
-    {
-      "key": "workflow_3_8kxbpw",
-      "label": "03",
-      "group": "workflow",
-      "kind": "text",
-      "value": "03"
-    },
-    {
-      "key": "workflow_3_8axq0x",
-      "label": "04",
-      "group": "workflow",
-      "kind": "text",
-      "value": "04"
-    },
-    {
       "key": "workflow_4_ph4ged",
-      "label": "Start with your website",
-      "group": "workflow",
+      "label": "Step 1 title",
+      "group": "Working together",
       "kind": "text",
       "value": "Start with your website"
     },
     {
-      "key": "workflow_4_2lblol",
-      "label": "Define the scope",
-      "group": "workflow",
-      "kind": "text",
-      "value": "Define the scope"
-    },
-    {
-      "key": "workflow_4_akuij2",
-      "label": "Build and test",
-      "group": "workflow",
-      "kind": "text",
-      "value": "Build and test"
-    },
-    {
-      "key": "workflow_4_14g1a33",
-      "label": "Review before launch",
-      "group": "workflow",
-      "kind": "text",
-      "value": "Review before launch"
-    },
-    {
       "key": "workflow_5_1b846ed",
-      "label": "Show me the current site or design files. Tell me who uses it, what they need to do, and w",
-      "group": "workflow",
+      "label": "Step 1 description",
+      "group": "Working together",
       "kind": "text",
       "value": "Show me the current site or design files. Tell me who uses it, what they need to do, and where you need help."
     },
     {
+      "key": "workflow_3_8uwxev",
+      "label": "Step 2 number",
+      "group": "Working together",
+      "kind": "text",
+      "value": "02"
+    },
+    {
+      "key": "workflow_4_2lblol",
+      "label": "Step 2 title",
+      "group": "Working together",
+      "kind": "text",
+      "value": "Define the scope"
+    },
+    {
       "key": "workflow_5_dvdcu5",
-      "label": "We’ll identify the pages and features involved, discuss your deadline, and check which exi",
-      "group": "workflow",
+      "label": "Step 2 description",
+      "group": "Working together",
       "kind": "text",
       "value": "We’ll identify the pages and features involved, discuss your deadline, and check which existing tools the work depends on."
     },
     {
+      "key": "workflow_3_8kxbpw",
+      "label": "Step 3 number",
+      "group": "Working together",
+      "kind": "text",
+      "value": "03"
+    },
+    {
+      "key": "workflow_4_akuij2",
+      "label": "Step 3 title",
+      "group": "Working together",
+      "kind": "text",
+      "value": "Build and test"
+    },
+    {
       "key": "workflow_5_7kh3b2",
-      "label": "I work through the agreed changes and check the affected layouts and interactions, includi",
-      "group": "workflow",
+      "label": "Step 3 description",
+      "group": "Working together",
       "kind": "text",
       "value": "I work through the agreed changes and check the affected layouts and interactions, including mobile screens and keyboard use."
     },
     {
+      "key": "workflow_3_8axq0x",
+      "label": "Step 4 number",
+      "group": "Working together",
+      "kind": "text",
+      "value": "04"
+    },
+    {
+      "key": "workflow_4_14g1a33",
+      "label": "Step 4 title",
+      "group": "Working together",
+      "kind": "text",
+      "value": "Review before launch"
+    },
+    {
       "key": "workflow_5_hsxvco",
-      "label": "You review the changes against the scope. We’ll work through feedback and agree on any rem",
-      "group": "workflow",
+      "label": "Step 4 description",
+      "group": "Working together",
       "kind": "text",
       "value": "You review the changes against the scope. We’ll work through feedback and agree on any remaining items before handover."
     },
     {
+      "key": "home_33_hu55i2",
+      "label": "Heading",
+      "group": "Blog",
+      "kind": "text",
+      "value": "Notes from the work"
+    },
+    {
+      "key": "home_36_1ima6qr",
+      "label": "Directory link text",
+      "group": "Blog",
+      "kind": "text",
+      "value": "Visit the blog "
+    },
+    {
+      "key": "home_35_1oiaxt7",
+      "label": "Directory link destination",
+      "group": "Blog",
+      "kind": "url",
+      "value": "/blog/"
+    },
+    {
+      "key": "home_38_87ga2a",
+      "label": "Empty list message",
+      "group": "Blog",
+      "kind": "text",
+      "value": "I share development notes here when there is something useful to write about. In the meantime, you can browse my website projects."
+    },
+    {
       "key": "project_questions_1_1xcxbqy",
-      "label": "Before we start",
-      "group": "project_questions",
+      "label": "Section label",
+      "group": "FAQ",
       "kind": "text",
       "value": "Before we start"
     },
     {
       "key": "project_questions_2_t8nwwk",
-      "label": "Questions about working together.",
-      "group": "project_questions",
+      "label": "Heading",
+      "group": "FAQ",
       "kind": "text",
       "value": "Questions about working together."
     },
     {
       "key": "project_questions_3_10wum5u",
-      "label": "Can you work on my existing WordPress website?",
-      "group": "project_questions",
+      "label": "Question 1",
+      "group": "FAQ",
       "kind": "text",
       "value": "Can you work on my existing WordPress website?"
     },
     {
-      "key": "project_questions_3_zkrbjc",
-      "label": "Do I need finished designs before getting in touch?",
-      "group": "project_questions",
-      "kind": "text",
-      "value": "Do I need finished designs before getting in touch?"
-    },
-    {
-      "key": "project_questions_3_1m9pz8",
-      "label": "Can we work together remotely?",
-      "group": "project_questions",
-      "kind": "text",
-      "value": "Can we work together remotely?"
-    },
-    {
-      "key": "project_questions_3_iamv5n",
-      "label": "What should I send to discuss cost and timing?",
-      "group": "project_questions",
-      "kind": "text",
-      "value": "What should I send to discuss cost and timing?"
-    },
-    {
       "key": "project_questions_4_o3b42x",
-      "label": "Yes. My work includes theme changes, WooCommerce customization, layout fixes, and plugin-r",
-      "group": "project_questions",
+      "label": "Answer 1",
+      "group": "FAQ",
       "kind": "text",
       "value": "Yes. My work includes theme changes, WooCommerce customization, layout fixes, and plugin-related issues. Send the website link and describe the change or problem. I’ll need to review the current setup before agreeing on the work."
     },
     {
+      "key": "project_questions_3_zkrbjc",
+      "label": "Question 2",
+      "group": "FAQ",
+      "kind": "text",
+      "value": "Do I need finished designs before getting in touch?"
+    },
+    {
       "key": "project_questions_4_1hlh60h",
-      "label": "No. Figma files are helpful for a design-to-development project, but you can also start wi",
-      "group": "project_questions",
+      "label": "Answer 2",
+      "group": "FAQ",
       "kind": "text",
       "value": "No. Figma files are helpful for a design-to-development project, but you can also start with an existing website and a list of changes. Tell me what content and designs you already have so we can identify what else the project needs."
     },
     {
+      "key": "project_questions_3_1m9pz8",
+      "label": "Question 3",
+      "group": "FAQ",
+      "kind": "text",
+      "value": "Can we work together remotely?"
+    },
+    {
       "key": "project_questions_4_63cp9g",
-      "label": "I’m based in Cebu, Philippines, on UTC+8, and welcome remote projects and development role",
-      "group": "project_questions",
+      "label": "Answer 3",
+      "group": "FAQ",
       "kind": "text",
       "value": "I’m based in Cebu, Philippines, on UTC+8, and welcome remote projects and development roles. Share your team’s time zone, required working hours, and preferred way to communicate so we can check whether the arrangement fits."
     },
     {
+      "key": "project_questions_3_iamv5n",
+      "label": "Question 4",
+      "group": "FAQ",
+      "kind": "text",
+      "value": "What should I send to discuss cost and timing?"
+    },
+    {
       "key": "project_questions_4_o6cvh8",
-      "label": "Include your website or design link, the pages or features involved, your preferred deadli",
-      "group": "project_questions",
+      "label": "Answer 4",
+      "group": "FAQ",
       "kind": "text",
       "value": "Include your website or design link, the pages or features involved, your preferred deadline, and a budget range if you have one. Cost and timing depend on the scope, the existing setup, and what is ready to use. You don’t need to know all the technical details to start the conversation."
     },
     {
       "key": "project_questions_5_1q8h9ug",
-      "label": "Have a different question? ",
-      "group": "project_questions",
+      "label": "Contact prompt",
+      "group": "FAQ",
       "kind": "text",
       "value": "Have a different question? "
     },
     {
-      "key": "project_questions_6_na0cib",
-      "label": "Link destination",
-      "group": "project_questions",
-      "kind": "url",
-      "value": "/contact/"
-    },
-    {
       "key": "project_questions_7_ssh7nf",
-      "label": "Send me a message",
-      "group": "project_questions",
+      "label": "Contact link text",
+      "group": "FAQ",
       "kind": "text",
       "value": "Send me a message"
     },
     {
-      "key": "venture_cards_1_51eg0f",
-      "label": "Link destination",
-      "group": "venture_cards",
+      "key": "project_questions_6_na0cib",
+      "label": "Contact link destination",
+      "group": "FAQ",
       "kind": "url",
-      "value": "/ventures/lazy-barista/"
-    },
-    {
-      "key": "venture_cards_1_1b10q5s",
-      "label": "Link destination",
-      "group": "venture_cards",
-      "kind": "url",
-      "value": "/ventures/golden-travel-and-tours/"
-    },
-    {
-      "key": "venture_cards_1_12ugzgj",
-      "label": "Link destination",
-      "group": "venture_cards",
-      "kind": "url",
-      "value": "/ventures/lapse-hub/"
-    },
-    {
-      "key": "venture_cards_2_src_1cyryf8",
-      "label": "Image",
-      "group": "venture_cards",
-      "kind": "image",
-      "value": "/ventures/lazy-barista/logo.webp"
-    },
-    {
-      "key": "venture_cards_2_src_17bc2qh",
-      "label": "Image",
-      "group": "venture_cards",
-      "kind": "image",
-      "value": "/ventures/golden-travel-and-tours/logo.webp"
-    },
-    {
-      "key": "venture_cards_2_src_1bimbzt",
-      "label": "Image",
-      "group": "venture_cards",
-      "kind": "image",
-      "value": "/ventures/lapse-hub/logo.jpg"
-    },
-    {
-      "key": "venture_cards_3_qvqtll",
-      "label": "LH",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "LH"
-    },
-    {
-      "key": "venture_cards_4_1074p14",
-      "label": "PHOTOGRAPHY",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "PHOTOGRAPHY"
-    },
-    {
-      "key": "venture_cards_5_1mw3r9d",
-      "label": "Coffee",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Coffee"
-    },
-    {
-      "key": "venture_cards_5_o5dct8",
-      "label": "Travel & rentals",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Travel & rentals"
-    },
-    {
-      "key": "venture_cards_5_1woxc1k",
-      "label": "Photography",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Photography"
-    },
-    {
-      "key": "venture_cards_6_1s7o0ar",
-      "label": "/ Independent venture",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "/ Independent venture"
-    },
-    {
-      "key": "venture_cards_7_1nnhg0l",
-      "label": "Lazy Barista",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Lazy Barista"
-    },
-    {
-      "key": "venture_cards_7_3aikza",
-      "label": "Golden Travel and Tours",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Golden Travel and Tours"
-    },
-    {
-      "key": "venture_cards_7_1bznvyd",
-      "label": "Lapse Hub",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Lapse Hub"
-    },
-    {
-      "key": "venture_cards_8_10gks81",
-      "label": "Browse the menu & order",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Browse the menu & order"
-    },
-    {
-      "key": "venture_cards_8_19ow01k",
-      "label": "Explore services & request a quote",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Explore services & request a quote"
-    },
-    {
-      "key": "venture_cards_8_jvr6iu",
-      "label": "Explore the photography archive",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": "Explore the photography archive"
-    },
-    {
-      "key": "venture_cards_2_alt_asset_1cyryf8_ztntfp",
-      "label": "Description: Image",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": ""
-    },
-    {
-      "key": "venture_cards_2_alt_asset_17bc2qh_ztntfp",
-      "label": "Description: Image",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": ""
-    },
-    {
-      "key": "venture_cards_2_alt_asset_1bimbzt_ztntfp",
-      "label": "Description: Image",
-      "group": "venture_cards",
-      "kind": "text",
-      "value": ""
+      "value": "/contact/"
     }
   ],
   "about": [

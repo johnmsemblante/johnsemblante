@@ -21,7 +21,7 @@ Each page has an optional meta title (160 characters) and description (500 chara
 
 ## Maintaining fields
 
-The centered homepage hero retains its original name, title, subtitle, introduction, location suffix and button fields. Its animated particle portrait is code-managed and cannot be replaced through Pages; the former Home `browser_illustration` fields are retired. Manage project thumbnails in Works, venture logos in Ventures and article featured images in Blog. The standalone About page has its own editable portrait. See [homepage portrait behavior and maintenance](hero-portrait.md).
+Home fields follow the public layout: Hero, How I can help, Works, Online tools, Ventures, Working together, Blog and FAQ. Edit both parts of the hero location and experience statement in Hero. Directory headings and links belong to their own sections. Empty list fields appear publicly when a section has no published entries. Search by section, label, default copy or saved text. Existing active field keys retain their overrides. Retired Home About and venture-card controls are omitted from the drawer. Its animated particle portrait is code-managed and cannot be replaced through Pages; the former Home `browser_illustration` fields are retired. Manage project thumbnails in Works, venture logos in Ventures and article featured images in Blog. The standalone About page has its own editable portrait. See [homepage portrait behavior and maintenance](hero-portrait.md).
 
 `src/content/page-fields.json` lists the editor fields, grouped by page. `PageText`, `PageImage`, and `PageLink` read the corresponding override through `PageContent`; outside a managed landing page they render their source defaults. No stored HTML is executed. URL rendering validates destinations.
 

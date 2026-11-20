@@ -110,7 +110,7 @@ test('Pages lists six routes, opens the shared drawer on the left and persists e
   assert.equal(h.nodes().filter(n => n.props?.id?.startsWith('edit-page-')).length, 6);
   await h.nodes().find(n => n.props?.id === 'edit-page-home').props.onClick(); h.render();
   assert.ok(h.nodes().some(n => n.props?.editorLabel === 'page' && n.props.side === 'left'));
-  const hero = fields.home.find(f => f.label === 'Hero title');
+  const hero = fields.home.find(f => f.group === 'Hero' && f.label === 'Headline');
   h.nodes().find(n => n.props?.id === hero.key).props.onChange({ target: { value: 'New home title' } }); h.render();
   await h.nodes().find(n => n.type === 'form').props.onSubmit({ preventDefault() {} }); h.render();
   assert.equal(h.stored().values[hero.key], 'New home title'); assert.equal(h.stored().revision, 1);
@@ -120,4 +120,23 @@ test('Pages lists six routes, opens the shared drawer on the left and persists e
   assert.equal(h.stored().revision, 1); assert.equal(h.stored().values[hero.key], 'New home title');
   assert.ok(h.nodes().some(n => n.props?.role === 'alert' && n.props.children.includes('another tab')));
   assert.equal(h.nodes().find(n => n.props?.id === hero.key).props.value, 'Unsaved conflict edit');
+});
+
+test('every Home editor field changes its intended public text or link', () => {
+  const record = model.emptyPage();
+  for (const field of fields.home) {
+    record.values[field.key] = field.kind === 'url' ? '/check/' + field.key + '/' : 'check-' + field.key;
+  }
+  const loadHome = loader({
+    'next/link': { __esModule: true, default: ({ href, children }) => React.createElement('a', { href }, children) },
+    '@/lib/firebase-client': { firebaseConfigured: false },
+    '@/lib/build-pages': { buildPage: () => record, withPageMetadata: (_, metadata) => metadata },
+    '@/lib/build-works': { buildWorks: () => [] },
+    '@/lib/build-ventures': { buildVentures: () => [] },
+    '@/content/blog': { publishedPosts: () => [] },
+    '@/lib/build-blog': { buildBlogPosts: () => [] },
+  });
+  const Home = loadHome('src/app/(portfolio)/page.tsx').default;
+  const html = renderToStaticMarkup(React.createElement(Home));
+  for (const field of fields.home) assert.ok(html.includes(record.values[field.key]), field.key);
 });

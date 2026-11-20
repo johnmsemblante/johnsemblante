@@ -21,6 +21,7 @@ function tool(id, overrides = {}) {
 }
 function showcase(items) {
   const { HomeToolsShowcase } = load('src/components/home-tools-showcase.tsx', {
+    '@/components/page-content': require('./page-content-mocks.cjs').content,
     '@/config/tool-ventures': { featuredHomeTools: () => registry.featuredHomeTools(items) },
     'next/link': { default: ({ children, ...props }) => React.createElement('a', props, children) },
     './ui': { Arrow: () => React.createElement('span', { 'aria-hidden': true }, '↗') },

@@ -86,7 +86,7 @@ export function AdminPages() {
     <div className="page-admin-list">{pageCatalog.map(p => <button id={`edit-page-${p.id}`} key={p.id} className="page-admin-row" disabled={blocked} onClick={() => void open(p.id)}><span><strong>{p.title}</strong><small>{p.path}</small></span><span>{p.fields.length} fields</span><span>Edit page →</span></button>)}</div>
     {selected && input && page && <BlogEditorDrawer title={`Edit ${page.title}`} editorLabel="page" returnFocusId={`edit-page-${selected}`} side="left" busy={blocked} onClose={close}>
       <form className="work-editor page-editor" onSubmit={save}>
-        <p className="form-note">Fields start with the current code defaults. Reset a field to restore its default. Blog posts and project records are edited in Blog and Works.</p>
+        <p className="form-note">Fields start with the current code defaults. Reset a field to restore its default. {selected === "home" ? "Home sections follow their order on the public page. Edit project thumbnails in Works, article images in Blog and logos in Ventures. Online tool listings come from the tool registry." : "Blog posts and project records are edited in Blog and Works."}</p>
         <a className="text-link" href={page.path} target="_blank" rel="noopener noreferrer">View public page ↗</a>
         <fieldset disabled={blocked}>
           <h3>Search metadata</h3>
@@ -96,8 +96,8 @@ export function AdminPages() {
           <label>Find a content field<input type="search" value={search} placeholder="Search current text or section" onChange={e => setSearch(e.target.value)} /></label>
         </fieldset>
         {groups.map(group => {
-          const fields = page.fields.filter(f => f.group === group && `${f.label} ${f.value} ${group}`.toLowerCase().includes(search.toLowerCase()));
-          return fields.length > 0 && <details className="page-field-group" key={group} open={!!search || group === page.id}><summary>{group.replaceAll("_", " ")} <small>{fields.length} fields</small></summary>
+          const fields = page.fields.filter(f => f.group === group && `${f.label} ${input.values[f.key] ?? ""} ${f.value} ${group}`.toLowerCase().includes(search.toLowerCase()));
+          return fields.length > 0 && <details className="page-field-group" key={group} open={!!search || group === groups[0]}><summary>{group.replaceAll("_", " ")} <small>{fields.length} fields</small></summary>
             <fieldset disabled={blocked}>{fields.map(field => <div key={field.key} className="page-content-field">
               <label htmlFor={field.key}>{field.label || "Text"}</label>
               {field.kind === "text" ? <textarea id={field.key} rows={field.value.length > 160 ? 4 : 2} maxLength={10000} value={input.values[field.key] ?? field.value} onChange={e => value(field.key, e.target.value)} /> : <input id={field.key} maxLength={2000} value={input.values[field.key] ?? field.value} onChange={e => value(field.key, e.target.value)} />}
