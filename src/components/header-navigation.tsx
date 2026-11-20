@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
@@ -82,6 +83,7 @@ export function HeaderNavigation({ links, label = "Main navigation" }: { links: 
           </div>
         </div>;
       })}
+      <ThemeToggle />
     </nav>
   </div>;
 }

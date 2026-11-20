@@ -1,0 +1,65 @@
+:root { color-scheme: light; }
+@media screen {
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --night-page: #191d1e;
+    --night-surface: #232a2b;
+    --night-raised: #30393a;
+    --night-line: #475555;
+    --night-muted: #afbcba;
+    --night-ink: #edf1ee;
+    --night-green: #a8d3b4;
+    --night-teal: #9ed5d1;
+    --night-warm: #e4bda4;
+    --night-danger: #ffaf9e;
+    --night-green-panel: #2c3932;
+    --night-teal-panel: #243639;
+    --night-warm-panel: #38312c;
+    --paper: var(--night-page);
+    --ink: var(--night-ink);
+    --muted: var(--night-muted);
+    --line: var(--night-line);
+    --accent: #354740;
+  }
+  html[data-theme="dark"] :is(.home-portrait, .profile-portrait, .study-portrait-frame img) { mix-blend-mode: normal; }
+  html[data-theme="dark"] .site-header { background-color: var(--paper); }
+  html[data-theme="dark"] .portfolio-cursor-ring::after { border-color: #eff4ef; }
+  /* Documents and artwork use their own paper and ink, including during editing. */
+  html[data-theme="dark"] :is(.resume-preview-sheet,.pdf-stage,.pdf-signature canvas,.qr-preview) {
+    color-scheme: light;
+    --paper: #fafaf8; --ink: #202323; --muted: #606666; --line: #dedfdb;
+    --night-page: initial; --night-surface: initial; --night-raised: initial;
+    --night-line: initial; --night-muted: initial; --night-ink: initial;
+    --night-green: initial; --night-teal: initial; --night-warm: initial; --night-danger: initial;
+    --night-green-panel: initial; --night-teal-panel: initial; --night-warm-panel: initial;
+  }
+}
+.theme-toggle {
+  display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px;
+  padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit;
+}
+.theme-toggle:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.theme-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .theme-toggle svg { transition: transform 200ms ease-out; }
+}
+.admin-theme-control { display: flex; justify-content: flex-end; }
+@media print { .theme-toggle, .admin-theme-control { display: none !important; } }
+@media screen {
+  html[data-theme="dark"] :is(.admin-card,.blog-preview,.documentation-guide,.dashboard-app-card,.trip-package-info,.trip-result,.venture-pending,.venture-offerings>article,.vehicle-grid figure) { background-color: var(--night-surface); }
+  html[data-theme="dark"] .image-viewer { color: #f4f7f6; }
+  html[data-theme="dark"] .image-viewer button { color: #f4f7f6; }
+}
+@media screen {
+  /* The graphite cutout has transparent highlights inside the face. Back those
+     highlights with paper while keeping the silhouette and shoulders transparent. */
+  html[data-theme="dark"] .hero-portrait-art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 25% 24% at 50% 47%, #f2efeb 90%, transparent 100%),
+      radial-gradient(ellipse 14% 18% at 50% 72%, #e6e1dc 90%, transparent 100%);
+  }
+}

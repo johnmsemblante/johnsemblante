@@ -19,9 +19,9 @@ main > .portrait-hero {
 .portrait-hero .button { font-size: 12px; gap: 16px; padding: 14px 18px; max-width: 100%; overflow-wrap: anywhere; }
 .portrait-hero-craft { margin-top: 52px; }
 .portrait-hero-craft > .eyebrow { display: flex; align-items: center; gap: 9px; font-size: 9px; margin-bottom: 18px; }
-.portrait-hero-craft > .eyebrow::after { content: ""; height: 1px; width: 48px; background: #8a946c; }
+.portrait-hero-craft > .eyebrow::after { content: ""; height: 1px; width: 48px; background: var(--night-green,#8a946c); }
 .portrait-hero-craft ul { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.portrait-hero-craft li { border: 1px solid #929b7d; padding: 6px 12px; font-size: 10px; border-radius: 30px; }
+.portrait-hero-craft li { border: 1px solid var(--night-line,#929b7d); padding: 6px 12px; font-size: 10px; border-radius: 30px; }
 .hero-portrait { position: relative; min-width: 0; width: calc(100% + 80px); margin: 25px -40px; align-self: center; overflow: clip; display: flow-root; }
 /* Fit the portrait into the existing 4:5 hero footprint. */
 .hero-portrait-art { display: block; position: relative; aspect-ratio: 640 / 827; width: calc(100% * 800 / 827); margin-inline: auto; /* Trim the 40 transparent rows above the hair in the 640px-wide sketch. */
@@ -32,13 +32,13 @@ main > .portrait-hero {
 .portrait-hero-location > p:last-child { font-size: clamp(23px, 2.3vw, 34px); letter-spacing: -0.045em; line-height: 1.22; margin: 0; }
 .portrait-hero-story .lede { font-size: 14px; line-height: 1.8; margin-bottom: 22px; }
 .portrait-hero-story .button.secondary { background: #d1e78b65; border-color: transparent; padding: 8px 12px; }
-.portrait-hero-footer { grid-column: 1 / -1; border-top: 1px solid #959d83; display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 9px; letter-spacing: 0.08em; padding-block: 16px 28px; }
+.portrait-hero-footer { grid-column: 1 / -1; border-top: 1px solid var(--night-line,#959d83); display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 9px; letter-spacing: 0.08em; padding-block: 16px 28px; }
 .portrait-hero-footer > a { text-transform: uppercase; letter-spacing: 0.14em; min-height: 32px; align-content: center; }
 .portrait-hero-footer > a > span { display: inline-block; margin-left: 9px; }
 #services-title { scroll-margin-top: 30px; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .portrait-hero-intro > .eyebrow, .portrait-hero h1, .portrait-hero-location, .portrait-hero-craft li { transition: translate 240ms ease, color 240ms ease; }
-  .portrait-hero-intro > .eyebrow:hover, .portrait-hero h1:hover, .portrait-hero-location:hover { translate: 0 -3px; color: #667647; }
+  .portrait-hero-intro > .eyebrow:hover, .portrait-hero h1:hover, .portrait-hero-location:hover { translate: 0 -3px; color: var(--night-green,#667647); }
   .portrait-hero-craft li:hover { translate: 0 -3px; background: #d1e78b40; }
   .portrait-hero .button { transition: translate 220ms ease, background 220ms ease, box-shadow 220ms ease; }
   .portrait-hero .button:hover { translate: 0 -3px; box-shadow: 0 7px 18px #252b2510; }

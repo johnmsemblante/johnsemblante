@@ -1,5 +1,14 @@
 # Visual direction
 
+## Light and dark appearance
+
+The portfolio and venture navigation menus include an icon-only yin-yang switch labeled Dark mode for assistive technology. Its orientation indicates the selected theme. Administration has the same switch above its content. The root layout reads the browser's `portfolio-theme` local storage entry before the first paint. Without an explicit choice the site follows the system color preference. Open tabs synchronize through storage events. The switch still works on the current page when browser storage is unavailable.
+
+UI colors use the palette in `src/app/theme.css` with their light colors as fallbacks. Check form controls, menu states and keyboard focus when changing colors. Review photos and generated documents in their original colors. Dark palette overrides apply only on screen, so print layouts keep their light colors.
+
+## Earlier design notes
+
+
 Homepage portrait review, 13 November 2026: the original homepage browser illustration uses the transparent doodle sketch portrait. Its portrait frame has no background fill, so transparent image areas show the browser canvas without a white rectangle. The original hero copy and layout remain in place; the broader doodle/preloader experiment is parked in a local Git stash. Replacing this portrait in Pages should use an image with genuine transparency if the same appearance is wanted.
 
 The lower homepage About section now reuses `public/images/profile/john-doodle-sketch.webp` (640 x 827). The About page uses its own transparent graphite sketch of the gray-blazer pose, `public/images/profile/john-about-doodle-sketch.webp` (768 x 1152), preserving the smile and hands. The original photographs remain available. All three portrait fields remain independently editable through Pages; their defaults and description keys in `src/content/page-fields.json` match the new image paths. Dimensions reserve each asset's space, and the existing responsive layouts remain in place. These portrait updates use the existing static build and publishing workflow; the separate scroll-reveal experiment is confined to doodle_theme.
