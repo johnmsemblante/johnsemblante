@@ -4,18 +4,12 @@ const FORMATION_MS = 4100;
 
 type Grain = {
   x: number; y: number; startX: number; startY: number;
-  delay: number; size: number; depth: number; star: boolean;
+  delay: number; duration: number; size: number; depth: number; star: boolean;
 };
 
 function smooth(value: number) {
   const t = Math.max(0, Math.min(1, value));
   return t * t * (3 - 2 * t);
-}
-
-// Bias the full start range toward the destination while allowing overlap
-// everywhere, including across the horizontal and vertical centerlines.
-function startCoordinate(sample: number, destination: number) {
-  return sample + (2 * destination - 1) * sample * (1 - sample);
 }
 
 function surface(width: number, height: number) {
@@ -71,11 +65,20 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
       if (!coverage) continue;
       const light = (pixels[offset] * .3 + pixels[offset + 1] * .59 + pixels[offset + 2] * .11) / 255;
       const depth = random();
-      const startX = startCoordinate(random(), x / WIDTH);
-      const startY = startCoordinate(random(), y / HEIGHT);
+      // Neighboring parts of the sketch approach from loose, offset wisps.
+      // Gaussian scatter leaves feathered tails beyond the visible hero bounds.
+      const u = x / WIDTH, v = y / HEIGHT;
+      const ripple = Math.sin(v * 9 + u * 3);
+      const fold = Math.sin(u * 8 - v * 4 + .8);
+      const angle = random() * 2 * Math.PI;
+      const scatter = Math.sqrt(-2 * Math.log(1 - random())) * (.055 + .18 * depth);
+      const startX = .5 + 1.45 * (u - .5) + .28 * ripple + scatter * Math.cos(angle);
+      const startY = .5 + 1.08 * (v - .5) + .18 * fold + scatter * Math.sin(angle);
+      const delay = .05 + .10 * (1 + ripple) + .09 * random();
+      const finish = .78 + .13 * depth + .09 * random();
       bands[Math.round(light * 31)].push({
         x, y, depth, star: random() < .055, startX, startY,
-        delay: random() * .17,
+        delay, duration: finish - delay,
         size: step * Math.sqrt(coverage) * (.62 + .52 * (1 - light)) * (.75 + random() * .42),
       });
     }
@@ -89,7 +92,7 @@ export function createParticlePortrait(photo: HTMLImageElement, canvas: HTMLCanv
       target.fillStyle = colors[i];
       for (const g of band) {
         if (!g.star && progress <= g.delay) continue;
-        const t = progress === 1 ? 1 : smooth((progress - g.delay) / (1 - g.delay));
+        const t = progress === 1 ? 1 : smooth((progress - g.delay) / g.duration);
         const flying = 1 - t;
         const fromX = g.startX * width, fromY = g.startY * height;
         const toX = centerX + (g.x - WIDTH / 2) * scaleX * zoom;
