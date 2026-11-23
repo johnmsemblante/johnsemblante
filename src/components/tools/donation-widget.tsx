@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import type { DonationMethod } from "@/lib/donation-methods";
 import { DonationModal } from "./donation-modal";
 
-export function ToolDonationWidget({ methods, eligiblePaths }: { methods: DonationMethod[]; eligiblePaths: string[] }) {
+export function ToolDonationWidget({ methods }: { methods: DonationMethod[] }) {
   const pathname = usePathname();
   const path = `${pathname.replace(/\/+$/, "")}/`;
-  if (!methods.length || !eligiblePaths.includes(path)) return null;
+  if (!methods.length || !path.startsWith("/tools/") || path === "/tools/") return null;
   return <DonationWidget key={path} methods={methods} />;
 }
 
@@ -55,14 +55,13 @@ export function DonationWidget({ methods }: { methods: DonationMethod[] }) {
       type="button"
       className="donation-trigger"
       style={{ visibility: overlapsControl && !open ? "hidden" : "visible" }}
-      aria-label="Support Free Tools"
+      aria-label="Support"
       aria-haspopup="dialog"
       aria-expanded={open}
       onClick={() => setOpen(true)}
     >
       <span aria-hidden="true" className="donation-heart">♡</span>
-      <span className="donation-label-desktop">Support Free Tools</span>
-      <span className="donation-label-mobile">Support</span>
+      <span>Support</span>
     </button>
     {open && <DonationModal methods={methods} returnFocusRef={trigger} onClose={() => setOpen(false)} />}
   </div>;

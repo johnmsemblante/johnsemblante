@@ -55,7 +55,7 @@ test('breadcrumb names are escaped safely in markup and JSON-LD', () => {
 });
 
 test('navigation builds exported venture destinations in display order and lightweight breadcrumb labels', () => {
-  const ventures = ['lazy-barista', 'golden-travel-and-tours', 'lapse-hub'].map(slug => ({ slug, name: slug }));
+  const ventures = ['lazy-barista', 'future-venture', 'golden-travel-and-tours', 'lapse-hub'].map(slug => ({ slug, name: slug }));
   const { buildNavigation } = load('src/lib/build-navigation.ts', {
     './build-ventures': { buildVentures: () => ventures },
     './build-works': { buildWorks: () => [{ slug: 'example', title: 'Example work' }] },
@@ -66,6 +66,12 @@ test('navigation builds exported venture destinations in display order and light
   });
   const nav = buildNavigation();
   assert.deepEqual(nav.ventureLinks.map(link => link.href), ['/ventures/golden-travel-and-tours/', '/ventures/lazy-barista/', '/ventures/lapse-hub/']);
+  const { SiteNavigation } = load('src/components/site-navigation.tsx', {
+    './header-navigation': { HeaderNavigation: () => null },
+  });
+  const header = SiteNavigation({ ventureLinks: nav.ventureLinks });
+  assert.deepEqual(header.props.links.find(link => link.label === 'Ventures').groups[0].links.map(link => link.href),
+    [...nav.ventureLinks.map(link => link.href), '/tools/']);
   assert.ok(nav.breadcrumbRoutes.some(item => item.href === '/tools/qr-code-generator/'));
   assert.ok(!JSON.stringify(nav).includes('qr-code-styling'));
 });

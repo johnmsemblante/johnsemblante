@@ -61,13 +61,12 @@ export function DonationModal({ methods, onClose, returnFocusRef }: {
     }}
   >
     <div className="donation-modal-header">
-      <div><h2 id={titleId}><span aria-hidden="true">♡</span> Support Free Tools</h2><p>by John Semblante</p></div>
+      <div><h2 id={titleId}><span aria-hidden="true">♡</span> Support this site</h2><p>by John Semblante</p></div>
       <button ref={closeButton} type="button" className="donation-close" aria-label="Close donation dialog" onClick={onClose}>×</button>
     </div>
     <div className="donation-modal-body">
-      <p id={descriptionId}>Enjoying this tool? I build these free utilities to make everyday online tasks a little easier.</p>
-      <p>If you'd like to support my work, any contribution helps me maintain the tools and create more useful features.</p>
-      <p>No pressure at all. Everything stays free!</p>
+      <p id={descriptionId}>If you'd like to support my work, your contribution helps me maintain the site and build more useful tools.</p>
+      <p>Donations are optional and are not payments for venture products or services.</p>
       {methods.length > 1 && <div className="donation-methods" role="group" aria-label="Donation payment method">
         {methods.map(method => <button key={method.id} type="button" aria-pressed={method.id === active?.id} onClick={() => {
           setSelected(method.id); setQrLoaded(false); setQrFailed(false);

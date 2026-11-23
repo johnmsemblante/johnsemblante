@@ -118,12 +118,13 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Works", href: "/adminauth/works/" }],
   },
   {
-    id: "ventures-editor", title: "Manage business ventures and their pages", category: "Content management", updated: reviewed,
+    id: "ventures-editor", title: "Manage business ventures and their pages", category: "Content management", updated: "2026-11-23",
     summary: "Edit business/photography ventures without mixing them with source-managed free tools.",
     tags: ["Ventures", "business", "photography", "travel", "coffee", "gallery", "offerings"], sources: ["docs/ventures-admin.md", "docs/code-managed-tools.md"],
     sections: [
       { heading: "Update a venture", steps: ["Open Ventures and select an entry or choose New venture.", "Edit its name, slug, category, layout, hero, story, images, contact links and metadata. Edit offerings, FAQs, vehicles or photography gallery entries where the selected layout supports them.", "Choose Draft or Published, then Save venture. Wait for any uploads to finish first.", "Review the live venture cards and immediate /ventures/view/?venture=slug link. Confirm deployment before using a newly generated /ventures/slug/ URL."] },
       { heading: "What stays in code", paragraphs: ["Pages → Ventures edits the portfolio’s Ventures landing page; Ventures edits individual businesses. Free QR Code Generator and Free Image Compressor are separate, source-managed tools and cannot be created, edited or deleted here.", "Drafts stay in admin-only records; public copies are written atomically when published. Deletion markers prevent source defaults from reappearing. Travel estimator algorithms and reference-rate definitions remain code-managed. Renames require redirects for old shared URLs."] },
+      { heading: "Header and optional support", paragraphs: ["New ventures appear in the public directory, not automatically in the header submenu. Published venture detail pages automatically show Support when a payment method is configured; the GCash QR is for optional donations, not customer payments."] },
     ], links: [{ label: "Open Ventures", href: "/adminauth/ventures/" }],
   },
   {
@@ -190,11 +191,11 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Job Finder", href: "/adminauth/jobs/" }],
   },
   {
-    id: "free-tools", title: "How free tools are listed and maintained", category: "Free tools", updated: "2026-11-20",
+    id: "free-tools", title: "How free tools are listed and maintained", category: "Free tools", updated: "2026-11-23",
     summary: "Understand tool cards, homepage order, code-only management and optional support.",
     tags: ["registry", "homepage", "QR", "compressor", "donations", "ventures", "source code"], sources: ["docs/code-managed-tools.md", "src/config/tool-ventures.ts"],
     sections: [
-      { heading: "One source of truth", paragraphs: ["Published tools come from one source-code registry. That registry supplies Tools, public Ventures cards, navigation, sitemap and homepage eligibility. QR Code Generator is first; Image Compressor is second; PDF Editor is third and Negosyo Startup Calculator PH is fourth. The homepage shows three compact links in descending featured order. Give a new release the highest featured order. The directory still shows every published tool.", "Free tools deliberately have no admin CRUD records. Adding a tool, changing its logic, editing its registry description or enabling homepage featuring requires a reviewed code change and deployment. Pages does not edit their tool cards."] },
+      { heading: "One source of truth", paragraphs: ["Published tools come from one source-code registry. That registry supplies the directory, public Ventures cards, sitemap and homepage eligibility. In the header, choose Ventures, then Free Tools to see every tool. The submenu links to the directory, not to individual tools. The homepage shows three compact links in descending featured order. Give a new release the highest featured order.", "Free tools deliberately have no admin CRUD records. Adding a tool, changing its logic, editing its registry description or enabling homepage featuring requires a reviewed code change and deployment. Pages does not edit their tool cards."] },
       { heading: "Request a change", steps: ["Describe the tool behavior or listing copy you want changed, with the affected public URL.", "Implement and validate the code change, keeping existing tools and business-venture CRUD intact.", "Update the corresponding owner guide and technical documentation, then deploy through the existing workflow and verify the public route and listing links."] },
     ], links: [{ label: "Explore free tools", href: "/tools/" }],
   },
@@ -217,11 +218,11 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Image Compressor", href: "/tools/image-compressor/" }],
   },
   {
-    id: "donations", title: "How the optional Support Free Tools widget works", category: "Integrations", updated: reviewed,
+    id: "donations", title: "How the optional Support button works", category: "Integrations", updated: "2026-11-23",
     summary: "Understand eligible routes, GCash/PayPal configuration and optional donations.",
     tags: ["donation", "support", "GCash", "PayPal", "payment", "widget"], sources: ["docs/code-managed-tools.md", "src/config/donations.ts"],
     sections: [
-      { heading: "Visitor behavior", paragraphs: ["Eligible published tools reuse one Support widget. It opens only after a visitor chooses it; compression, QR generation and downloads remain free without a contribution. It is not shown on the homepage, directories or admin dashboard.", "Configured payment methods use the owner-supplied GCash receiving image and approved international provider link. If no complete enabled method exists, the layout renders no trigger. The website does not collect transactions or automatically open a payment popup."] },
+      { heading: "Visitor behavior", paragraphs: ["Open any free tool or published venture detail page and choose Support, then GCash. Scan or save the receiving QR and confirm the recipient and amount in GCash before sending. Future detail pages inherit the button without an editor setting. Donations are optional and separate from venture purchases. The button is not shown on the homepage, directories or admin dashboard.", "If the button briefly disappears, scroll away from overlapping page controls. If GCash is missing, have the maintainer verify the configured receiving image. If no complete enabled method exists, the button is hidden. The website does not collect transactions."] },
       { heading: "Change payment details", steps: ["Ask the maintainer to update the existing source configuration and approved receiving asset; these settings are not editable from Pages or Ventures.", "Verify the recipient information and external provider destination before releasing.", "Rebuild/deploy and check eligible tool pages, modal close behavior and image/link availability. Actual payment completion must be verified separately through the provider."] },
     ],
   },

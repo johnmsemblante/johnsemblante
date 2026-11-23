@@ -48,10 +48,10 @@ function VentureMetadata({venture}:{venture:Venture|null}){
     return()=>{document.title=title;if(meta&&description!==undefined)meta.content=description;robots.remove();};
   },[venture]);return null;
 }
-export function LiveVentureDetail({initial,query=false}:{initial:Venture[];query?:boolean}){
+export function LiveVentureDetail({initial,query=false,support}:{initial:Venture[];query?:boolean;support?:React.ReactNode}){
   const {items,error,loading}=useVentures(initial);const [requested,setRequested]=useState('');
   const slug=query?requested:initial[0]?.slug??'';
   useEffect(()=>{if(query)setRequested(new URLSearchParams(window.location.search).get('venture')??'');},[query]);
   const venture=items.find(v=>v.slug===slug)??null;
-  return <>{error&&<RefreshError/>}{venture?<><VentureMetadata venture={venture}/><VentureLanding venture={venture}/></>:query&&loading?<p role="status">Loading venture…</p>:<main className="portfolio-shell"><VentureMetadata venture={null}/><h1>Venture unavailable</h1><p>This venture is not published or has been deleted.</p><a href="/ventures/">View all ventures</a></main>}</>;
+  return <>{error&&<RefreshError/>}{venture?<><VentureMetadata venture={venture}/><VentureLanding venture={venture}/>{support}</>:query&&loading?<p role="status">Loading venture…</p>:<main className="portfolio-shell"><VentureMetadata venture={null}/><h1>Venture unavailable</h1><p>This venture is not published or has been deleted.</p><a href="/ventures/">View all ventures</a></main>}</>;
 }

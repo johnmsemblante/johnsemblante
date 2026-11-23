@@ -7,7 +7,7 @@ This guide covers the technical SEO audit and implementation of 6 November 2026 
 
 ## Navigation and breadcrumbs
 
-The portfolio header's Ventures link has a separate disclosure button for its submenu. The submenu lists published venture routes, followed by a linked Free Tools heading and published tool links. Venture entries come from the build's existing public venture snapshot. Tools come from the source-managed registry, with optional `navigationLabel` text. Rebuild after publishing or renaming managed ventures so header links reflect exported destinations.
+The portfolio header's Ventures link has a separate disclosure button. It lists Golden Travel & Tours, Lazy Barista and Lapse Hub when their expected slugs are published, followed by one Free Tools directory link. Other ventures and individual tools are discoverable through their directories. If a featured venture slug changes, update the header's slug list in `src/lib/build-navigation.ts` and rebuild.
 
 Public portfolio pages other than the homepage have a breadcrumb trail. Standalone venture pages use the same breadcrumb component within their own layouts. Work industry trails link directly through Work, since there is no separate industry index. Each visible trail has matching BreadcrumbList JSON-LD, with absolute production URLs matching the existing trailing-slash canonicals. Homepage branding, metadata, and canonical URLs retain their existing values. Admin and unknown routes have no public breadcrumb trail.
 

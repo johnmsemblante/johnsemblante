@@ -20,7 +20,6 @@
 }
 .donation-trigger:hover { background: var(--night-surface,#e7efec); border-color: var(--night-teal,#32766c); }
 .donation-heart { font-size: 24px; line-height: 1; color: var(--night-teal,#32766c); }
-.donation-label-mobile { display: none; }
 .donation-modal {
   position: fixed;
   inset: 0;
@@ -68,8 +67,6 @@
 .donation-modal-footer button { min-height: 44px; cursor: pointer; font-family: inherit; }
 @media (max-width: 620px) {
   .donation-trigger { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); min-height: 44px; padding: 8px 14px; }
-  .donation-label-desktop { display: none; }
-  .donation-label-mobile { display: inline; }
   .donation-modal { width: calc(100% - 24px); }
   .donation-modal-header { padding: 18px 18px 14px; }
   .donation-modal-header h2 { font-size: 23px; }

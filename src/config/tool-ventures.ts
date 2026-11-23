@@ -10,8 +10,6 @@ export type ToolVenture = {
   homeDescription?: string;
   ctaLabel?: string;
   iconImage?: string;
-  donationsEnabled?: boolean;
-  navigationLabel?: string;
 };
 export const toolVentures: ToolVenture[] = [{
   id: "qr-code-generator", slug: "qr-code-generator",
@@ -25,8 +23,6 @@ export const toolVentures: ToolVenture[] = [{
   homeDescription: "Create custom QR codes for websites, Wi-Fi, text, emails, and more. Customize your design and download your QR code instantly.",
   ctaLabel: "Create a QR Code",
   iconImage: "/tools/qr-code-generator/icon.svg",
-  donationsEnabled: true,
-  navigationLabel: "QR Generator",
 }, {
   id: "image-compressor", slug: "image-compressor",
   name: "Free Image Compressor by John Semblante",
@@ -38,7 +34,6 @@ export const toolVentures: ToolVenture[] = [{
   homeDescription: "Reduce JPG, PNG and WebP file sizes privately in your browser. Choose a target size, compare your result and download for free.",
   ctaLabel: "Compress an Image",
   iconImage: "/tools/image-compressor/icon.svg",
-  donationsEnabled: true, navigationLabel: "Image Compressor",
 }, {
   id: "pdf-editor", slug: "pdf-editor",
   name: "Free PDF Editor by John Semblante",
@@ -48,12 +43,11 @@ export const toolVentures: ToolVenture[] = [{
   featuredOnHome: true, featuredOrder: 3, shortName: "Free PDF Editor",
   homeDescription: "Add text, draw a signature and manage PDF pages. Edit and download locally, with no account or watermark.",
   ctaLabel: "Edit a PDF", iconImage: "/tools/pdf-editor/icon.svg",
-  donationsEnabled: true, navigationLabel: "PDF Editor",
 }, {
   id: "business-startup-calculator", slug: "business-startup-calculator", name: "Negosyo Startup Calculator PH",
   description: "Plan startup funding, estimate monthly sales and compare break-even and cash recovery for a Philippine business.",
   route: "/tools/business-startup-calculator/", category: "Business planning", icon: "₱", status: "published", order: 4,
-  iconImage: "/tools/business-startup-calculator/icon.svg", navigationLabel: "Startup Calculator", featuredOnHome: true, featuredOrder: 4, ctaLabel: "Plan a business",
+  iconImage: "/tools/business-startup-calculator/icon.svg", featuredOnHome: true, featuredOrder: 4, ctaLabel: "Plan a business",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { buildVentures } from "@/lib/build-ventures";
 import { LiveVentureDetail } from "@/components/live-ventures";
+import { DonationSupport } from "@/components/tools/donation-support";
 import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/content/site";
 export const dynamicParams = false;
@@ -18,4 +19,4 @@ export async function generateMetadata({ params }: { params: Promise<{ venture: 
     openGraph: { ...metadata.openGraph, siteName: site.searchName, url },
   };
 }
-export default async function VenturePage({ params }: { params: Promise<{ venture: string }> }) { const { venture } = await params; const v = buildVentures().find(v => v.slug === venture); if (!v) notFound(); return <LiveVentureDetail initial={[v]} />; }
+export default async function VenturePage({ params }: { params: Promise<{ venture: string }> }) { const { venture } = await params; const v = buildVentures().find(v => v.slug === venture); if (!v) notFound(); return <LiveVentureDetail initial={[v]} support={<DonationSupport />} />; }
