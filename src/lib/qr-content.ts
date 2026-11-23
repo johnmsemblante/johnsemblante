@@ -29,7 +29,7 @@ export function qrContent(type: QrType, fields: QrFields): { data: string; error
     case "phone": {
       if (!fields.phone.trim()) return invalid("");
       const phone = fields.phone.replace(/[\s().-]/g, "");
-      if (!/^\+?\d{3,15}$/.test(phone)) return invalid("Use 3–15 digits, with an optional leading + and spaces, parentheses or hyphens.");
+      if (!/^\+?\d{3,15}$/.test(phone)) return invalid("Use 3 to 15 digits, with an optional leading + and spaces, parentheses or hyphens.");
       data = `tel:${phone}`; break;
     }
   }

@@ -9,7 +9,7 @@ type CacheStorage = Pick<Storage, "getItem" | "setItem" | "removeItem" | "key" |
 
 export function searchUrl(search: JobSearch, cursor: string | null = null, proxy = HIMALAYAS_PROXY) {
   const keyword = search.keyword.trim();
-  if (!["philippines", "anywhere"].includes(search.geo) || (search.provider && !["jobicy", "himalayas"].includes(search.provider)) || (keyword && (keyword.length < 3 || keyword.length > 50)) || (cursor !== null && !validCursor(cursor))) throw new Error("Use a keyword of 3–50 characters and a supported location.");
+  if (!["philippines", "anywhere"].includes(search.geo) || (search.provider && !["jobicy", "himalayas"].includes(search.provider)) || (keyword && (keyword.length < 3 || keyword.length > 50)) || (cursor !== null && !validCursor(cursor))) throw new Error("Use a keyword of 3 to 50 characters and a supported location.");
   if (search.provider === "himalayas") {
     if (!proxy) throw new Error("The broader feed is not connected yet. Choose Jobicy or use the wider search link.");
     const url = new URL(proxy);

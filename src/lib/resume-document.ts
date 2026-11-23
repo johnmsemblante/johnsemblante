@@ -18,7 +18,7 @@ function link(value: string): string {
 }
 function entryHtml(entry: ResumeEntry): string {
   const bullets = resumeLines(entry.highlights);
-  return `<article class="entry"><div class="entry-heading"><h3>${escapeResumeHtml([entry.title.trim(), entry.organization.trim()].filter(Boolean).join(" — "))}</h3>${entry.dates.trim() ? `<span>${escapeResumeHtml(entry.dates)}</span>` : ""}</div>${entry.location.trim() ? `<p class="entry-location">${escapeResumeHtml(entry.location)}</p>` : ""}${entry.url.trim() ? `<p>${link(entry.url)}</p>` : ""}${bullets.length ? `<ul>${bullets.map(line => `<li>${escapeResumeHtml(line)}</li>`).join("")}</ul>` : ""}</article>`;
+  return `<article class="entry"><div class="entry-heading"><h3>${escapeResumeHtml([entry.title.trim(), entry.organization.trim()].filter(Boolean).join(" | "))}</h3>${entry.dates.trim() ? `<span>${escapeResumeHtml(entry.dates)}</span>` : ""}</div>${entry.location.trim() ? `<p class="entry-location">${escapeResumeHtml(entry.location)}</p>` : ""}${entry.url.trim() ? `<p>${link(entry.url)}</p>` : ""}${bullets.length ? `<ul>${bullets.map(line => `<li>${escapeResumeHtml(line)}</li>`).join("")}</ul>` : ""}</article>`;
 }
 /** A self-contained document: no scripts, remote fonts, images or services. */
 export function resumeDocument(resume: Resume): string {

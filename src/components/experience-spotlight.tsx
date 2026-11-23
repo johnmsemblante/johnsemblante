@@ -1,10 +1,10 @@
 import { PageText, PageLink } from "@/components/page-content";
 
 export function ExperienceSpotlight() {
-  return <section className="section experience-spotlight" aria-labelledby="experience-spotlight-title">
+  return <section className="section work-context experience-spotlight" aria-labelledby="experience-spotlight-title">
     <div className="experience-spotlight-intro">
       <p className="eyebrow"><PageText scope="experience_spotlight_1" fallback={"Beyond the public portfolio"} /></p>
-      <h2 id="experience-spotlight-title"><PageText scope="experience_spotlight_2" fallback={"Some work stays"} /><br /><PageText scope="experience_spotlight_3" fallback={"behind the scenes."} /></h2>
+      <h2 id="experience-spotlight-title"><PageText scope="experience_spotlight_2" fallback={"Some work stays"} />{" "}<PageText scope="experience_spotlight_3" fallback={"behind the scenes."} /></h2>
       <p className="body-copy"><PageText scope="experience_spotlight_4" fallback={"Some of my professional work is covered by confidentiality agreements, so it isn’t shown here. I can still talk about the kinds of development problems I work on and how that experience relates to your project."} /></p>
     </div>
     <div className="experience-spotlight-card">

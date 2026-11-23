@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { articleRefresher } from "@/lib/blog-refresh";
 import { PageText } from "./page-content";
-import { Button } from "./ui";
 import { BrowserIllustration } from "./browser-illustration";
 import { subscribeSiteRefresh } from "@/lib/site-refresh";
 import type { Project } from "@/content/site";
@@ -38,11 +37,6 @@ export function LiveWorkDetail({initial}:{initial:Project}){
   return <>{error&&<p role="status">{error}</p>}{project?<WorkDetail project={project}/>:<section className="section"><h1>Work unavailable</h1><p>This project is no longer published.</p><a href="/work/">View all work</a></section>}</>;
 }
 
-export function LiveFeaturedWork({initial}:{initial:Project[]}) {
-  const {projects}=useWorks(initial),featured=projects[0];if(!featured)return null;
-  const href=initial.some(p=>p.slug===featured.slug)?`/work/${featured.slug}/`:`/work/?project=${encodeURIComponent(featured.slug)}`;
-  return <section className="section featured-case"><div><p className="eyebrow"><PageText scope="work_12" fallback="From the project collection"/></p><h2>{featured.title}</h2><p className="lede">{featured.summary}</p><Button href={href} secondary><PageText scope="work_13" fallback="Explore the project"/></Button></div><dl><div><dt><PageText scope="work_14" fallback="Work category"/></dt><dd>{featured.role}</dd></div><div><dt><PageText scope="work_15" fallback="Technology"/></dt><dd>{featured.technologies.join(" ? ")}</dd></div>{featured.outcome&&<div><dt><PageText scope="work_16" fallback="Outcome"/></dt><dd>{featured.outcome}</dd></div>}</dl></section>;
-}
 export function LiveWorkIllustration({initial}:{initial:Project[]}) {
   const {projects}=useWorks(initial);const images=["roar-fitness","perth-cosmetic-surgery"].flatMap(slug=>{const p=projects.find(p=>p.slug===slug);return p?.image?[{src:p.image.src,name:p.title,width:516,height:337}]:[];});
   return <BrowserIllustration showcase={{kind:"work",label:"FROM THE PUBLIC COLLECTION",caption:"Examples from my website development work.",images}}/>;

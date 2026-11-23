@@ -111,7 +111,7 @@ export function PdfEditor() {
       if (token !== generation.current) return;
       // pdf-lib rejects encrypted PDFs, including those with an empty opening password.
       const checked = await PDFDocument.load(bytes.slice(), { updateMetadata: false });
-      if (!checked.getPageCount() || checked.getPageCount() > PDF_LIMITS.pages) throw new Error("Choose a PDF containing 1–100 pages.");
+      if (!checked.getPageCount() || checked.getPageCount() > PDF_LIMITS.pages) throw new Error("Choose a PDF containing 1 to 100 pages.");
       renderer.GlobalWorkerOptions.workerSrc = `/tools/pdf-editor/pdf.worker-${renderer.version}.min.mjs`;
       const task = renderer.getDocument({ data: bytes.slice(), cMapUrl: "/tools/pdf-editor/cmaps/", cMapPacked: true, standardFontDataUrl: "/tools/pdf-editor/standard_fonts/", wasmUrl: "/tools/pdf-editor/wasm/", useWasm: true });
       loading.current = task;

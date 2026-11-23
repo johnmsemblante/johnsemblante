@@ -97,7 +97,7 @@ export function resumeToText(resume: Resume): string {
     const value = resume[key];
     if (typeof value === "string") lines.push(value.trim());
     else for (const entry of value.filter(resumeEntryHasContent)) {
-      lines.push([entry.title, entry.organization].filter(value => value.trim()).join(" — "));
+      lines.push([entry.title, entry.organization].filter(value => value.trim()).join(" | "));
       lines.push([entry.location, entry.dates].filter(value => value.trim()).join(" | "));
       if (entry.url.trim()) lines.push(entry.url.trim());
       lines.push(...resumeLines(entry.highlights).map(line => `• ${line}`), "");

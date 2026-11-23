@@ -1,0 +1,50 @@
+.section.work-context {
+  padding-block: clamp(24px, 4vw, 44px);
+}
+
+.work-context h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  margin-bottom: 14px;
+}
+
+.work-context-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.work-context-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(14px, 2vw, 24px);
+}
+
+.work-context-card h3,
+.work-context .experience-spotlight-card h3 {
+  font-size: clamp(18px, 2.25vw, 24px);
+  margin-bottom: 8px;
+}
+
+.work-context-card .body-copy {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.work-context.experience-spotlight {
+  gap: clamp(16px, 3vw, 36px);
+}
+
+.work-context .experience-spotlight-card {
+  padding: clamp(16px, 2.5vw, 26px);
+}
+
+.work-context .experience-spotlight-card > :is(p, ul):not(.button) {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 620px) {
+  .work-context-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

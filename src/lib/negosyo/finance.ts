@@ -14,8 +14,8 @@ function divideProduct(factors: number[], denominator: number, roundUp = false) 
 export const startupLine = (quantity: string, price: string) => divideProduct([cents(quantity), cents(price)], 100);
 const amount = (v: string) => decimal(v) ? Number(v) : 0;
 const currency = new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"});
-export const peso = (v: number | null) => v === null ? "—" : currency.format(v/100);
-export const percent = (v: number | null) => v === null ? "—" : (v*100).toFixed(1)+"%";
+export const peso = (v: number | null) => v === null ? "Not available" : currency.format(v/100);
+export const percent = (v: number | null) => v === null ? "Not available" : (v*100).toFixed(1)+"%";
 export function monthly(e: Expense) {
   const cost = cents(e.cost);
   return divideProduct([cost, e.frequency === "weekly" ? 52 : 1], e.frequency === "monthly" ? 1 : 12);

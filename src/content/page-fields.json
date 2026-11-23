@@ -96,7 +96,7 @@
       "label": "Introduction",
       "group": "Hero",
       "kind": "text",
-      "value": "I’m John Clark Semblante, a web developer in Mandaue City, Cebu. I turn Figma designs into WordPress websites, customize WooCommerce stores, and help fix sites that aren’t working as they should. I’ve worked in web development since 2013."
+      "value": "I build WordPress sites from Figma designs, customize WooCommerce stores, and fix the issues that get in the way of using a site. I’m based in Cebu and have been building for the web since 2013."
     },
     {
       "key": "home_6_1to57ad",
@@ -634,52 +634,52 @@
     },
     {
       "key": "about_16_wra5pw",
-      "label": "October 2021 – Present",
+      "label": "October 2021 to Present",
       "group": "about",
       "kind": "text",
-      "value": "October 2021 – Present"
+      "value": "October 2021 to Present"
     },
     {
       "key": "about_16_19vragt",
-      "label": "March 2019 – September 2021",
+      "label": "March 2019 to September 2021",
       "group": "about",
       "kind": "text",
-      "value": "March 2019 – September 2021"
+      "value": "March 2019 to September 2021"
     },
     {
       "key": "about_16_wgw7mv",
-      "label": "May 2017 – February 2019",
+      "label": "May 2017 to February 2019",
       "group": "about",
       "kind": "text",
-      "value": "May 2017 – February 2019"
+      "value": "May 2017 to February 2019"
     },
     {
       "key": "about_16_19a43oa",
-      "label": "February 2016 – May 2017",
+      "label": "February 2016 to May 2017",
       "group": "about",
       "kind": "text",
-      "value": "February 2016 – May 2017"
+      "value": "February 2016 to May 2017"
     },
     {
       "key": "about_16_cbb69t",
-      "label": "January 2015 – January 2016",
+      "label": "January 2015 to January 2016",
       "group": "about",
       "kind": "text",
-      "value": "January 2015 – January 2016"
+      "value": "January 2015 to January 2016"
     },
     {
       "key": "about_16_1tngaox",
-      "label": "May 2014 – November 2014",
+      "label": "May 2014 to November 2014",
       "group": "about",
       "kind": "text",
-      "value": "May 2014 – November 2014"
+      "value": "May 2014 to November 2014"
     },
     {
       "key": "about_16_n5nb7s",
-      "label": "June 2013 – May 2014",
+      "label": "June 2013 to May 2014",
       "group": "about",
       "kind": "text",
-      "value": "June 2013 – May 2014"
+      "value": "June 2013 to May 2014"
     },
     {
       "key": "about_18_qitmed",
@@ -704,10 +704,10 @@
     },
     {
       "key": "about_18_5djxrv",
-      "label": "Supporting Enterprise – Odusee",
+      "label": "Supporting Enterprise / Odusee",
       "group": "about",
       "kind": "text",
-      "value": "Supporting Enterprise – Odusee"
+      "value": "Supporting Enterprise / Odusee"
     },
     {
       "key": "about_18_1siu26a",
@@ -837,24 +837,24 @@
     },
     {
       "key": "about_22_1i4k5h5",
-      "label": "1999 – 2005",
+      "label": "1999 to 2005",
       "group": "about",
       "kind": "text",
-      "value": "1999 – 2005"
+      "value": "1999 to 2005"
     },
     {
       "key": "about_22_5bzbjq",
-      "label": "2005 – 2009",
+      "label": "2005 to 2009",
       "group": "about",
       "kind": "text",
-      "value": "2005 – 2009"
+      "value": "2005 to 2009"
     },
     {
       "key": "about_22_1b3n6b1",
-      "label": "2009 – 2013",
+      "label": "2009 to 2013",
       "group": "about",
       "kind": "text",
-      "value": "2009 – 2013"
+      "value": "2009 to 2013"
     },
     {
       "key": "about_23_1040jij",
@@ -1747,7 +1747,7 @@
     },
     {
       "key": "about_role_Supporting_Enterprise___Odusee_1hfmadf",
-      "label": "Supporting Enterprise – Odusee: role",
+      "label": "Supporting Enterprise / Odusee: role",
       "group": "about",
       "kind": "text",
       "value": "Web Developer"
@@ -1787,14 +1787,14 @@
       "label": "Hero title",
       "group": "work",
       "kind": "text",
-      "value": "WordPress portfolio & projects."
+      "value": "WordPress, Next.js, and independent projects."
     },
     {
       "key": "work_3_vq8h5a",
       "label": "Hero introduction",
       "group": "work",
       "kind": "text",
-      "value": "Browse websites I’ve worked on since 2013, along with projects for my own ventures in Cebu. Each entry includes a screenshot, the technologies used, and the details I can share. Use them to get a sense of my work before we discuss your website."
+      "value": "See how I turn designs into WordPress sites, build tools with Next.js, and make it easier for visitors to find what they need. Browse the examples, then tell me what you’d like your own site to do."
     },
     {
       "key": "button_href_na0cib",
@@ -1865,41 +1865,6 @@
       "group": "work",
       "kind": "text",
       "value": "Tell me what you are building and I can discuss the experience relevant to your project."
-    },
-    {
-      "key": "work_12_810gzd",
-      "label": "From the project collection",
-      "group": "work",
-      "kind": "text",
-      "value": "From the project collection"
-    },
-    {
-      "key": "work_13_1dzmqda",
-      "label": "Explore the project",
-      "group": "work",
-      "kind": "text",
-      "value": "Explore the project"
-    },
-    {
-      "key": "work_14_2kjj20",
-      "label": "Work category",
-      "group": "work",
-      "kind": "text",
-      "value": "Work category"
-    },
-    {
-      "key": "work_15_15c5osv",
-      "label": "Technology",
-      "group": "work",
-      "kind": "text",
-      "value": "Technology"
-    },
-    {
-      "key": "work_16_spdxv",
-      "label": "Outcome",
-      "group": "work",
-      "kind": "text",
-      "value": "Outcome"
     },
     {
       "key": "work_17_1jnp7ql",
@@ -2675,7 +2640,7 @@
       "label": "Hero introduction",
       "group": "contact",
       "kind": "text",
-      "value": "Have a WordPress project, a WooCommerce store that needs changes, or a website problem you can’t pin down? Tell me what you’re working on. I’m based in Mandaue City, Cebu, and also welcome remote development roles. A short description and a link are enough to start."
+      "value": "Need a new website, a WooCommerce improvement, or help fixing an existing site? Tell me what you want visitors to be able to do and what’s getting in the way. A short description and a link to your site or design are enough to start."
     },
     {
       "key": "contact_4_1icg68a",

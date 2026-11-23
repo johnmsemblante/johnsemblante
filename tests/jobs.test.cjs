@@ -20,7 +20,7 @@ test('Jobicy normalization preserves eligibility, date, currency/period and cano
   const job = model.jobFromApi(listing);
   assert.equal(job.sourceId, 'jobicy-123'); assert.equal(job.source, 'Jobicy'); assert.equal(job.remote, true);
   assert.equal(job.title, 'WordPress & PHP Developer'); assert.equal(job.summary, 'Build WooCommerce sites & maintain JavaScript.');
-  assert.equal(job.salary, 'USD 1,000–2,000 / monthly'); assert.equal(job.location, 'Philippines'); assert.equal(job.url, listing.url);
+  assert.equal(job.salary, 'USD 1,000 to 2,000 / monthly'); assert.equal(job.location, 'Philippines'); assert.equal(job.url, listing.url);
   assert.equal(job.postedAt, Date.parse(listing.pubDate)); assert.equal(job.jobDescription, undefined);
   assert.deepEqual(model.jobFromSaved(job), job);
   const unknown = model.jobFromApi({ ...listing, pubDate: undefined, salaryMin: undefined, salaryMax: undefined, jobGeo: undefined });

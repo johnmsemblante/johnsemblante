@@ -11,6 +11,7 @@ function loader(mocks = {}) {
     const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true } }).outputText;
     new Function('require', 'exports', code)(name => {
       if (name in mocks) return mocks[name];
+      if (name.endsWith('.css')) return {};
       if (name.startsWith('@/') || name.startsWith('.')) {
         const base = name.startsWith('@/') ? path.resolve('src', name.slice(2)) : path.resolve(path.dirname(file), name);
         if (base.endsWith('.json')) return JSON.parse(fs.readFileSync(base, 'utf8'));
@@ -25,6 +26,27 @@ const load = loader({ '@/lib/firebase-client': { firebaseConfigured: false }, 'n
 const model = load('src/lib/page-model.ts');
 const { PageContent, PageText, PageImage, PageLink } = load('src/components/page-content.tsx');
 const fields = require('../src/content/page-fields.json');
+test('revised Home copy keeps the stored override and uses the new default when reset', () => {
+  const field = fields.home.find(field => field.key === 'home_5_1w5104x');
+  assert.equal(model.fieldKey('home_5', field.value), field.key);
+  const record = model.emptyPage();
+  record.values[field.key] = 'Owner copy';
+  const child = React.createElement(PageText, { scope: 'home_5', fallback: field.value });
+  assert.equal(render(record, child), 'Owner copy');
+  assert.match(render(model.emptyPage(), child), /Figma designs/);
+});
+test('About and Work story defaults match their editable Pages fields', () => {
+  const { pageCatalog } = load('src/lib/page-catalog.ts');
+  const { aboutDevelopment, workDevelopment } = load('src/content/development-story.ts');
+  for (const [id, story] of [['about', aboutDevelopment], ['work', workDevelopment]]) {
+    const page = pageCatalog.find(page => page.id === id);
+    for (const { scope, value } of Object.values(story)) {
+      const field = page.fields.find(field => field.key === model.fieldKey(scope, value));
+      assert.equal(field?.value, value);
+      assert.equal(field?.kind, 'text');
+    }
+  }
+});
 function render(record, children) { return renderToStaticMarkup(React.createElement(PageContent, { id: 'home', initial: record }, children)); }
 
 test('content overrides render on the server, escape markup, and keep defaults outside a page', () => {

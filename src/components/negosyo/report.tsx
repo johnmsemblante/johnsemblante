@@ -32,7 +32,7 @@ export function Report({plan:p,result:r}:{plan:Plan;result:Analysis}) {
       <Metric label={ready?(r.gap<0?"Capital shortfall":"Capital surplus"):"Provisional funding balance"} value={peso(ready?Math.abs(r.gap):r.gap)}/>
     </div>
     <Table title="Startup allocation" heads={["Classification","Included total"]} rows={r.allocation.map(i=>[i.category,peso(i.total)])}/>
-    <Table title="Startup checklist" heads={["Item","Class","Status","Quantity","Unit price","Included total","Notes"]} rows={p.startup.map(i=>[i.name,i.category,i.included?(i.required?"Included · required":"Included · optional"):"Excluded",i.quantity,i.price?peso(cents(i.price)):"Pending",i.included && i.price && i.quantity?peso(startupLine(i.quantity,i.price)):"—",i.notes])}/>
+    <Table title="Startup checklist" heads={["Item","Class","Status","Quantity","Unit price","Included total","Notes"]} rows={p.startup.map(i=>[i.name,i.category,i.included?(i.required?"Included · required":"Included · optional"):"Excluded",i.quantity,i.price?peso(cents(i.price)):"Pending",i.included && i.price && i.quantity?peso(startupLine(i.quantity,i.price)):"Not available",i.notes])}/>
     <Table title="Recurring expenses" heads={["Expense","Class","Cost","Period","Monthly equivalent","Notes"]} rows={p.expenses.map(i=>[i.name,i.category,i.cost?peso(cents(i.cost)):"Pending",i.frequency,i.category==="Variable" && p.basis==="unit"?"Excluded by method":peso(monthly(i)),i.notes])}/>
     <h3>Expected operating performance</h3><div className="ng-metrics">
       <Metric label="Monthly revenue" value={peso(e.revenue)}/><Metric label="Variable expenses" value={peso(e.variable)}/><Metric label="Fixed expenses" value={peso(e.fixed)}/><Metric label="Total operating costs" value={peso(e.variable+e.fixed)}/>
@@ -42,7 +42,7 @@ export function Report({plan:p,result:r}:{plan:Plan;result:Analysis}) {
     <p>Contribution is the amount left after variable costs to pay fixed bills. {p.basis==="unit"?"Each offering uses its own unit cost and additional fee.":"Shared variable expenses are allocated to offerings by expected revenue share."} Weekly volumes use 52 weeks ÷ 12 months.</p>
     <Scenarios result={r}/><p>{p.scenarios.map(s=>s.name+" "+s.volume+"% volume / "+s.cost+"% variable cost rate").join(" · ")}. Prices and fixed costs stay constant.</p>
     <h3>Break-even and cash recovery</h3><div className="ng-metrics"><Metric label="Operating break-even revenue / month" value={ready?peso(e.breakRevenue):"Pending"}/>
-      {e.products.length===1 && <Metric label="Whole units to break even" value={ready && e.breakUnits!==null?number(e.breakUnits):"—"}/>}
+      {e.products.length===1 && <Metric label="Whole units to break even" value={ready && e.breakUnits!==null?number(e.breakUnits):"Not available"}/>}
       <Metric label="Expected contribution margin" value={percent(e.ratio)}/><Metric label="Owner investment payback" value={r.payback!==null?`Month ${r.payback}`:"Undetermined"}/>
       <Metric label="Full months before cash runs short" value={!ready || !p.confirmCash?"Pending":r.runway===null?"At least 120":String(r.runway)}/>
     </div>

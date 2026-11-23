@@ -1,5 +1,11 @@
 # Pages administration
 
+The Home, Work and Contact copy defaults describe services, project examples and what to include in an inquiry. If a saved override still shows older copy, review it in Pages and edit it or choose **Reset to code default**. The audit preserves existing override keys through `src/content/page-field-aliases.json`; it does not rewrite saved content or metadata.
+
+About → **AI-assisted development** and Work → **Independent builds** are editable in Pages. Their public fallbacks and admin defaults share `src/content/development-story.ts`; `src/lib/page-catalog.ts` registers them as text fields. They are not Works records. Review both public pages after saving and verify the Work contact link. Keep prototype status accurate and do not publish internal app paths, setup instructions or private workflow details.
+
+On Work, the independent-build cards sit between the intro and the filterable project listing. The confidential-work spotlight remains below the listing. The separate featured case and its site-copy fields are no longer displayed; project records are unchanged. On About, the WordPress introduction and AI-assisted development sections use compact cards, side by side on wider screens and stacked on phones. Check card wrapping on narrow screens after editing.
+
 Open **Pages** in `/adminauth/` to edit Home, About, Work, Blog, Ventures, or Contact. Selecting a page opens the shared editor drawer from the left. Fields are grouped by the sections/components currently used on that page; search finds a field by its section or original text.
 
 The editor supports page copy, headings, button labels/destinations, contact links, services, workflow, FAQs, experience, education, skills, venture landing cards, and illustration/image fields. Work and Blog entries continue to use their existing editors. Individual venture routes use the dedicated [Ventures editor](ventures-admin.md). Shared site navigation/footer and functional form configuration remain in code.

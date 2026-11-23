@@ -21,7 +21,7 @@ function salaryLabel(min: unknown, max: unknown, code: unknown, interval: unknow
   const amount = (value: unknown) => typeof value === "number" && Number.isFinite(value) && value > 0 && value <= 1e12 ? value : null;
   const minimum = amount(min); const maximum = amount(max);
   if (minimum && maximum && maximum < minimum) return "";
-  const range = minimum && maximum ? `${minimum.toLocaleString("en-US")}–${maximum.toLocaleString("en-US")}` : minimum ? `From ${minimum.toLocaleString("en-US")}` : maximum ? `Up to ${maximum.toLocaleString("en-US")}` : "";
+  const range = minimum && maximum ? `${minimum.toLocaleString("en-US")} to ${maximum.toLocaleString("en-US")}` : minimum ? `From ${minimum.toLocaleString("en-US")}` : maximum ? `Up to ${maximum.toLocaleString("en-US")}` : "";
   const currency = typeof code === "string" && /^[A-Z]{3}$/.test(code) ? code : "Currency not specified";
   const period = clean(interval, 30);
   return range ? `${currency} ${range}${period ? ` / ${period}` : " (period not provided)"}` : "";

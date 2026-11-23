@@ -1,3 +1,5 @@
+import fieldAliases from "@/content/page-field-aliases.json";
+
 export const pageIds = ["home", "about", "work", "blog", "ventures", "contact"] as const;
 export type PageId = typeof pageIds[number];
 export type PageField = { key: string; label: string; group: string; kind: "text" | "image" | "url"; value: string };
@@ -8,7 +10,8 @@ export function fieldKey(scope: string, value: string) {
   // Defaults identify repeated entries independently of their array position.
   let hash = 2166136261;
   for (let i = 0; i < value.length; i++) hash = Math.imul(hash ^ value.charCodeAt(i), 16777619);
-  return `${scope}_${(hash >>> 0).toString(36)}`;
+  const key = `${scope}_${(hash >>> 0).toString(36)}`;
+  return (fieldAliases as Record<string, string>)[key] ?? key;
 }
 export function pageUrl(value: string, image = false) {
   if (typeof value !== "string" || value.length > 2000 || /[\s<>\\]/.test(value)) return false;
