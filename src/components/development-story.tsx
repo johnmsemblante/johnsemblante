@@ -17,7 +17,7 @@ export function AboutDevelopment() {
   </section>;
 }
 
-export function WorkDevelopment() {
+export function WorkDevelopment({ showcase }: { showcase: React.ReactNode }) {
   return <section className="section work-context" id="independent-builds">
     <h2><StoryText field={workDevelopment.heading} /></h2>
     <div className="work-context-grid">
@@ -30,6 +30,7 @@ export function WorkDevelopment() {
         <p className="body-copy"><StoryText field={workDevelopment.app} /></p>
       </article>
     </div>
+    {showcase}
     <Button href="/contact/" secondary><StoryText field={workDevelopment.contact} /></Button>
   </section>;
 }

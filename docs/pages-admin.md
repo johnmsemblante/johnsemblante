@@ -1,5 +1,7 @@
 # Pages administration
 
+The public Work collection shows full project details and action links inline at every width. It uses three cards per row on desktop, two at 767px and below, and one at 567px and below. This does not change filters, project records, or the homepage grid.
+
 The Home, Work and Contact copy defaults describe services, project examples and what to include in an inquiry. If a saved override still shows older copy, review it in Pages and edit it or choose **Reset to code default**. The audit preserves existing override keys through `src/content/page-field-aliases.json`; it does not rewrite saved content or metadata.
 
 About → **AI-assisted development** and Work → **Independent builds** are editable in Pages. Their public fallbacks and admin defaults share `src/content/development-story.ts`; `src/lib/page-catalog.ts` registers them as text fields. They are not Works records. Review both public pages after saving and verify the Work contact link. Keep prototype status accurate and do not publish internal app paths, setup instructions or private workflow details.

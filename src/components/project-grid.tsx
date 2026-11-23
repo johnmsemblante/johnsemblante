@@ -11,7 +11,7 @@ export function ProjectGrid({ projects, headingLevel = 3, detailed = false }: { 
       <Heading><Link href={caseStudyUrl(project)}>{project.title} <Arrow /></Link></Heading>
       <ul className="project-industries" aria-label="Industries">{projectIndustryGroups(project).map(value => <li key={value}><Link href={`/work/?industry=${value}`}>{portfolioIndustryGroups.find(group => group.value === value)?.label}</Link></li>)}</ul>
       <p>{project.summary}</p><ul className="tags" aria-label="Technologies">{project.technologies.map(tag => <li key={tag}>{tag}</li>)}</ul>
-      <div className="project-card-actions"><Link href={caseStudyUrl(project)} aria-label={`View case study: ${project.title}`}>View case study <Arrow /></Link>{project.website && (project.website.startsWith("/") ? <Link href={project.website} aria-label={`View live website: ${project.title}`}>View live website <Arrow /></Link> : <a href={project.website} target="_blank" rel="noopener noreferrer" aria-label={`View live website: ${project.title}`}>View live website <Arrow /></a>)}</div>
+      <div className="project-card-actions"><Link href={caseStudyUrl(project)} aria-label={`Case study: ${project.title}`}>Case study <Arrow /></Link>{project.website && (project.website.startsWith("/") ? <Link href={project.website} aria-label={`Live website: ${project.title}`}>Live website <Arrow /></Link> : <a href={project.website} target="_blank" rel="noopener noreferrer" aria-label={`Live website: ${project.title}`}>Live website <Arrow /></a>)}</div>
     </div>
   </article>)}</div>;
   return <div className="project-grid">{projects.map(project => <article className="project-card" key={project.slug}>

@@ -18,6 +18,7 @@ function load(file) {
     if (name === '@/components/zoom-image') return { ZoomImage: ({ gallery, caption, ...props }) => React.createElement('img', props) };
     if (name.startsWith('@/') || name.startsWith('.')) {
       const target = name.startsWith('@/') ? path.resolve('src', name.slice(2)) : path.resolve(path.dirname(file), name);
+      if (target.endsWith('.json')) return JSON.parse(fs.readFileSync(target, 'utf8'));
       return load(fs.existsSync(`${target}.ts`) ? `${target}.ts` : `${target}.tsx`);
     }
     return require(name);
@@ -114,6 +115,7 @@ test('every enabled option can match the other groups, and a new dropdown ignore
 test('explorer exposes labeled grouped checkboxes, a search/share action and a no-JavaScript collection without flashing unfiltered results', () => {
   const { ProjectExplorer } = load('src/components/project-explorer.tsx');
   const html = renderToStaticMarkup(React.createElement(ProjectExplorer, { projects }));
+  assert.match(html, /class="project-cover"[^>]*><img[^>]*src="\/images\/projects\/edeemonnen\.jpg"/);
   assert.ok(html.includes('Portfolio filters')); assert.ok(html.includes('Industry')); assert.ok(html.includes('Technology')); assert.ok(html.includes('Project Type'));
   assert.ok(html.includes('type="checkbox"')); assert.ok(html.includes('aria-controls=')); assert.ok(html.includes('aria-expanded="false"'));
   assert.ok(html.includes('aria-live="polite"')); assert.ok(html.includes('Share these results')); assert.ok(html.includes('Loading portfolio filters'));

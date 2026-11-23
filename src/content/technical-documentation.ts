@@ -4,6 +4,15 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
+    id: "neon-dash-engine", title: "How Neon Dash runs in the browser", category: "Browser tools", updated: "2026-11-23",
+    summary: "Review the simulation, rendering, and publishing boundaries.",
+    tags: ["Canvas", "TypeScript", "Web Audio", "game"],
+    sections: [
+      { heading: "Simulation and rendering", paragraphs: ["A fixed timestep advances grounded movement, buffered jumps, slide hitboxes, hazards and energy coins. The game route loads the Canvas renderer separately. City layers are cached, simulation objects are culled, and HUD updates are throttled."] },
+      { heading: "Release verification", steps: ["Run the Neon Dash engine tests and export the site.", "Open the game via Free Tools and verify keyboard and touch play, pausing, low-motion rendering, sound, and best-score persistence."] },
+    ], sources: ["docs/neon-dash.md", "src/lib/neon-dash/engine.ts", "src/lib/neon-dash/art.ts"],
+  },
+  {
     id: "portfolio-manifest", title: "How home-screen installation works", category: "Interface", updated: "2026-11-23",
     summary: "Review the static manifest and launcher icons after a Hosting release.",
     tags: ["PWA", "manifest", "standalone", "Firebase Hosting"],

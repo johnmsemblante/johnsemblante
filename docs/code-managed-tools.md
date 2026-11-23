@@ -71,3 +71,10 @@ Run `npm.cmd run audit:seo:qr` after building, or `node scripts/check-qr-seo.mjs
 Public HTTP checks found a 200 response for the canonical tool, 301 redirects for HTTP and the slashless URL, and a 404 for a missing tool route. Robots allows crawling and references the canonical sitemap. The www hostname failed resolution, with NXDOMAIN independently confirmed using Google's public DNS resolver. Configuring www requires DNS and Hosting domain setup. The preferred non-www URL is accessible. No domain configuration was changed during this audit.
 
 Search Console submission, Google's selected canonical, indexing, rankings and field Core Web Vitals remain unverified. For the indexing handoff, inspect `https://johnsemblante.com/tools/qr-code-generator/` in the verified Search Console property, run its live URL test and request indexing. Submit `https://johnsemblante.com/sitemap.xml` through the property's Sitemaps screen if it has not already been submitted.
+## Work showcase
+
+Neon Dash appears first. The slider uses a clipped track instead of a horizontal scrollbar. Browse with the buttons, swipe, or use Left and Right with the slider focused.
+
+Work shows linked screenshot cards in a swipeable slider under What I build beyond WordPress. Previous and Next move one card at a time. The slider shows four cards above 991px, three through 991px, two through 767px, and one through 567px. Names, descriptions and destinations come from the published tool registry. The screenshot mapping in `src/components/work-tool-showcase.tsx` opts individual published entries into the gallery. The cards do not create Works or Ventures records.
+
+Build the static export, then run `node scripts/capture-work-previews.mjs "<Chromium executable>"` with the preview and browser-debugging ports free. The script captures local demo screens in a temporary browser profile and writes optimized WebP files to `public/images/work-previews/`. Review each crop before publishing and never use customer data or private files in captures.

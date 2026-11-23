@@ -73,7 +73,7 @@ test('current and future tool detail routes render a single widget, excluding th
   assert.equal((render().match(/class="donation-trigger"/g) || []).length, 1);
   pathname += '/';
   assert.ok(render().includes('aria-haspopup="dialog"'));
-  for (pathname of [...toolVentures.map(tool => tool.route), '/tools/future-tool/']) {
+  for (pathname of [...toolVentures.map(tool => tool.route).filter(route => route.startsWith('/tools/')), '/tools/future-tool/']) {
     assert.equal((render().match(/class="donation-trigger"/g) || []).length, 1, pathname);
   }
   for (pathname of ['/', '/tools', '/tools/', '/ventures/', '/ventures/lazy-barista/', '/adminauth/', '/blog/', '/work/', '/contact/', '/about/']) {

@@ -48,6 +48,11 @@ export const toolVentures: ToolVenture[] = [{
   description: "Plan startup funding, estimate monthly sales and compare break-even and cash recovery for a Philippine business.",
   route: "/tools/business-startup-calculator/", category: "Business planning", icon: "₱", status: "published", order: 4,
   iconImage: "/tools/business-startup-calculator/icon.svg", featuredOnHome: true, featuredOrder: 4, ctaLabel: "Plan a business",
+}, {
+  id: "neon-dash", slug: "neon-dash", name: "Neon Dash",
+  description: "Jump, slide and collect energy in a free cyberpunk endless runner. Play in your browser and beat your personal best.",
+  route: "/games/neon-dash/", category: "Free browser game", icon: "ND", status: "published", order: 5,
+  ctaLabel: "Play Neon Dash", iconImage: "/games/neon-dash/icon.svg",
 }];
 export const publishedTools = toolVentures.filter(tool => tool.status === "published").sort((a, b) => a.order - b.order);
 
