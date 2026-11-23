@@ -4,6 +4,15 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
+    id: "portfolio-manifest", title: "How home-screen installation works", category: "Interface", updated: "2026-11-23",
+    summary: "Review the static manifest and launcher icons after a Hosting release.",
+    tags: ["PWA", "manifest", "standalone", "Firebase Hosting"],
+    sections: [
+      { heading: "Static installation metadata", paragraphs: ["Next.js exports the web app manifest and links it in page metadata. The manifest tells supported browsers to launch the homepage in standalone mode using the portfolio icons. No service worker intercepts requests."] },
+      { heading: "Verify the release", steps: ["Check the live homepage manifest link and confirm the manifest and both launcher icons load over HTTPS.", "Install from Safari on iPhone and Chrome on Android, then launch from the home-screen icon."] },
+    ], sources: ["docs/pwa.md", "src/app/manifest.webmanifest", "public/pwa-icon-192.png", "public/pwa-icon-512.png"],
+  },
+  {
     id: "negosyo-model", title: "How the startup planner models profit and cash", category: "Browser tools", updated: "2026-11-20",
     summary: "Trace a supplier quote through startup funding, break-even and cash recovery.",
     tags: ["Negosyo", "centavos", "working capital", "local storage"],

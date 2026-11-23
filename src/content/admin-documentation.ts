@@ -9,6 +9,15 @@ export type DocumentationGuide = {
 const reviewed = "2026-11-13";
 export const documentationGuides: DocumentationGuide[] = [
   {
+    id: "install-portfolio", title: "Install the portfolio on your home screen", category: "Getting started", updated: "2026-11-23",
+    summary: "Open the portfolio from a home-screen icon in its own window.",
+    tags: ["PWA", "install", "iPhone", "Android", "standalone"], sources: ["docs/pwa.md"],
+    sections: [
+      { heading: "Install on your phone", steps: ["Open johnsemblante.com directly in your browser, not inside a social app.", "On iPhone in Safari, choose Share, then Add to Home Screen. Enable Open as Web App if shown, then tap Add.", "On Android in Chrome, open the menu and choose Install app or Add to Home screen, then follow the prompts.", "Tap the new icon. The installed app opens the homepage without the normal browser toolbar."] },
+      { heading: "Limits and troubleshooting", paragraphs: ["This is the live website, not an app-store download. It needs an internet connection and does not add offline support or push notifications. Admin access still requires the existing sign-in.", "If the option is missing or opens a normal browser tab, check that you used the HTTPS homepage in a current browser, that the app is not already installed, and that you chose to install rather than create a shortcut if offered both."] },
+    ],
+  },
+  {
     id: "negosyo-planner", title: "Plan a Philippine business launch", category: "Free tools", updated: "2026-11-20",
     summary: "Build a startup checklist, forecast sales and print a local feasibility report.",
     tags: ["Negosyo", "startup", "break-even", "PHP", "cash flow", "JSON", "print"],
