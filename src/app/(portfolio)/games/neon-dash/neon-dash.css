@@ -8,7 +8,15 @@ main > .section.neon-page { padding-block: clamp(26px, 5vw, 58px); }
 .neon-hud strong { display: block; color: #8afbf2; font: bold 17px monospace; }
 .neon-arena { position: relative; border: 1px solid #5d7199; border-radius: 7px; background: #111434; }
 .neon-arena:focus-visible { outline: 2px solid #8afbf2; outline-offset: 3px; }
-.neon-arena canvas { display: block; width: 100%; height: auto; border-radius: inherit; touch-action: none; }
+.neon-arena canvas { display: block; width: 100%; height: auto; border-radius: inherit; }
+.neon-arena canvas.neon-playing { touch-action: none; }
+.neon-game button:focus-visible, .neon-settings input:focus-visible { outline: 2px solid #a2fff6; outline-offset: 3px; }
+.neon-settings { display: grid; gap: 16px; justify-items: start; }
+.neon-settings h2 { margin: 0; }
+.neon-settings label:has(input[type=range]) { width: min(100%, 380px); display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.neon-settings input[type=range] { grid-column: 1 / -1; width: 100%; min-height: 36px; accent-color: #84f5e7; }
+.neon-settings input[type=checkbox] { accent-color: #84f5e7; }
+.neon-inputs { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .neon-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: start; justify-content: center; gap: 10px; padding: clamp(12px, 4vw, 42px); background: linear-gradient(90deg, #090c24f5, #090c2496); border-radius: inherit; }
 .neon-overlay h2 { font: 900 italic clamp(26px, 6vw, 72px)/.95 var(--font-montserrat), sans-serif; letter-spacing: -.06em; color: #a2fff6; text-transform: uppercase; }
 .neon-overlay p { margin: 0; max-width: 54ch; font-size: clamp(12px, 2vw, 16px); line-height: 1.45; }
@@ -34,6 +42,17 @@ main > .section.neon-page { padding-block: clamp(26px, 5vw, 58px); }
 .neon-shop-grid h3, .neon-shop-grid p { margin: 0; }
 .neon-shop-grid p { color: #ddd4f5; font-size: 13px; flex: 1; }
 .neon-shop-grid strong { color: #a2fff6; font-size: 13px; }
+.neon-world-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.neon-world-grid canvas { display: block; width: 100%; height: auto; border-radius: 4px; background: #121532; }
+.neon-activity .neon-shop-grid { margin-top: 14px; }
+.neon-activity progress { accent-color: #84f5e7; width: 100%; }
+.neon-activity dl > div { padding: 12px; border: 1px solid #63598c; border-radius: 8px; background: #201d43; }
+.neon-activity dt { color: #ddd4f5; font-size: 13px; }
+.neon-activity dd { margin: 6px 0 0; color: #a2fff6; font: bold 20px monospace; }
+.neon-overlay { justify-content: safe center; overflow-y: auto; }
+.neon-overlay .neon-unlock { color: #a2fff6; animation: neon-unlock-in 240ms ease-out; }
+@keyframes neon-unlock-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .neon-overlay .neon-unlock { animation: none; } }
 @media (max-width: 580px) {
   .neon-guide { grid-template-columns: 1fr; }
   .neon-overlay { position: relative; inset: auto; background: #151733; gap: 7px; }

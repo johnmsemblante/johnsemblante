@@ -4,13 +4,13 @@ export const rules = {
   grace: 0.1, slideTime: 0.62, step: 1 / 120,
 };
 
-export type Hazard = { x: number; kind: number; phase: number };
+export type Hazard = { x: number; kind: number; phase: number; passed?: boolean };
 type Coin = { x: number; y: number; taken: boolean };
 export type Cue = "jump" | "land" | "slide" | "coin" | "hit";
 
 export function createRun() {
   return {
-    time: 0, distance: 0, coins: 0, lift: 0, velocity: 0,
+    time: 0, distance: 0, coins: 0, jumps: 0, slides: 0, dodges: 0, lift: 0, velocity: 0,
     buffer: 0, grace: rules.grace, slide: 0, dead: false,
     next: 820, hazards: [] as Hazard[], tokens: [] as Coin[],
     burst: 0, burstX: rules.playerX, burstY: rules.floor,
@@ -40,6 +40,10 @@ export function advance(run: Run, dt: number, random = Math.random, cue: (event:
   if (run.buffer && run.grace && run.lift === 0 && !run.slide) {
     run.velocity = rules.impulse;
     run.grace = run.buffer = 0;
+    run.jumps++;
+    run.burst = .15;
+    run.burstX = rules.playerX - 8;
+    run.burstY = rules.floor;
     cue("jump");
   }
   if (run.velocity || run.lift) {
@@ -71,6 +75,10 @@ export function advance(run: Run, dt: number, random = Math.random, cue: (event:
       run.dead = true;
       cue("hit");
       break;
+    }
+    if (!hazard.passed && hazard.x + box.width <= rules.playerX - 11) {
+      hazard.passed = true;
+      run.dodges++;
     }
   }
   for (const token of run.tokens) {

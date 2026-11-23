@@ -8,6 +8,9 @@ export const technicalGuides: DocumentationGuide[] = [
     summary: "Review the simulation, rendering, and publishing boundaries.",
     tags: ["Canvas", "TypeScript", "Web Audio", "game"],
     sections: [
+      { heading: "World themes and unlocks", paragraphs: ["The world catalogue drives previews, cached scenery, and completed-distance thresholds. The progression receipt credits distance and wallet together. Older saves retain cosmetics and scores without using best score as cumulative distance. World themes do not change hitboxes or obstacle timing."] },
+      { heading: "Daily and lifetime activity", paragraphs: ["One run receipt updates stats and unlocks at game over. UTC-seeded objectives use completed-run counters. Claims validate the date, objective and claim ID, then save wallet and claim together before reporting success. Achievement timestamps are stored with existing browser progression."] },
+      { heading: "Idle frames and audio", paragraphs: ["The scheduler requests continuous frames only during a run and redraws static scenes on change. A gesture unlocks the shared Web Audio gain bus; settings are validated with the existing V2 save. Canvas rendering failures route to reload without altering storage."] },
       { heading: "Simulation and rendering", paragraphs: ["A fixed timestep advances grounded movement, buffered jumps, slide hitboxes, hazards and energy coins. The game route loads the Canvas renderer separately. City layers are cached, simulation objects are culled, and HUD updates are throttled."] },
       { heading: "Release verification", steps: ["Run the Neon Dash engine tests and export the site.", "Open the game via Free Tools and verify keyboard and touch play, pausing, low-motion rendering, sound, and best-score persistence."] },
     ], sources: ["docs/neon-dash.md", "src/lib/neon-dash/engine.ts", "src/lib/neon-dash/art.ts"],

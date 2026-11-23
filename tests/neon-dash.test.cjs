@@ -8,10 +8,129 @@ new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/en
 }).outputText)(engine);
 const { advance, createRun, meters, speedAt, rules } = engine;
 const progression = {};
-new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/progression.ts', 'utf8'), {
+const audio = {};
+new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/audio.ts', 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
-}).outputText)(progression);
+}).outputText)(audio);
+const activity = {};
+new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/activity.ts', 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText)(activity);
+const worlds = {};
+new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/worlds.ts', 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText)(worlds);
+new Function('exports', 'require', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/progression.ts', 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText)(progression, name => ({ './worlds': worlds, './activity': activity, './audio': audio })[name]);
 const { playerKey, loadPlayer, parsePlayer, finishRun, changeCosmetic, cosmetics } = progression;
+
+test('old saves keep mute and progress while invalid volume settings are normalized', () => {
+  const base = { ...progression.newPlayer(), best: 410, sound: true };
+  const old = parsePlayer(JSON.stringify({ ...base, audio: undefined, reducedEffects: undefined }));
+  assert.deepEqual(old.audio, audio.defaultLevels);
+  assert.equal(old.sound, true);
+  assert.equal(old.best, 410);
+  const normalized = parsePlayer(JSON.stringify({ ...base, audio: { master: 4, effects: -2 }, reducedEffects: true }));
+  assert.deepEqual(normalized.audio, { master: 1, effects: 0 });
+  assert.equal(normalized.reducedEffects, true);
+  assert.deepEqual(parsePlayer(JSON.stringify(normalized)), normalized);
+});
+
+test('muted and zero-volume audio never create a browser audio context', async () => {
+  const sound = audio.createAudio();
+  sound.configure(false, audio.defaultLevels);
+  await sound.unlock();
+  sound.play('coin');
+  sound.configure(true, { master: 1, effects: 0 });
+  await sound.unlock();
+  sound.play('jump');
+  sound.close();
+});
+
+test('daily objectives are deterministic, distinct and pay once without inflating collected coins', () => {
+  const now = new Date('2026-11-23T23:59:59Z');
+  const tomorrow = new Date('2026-11-24T00:00:00Z');
+  const date = activity.utcDay(now);
+  const set = activity.challenges(date);
+  assert.deepEqual(set, activity.challenges(date));
+  assert.deepEqual(set.map(item => item.reward), [50, 100, 150]);
+  assert.equal(new Set(set.map(item => item.metric)).size, 3);
+  const player = progression.newPlayer();
+  assert.equal(progression.claimChallenge(player, set[0].id, now), player);
+  const daily = { date, stats: activity.readStats({ [set[0].metric]: set[0].target }), claimed: [] };
+  const eligible = { ...player, daily };
+  const claimed = progression.claimChallenge(eligible, set[0].id, now);
+  assert.equal(claimed.wallet, 50);
+  assert.equal(claimed.collected, 0);
+  const reloaded = parsePlayer(JSON.stringify(claimed));
+  assert.deepEqual(reloaded, claimed);
+  assert.equal(progression.claimChallenge(reloaded, set[0].id, now), reloaded);
+  assert.equal(progression.claimChallenge(eligible, set[0].id, tomorrow), eligible);
+  const next = finishRun(reloaded, { credited: false }, 2, 15, {}, tomorrow);
+  assert.deepEqual(next.daily.claimed, []);
+  assert.equal(next.daily.date, '2026-11-24');
+  assert.equal(next.daily.stats.coins, 2);
+  assert.equal(next.wallet, 52);
+});
+
+test('stats aggregate on one receipt and achievement timestamps survive saves and later runs', () => {
+  const now = new Date('2026-11-23T12:00:00Z');
+  const receipt = { credited: false };
+  const first = finishRun(progression.newPlayer(), receipt, 100, 50, { jumps: 100, slides: 2, dodges: 5, survival: 180, longest: 180 }, now);
+  assert.equal(finishRun(first, receipt, 100, 50, {}, now), first);
+  const second = finishRun(first, { credited: false }, 0, 10, { jumps: 1, slides: 1, survival: 2, longest: 2 }, now);
+  assert.deepEqual([second.stats.runs, second.stats.jumps, second.stats.slides, second.stats.dodges, second.stats.survival, second.stats.longest], [2, 101, 3, 5, 182, 180]);
+  assert.deepEqual(Object.keys(second.achievements).sort(), ['collector', 'first', 'jumper', 'survivor']);
+  assert.equal(parsePlayer(JSON.stringify(second)).achievements.first, now.toISOString());
+});
+
+test('each world renders its own palette with the same simulation and equipped cosmetics', () => {
+  const art = {};
+  const previous = global.document;
+  const frames = [];
+  const context = () => new Proxy({
+    createLinearGradient: () => ({ addColorStop: (position, color) => frames.push(color) }),
+    fillRect() { frames.push(this.fillStyle); },
+  }, { get: (target, key) => target[key] ?? (() => {}) });
+  global.document = { createElement: () => ({ getContext: context }) };
+  try {
+    new Function('exports', 'require', ts.transpileModule(fs.readFileSync('src/lib/neon-dash/art.ts', 'utf8'), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+    }).outputText)(art, name => ({ './engine': engine, './worlds': worlds, './progression': progression })[name]);
+    const draw = art.buildRenderer(context());
+    const run = createRun();
+    run.hazards.push({ x: 500, kind: 0, phase: 0 });
+    const before = JSON.stringify(run);
+    for (const world of worlds.worlds) {
+      frames.length = 0;
+      draw(run, true, false, { skins: 'gold', trails: 'streak' }, world.id);
+      assert.ok(frames.includes(world.sky[0]) && frames.includes(world.deck));
+      assert.ok(frames.includes('#ffcf62') && frames.includes('#ff6279'));
+      assert.equal(JSON.stringify(run), before);
+    }
+  } finally { global.document = previous; }
+});
+
+test('world progression starts at zero on old saves and unlocks once at each threshold', () => {
+  const legacy = parsePlayer(JSON.stringify({ ...progression.newPlayer(), best: 2500, earned: 20, wallet: 20, lifetimeDistance: undefined, unlocked: undefined, world: undefined }));
+  assert.equal(legacy.best, 2500);
+  assert.equal(legacy.lifetimeDistance, 0);
+  assert.deepEqual(legacy.unlocked, ['neon-downtown']);
+  assert.equal(progression.selectWorld(legacy, 'cyber-rooftops'), legacy);
+  const first = finishRun(legacy, { credited: false }, 2, 749);
+  const receipt = { credited: false };
+  const second = finishRun(first, receipt, 1, 1);
+  assert.deepEqual(second.unlocked, ['neon-downtown', 'cyber-rooftops']);
+  assert.equal(finishRun(second, receipt, 1, 1), second);
+  const selected = progression.selectWorld(second, 'cyber-rooftops');
+  assert.deepEqual(parsePlayer(JSON.stringify(selected)), selected);
+  assert.equal(parsePlayer(JSON.stringify({ ...selected, lifetimeDistance: null })).world, 'cyber-rooftops');
+  assert.equal(parsePlayer(JSON.stringify({ ...selected, world: 'bogus' })).world, 'neon-downtown');
+  const third = finishRun(selected, { credited: false }, 0, 1250);
+  assert.deepEqual(third.unlocked, ['neon-downtown', 'cyber-rooftops', 'glitch-district']);
+  assert.equal(third.wallet, 23);
+});
 
 test('V1 score and sound migrate without writing over existing saves', () => {
   const data = new Map([['neon-dash:v1:high-score', '432'], ['neon-dash:v1:sound', 'on']]);

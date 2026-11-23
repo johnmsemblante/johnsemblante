@@ -1,7 +1,8 @@
 import { bounds, rules, type Run } from "./engine";
 import { cosmetics, newPlayer, type Player } from "./progression";
+import { getWorld, defaultWorld, type World, type WorldId } from "./worlds";
 
-function cityLayer(index: number) {
+function cityLayer(index: number, world: World) {
   const tile = document.createElement("canvas");
   tile.width = rules.width;
   tile.height = rules.height;
@@ -10,15 +11,23 @@ function cityLayer(index: number) {
   const random = () => ((seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296);
   for (let x = 0; x < tile.width;) {
     const width = 24 + random() * (38 + index * 16);
-    const y = 284 - random() * (74 + index * 51);
-    ctx.fillStyle = ["#21194c", "#131735", "#101026"][index];
+    const y = (world.style === "roof" ? 338 : 284) - random() * (74 + index * 51);
+    ctx.fillStyle = world.buildings[index];
     ctx.fillRect(x, y, width, 400 - y);
     ctx.fillRect(x + 5, y - 7, width - 10, 8);
     ctx.fillRect(x + width * .65, y - 18, 2, 18);
+    if (world.style === "roof") {
+      ctx.fillRect(x + width * .65 - 7, y - 14, 16, 2);
+      ctx.fillRect(x + 4, y - 13, 14, 8);
+    }
+    if (world.style === "digital") {
+      ctx.fillRect(x + 4, y - 16, width * .4, 4);
+      ctx.fillRect(x + width * .55, y - 26, width * .3, 4);
+    }
     for (let row = y + 13; row < 357; row += 12) {
       for (let column = x + 6; column < x + width - 7; column += 8) {
         if (random() < .5) continue;
-        ctx.fillStyle = random() < .2 ? "#c32c85" : index === 2 ? "#226483" : "#343173";
+        ctx.fillStyle = random() < .2 ? world.detail : index === 2 ? "#226483" : "#53508a";
         ctx.fillRect(column, row, index === 2 ? 5 : 3, 3);
       }
     }
@@ -35,11 +44,9 @@ function cityLayer(index: number) {
 }
 
 export function buildRenderer(ctx: CanvasRenderingContext2D) {
-  const layers = [0, 1, 2].map(cityLayer);
-  const sky = ctx.createLinearGradient(0, 0, 0, rules.floor);
-  sky.addColorStop(0, "#080d29");
-  sky.addColorStop(.56, "#261955");
-  sky.addColorStop(1, "#a73076");
+  let world = getWorld(defaultWorld);
+  let layers: HTMLCanvasElement[] = [];
+  let sky: CanvasGradient;
   const rect = (color: string, x: number, y: number, width: number, height: number) => {
     ctx.fillStyle = color;
     ctx.fillRect(Math.round(x), Math.round(y), width, height);
@@ -53,32 +60,49 @@ export function buildRenderer(ctx: CanvasRenderingContext2D) {
     ctx.stroke();
   }
   const defaults = newPlayer().equipped;
-  return (run: Run, moving: boolean, reduced: boolean, equipped: Player["equipped"] = defaults) => {
+  return (run: Run, moving: boolean, reduced: boolean, equipped: Player["equipped"] = defaults, worldId: WorldId = defaultWorld, sceneryOnly = false) => {
+    if (!layers.length || world.id !== worldId) {
+      world = getWorld(worldId);
+      layers = [0, 1, 2].map(index => cityLayer(index, world));
+      sky = ctx.createLinearGradient(0, 0, 0, rules.floor);
+      world.sky.forEach((color, index) => sky.addColorStop([0, .56, 1][index], color));
+    }
     const skin = cosmetics.skins.find(item => item.id === equipped.skins) ?? cosmetics.skins[0];
     const trail = cosmetics.trails.find(item => item.id === equipped.trails) ?? cosmetics.trails[0];
     const [armor, accent, visor] = skin.colors;
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, rules.width, rules.height);
     for (let index = 0; index < 58; index++) rect(index % 9 ? "#66629b" : "#a5e7ff", index * 97 % 800, 13 + index * 31 % 154, index % 9 ? 1 : 2, 2);
-    ctx.fillStyle = "#f38e9b";
+    ctx.fillStyle = world.sun;
     ctx.beginPath();
-    ctx.arc(606, 135, 66, 0, Math.PI * 2);
+    ctx.arc(606, world.style === "roof" ? 186 : 135, world.style === "roof" ? 82 : 66, 0, Math.PI * 2);
     ctx.fill();
-    for (let line = 143; line < 200; line += 9) rect("#492257", 542, line, 128, 3);
+    if (world.style === "street") for (let line = 143; line < 200; line += 9) rect("#492257", 542, line, 128, 3);
+    if (!reduced && world.style === "roof") for (let index = 0; index < 5; index++) {
+      const cloudX = ((index * 190 - run.distance * .08) % 940 + 940) % 940 - 130;
+      rect("#ffe6c226", cloudX, 140 + index * 11, 125, 6);
+      rect("#ffe6c21c", cloudX + 25, 135 + index * 11, 80, 5);
+    }
     layers.forEach((layer, index) => {
       const offset = reduced ? 0 : run.distance * [.13, .29, .53][index] % rules.width;
       ctx.drawImage(layer, -offset, 0);
       ctx.drawImage(layer, rules.width - offset, 0);
     });
-    rect("#252044", 0, rules.floor, 800, 78);
-    rect("#12b7dc", 0, rules.floor, 800, 3);
+    if (!reduced) for (let index = 0; index < 12; index++) {
+      const drift = world.style === "digital" ? .16 : .07;
+      const x = ((index * 103 - run.distance * drift) % 800 + 800) % 800;
+      rect(world.detail + "75", x, 60 + (index * 29 % 230), world.style === "digital" ? 13 : 3, 2);
+    }
+    rect(world.deck, 0, rules.floor, 800, 78);
+    rect(world.light, 0, rules.floor, 800, 3);
     rect("#a9f9ff", 0, rules.floor, 800, 1);
     rect("#120f2a", 0, rules.floor + 7, 800, 11);
     for (let x = -(run.distance % 70); x < 800; x += 70) {
       rect("#522c67", x, 348, 56, 19);
-      rect("#de397c", x + 5, 353, 30, 2);
+      rect(world.detail, x + 5, 353, 30, 2);
       rect("#392851", x, 373, 61, 3);
     }
+    if (sceneryOnly) return;
     for (const token of run.tokens) {
       if (token.taken) continue;
       const radius = reduced ? 7 : 4 + Math.abs(Math.sin(run.time * 8 + token.x * .01)) * 4;
@@ -92,9 +116,11 @@ export function buildRenderer(ctx: CanvasRenderingContext2D) {
       const box = bounds(hazard, run.time);
       const color = hazard.kind === 2 ? "#ff64de" : hazard.kind === 3 ? "#b698ff" : "#ff6279";
       rect(color, hazard.x, box.y, box.width, box.height);
-      rect("#27152d", hazard.x + 3, box.y + 3, box.width - 6, box.height - 6);
+      rect(world.deck, hazard.x + 3, box.y + 3, box.width - 6, box.height - 6);
       rect(color, hazard.x + 4, box.y + (hazard.kind === 2 ? box.height - 5 : 7), box.width - 8, 2);
       for (let offset = 8; offset < box.width - 5; offset += 11) rect(color, hazard.x + offset, box.y + 13, 4, 5);
+      if (world.style === "roof") for (let offset = 6; offset < box.width - 5; offset += 8) rect("#ffc584", hazard.x + offset, box.y + box.height - 7, 4, 3);
+      if (world.style === "digital") rect(world.light, hazard.x + 5, box.y + box.height - 7, box.width - 10, 2);
     }
     if (!reduced && run.burst > 0) for (let index = 0; index < 7; index++) {
       const spread = (0.25 - run.burst) * 160;
@@ -113,7 +139,8 @@ export function buildRenderer(ctx: CanvasRenderingContext2D) {
       ctx.globalAlpha = run.dead ? .72 : 1;
     }
     const stride = moving && !run.lift ? Math.sin(run.time * 17) * 12 : 0;
-    const torso = run.slide ? -14 : -32;
+    const slideBlend = run.slide ? Math.min(1, (rules.slideTime - run.slide) / .065, run.slide / .075) : 0;
+    const torso = -32 + 18 * (reduced ? Number(run.slide > 0) : slideBlend);
     const front = run.slide ? 24 : run.lift ? (run.velocity > 0 ? 11 : 4) : stride;
     limb([[-5, torso + 6], [-8, -13], [-front - 8, -3]], "#554698", 8);
     limb([[0, torso + 5], [front * .8 + 4, -13], [front, -3]], "#8879e0", 8);
