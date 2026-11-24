@@ -13,9 +13,9 @@ type Props = { params: Promise<{ industry: string }> };
 export async function generateMetadata({ params }: Props) {
   const industry = findIndustry((await params).industry);
   if (!industry) return {};
-  const hasProjects = buildWorks().some(project => project.industries.includes(industry.slug));
-  const description = hasProjects ? industry.description : `${industry.label} website development with John Semblante in Cebu. No project examples are published here yet. Discuss your project.`;
-  return pageMetadata(industry.title, description, industryPath(industry.slug));
+  const examples = projects.filter(project => project.industries.includes(industry.slug));
+  const description = examples.length ? industry.description : `${industry.label} website development with John Semblante in Cebu. No project examples are published here yet. Discuss your project.`;
+  return pageMetadata(industry.title, description, industryPath(industry.slug), ...examples.map(project => project.image));
 }
 const projects = buildWorks();
 

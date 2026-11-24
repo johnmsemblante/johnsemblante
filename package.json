@@ -6,7 +6,7 @@
     "portrait:import": "node scripts/import-portrait-model.cjs",
     "test:portrait": "node --test tests/portrait.test.cjs tests/portrait-import.test.cjs",
     "predev": "node scripts/prepare-pdf-assets.cjs",
-    "prebuild:prepared": "node scripts/prepare-pdf-assets.cjs",
+    "prebuild:prepared": "node scripts/prepare-pdf-assets.cjs && node scripts/prepare-social-images.cjs",
     "test:pdf": "node --test tests/pdf-editor.test.cjs",
     "test:resume": "node --test tests/resume-generator.test.cjs",
     "dev": "node node_modules/next/dist/bin/next dev --webpack",
@@ -43,6 +43,7 @@
     "qr-code-styling": "1.9.2",
     "react": "latest",
     "react-dom": "latest",
+    "sharp": "0.35.5",
     "three": "^0.187.0"
   },
   "devDependencies": {

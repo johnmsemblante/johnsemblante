@@ -8,7 +8,7 @@ import "./qr-code-generator.css";
 
 const title = "Free QR Code Generator (No Sign Up) | John Semblante";
 const description = "Create free QR codes for websites, Wi-Fi, email, phone numbers and text. No sign-up, no watermarks or expiry. Customize and download PNG or SVG.";
-export const metadata = { ...pageMetadata(title, description, "/tools/qr-code-generator/"), title: { absolute: title } };
+export const metadata = { ...pageMetadata(title, description, "/tools/qr-code-generator/", { url: "/images/work-previews/qr-code-generator.webp", alt: title }), title: { absolute: title } };
 const questions = [
   ["Is this QR code generator really free?", "Yes. All five content types, color settings and PNG/SVG downloads are free, with no watermark or subscription. You can use the codes on menus, packaging, business cards and posters. Make sure you have permission to share the content you encode."],
   ["Do I need to create an account?", "No account or sign-up is required. Enter your content, choose your settings and download your QR code directly."],

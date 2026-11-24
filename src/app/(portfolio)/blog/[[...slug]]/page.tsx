@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { publishedPosts, formatPostDate } from "@/content/blog";
 import { PageIntro, Arrow } from "@/components/ui";
 import { buildBlogPosts } from "@/lib/build-blog";
-import { postMetadata } from "@/lib/blog-model";
+import { articleBlocks, postMetadata } from "@/lib/blog-model";
 import { LivePublishedBlogArticle } from "@/components/live-published-blog-article";
 import { articleSchema, jsonLd } from "@/lib/seo";
 import { site } from "@/content/site";
@@ -26,7 +26,9 @@ export async function generateMetadata({ params }: Props) {
   const managed = buildBlogPosts().find(post => slug.length === 1 && post.slug === slug[0]);
   if (managed) {
     const seo = postMetadata(managed);
-    const metadata = pageMetadata(seo.title, seo.description, `/blog/${managed.slug}/`, managed.featuredImage ? { url: managed.featuredImage, alt: managed.featuredImageAlt || managed.title } : undefined);
+    const articleImages = articleBlocks(managed.content).flatMap(block =>
+      block.type === "image" && block.url ? [{ url: block.url, alt: block.text }] : []);
+    const metadata = pageMetadata(seo.title, seo.description, `/blog/${managed.slug}/`, { url: managed.featuredImage, alt: managed.featuredImageAlt || managed.title }, ...articleImages);
     return { ...metadata, openGraph: { ...metadata.openGraph, type: "article", publishedTime: managed.publishedAt, authors: [site.name] } };
   }
   const post = publishedPosts().find(post => slug.length === 1 && post.slug === slug[0]);

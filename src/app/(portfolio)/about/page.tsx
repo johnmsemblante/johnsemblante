@@ -10,7 +10,7 @@ import { site } from "@/content/site";
 import { PageIntro, Button } from "@/components/ui";
 import { pageMetadata } from "@/lib/metadata";
 const aboutTitle = `About ${profile.fullName} | Cebu Web Developer`;
-export const metadata = withPageMetadata("about", { ...pageMetadata(aboutTitle, `Meet ${profile.fullName}, a web developer in Cebu with experience since 2013. Explore my WordPress skills, work history, and independent projects.`, "/about/"), title: { absolute: aboutTitle } });
+export const metadata = withPageMetadata("about", { ...pageMetadata(aboutTitle, `Meet ${profile.fullName}, a web developer in Cebu with experience since 2013. Explore my WordPress skills, work history, and independent projects.`, "/about/", { url: "/images/profile/john-about-doodle-sketch.webp", alt: profile.fullName }), title: { absolute: aboutTitle } });
 export default function About() {
   return <PageContent id="about" initial={buildPage("about")}><div className="about-intro"><PageIntro eyebrow={<PageText scope="about_1" fallback={`${profile.title} / ${profile.location}`} />} title={<PageText scope="about_2" fallback={"I’m John, a web developer based in Cebu."} />}><p><PageText scope="about_3" fallback={profile.introduction} /></p><div className="actions"><Button href="/work/"><PageText scope="about_4" fallback={"Explore my work"} /></Button><Button href="/contact/" secondary><PageText scope="about_5" fallback={"Discuss your project"} /></Button></div></PageIntro><PageImage scope="about_6" className="profile-portrait" src="/images/profile/john-about-doodle-sketch.webp" alt="John Clark Semblante, web developer based in Cebu" width={768} height={1152} /></div>
     <section className="section work-context">

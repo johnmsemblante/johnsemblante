@@ -8,7 +8,7 @@ import "./image-compressor.css";
 
 const title = "Free Image Compressor to 100KB & 200KB | John Semblante";
 const description = "Compress JPG, PNG and WebP images online for free. Reduce photos to 50KB, 100KB, 200KB or a custom size. No sign-up or server uploads required.";
-export const metadata = { ...pageMetadata(title, description, "/tools/image-compressor/"), title: { absolute: title }, robots: { index: true, follow: true } };
+export const metadata = { ...pageMetadata(title, description, "/tools/image-compressor/", { url: "/images/work-previews/image-compressor.webp", alt: title }), title: { absolute: title }, robots: { index: true, follow: true } };
 const questions = [
   ["Is this image compressor free?", "Yes. Compress and download one image at a time without an account, subscription, watermark or paid download limit."],
   ["Can I compress an image to exactly 100KB?", "The target is a maximum, not an exact file size. Choose 100KB and the tool attempts an output of 100,000 bytes or less. The result reports its actual byte size and whether the target was achieved."],

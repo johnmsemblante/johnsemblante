@@ -23,6 +23,7 @@ yarn-error.log*
 next-env.d.ts
 
 .generated/
+/public/images/social-previews/
 /public/tools/pdf-editor/pdf.worker-*.min.mjs
 /public/tools/pdf-editor/cmaps/
 /public/tools/pdf-editor/standard_fonts/

@@ -14,9 +14,9 @@ import { pageMetadata } from "@/lib/metadata";
 import "./work-context.css";
 import { WorkToolShowcase } from "@/components/work-tool-showcase";
 import { goldenTravelDesign } from "@/content/golden-travel-design";
-const workTitle = `Web Development Portfolio | ${profile.fullName}`;
-export const metadata = withPageMetadata("work", { ...pageMetadata(workTitle, `View WordPress websites and personal projects by Cebu web developer ${profile.fullName}. Browse screenshots, technologies, and project details.`, "/work/"), title: { absolute: workTitle } });
 const projects = buildWorks();
+const workTitle = `Web Development Portfolio | ${profile.fullName}`;
+export const metadata = withPageMetadata("work", { ...pageMetadata(workTitle, `View WordPress websites and personal projects by Cebu web developer ${profile.fullName}. Browse screenshots, technologies, and project details.`, "/work/", ...projects.map(project => project.image)), title: { absolute: workTitle } });
 const design = projects.find(project => project.slug === goldenTravelDesign.slug);
 
 export default function Work() {

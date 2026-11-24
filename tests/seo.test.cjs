@@ -52,9 +52,12 @@ test('homepage includes managed and source article previews in publication order
 test('shared metadata supplies canonical URLs, public images and large Twitter cards', () => {
   const result = metadata.pageMetadata('Title', 'Description', '/blog/');
   assert.equal(result.alternates.canonical, site.url + '/blog/');
-  assert.equal(result.openGraph.images[0].url, site.socialImage);
+  assert.equal(result.openGraph.images[0].url, site.url + site.socialImage);
   assert.equal(result.twitter.card, 'summary_large_image');
-  assert.equal(metadata.pageMetadata('T', 'D', '/work/', { url: '/cover.webp', alt: 'Project cover' }).openGraph.images[0].url, '/cover.webp');
+  assert.equal(metadata.pageMetadata('T', 'D', '/work/', { url: '/images/projects/northcroft.jpg', alt: 'Project cover' }).openGraph.images[0].url, site.url + '/images/projects/northcroft.jpg');
+  const resultWithFallback = metadata.pageMetadata('Gallery', 'Description', '/work/', { src: '/missing.jpg' }, { src: 'https://images.example.com/cover.jpg', alt: 'Gallery cover' });
+  assert.equal(resultWithFallback.openGraph.images[0].url, 'https://images.example.com/cover.jpg');
+  assert.deepEqual(resultWithFallback.twitter.images, [{ url: 'https://images.example.com/cover.jpg', alt: 'Gallery cover' }]);
 });
 
 test('article structured data uses real author/date/image and escapes script-breaking content', () => {

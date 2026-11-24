@@ -12,9 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ venture: 
   const v = buildVentures().find(v => v.slug === venture);
   if (!v) return {};
   const url = v.canonicalBase || `${site.url}/ventures/${v.slug}/`;
-  const logo = v.logo?.src.trim() ? v.logo : undefined;
-  const image = logo ? { url: new URL(logo.src, site.url).href, width: logo.width, height: logo.height, alt: logo.alt } : undefined;
-  const metadata = pageMetadata(v.seo?.title?.trim() || v.name, v.seo?.description?.trim() || v.description, `/ventures/${v.slug}/`, image);
+  const metadata = pageMetadata(v.seo?.title?.trim() || v.name, v.seo?.description?.trim() || v.description, `/ventures/${v.slug}/`, v.logo, v.hero, v.storyImage, ...(v.gallery ?? []));
   return { ...metadata, title: { absolute: v.seo?.title?.trim() || v.name }, alternates: { canonical: url },
     openGraph: { ...metadata.openGraph, siteName: site.searchName, url },
   };

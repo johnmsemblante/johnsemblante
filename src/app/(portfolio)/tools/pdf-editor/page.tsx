@@ -8,7 +8,7 @@ import "./pdf-editor.css";
 
 const title = "Free PDF Editor Online | John Semblante";
 const description = "Add text and drawn signatures to PDF files, rotate or remove pages, and download for free. No account, watermark or server upload required.";
-export const metadata = { ...pageMetadata(title, description, "/tools/pdf-editor/"), title: { absolute: title } };
+export const metadata = { ...pageMetadata(title, description, "/tools/pdf-editor/", { url: "/images/work-previews/pdf-editor.webp", alt: title }), title: { absolute: title } };
 export default function PdfEditorPage() {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({ "@context": "https://schema.org", "@type": "WebApplication", name: "Free PDF Editor by John Semblante", url: `${site.url}/tools/pdf-editor/`, description, applicationCategory: "UtilitiesApplication", operatingSystem: "Any modern web browser", browserRequirements: "JavaScript, Canvas and module Web Workers", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, creator: { "@type": "Person", name: "John Semblante", url: `${site.url}/about/` } }) }} />

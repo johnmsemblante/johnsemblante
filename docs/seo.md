@@ -48,7 +48,7 @@ For local development, run `npm run sync:blog` to refresh the snapshot, then res
 1. Sign in at `/adminauth/blog/`, then open the article.
 2. Write a clear visible Title and Short introduction. The article title remains its H1.
 3. Under **SEO metadata**, enter an optional **Meta title** and **Meta description**. Empty values use the Title and Short introduction independently.
-4. Add a public HTTPS or site-relative Featured image URL and an accurate description. Use an image relevant to the article. The image appears in cards, article pages and share metadata. Empty images use the branded social fallback for metadata and the site logo for cards.
+4. Add a public HTTPS or site-relative Featured image URL and an accurate description. Use an image relevant to the article. The image appears in cards, article pages and share metadata. Managed articles without a featured image use the first usable inline image for sharing. Listing cards have their own fallback.
 5. Save with the intended visibility, rebuild, run the SEO audit and deploy Hosting. Check the clean article URL with View Page Source, not just the browser Elements panel.
 
 The normal Next.js page title template adds ` | John Semblante` to clean article titles. Do not add the suffix twice. Prefer short, descriptive titles (often around 50–60 characters including branding) and descriptions (often around 140–160 characters). These are writing guidelines, not fixed Google limits; Google may choose different titles/snippets. The audit warns at title length >65 or description length >170 and never silently truncates your copy.
@@ -192,7 +192,9 @@ The initial HTML and previews fetched without JavaScript remain build-time copie
 
 ## Venture and Work sharing image priority
 
-Single venture pages use `venture.logo` for both Open Graph and Twitter previews. When the logo is absent or its URL is blank, they use `site.socialImage`; a gallery/hero photo is not substituted. Work detail pages use `project.image`, falling back to `site.socialImage` when no usable image URL is configured. The default is `public/images/seo/john-semblante-social.png`. This fallback is selected at build time for missing/blank configuration; a social platform cannot automatically switch to it if a configured external URL later fails. Rebuild and redeploy after changing these fields. Previously shared previews may remain cached by the social platform until it fetches the URL again.
+Work details select the featured image, then gallery images. Venture details select the logo, then the hero, story photo or gallery. Managed articles select the featured image, then inline article images. Pages use the first usable Additional image ahead of their route defaults. Work and populated industry collections can use project images, and the Ventures directory can use a venture image. About, tools and Neon Dash have relevant source images. The branded card remains the default where no usable image is configured.
+
+The production build prepares fingerprinted 1200×630 JPEGs from local raster assets and writes an ignored manifest. The cards fit the entire image on a white background. The metadata helper emits absolute Open Graph and Twitter image URLs. External HTTPS images remain on their original host and must be fetchable by a signed-out crawler. Use public JPEG or PNG files for reliable external previews. Share the clean URL after deploying. A previously cached thumbnail may require a fresh scrape in the platform's preview tool.
 
 ## Managed Works publishing
 

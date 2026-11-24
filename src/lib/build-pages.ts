@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Metadata } from "next";
 import { emptyPage, validatePage, type PageId, type PageRecord } from "./page-model";
+import { selectSocialImage } from "./metadata";
 
 export function buildPage(id: PageId): PageRecord {
   const file = join(process.cwd(), ".generated", "pages.json");
@@ -21,7 +22,8 @@ export function withPageMetadata(id: PageId, fallback: Metadata): Metadata {
   const record = buildPage(id);
   const title = record.seoTitle.trim();
   const description = record.seoDescription.trim();
+  const image = selectSocialImage(title || "Portfolio", ...record.images);
   return { ...fallback, ...(title ? { title: { absolute: title } } : {}), ...(description ? { description } : {}),
-    openGraph: { ...fallback.openGraph, ...(title ? { title } : {}), ...(description ? { description } : {}) },
-    twitter: { ...fallback.twitter, ...(title ? { title } : {}), ...(description ? { description } : {}) } };
+    openGraph: { ...fallback.openGraph, ...(title ? { title } : {}), ...(description ? { description } : {}), ...(image ? { images: [image] } : {}) },
+    twitter: { ...fallback.twitter, ...(title ? { title } : {}), ...(description ? { description } : {}), ...(image ? { images: [{ url: image.url, alt: image.alt }] } : {}) } };
 }

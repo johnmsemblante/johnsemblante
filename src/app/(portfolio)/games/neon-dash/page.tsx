@@ -6,7 +6,7 @@ import "./neon-dash.css";
 
 const title = "Neon Dash | Free Cyberpunk Runner Game by John Semblante";
 const description = "Play Neon Dash, a free cyberpunk endless runner. Jump over hazards, slide under gates, and beat your high score in your browser.";
-export const metadata = { ...pageMetadata(title, description, "/games/neon-dash/"), title: { absolute: title } };
+export const metadata = { ...pageMetadata(title, description, "/games/neon-dash/", { url: "/images/work-previews/neon-dash.webp", alt: "Neon Dash gameplay" }), title: { absolute: title } };
 
 export default function NeonDashPage() {
   return <>

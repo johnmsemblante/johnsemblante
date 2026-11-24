@@ -8,7 +8,7 @@ import "./negosyo.css";
 const route = "/tools/business-startup-calculator/";
 const title = "Free PH Startup Cost & Break-Even Calculator | John Semblante";
 const description = "Plan your business in the Philippines with a free startup cost and break-even calculator. Estimate capital, expenses, selling prices, profit and sales targets.";
-export const metadata = { ...pageMetadata(title,description,route), title:{absolute:title} };
+export const metadata = { ...pageMetadata(title,description,route, { url: "/images/work-previews/business-startup-calculator.webp", alt: title }), title:{absolute:title} };
 export default function NegosyoPage() {
   return <div className="negosyo">
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:jsonLd({"@context":"https://schema.org","@type":"WebApplication",name:"Negosyo Startup Calculator PH",url:site.url+route,description,applicationCategory:"BusinessApplication",operatingSystem:"Any modern web browser",offers:{"@type":"Offer",price:"0",priceCurrency:"PHP"}})}}/>

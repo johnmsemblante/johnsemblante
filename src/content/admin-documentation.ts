@@ -182,12 +182,13 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Check publishing runs", href: "https://github.com/johnmsemblante/johnsemblante/actions/workflows/publish-site.yml" }],
   },
   {
-    id: "seo-and-indexing", title: "Search metadata, sitemap and indexing", category: "Publishing & SEO", updated: reviewed,
+    id: "seo-and-indexing", title: "Search metadata, sitemap and indexing", category: "Publishing & SEO", updated: "2026-11-24",
     summary: "Update titles and descriptions, verify deployed URLs and request search-engine indexing.",
     tags: ["SEO", "Google", "Bing", "canonical", "robots", "Open Graph", "Twitter", "social preview"], sources: ["docs/seo.md", "docs/google-search-appearance.md", "docs/image-compressor.md"],
     sections: [
       { heading: "Update search information", steps: ["Edit the relevant page or content record’s SEO title/description. Canonicals and route conventions remain code-managed.", "Wait for successful deployment. Live text changes alone do not replace initial HTML metadata on static Hosting.", "Check the final clean URL and sitemap.xml. Share the canonical HTTPS URL with the site’s trailing slash convention.", "In the verified Google Search Console property, inspect the URL, run the live test and request indexing when ready. Confirm the sitemap is registered.", "In Bing Webmaster Tools, inspect/submit the same canonical URL and confirm the sitemap is registered. Submission does not guarantee indexing or rankings."] },
-      { heading: "Previews and privacy", paragraphs: ["Open Graph/Twitter metadata is generated during the build. Work detail pages use their featured image; venture pages use their logo, falling back to the site’s branded social image when not configured. Providers may cache previews after deployment.", "Admin pages remain noindex and stay out of the public sitemap. A noindex directive controls search visibility, not authorization. Never publish private information assuming a page is protected only because it is not indexed."] },
+      { heading: "Choose a social preview", steps: ["Set the featured image in Works or Blog. Without a featured image, Works uses a gallery image and Blog uses the first usable article image. Ventures use their logo first, then a page photo.", "For a page in Pages, put the preferred image first under Additional images. Tools and Neon Dash have their own preview artwork. The branded card is used where no relevant image is available.", "After deployment, share the clean URL. If a platform still shows the old thumbnail, ask it to fetch the URL again using its preview tool. Use public JPEG or PNG files for images hosted outside the portfolio."] },
+      { heading: "Admin privacy", paragraphs: ["Admin pages remain noindex and stay out of the public sitemap. Private data is protected by Firebase access rules."] },
     ], links: [{ label: "View public sitemap", href: "/sitemap.xml" }],
   },
   {
