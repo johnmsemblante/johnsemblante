@@ -17,13 +17,14 @@ const link = { __esModule: true, default: ({ children, ...props }) => React.crea
 test('login return destinations are limited to known admin routes', () => {
   assert.equal(navigation.safeAdminDestination('/adminauth/jobs'), '/adminauth/jobs/');
   assert.equal(navigation.safeAdminDestination('/adminauth/blog/'), '/adminauth/blog/');
+  assert.equal(navigation.safeAdminDestination('/adminauth/messages'), '/adminauth/messages/');
   for (const target of ['https://evil.example', '//evil.example', 'javascript:alert(1)', '/adminauth/../other', '/adminauth/jobs/?redirect=evil', null]) assert.equal(navigation.safeAdminDestination(target), null);
 });
 test('shared shell exposes both apps, one active navigation item and an accessible mobile toggle', () => {
   const icons = load('src/components/admin/admin-icon.tsx');
   const { DashboardShell } = load('src/components/admin/dashboard-shell.tsx', { 'next/link': link, 'next/navigation': { usePathname: () => '/adminauth/jobs' }, '@/lib/admin-navigation': navigation, './admin-icon': icons });
   const html = renderToStaticMarkup(React.createElement(DashboardShell, { name: 'Admin', email: 'owner@example.com', busy: false, error: '', logout: async () => {} }, 'Selected app'));
-  for (const text of ['Dashboard', 'Overview', 'Blog', 'Works', 'Job Finder', 'Logout', 'Selected app']) assert.ok(html.includes(text));
+  for (const text of ['Dashboard', 'Overview', 'Messages', 'Blog', 'Works', 'Job Finder', 'Logout', 'Selected app']) assert.ok(html.includes(text));
   const active = html.match(/<a[^>]*aria-current="page"[^>]*>/g) || [];
   assert.equal(active.length, 1); assert.ok(active[0].includes('/adminauth/jobs/'));
   assert.ok(html.includes('aria-expanded="false"')); assert.ok(html.includes('aria-controls='));

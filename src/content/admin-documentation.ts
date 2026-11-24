@@ -9,6 +9,16 @@ export type DocumentationGuide = {
 const reviewed = "2026-11-13";
 export const documentationGuides: DocumentationGuide[] = [
   {
+    id: "visitor-chat", title: "Reply to visitor chats and offline messages", category: "Integrations", updated: "2026-11-24",
+    summary: "Use the Messages inbox to reply live, review messages received while away and follow up by email.",
+    tags: ["chat", "visitor", "inbox", "offline", "availability"], sources: ["docs/visitor-chat.md"],
+    sections: [
+      { heading: "Reply from Messages", steps: ["Open Messages from the dashboard sidebar or Overview. Select a conversation marked Needs reply.", "Enter your reply and choose Send reply. The conversation changes to Replied when Firebase confirms delivery. A new visitor message moves it back to Needs reply.", "If the visitor has already left, use their email to follow up from your mail app. The inbox receives messages while you are away. Check it periodically for new messages."] },
+      { heading: "Set your live availability", steps: ["Turn on Available for chat while keeping the Messages tab visible. Turn it off when you step away. If the tab closes or stops refreshing the status, the live indicator expires after about 90 seconds.", "Visitors who open Chat can enter their name, email and optional phone number before writing a message. Their details are saved when they send the first message. They can reopen the conversation in the same browser while its site data is retained."] },
+      { heading: "If chat is unavailable", paragraphs: ["Use Retry if the inbox cannot load. If the widget cannot connect, check that Anonymous sign-in and the chat Firestore rules are enabled in the Hosting project. Visitors can use the Contact form as a fallback.", "In-chat replies are available in the chat widget. Follow-up emails are sent manually from your mail app. Chat shares the Firestore quota with the rest of the site."] },
+    ], links: [{ label: "Messages inbox", href: "/adminauth/messages/" }],
+  },
+  {
     id: "neon-dash", title: "Play and maintain Neon Dash", category: "Free tools", updated: "2026-11-23",
     summary: "Play the browser runner in the standard site container and verify the controls after a release.",
     tags: ["game", "runner", "keyboard", "touch", "high score"], sources: ["docs/neon-dash.md"],
@@ -61,10 +71,11 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Free PDF Editor", href: "/tools/pdf-editor/" }],
   },
   {
-    id: "site-overview", title: "How the website fits together", category: "Getting started", updated: "2026-11-20",
+    id: "site-overview", title: "How the website fits together", category: "Getting started", updated: "2026-11-24",
     summary: "Understand the public portfolio, admin workspace, saved content and static publishing.",
     tags: ["architecture", "Next.js", "Firebase", "Firestore", "hosting", "dashboard"], sources: ["docs/admin-setup.md", "docs/automatic-publishing.md"],
     sections: [
+      { heading: "Visitor messages", paragraphs: ["Open Messages to review and reply to live or offline messages sent through the public portfolio chat widget."] },
       { heading: "Choose light or dark mode", steps: ["Select the yin-yang icon in the site navigation to switch between light and dark. On phones, the switch sits to the left of the menu button and is available while the menu is closed. In Administration the switch is above the dashboard.", "The first visit follows your device setting. Switching saves the choice in this browser for future visits. Clear site data to follow the device setting again."] },
       { heading: "The two parts", paragraphs: ["The public website includes Home, About, Work, Ventures, Blog, Contact and Free Tools. This dashboard manages page content, articles, portfolio projects, business ventures and a private job shortlist. Résumé Generator provides a separate local résumé editor with browser PDF export; it does not publish your résumé or save it to Firestore.", "The website is built with Next.js and exported as static files to Firebase Hosting. Firebase Authentication checks your Google sign-in; Firestore rules control access to private records and writing content. Some public sections also read published content in the browser."] },
       { heading: "What a save changes", paragraphs: ["An editor saves content to Firestore. Public readers can show published updates before the next deployment. Clean URLs, initial page HTML, social previews and sitemap entries are regenerated together by the publishing workflow. A successful save and a successful deployment are separate events.", "Free tools, shared navigation, integrations, layouts and this documentation are maintained in source code. They are not editable content records."] },

@@ -21,10 +21,13 @@ const workModelUrl = moduleUrl(compile('src/lib/work-model.ts').replace('"@/cont
 const { mergeWorks } = await import(workModelUrl);
 const workStoreUrl = moduleUrl(compile('src/lib/work-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./work-model"', JSON.stringify(workModelUrl)));
 const { writeWork } = await import(workStoreUrl);
-const pageModelUrl = moduleUrl(compile('src/lib/page-model.ts'));
+const fieldAliasesUrl = moduleUrl(`export default ${readFileSync('src/content/page-field-aliases.json', 'utf8')}`);
+const pageModelUrl = moduleUrl(compile('src/lib/page-model.ts').replace('"@/content/page-field-aliases.json"', JSON.stringify(fieldAliasesUrl)));
 const ventureModelUrl = moduleUrl(compile('src/lib/venture-model.ts').replace('"./page-model"', JSON.stringify(pageModelUrl)));
 const ventureStoreUrl = moduleUrl(compile('src/lib/venture-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))).replace('"./venture-model"', JSON.stringify(ventureModelUrl)));
 const { writeVenture } = await import(ventureStoreUrl);
+const chatStoreUrl = moduleUrl(compile('src/lib/chat-store.ts').replace('"firebase/firestore"', JSON.stringify(import.meta.resolve('firebase/firestore'))));
+const { sendChatMessage, watchInbox, watchMessages, watchAvailability, setChatAvailability } = await import(chatStoreUrl);
 let environment;
 const article = (status = 'draft') => ({ schemaVersion: 2, slug: 'an-article', title: 'An article', excerpt: 'Intro', category: 'Notes', categories: ['Notes'], tags: ['Firebase'], content: 'A paragraph\n\n## Heading', seoTitle: '', seoDescription: '', status, publishedAt: status === 'published' ? serverTimestamp() : null, releaseAt: 0, revision: 1, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
 const adminDb = () => environment.authenticatedContext('owner', { email_verified: true }).firestore();
@@ -40,6 +43,71 @@ beforeEach(async () => {
   });
 });
 after(async () => { await environment?.cleanup(); });
+
+function waitForChat(subscribe, predicate) {
+  let stop;
+  let timeout;
+  return new Promise((resolve, reject) => {
+    timeout = setTimeout(() => reject(new Error('Chat listener did not receive the expected state.')), 5000);
+    stop = subscribe(value => {
+      if (predicate(value)) resolve(value);
+    }, reject);
+  }).finally(() => {
+    clearTimeout(timeout);
+    stop?.();
+  });
+}
+
+test('chat delivers offline messages to the private inbox and broadcasts live admin replies', async () => {
+  const uid = 'chat-visitor';
+  const visitor = environment.authenticatedContext(uid, { firebase: { sign_in_provider: 'anonymous' } }).firestore();
+  const other = environment.authenticatedContext('another-visitor', { firebase: { sign_in_provider: 'anonymous' } }).firestore();
+  const signedOut = environment.unauthenticatedContext().firestore();
+  const unverified = environment.authenticatedContext('owner', { email_verified: false }).firestore();
+  const admin = adminDb();
+  const contact = { name: 'Example Visitor', email: 'visitor@example.test', phone: '' };
+  const thread = db => doc(db, 'chatThreads', uid);
+  const transcript = db => collection(thread(db), 'messages');
+  await assertSucceeds(sendChatMessage(visitor, uid, 'visitor', 'Is this available?', contact));
+  assert.equal((await getDocFromServer(thread(visitor))).data().needsReply, true);
+  for (const db of [other, signedOut, unverified]) {
+    await assertFails(getDocFromServer(thread(db)));
+    await assertFails(getDocs(transcript(db)));
+  }
+  await assertFails(getDocs(collection(visitor, 'chatThreads')));
+  await assertFails(sendChatMessage(other, uid, 'visitor', 'Impersonation'));
+  await assertFails(sendChatMessage(visitor, uid, 'admin', 'Forged reply'));
+  await assertFails(updateDoc(thread(visitor), { needsReply: false }));
+  await assertFails(updateDoc(thread(admin), { email: 'changed@example.test' }));
+  await assertFails(setDoc(doc(transcript(visitor)), { sender: 'visitor', body: 'Standalone message', sentAt: serverTimestamp() }));
+  const inbox = await waitForChat((receive, fail) => watchInbox(admin, 30, receive, fail), items => items.some(item => item.id === uid && item.needsReply));
+  assert.equal(inbox.find(item => item.id === uid).email, contact.email);
+  const reply = waitForChat((receive, fail) => watchMessages(visitor, uid, 30, receive, fail), items => items[0]?.body === 'Yes, it is.');
+  await assertSucceeds(sendChatMessage(admin, uid, 'admin', 'Yes, it is.'));
+  assert.equal((await reply)[0].sender, 'admin');
+  assert.equal((await getDocFromServer(thread(admin))).data().needsReply, false);
+  await new Promise(resolve => setTimeout(resolve, 2100));
+  await assertFails(sendChatMessage(visitor, uid, 'visitor', '  '));
+  await assertFails(sendChatMessage(visitor, uid, 'visitor', 'x'.repeat(2001)));
+  await assertSucceeds(sendChatMessage(visitor, uid, 'visitor', 'Thank you.'));
+  await assertFails(sendChatMessage(visitor, uid, 'visitor', 'Too fast.'));
+  assert.equal((await getDocFromServer(thread(admin))).data().needsReply, true);
+  assert.equal((await getDocs(transcript(admin))).size, 3);
+});
+
+test('chat presence can be read publicly and changed only by a verified, enabled admin', async () => {
+  const signedOut = environment.unauthenticatedContext().firestore();
+  const nonAdmin = environment.authenticatedContext('not-an-admin', { email_verified: true }).firestore();
+  const admin = adminDb();
+  await assertFails(setChatAvailability(nonAdmin, true));
+  await assertFails(setDoc(doc(admin, 'chatPublic', 'availability'), { available: true, updatedAt: serverTimestamp(), email: 'private@example.test' }));
+  const online = waitForChat((receive, fail) => watchAvailability(signedOut, receive, fail), stamp => stamp > 0);
+  await assertSucceeds(setChatAvailability(admin, true));
+  assert.ok(await online);
+  await assertSucceeds(setChatAvailability(admin, false));
+  assert.equal((await getDocFromServer(doc(signedOut, 'chatPublic', 'availability'))).data().available, false);
+  await assertFails(getDocs(collection(signedOut, 'chatPublic')));
+});
 
 const ventureFixture = () => ({ slug: 'test-venture', name: 'Test venture', category: 'Coffee', description: 'A coffee venture.', theme: 'coffee', title: 'Coffee for you', tagline: 'Coffee in Cebu' });
 test('Ventures publish atomically, keep drafts private, reject stale revisions and delete with a tombstone', async () => {

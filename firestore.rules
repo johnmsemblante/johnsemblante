@@ -9,6 +9,48 @@ service cloud.firestore {
     function text(value, maximum) {
       return value is string && value.size() > 0 && value.size() <= maximum && value.matches('(?s).*[^\\s].*');
     }
+    function chatVisitor(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+    function chatActivity(uid, sender) {
+      let thread = request.resource.data;
+      let id = thread.lastMessageId;
+      let message = /databases/$(database)/documents/chatThreads/$(uid)/messages/$(id);
+      return id is string && id.matches('^[A-Za-z0-9]{20}$')
+        && thread.updatedAt == request.time && thread.needsReply == (sender == 'visitor')
+        && !exists(message) && getAfter(message).data.sender == sender;
+    }
+    match /chatThreads/{uid} {
+      allow get: if chatVisitor(uid) || admin();
+      allow list: if admin();
+      allow create: if chatVisitor(uid)
+        && request.resource.data.keys().hasOnly(['name', 'email', 'phone', 'lastMessageId', 'needsReply', 'updatedAt', 'lastVisitorAt'])
+        && text(request.resource.data.name, 80)
+        && text(request.resource.data.email, 254)
+        && request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+$')
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 40
+        && request.resource.data.lastVisitorAt == request.time
+        && chatActivity(uid, 'visitor');
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastMessageId', 'needsReply', 'updatedAt', 'lastVisitorAt'])
+        && ((chatVisitor(uid) && request.time >= resource.data.lastVisitorAt + duration.value(2, 's')
+            && request.resource.data.lastVisitorAt == request.time && chatActivity(uid, 'visitor'))
+          || (admin() && request.resource.data.lastVisitorAt == resource.data.lastVisitorAt && chatActivity(uid, 'admin')));
+      match /messages/{id} {
+        allow read: if chatVisitor(uid) || admin();
+        allow create: if request.resource.data.keys().hasOnly(['body', 'sender', 'sentAt'])
+          && text(request.resource.data.body, 2000) && request.resource.data.sentAt == request.time
+          && ((chatVisitor(uid) && request.resource.data.sender == 'visitor')
+            || (admin() && request.resource.data.sender == 'admin'))
+          && getAfter(/databases/$(database)/documents/chatThreads/$(uid)).data.lastMessageId == id
+          && getAfter(/databases/$(database)/documents/chatThreads/$(uid)).data.updatedAt == request.time;
+      }
+    }
+    match /chatPublic/availability {
+      allow get: if true;
+      allow create, update: if admin() && request.resource.data.keys().hasOnly(['available', 'updatedAt'])
+        && request.resource.data.available is bool && request.resource.data.updatedAt == request.time;
+    }
     function labels(value, minimum, maximum) {
       let count = value.size();
       let joined = value.join('\u0000');

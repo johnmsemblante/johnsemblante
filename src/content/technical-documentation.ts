@@ -4,6 +4,15 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
+    id: "chat-storage", title: "How visitor chat and the inbox work", category: "Integrations", updated: "2026-11-24",
+    summary: "Review anonymous chat sessions, private threads, delivery and availability.",
+    tags: ["Firestore", "Firebase Auth", "chat", "rules", "Spark"],
+    sections: [
+      { heading: "Browser sessions and rules", paragraphs: ["The portfolio widget uses a separate Firebase app with Anonymous sign-in. The inbox uses the existing verified admin session. Only a visitor's own anonymous session and approved administrators can read its chat history.", "A batch writes each message and updates the inbox activity together. Rules check sender identity, timestamps, content limits and the visitor send interval."] },
+      { heading: "Availability and release", paragraphs: ["The inbox refreshes the public availability record while visible and enabled. The widget listens while open and expires stale availability locally. Enable Anonymous sign-in and deploy the Firestore rules before the Hosting release."] },
+    ], sources: ["docs/visitor-chat.md", "src/lib/chat-store.ts", "firestore.rules"],
+  },
+  {
     id: "neon-dash-engine", title: "How Neon Dash runs in the browser", category: "Browser tools", updated: "2026-11-23",
     summary: "Review the simulation, rendering, and publishing boundaries.",
     tags: ["Canvas", "TypeScript", "Web Audio", "game"],

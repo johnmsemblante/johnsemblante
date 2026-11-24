@@ -4,6 +4,7 @@ import { SiteNavigation } from "./site-navigation";
 import { profile } from "@/content/profile";
 import { buildNavigation } from "@/lib/build-navigation";
 import { PortfolioBreadcrumbs } from "./portfolio-breadcrumbs";
+import { VisitorChat } from "./visitor-chat";
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const { ventureLinks, breadcrumbRoutes } = buildNavigation();
@@ -15,5 +16,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
     </header>
     <main id="main" tabIndex={-1}><PortfolioBreadcrumbs routes={breadcrumbRoutes} />{children}</main>
     <footer className="site-footer"><Link href="/">John Semblante<span className="muted"> / Development & ventures</span></Link><span>{profile.title} · Cebu, Philippines</span></footer>
+    <VisitorChat />
   </div>;
 }

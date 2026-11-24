@@ -20,6 +20,12 @@ export function getFirebase() {
   return { app, db: getFirestore(app) };
 }
 
+export function getVisitorFirebase() {
+  if (typeof window === "undefined" || !firebaseConfigured) throw new Error("Firebase is not configured for this browser.");
+  const app = getApps().find(item => item.name === "portfolio-chat") ?? initializeApp(config, "portfolio-chat");
+  return { auth: getAuth(app), db: getFirestore(app) };
+}
+
 export function getAdminAuth() {
   if (auth) return auth;
   const { app } = getFirebase();
