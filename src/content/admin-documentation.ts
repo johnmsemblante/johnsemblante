@@ -135,13 +135,14 @@ export const documentationGuides: DocumentationGuide[] = [
     ], links: [{ label: "Open Blog", href: "/adminauth/blog/" }],
   },
   {
-    id: "works-editor", title: "Add or update a portfolio project", category: "Content management", updated: reviewed,
+    id: "works-editor", title: "Add or update a portfolio project", category: "Content management", updated: "2026-11-24",
     summary: "Manage Work details, project visibility, screenshots, industries and source defaults.",
     tags: ["Works", "portfolio", "projects", "draft", "technologies", "case study", "delete"], sources: ["docs/works-admin.md"],
     sections: [
       { heading: "Manage a project", steps: ["Open Works. Choose an existing project or create a new one.", "Enter a factual title, role, year, project type, industries, technologies, description and documented scope. Add screenshots and meaningful image descriptions.", "Review the slug, external website, optional case-study fields and SEO metadata. Use only technologies and results actually supported by the work.", "Choose Draft or Published and save. Review /work/ and the immediate /work/?project=slug view.", "Confirm a successful automated deployment before sharing a new clean /work/slug/ URL or expecting homepage and sitemap changes."] },
       { heading: "Source entries, deletion and conflicts", paragraphs: ["Existing source projects are the baseline. Dashboard records override them by slug; changing a source default does not replace a saved dashboard override. Drafting or deleting a source entry leaves a public marker so the original cannot reappear accidentally.", "Deleting requires confirmation and does not delete hosted images. A venture’s Work entry is separate from its Ventures page. Concurrent changes are protected with revision checks; a failed save preserves your input. Renaming a slug does not automatically add a redirect."] },
-    ], links: [{ label: "Open Works", href: "/adminauth/works/" }],
+      { heading: "Maintain the Golden Travel design archive", paragraphs: ["Golden Travel and Tours Website Design is the original Figma work. The live venture and its Work entry have their own links. In Works, you can edit the design case study copy and gallery. To change the embedded Figma file, update it in source and deploy. Check the file sharing in a signed-out browser. The gallery can be used even if the file cannot open."] },
+    ], links: [{ label: "Open Works", href: "/adminauth/works/" }, { label: "Golden Travel design case study", href: "/work/golden-travel-and-tours-website-design/" }],
   },
   {
     id: "ventures-editor", title: "Manage business ventures and their pages", category: "Content management", updated: "2026-11-23",

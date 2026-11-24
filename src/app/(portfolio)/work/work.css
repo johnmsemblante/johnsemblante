@@ -88,6 +88,10 @@
 .project-gallery figure{margin:0;min-width:0}
 .project-gallery img{display:block;max-width:100%;height:auto}
 .project-gallery figcaption{font-size:12px;color:var(--muted);line-height:1.8;margin-top:12px}
+.project-gallery-design .zoom-image-trigger>img{aspect-ratio:16/10;object-fit:cover;object-position:top}
+.project-figma details{margin:1.25rem 0}
+.project-figma summary{width:fit-content;padding:.75rem 0;cursor:pointer;text-decoration:underline;text-underline-offset:.25rem}
+.project-figma iframe{display:block;width:100%;height:clamp(22rem,56vw,42rem);margin-top:.75rem;border:1px solid var(--line);background:var(--paper)}
 @media(max-width:700px){.industry-collection-links ul{grid-template-columns:repeat(2,minmax(0,1fr))}.project-facts,.project-gallery{grid-template-columns:1fr}.project-results-summary .text-link{margin-left:0}.industry-context{padding:20px}.project-card-detailed h2,.project-card-detailed h3{font-size:24px}.portfolio-directory-controls{padding:20px}.portfolio-filter-dropdown{flex-basis:calc(50% - 12px)}.portfolio-share{margin-left:0;flex:1}.portfolio-filter-panel{width:100%;min-width:260px}.portfolio-filter-dropdown:nth-child(2) .portfolio-filter-panel{left:auto;right:0}}
 @media(max-width:480px){.industry-collection-links ul{grid-template-columns:1fr}.portfolio-filter-toolbar{gap:10px}.portfolio-filter-dropdown{flex-basis:100%}.portfolio-filter-panel{left:0!important;right:auto!important;min-width:0;max-width:100%;width:100%}.portfolio-search-input{padding:0 12px;gap:9px}.portfolio-search-input input{font-size:16px}.portfolio-clear-all,.portfolio-share{flex:1}.portfolio-directory-controls{padding:16px}}
 @media(prefers-reduced-motion:reduce){.portfolio-filter-trigger svg{transition:none}}

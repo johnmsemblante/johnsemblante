@@ -27,6 +27,12 @@ Deleting requires confirmation and keeps hosted image files. Deleting a Work ent
 
 The existing projects in `src/content/projects.ts` stay as the source baseline. Dashboard edits override them by slug. For an overridden project, editing its source file will not replace the dashboard record. No production records are imported or altered just by opening the editor.
 
+## Golden Travel design archive
+
+`/work/golden-travel-and-tours-website-design/` presents the archived standalone site design. Its source entry and Figma URLs are defined in `src/content/golden-travel-design.ts`. The existing live venture case study keeps its original route. The archived domain is described in the case study without a visit link.
+
+The first four local WebP previews show selected portions of the desktop exports and omit the old contact and feedback sections. The 404 and coming-soon designs are also included. Keep public previews under `public/images/projects/golden-travel-figma/` and check each gallery image in the zoom viewer after replacing it. The Figma iframe opens on request, with a new-tab link to the same file. Check that file sharing allows signed-out visitors before release. The dashboard can override normal Work fields by slug. The optional Figma section is tied to the design case study slug in source, so update the component reference and featured link when changing that slug. Rebuild and deploy source changes through the usual Hosting process.
+
 ## Cloudinary signed uploads
 
 Existing `/images/projects/...` paths continue working. New uploads pass through the admin-only Cloudflare Worker to Cloudinary; Firestore stores URLs, not image binaries. The alternative Image URL field remains available. Uploads accept JPG, PNG, WebP or AVIF up to 5 MB, enforced in both the browser and the Worker. The Worker bounds the incoming request body, verifies membership before accepting files, and signs the Cloudinary upload on the server. Only the resulting image URL is returned to the browser. Keep images compressed to reduce storage and delivery usage. Free allowances are quotas, not unlimited storage or traffic; monitor the Cloudinary usage dashboard.

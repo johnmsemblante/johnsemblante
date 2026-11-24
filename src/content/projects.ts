@@ -1,5 +1,6 @@
 import type { Project } from "./site";
 import type { IndustrySlug } from "./industries";
+import { goldenTravelDesign } from "./golden-travel-design";
 
 // Industry describes the business, not an unverified technology or feature.
 const industryBySlug: Record<string, IndustrySlug[]> = {
@@ -64,4 +65,4 @@ const ventureProjects: Project[] = [
   },
 ];
 
-export const portfolioProjects: Project[] = [...historicalProjects, ...ventureProjects];
+export const portfolioProjects: Project[] = [...historicalProjects, goldenTravelDesign, ...ventureProjects];

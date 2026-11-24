@@ -40,8 +40,8 @@ test('all original projects stay in their original order, with existing links/as
     assert.equal(project.publication, 'published'); assert.ok(project.summary && project.role && project.image?.alt);
     assert.ok(fs.existsSync(path.join('public', project.image.src)));
     assert.ok(project.industries.length && project.industries.every(slug => industries.some(i => i.slug === slug)));
-    if (project.status === 'archived') { assert.ok(project.website.startsWith('https://')); assert.equal(project.projectType, 'client'); }
-    if (project.projectType === 'venture') { assert.ok(project.technologies.includes('Next.js')); assert.ok(!project.technologies.includes('WordPress')); }
+    if (historicalSlugs.includes(project.slug)) { assert.ok(project.website.startsWith('https://')); assert.equal(project.projectType, 'client'); }
+    if (project.projectType === 'venture' && project.status === 'live') { assert.ok(project.technologies.includes('Next.js')); assert.ok(!project.technologies.includes('WordPress')); }
   }
 });
 
@@ -58,7 +58,7 @@ test('multi-select filters use OR within a group and AND across groups, without 
   assert.equal(filters.filterProjects(projects, state()).length, projects.length);
   assert.equal(filters.filterProjects(projects, state({ industries: ['healthcare'], technologies: ['wordpress'], types: ['client-project'] })).length, 3);
   assert.equal(filters.filterProjects(projects, state({ industries: ['healthcare', 'ecommerce'], technologies: ['wordpress'] })).length, 6);
-  assert.equal(filters.filterProjects(projects, state({ technologies: ['wordpress', 'next-js'] })).length, projects.length);
+  assert.equal(filters.filterProjects(projects, state({ technologies: ['wordpress', 'next-js'] })).length, projects.length - 1);
   assert.equal(filters.filterProjects(projects, state({ technologies: ['wordpress'], types: ['personal-venture'] })).length, 0);
   assert.equal(filters.filterProjects(projects, state({ industries: ['dental'] })).length, 0);
   assert.deepEqual(filters.filterProjects(projects, state({ industries: ['hospitality-travel'], technologies: ['next-js'] })).map(p => p.slug), ['golden-travel-and-tours']);
@@ -158,6 +158,21 @@ test('project details preserve original routes and hide unavailable scope, while
   const venture = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug: 'golden-travel-and-tours' }) }));
   assert.ok(venture.includes('Features implemented')); assert.ok(venture.includes('My contributions')); assert.ok(venture.includes('Next.js'));
   await assert.rejects(page.default({ params: Promise.resolve({ slug: 'smilecraft-dental-studio' }) }), /not-found/);
+});
+
+test('the Golden Travel archive is filterable by Figma and has local screens and a Figma fallback link', async () => {
+  const slug = 'golden-travel-and-tours-website-design';
+  const [project] = filters.filterProjects(projects, state({ industries: ['hospitality-travel'], technologies: ['figma'] }));
+  assert.equal(project.slug, slug);
+  assert.equal(project.status, 'archived');
+  assert.equal(project.website, undefined);
+  assert.equal(project.gallery.length, 6);
+  for (const screen of project.gallery) assert.ok(fs.existsSync(path.join('public', screen.src)));
+  const page = load('src/app/(portfolio)/work/[slug]/page.tsx');
+  const html = renderToStaticMarkup(await page.default({ params: Promise.resolve({ slug }) }));
+  assert.match(html, /Selected design screens/);
+  assert.ok(html.includes('https://www.figma.com/design/kHDg2ocA4BW67mVil1QpWu/Travel-and-Tours?node-id=0-1&amp;t=Q6Pexs1i7c8Cr989-1'));
+  assert.doesNotMatch(html, /<iframe|goldentravelandtoursgo\.com/);
 });
 
 test('nine exported industry routes have unique canonical metadata, truthful empty states and published-only structured lists', async () => {
