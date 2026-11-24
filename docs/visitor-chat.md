@@ -2,6 +2,8 @@
 
 The portfolio layout mounts a chat widget. The existing admin gate protects the Messages route at `/adminauth/messages/`. Chat uses Firebase Authentication and Cloud Firestore through the browser, so Firebase Hosting can continue serving the static export on Spark.
 
+In both chat boxes, Enter submits the same form as the Send button. Shift+Enter inserts a new line, and Enter used to confirm text in an input method editor stays with the editor. Both send actions use the same validation, delivery confirmation and visitor cooldown.
+
 ## Enable and verify
 
 1. In the existing Firebase project, open **Authentication → Sign-in method** and enable **Anonymous**. Keep Google sign-in enabled for administrators.

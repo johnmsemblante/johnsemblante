@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import type { Firestore } from "firebase/firestore";
 import { CHAT_MESSAGE_LIMIT, CHAT_PAGE_SIZE, sendChatMessage, watchMessages, type ChatContact, type ChatMessage } from "@/lib/chat-store";
 import styles from "./chat.module.css";
@@ -20,6 +20,8 @@ export function ChatConversation({ db, uid, sender, exists, contact, active = tr
   const [cooldownReady, setCooldownReady] = useState(true);
   const history = useRef<HTMLOListElement>(null);
   const scrollToLatest = useRef(true);
+  const sendHint = useId();
+  const canSend = !sending && cooldownReady && Boolean(draft.trim()) && (exists || Boolean(contact));
 
   useEffect(() => {
     if (!exists || !active) return;
@@ -43,8 +45,7 @@ export function ChatConversation({ db, uid, sender, exists, contact, active = tr
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const body = draft.trim();
-    if (sending || !cooldownReady || !body || (!exists && !contact)) return;
+    if (!canSend) return;
     if (!navigator.onLine) {
       setSendError("You’re offline. Reconnect to send your message.");
       return;
@@ -53,7 +54,7 @@ export function ChatConversation({ db, uid, sender, exists, contact, active = tr
     setSendError("");
     scrollToLatest.current = true;
     try {
-      await sendChatMessage(db, uid, sender, body, exists ? undefined : contact);
+      await sendChatMessage(db, uid, sender, draft.trim(), exists ? undefined : contact);
       setDraft("");
       if (sender === "visitor") {
         setCooldownReady(false);
@@ -64,6 +65,13 @@ export function ChatConversation({ db, uid, sender, exists, contact, active = tr
     } finally {
       setSending(false);
     }
+  }
+
+  function sendOnEnter(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key !== "Enter" || event.shiftKey || event.altKey || event.ctrlKey || event.metaKey
+      || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
+    event.preventDefault();
+    if (canSend && !event.repeat) event.currentTarget.form?.requestSubmit();
   }
 
   return <>
@@ -84,11 +92,13 @@ export function ChatConversation({ db, uid, sender, exists, contact, active = tr
     </ol>
     <form className={styles.form} onSubmit={submit}>
       <label>{sender === "admin" ? "Reply" : "Message"}
-        <textarea required rows={2} maxLength={CHAT_MESSAGE_LIMIT} value={draft} disabled={sending} onChange={event => setDraft(event.target.value)} />
+        <textarea required rows={2} maxLength={CHAT_MESSAGE_LIMIT} value={draft} readOnly={sending} aria-describedby={sendHint}
+          onKeyDown={sendOnEnter} onChange={event => setDraft(event.target.value)} />
       </label>
+      <small id={sendHint}>Enter to send. Shift+Enter for a new line.</small>
       {sendError && <p role="alert">{sendError}</p>}
       {sending && <span role="status">Waiting for delivery confirmation…</span>}
-      <button type="submit" disabled={sending || !cooldownReady || !draft.trim()}>{sender === "admin" ? "Send reply" : "Send message"}</button>
+      <button type="submit" disabled={!canSend}>{sender === "admin" ? "Send reply" : "Send message"}</button>
     </form>
   </>;
 }
