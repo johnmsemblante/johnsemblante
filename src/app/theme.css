@@ -44,7 +44,19 @@ html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
 @media (prefers-reduced-motion: no-preference) {
   .theme-toggle svg { transition: transform 200ms ease-out; }
 }
-.admin-theme-control { display: flex; justify-content: flex-end; }
+.admin-theme-control {
+  position: fixed;
+  right: calc(16px + env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+}
+.admin-theme-control .theme-toggle {
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.admin-theme-control .theme-toggle:hover {
+  background: color-mix(in srgb, var(--paper), currentColor 8%);
+}
 @media print { .theme-toggle, .admin-theme-control { display: none !important; } }
 @media screen {
   html[data-theme="dark"] :is(.admin-card,.blog-preview,.documentation-guide,.dashboard-app-card,.trip-package-info,.trip-result,.venture-pending,.venture-offerings>article,.vehicle-grid figure) { background-color: var(--night-surface); }

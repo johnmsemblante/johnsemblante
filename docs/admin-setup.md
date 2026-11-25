@@ -1,5 +1,7 @@
 # Admin access and blog publishing
 
+The shared `src/app/adminauth/layout.tsx` renders the light/dark switch on every admin route, including the sign-in screen. The `.admin-theme-control` rules in `src/app/theme.css` pin it to the lower-right viewport corner with a 16 px gap plus any device safe-area insets. The public switch uses the shared button in the site navigation.
+
 For current owner-facing instructions, open **Documentation** in the dashboard at `/adminauth/documentation/`. Search and topic filters cover editors, publishing, integrations, tools, SEO and troubleshooting. Maintainers must follow [handbook maintenance](admin-documentation.md) whenever a workflow changes.
 
 Admin actions now use a fixed top activity indicator and bottom-right outcome notices, including inside modal editors. Existing inline explanations remain. Saves, deletes, uploads, refresh, job requests and session checks use the shared [admin feedback system](admin-feedback.md). A saved-content notice does not claim that the later automatic deployment has completed.
