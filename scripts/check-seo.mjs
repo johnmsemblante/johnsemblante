@@ -53,10 +53,10 @@ for (const url of urls) {
       assert.ok(title.includes(person.name), 'Homepage title does not include the full Person name');
       assert.ok(title.includes('Cebu Web Developer'), 'Homepage title is missing the primary local service phrase');
       assert.ok(person.jobTitle, 'Homepage Person schema is missing the professional role');
-      const specialty = decode(body.match(/<p class="hero-specialty">([\s\S]*?)<\/p>/)?.[1] || '');
+      const specialty = decode((body.match(/<span data-office-profession="true">([\s\S]*?)<\/span>/)?.[1] || body.match(/<p class="hero-specialty">([\s\S]*?)<\/p>/)?.[1] || '').replace(/<[^>]*>/g, ''));
       assert.equal(specialty, person.jobTitle, 'Homepage hero differs from the current Person job title');
-      const heading = decode(body.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, '') || '');
-      assert.equal(heading, 'Cebu Web Developer', 'Homepage H1 differs from the primary local service phrase');
+      const heading = decode(body.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, '') || '').replace(/\s+/g, ' ').trim();
+      assert.match(heading, /^Cebu Web Developer(?: & creative technologist\.)?$/, 'Homepage H1 differs from the supported local service heading');
       assert.ok(decode(body.replace(/<[^>]*>/g, '')).includes(person.name), 'Homepage visible copy is missing the full Person name');
     }
     if (title.length > 65) warnings.push(`${parsed.pathname}: title is ${title.length} characters; review for clarity.`);

@@ -1,5 +1,11 @@
 # Visual direction
 
+## Interactive workspace, 26 November 2026
+
+The default homepage is an original isometric office inspired by the supplied architectural reference: a warm cutaway interior, detailed modular furniture, glass partitions, an arcade, library, workstations, meeting room and an outdoor basketball court. The surrounding road, trees and street lighting frame the office. The scene and header use a fixed dark palette; the existing theme preference continues to control shared content and other pages. Classic in the same header preserves the portrait presentation at `/`.
+
+The same eight HTML room controls float over the desktop scene and reflow into a touch-friendly grid on smaller screens. A matching AVIF preview with WebP fallback renders first. Live 3D starts with desktop exploration or explicit enablement. Original homepage sections remain below the hero. See [workspace maintenance](interactive-workspace.md) and [actual validation/screenshots](review/interactive-workspace-validation.md). The procedural scene does not reproduce the reference's offline global illumination or bespoke artist-made assets; the validation record identifies those visual gaps.
+
 ## Light and dark appearance
 
 The portfolio and venture headers place the switch beside the navigation links on desktop and immediately to the left of the borderless menu button on mobile. Both layouts use an icon-only yin-yang switch labeled Dark mode for assistive technology. Its orientation indicates the selected theme. Administration has the same switch above its content. The root layout reads the browser's `portfolio-theme` local storage entry before the first paint. Without an explicit choice the site follows the system color preference. Open tabs synchronize through storage events. The switch still works on the current page when browser storage is unavailable.

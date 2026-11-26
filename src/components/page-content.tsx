@@ -8,7 +8,7 @@ import { subscribeSiteRefresh } from "@/lib/site-refresh";
 import { emptyPage, fieldKey, pageUrl, validatePage, type PageId, type PageRecord } from "@/lib/page-model";
 
 const Content = createContext<PageRecord | null>(null);
-export function PageContent({ id, initial, children }: { id: PageId; initial: PageRecord; children: ReactNode }) {
+export function PageContent({ id, initial, children, stableNotice = false }: { id: PageId; initial: PageRecord; children: ReactNode; stableNotice?: boolean }) {
   const [record, setRecord] = useState(initial);
   const [error, setError] = useState(false);
   useEffect(() => {
@@ -26,7 +26,7 @@ export function PageContent({ id, initial, children }: { id: PageId; initial: Pa
       return () => { reader.dispose(); stop(); unsubscribe(); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
     }, () => setError(true));
   }, [id, initial]);
-  return <Content.Provider value={record}>{error && <p role="status" className="article-refresh-notice">The latest page content could not be loaded. Showing the last available copy. <button type="button" onClick={() => window.dispatchEvent(new Event("focus"))}>Try again</button></p>}{children}{record.images.length > 0 && <section className="section page-image-gallery" aria-label="Page images">{record.images.map((image, i) => <figure key={i}><img src={image.src} alt={image.alt} loading="lazy" />{image.caption && <figcaption>{image.caption}</figcaption>}</figure>)}</section>}</Content.Provider>;
+  return <Content.Provider value={record}>{error && <p role="status" className={`article-refresh-notice${stableNotice ? " office-refresh-notice" : ""}`}>The latest page content could not be loaded. Showing the last available copy. <button type="button" onClick={() => window.dispatchEvent(new Event("focus"))}>Try again</button></p>}{children}{record.images.length > 0 && <section className="section page-image-gallery" aria-label="Page images">{record.images.map((image, i) => <figure key={i}><img src={image.src} alt={image.alt} loading="lazy" />{image.caption && <figcaption>{image.caption}</figcaption>}</figure>)}</section>}</Content.Provider>;
 }
 function useValue(scope: string, fallback: string) {
   const record = useContext(Content);

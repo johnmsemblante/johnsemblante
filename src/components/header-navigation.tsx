@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { HomeModeToggle } from "./office/mode";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
@@ -84,6 +85,7 @@ export function HeaderNavigation({ links, label = "Main navigation" }: { links: 
         </div>;
       })}
     </nav>
+    <HomeModeToggle />
     <ThemeToggle />
   </div>;
 }

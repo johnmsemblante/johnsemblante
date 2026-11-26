@@ -4,6 +4,16 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
+    id: "interactive-workspace-renderer", title: "How the interactive homepage renders", category: "Interface", updated: "2026-11-26",
+    summary: "Review progressive loading, original batched scene assets, camera navigation and fallback lifecycle.",
+    tags: ["Three.js", "WebGL", "office", "homepage", "quality", "performance", "Classic"],
+    sections: [
+      { heading: "HTML first and one URL", paragraphs: ["The server homepage passes the original hero as a Classic slot and derives room content from the existing public build sources. HomeExperience renders one hero and H1. Metadata, JSON-LD and all shared lower sections remain in the original page. The header switch uses a validated local preference without navigation or analytics page views.", "Responsive preload hints prioritize the matching office preview. The preview and HTML controls render before the dynamic Three.js import. Suitable desktop browsers start that import in an idle callback after pointer exploration or room selection, preserving an interactive default presentation without GPU work for passive visits. Phones, data saving, detected slow connections and reduced motion default to the preview. A visitor can explicitly enable a low-tier renderer. Classic does not request it."] },
+      { heading: "Assets and rendering", paragraphs: ["model.ts constructs original rounded modular furniture, architecture, streets, court, plants and seeded canvas textures. Geometry is constructed in yielding groups, shaders compile asynchronously, and merged source buffers are released after batching. The overview measured 86 draw calls with one shadow map. renderer.ts projects HTML anchors from the camera and supports floor picking, bounded rotation, zoom and reset. No wheel listener intercepts document scrolling.", "High, Medium and Low cap resolution and shadows. Sustained slow frames downgrade quality. Rendering is on demand and pauses outside the viewport or in a hidden tab. Cleanup cancels scheduling, removes observers/listeners, disposes textures/geometry/materials and releases the WebGL context. Context loss retains the static preview."] },
+      { heading: "Maintain and verify", steps: ["Update source room definitions or scene models without adding them to admin Ventures. Regenerate the desktop and mobile preview variants with scripts/render-office-preview.cjs and update the preview anchor percentages in rooms.ts if needed.", "Run office, SEO and handbook tests, TypeScript and the production build. Compare static HTML and sitemap with the baseline, then check keyboard panels, mode persistence, mobile, reduced motion, context loss and repeated mount/unmount in a production browser."] },
+    ], sources: ["docs/interactive-workspace.md", "docs/review/interactive-workspace-validation.md", "src/components/office/renderer.ts", "scripts/render-office-preview.cjs"],
+  },
+  {
     id: "chat-storage", title: "How visitor chat and the inbox work", category: "Integrations", updated: "2026-11-24",
     summary: "Review anonymous chat sessions, private threads, delivery and availability.",
     tags: ["Firestore", "Firebase Auth", "chat", "rules", "Spark"],
@@ -43,11 +53,11 @@ export const technicalGuides: DocumentationGuide[] = [
     ], sources: ["src/lib/negosyo/plan.ts", "src/lib/negosyo/finance.ts", "src/components/negosyo/calculator.tsx", "docs/negosyo-calculator.md"],
   },
   {
-    id: "homepage-portrait", title: "How the homepage portrait loads", category: "Interface", updated: "2026-11-20",
+    id: "homepage-portrait", title: "How the homepage portrait loads", category: "Interface", updated: "2026-11-26",
     summary: "Understand how the homepage serves a static responsive portrait.",
     tags: ["portrait", "responsive image", "AVIF", "WebP"],
     sections: [
-      { heading: "Responsive artwork", paragraphs: ["The server renders a picture element with 400px and 640px AVIF candidates and a transparent WebP fallback. The preload uses the same size hints as the image. Width and height reserve space while the file downloads."] },
+      { heading: "Responsive artwork", paragraphs: ["Classic Mode renders a picture element with 400px and 640px AVIF candidates and a transparent WebP fallback. The portrait has a priority option; the homepage Classic slot disables explicit preload so Interactive does not download it. Width and height reserve space when Classic displays the artwork. The office has its own responsive office preview and isolated renderer."] },
     ],
     sources: ["src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
   },

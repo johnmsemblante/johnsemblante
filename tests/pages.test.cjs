@@ -144,7 +144,7 @@ test('Pages lists six routes, opens the shared drawer on the left and persists e
   assert.equal(h.nodes().find(n => n.props?.id === hero.key).props.value, 'Unsaved conflict edit');
 });
 
-test('every Home editor field changes its intended public text or link', () => {
+test('every Home editor field changes its intended Classic or shared public text or link', () => {
   const record = model.emptyPage();
   for (const field of fields.home) {
     record.values[field.key] = field.kind === 'url' ? '/check/' + field.key + '/' : 'check-' + field.key;
@@ -157,8 +157,25 @@ test('every Home editor field changes its intended public text or link', () => {
     '@/lib/build-ventures': { buildVentures: () => [] },
     '@/content/blog': { publishedPosts: () => [] },
     '@/lib/build-blog': { buildBlogPosts: () => [] },
+    '@/components/office/home-experience': { HomeExperience: ({classic}) => classic },
   });
   const Home = loadHome('src/app/(portfolio)/page.tsx').default;
   const html = renderToStaticMarkup(React.createElement(Home));
   for (const field of fields.home) assert.ok(html.includes(record.values[field.key]), field.key);
+});
+
+test('the interactive homepage uses the same managed title, professional title and visible introduction', () => {
+  const record=model.emptyPage();
+  const shared=fields.home.filter(field=>/^home_(3|4|5)_/.test(field.key));
+  for(const field of shared)record.values[field.key]='shared-office-'+field.key;
+  const loadHome=loader({
+    'next/link': {__esModule:true,default:({href,children})=>React.createElement('a',{href},children)},
+    '@/lib/firebase-client': {firebaseConfigured:false},
+    '@/lib/build-pages': {buildPage:()=>record,withPageMetadata:(_,metadata)=>metadata},
+    '@/lib/build-works': {buildWorks:()=>[]},'@/lib/build-ventures': {buildVentures:()=>[]},
+    '@/content/blog': {publishedPosts:()=>[]},'@/lib/build-blog': {buildBlogPosts:()=>[]},
+  });
+  const html=renderToStaticMarkup(React.createElement(loadHome('src/app/(portfolio)/page.tsx').default));
+  for(const field of shared)assert.ok(html.includes(record.values[field.key]),field.key);
+  assert.equal((html.match(/<h1\b/g)||[]).length,1);assert.ok(html.includes('office-original-intro'));
 });

@@ -2,7 +2,7 @@
 
 ## Responsive image
 
-The homepage displays the complete graphite portrait immediately. The browser preloads a responsive 400px or 640px AVIF and can fall back to the original transparent WebP. Update both AVIF sizes when replacing the source artwork.
+Choose **Classic** in the homepage header to display the complete graphite portrait. The browser selects a responsive 400px or 640px AVIF and can fall back to the original transparent WebP. The Classic slot disables the component's explicit preload to avoid downloading the portrait while Interactive is displayed. Update both AVIF sizes when replacing the source artwork. Interactive has its own office preview and renderer; see [interactive workspace](interactive-workspace.md).
 
 ## Site-wide cursor
 
