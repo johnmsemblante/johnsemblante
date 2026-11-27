@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
-import { HomeModeToggle } from "./office/mode";
+import { HomeModeToggle } from "./digital-hq/mode";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 

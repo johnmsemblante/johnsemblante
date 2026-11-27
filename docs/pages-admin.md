@@ -1,6 +1,6 @@
 # Pages administration
 
-Production remains Classic. On feature/interactive-office, Home defaults to the [full-screen office](interactive-workspace.md), with a top-right Classic switch restoring the complete portrait homepage. Name, title and professional title fields serve both modes; the introduction and remaining Hero fields control Classic. The office layout, rooms, preview and quality are source-managed. Panels use the last build snapshot. Classic sections retain their live readers. Interactive omits the normal shell and lower sections. The existing Home refresh/retry warning remains an overlay.
+Production remains Classic. The feature/digital-hq-interactive-portfolio branch uses [Digital HQ](digital-hq.md), with the original logo and a floating Classic switch. Name, headline and professional title fields serve both modes; the remaining Hero fields control Classic. Objects, camera, character and preview art remain source-managed. Panels use public build snapshots, while Classic retains its existing live readers. No Digital HQ admin editor is introduced.
 
 The public Work collection shows full project details and action links inline at every width. It uses three cards per row on desktop, two at 767px and below, and one at 567px and below. This does not change filters, project records, or the homepage grid.
 

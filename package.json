@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:digital-hq": "node --test tests/digital-hq.test.cjs tests/digital-hq-character.test.cjs",
     "portrait:import": "node scripts/import-portrait-model.cjs",
     "test:portrait": "node --test tests/portrait.test.cjs tests/portrait-import.test.cjs",
     "predev": "node scripts/prepare-pdf-assets.cjs",
@@ -33,9 +34,12 @@
     "audit:search-branding": "node scripts/check-search-branding.mjs",
     "sync:content": "node scripts/sync-blog-snapshot.cjs && node scripts/sync-works.cjs && node scripts/sync-pages.cjs && node scripts/sync-ventures.cjs",
     "build:prepared": "node node_modules/next/dist/bin/next build --webpack",
-    "test:publish": "node --test tests/site-publish.test.cjs tests/publish-config.test.cjs"
+    "test:publish": "node --test tests/site-publish.test.cjs tests/publish-config.test.cjs",
+    "preview:hq:build": "node scripts/digital-hq-preview.cjs build",
+    "preview:hq:deploy": "node scripts/digital-hq-preview.cjs deploy"
   },
   "dependencies": {
+    "@react-three/fiber": "^9.8.2",
     "firebase": "13.2.0",
     "next": "latest",
     "pdf-lib": "1.17.1",

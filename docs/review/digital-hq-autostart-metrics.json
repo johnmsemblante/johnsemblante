@@ -1,0 +1,62 @@
+{
+  "initialAutomatic": [
+    {
+      "device": "desktop",
+      "scores": {
+        "performance": 73,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 483.23923311101703,
+      "cls": 0.017789959887487966,
+      "tbtMs": 703.5,
+      "totalBytes": 2855275,
+      "jsBodyBytes": 2244694
+    },
+    {
+      "device": "mobile",
+      "scores": {
+        "performance": 44,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 8256.418125863567,
+      "cls": 0,
+      "tbtMs": 1779,
+      "totalBytes": 2798715,
+      "jsBodyBytes": 2244694
+    }
+  ],
+  "optimizedAutomatic": [
+    {
+      "device": "desktop",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 481.99197000181107,
+      "cls": 0.024353178601917522,
+      "tbtMs": 33.5,
+      "totalBytes": 2855229,
+      "jsBodyBytes": 2245147
+    },
+    {
+      "device": "mobile",
+      "scores": {
+        "performance": 59,
+        "accessibility": 100,
+        "best-practices": 96,
+        "seo": 100
+      },
+      "lcpMs": 8252.937824300348,
+      "cls": 0,
+      "tbtMs": 578.5,
+      "totalBytes": 2799138,
+      "jsBodyBytes": 2245147
+    }
+  ]
+}

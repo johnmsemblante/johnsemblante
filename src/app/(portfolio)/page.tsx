@@ -18,8 +18,8 @@ import { websiteSchema, jsonLd } from "@/lib/seo";
 import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/content/site";
 import { HomeToolsShowcase } from "@/components/home-tools-showcase";
-import { HomeExperience } from "@/components/office/home-experience";
-import { buildOfficeContent } from "@/lib/build-office-content";
+import { HomeExperience } from "@/components/digital-hq/home-experience";
+import { buildHQContent } from "@/lib/build-hq-content";
 
 const homeTitle = homePageTitle;
 export const metadata = withPageMetadata("home", { ...pageMetadata(homeTitle, site.description, "/"), title: { absolute: homeTitle } });
@@ -34,7 +34,7 @@ export default function Home() {
   const ventures = buildVentures(true);
   return <PageContent id="home" initial={buildPage("home")} stableNotice>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(websiteSchema()) }} />
-    <HomeExperience content={buildOfficeContent(projects, ventures, writing)} classic={<><section className="hero portrait-hero" aria-labelledby="home-hero-title">
+    <HomeExperience content={buildHQContent(projects, ventures, writing)} classic={<><section className="hero portrait-hero" aria-labelledby="home-hero-title">
       <div className="portrait-hero-intro">
         <p className="eyebrow"><PageText scope="home_1" fallback={profile.fullName} /></p>
         <h1 id="home-hero-title"><PageText scope="home_3" fallback={"Cebu Web Developer"} /></h1>

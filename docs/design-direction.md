@@ -1,10 +1,10 @@
 # Visual direction
 
-## Interactive workspace, 27 November 2026
+## Digital HQ, 27 November 2026
 
-The development branch presents a full-screen warm cutaway office with workstations, glass partitions, arcade, library and meeting room on a compact plinth. The exterior court, roads and cars are removed. The shared js. logo sits top left and Interactive / Classic floats top right. Interactive omits the standard header, footer, chat, theme switch and lower sections; Classic restores the complete portrait homepage. Production remains Classic.
+Current development follows the supplied character-centered mockup: rounded illuminated platform, curved wood desk, gaming chair, sunset city window, plants and eight physical navigation objects. The original js. wordmark, minimal mode/sound/fullscreen/help controls and HTML labels frame the scene. Interactive omits conventional chrome; Classic restores the existing homepage. Production stays Classic.
 
-Eight HTML destination links float above desktop rooms and reflow into a grid below the smaller-screen preview. Desktop exploration enables live 3D with subtle bounded pointer and room-focus tilt. Reduced motion suppresses tilt. AVIF/WebP previews and real links work without WebGL. See [maintenance](interactive-workspace.md) and [current checks](review/interactive-office-immersive.md). The procedural scene does not reproduce the reference's offline lighting or bespoke artist-made assets.
+Interactive automatically loads Fiber and the actual models after hydration, using the generated scene preview during startup. Real-scene AVIF/WebP previews, keyboard controls and canonical links remain usable without WebGL. Mobile centers the character with a touch grid and low-tier automatic rendering. The labeled temporary rig is development-only; approved likeness, artist materials and later dedicated section experiences remain pending. See [architecture and limits](digital-hq.md) and [review](review/digital-hq-background-autostart.md). The abandoned multi-room office is preserved in its old branch; earlier screenshots are historical.
 
 ## Light and dark appearance
 

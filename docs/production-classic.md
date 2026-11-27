@@ -1,31 +1,30 @@
-# Classic production and interactive development
+# Classic production and Digital HQ development
 
-Reviewed 27 November 2026. Production uses the Classic portrait homepage from main. The unfinished office lives on feature/interactive-office, pushed to GitHub for work across computers. Feature pushes do not publish the website.
+Reviewed 27 November 2026. Production stays the Classic homepage from main. Development is `feature/digital-hq-interactive-portfolio`. The abandoned office is preserved on `feature/interactive-office` at `ed0020d`. The starting checkout was clean, so no new stash was needed; unrelated stashes remain untouched.
 
-## Continue on another computer
+## Continue locally
 
-Save or commit existing checkout changes first. Run:
+Save changes before switching:
 
-~~~powershell
-git fetch origin
-git switch --track origin/feature/interactive-office
+```powershell
+git switch feature/digital-hq-interactive-portfolio
 npm ci
 npm run dev
-~~~
+```
 
-If the branch already exists locally, use git switch feature/interactive-office followed by git pull --ff-only. Open the localhost URL printed by Next.js. Choose Interactive if this browser remembers Classic. Commit future office work on this branch and use git push to synchronize it. No production build is needed for ordinary local development.
+Open the localhost URL, choose Interactive if Classic was remembered; live 3D now starts automatically. The labeled temporary rig appears in development; the production likeness is pending. See [Digital HQ maintenance](digital-hq.md).
+
+The Phase 1 checkpoint was local. The owner subsequently authorized committing/pushing the same feature branch and deploying a separate test page on 27 November 2026. See the [handoff note](handoffs/2026-11-27-digital-hq.md) for the verified remote/deployment status and cross-computer setup.
 
 ## Publishing boundary
 
-- main remains the production source. Its pushes and scheduled content publishing deploy Classic to Firebase Hosting.
-- feature/interactive-office is development only. The publishing workflow filters pushes to main. Its publish job also requires github.ref == 'refs/heads/main', so manual feature-branch runs skip that job.
-- Do not merge interactive work into main until publication is approved. Do not manually deploy Firebase from this checkout or upload its out directory; it may contain an earlier export.
-- Preserve current work and switch to main before an unrelated production fix.
+- main is the production source. Its pushes and scheduled content publishing deploy Classic to Firebase Hosting.
+- The workflow filters pushes to main and requires `github.ref == 'refs/heads/main'`; manual feature-ref runs skip publishing too.
+- Only the dedicated `digital-hq` Firebase test channel is authorized. Follow [preview deployment](digital-hq-preview.md). Do not merge to main or use a live Hosting deploy for this branch.
+- Preserve work and switch to main before unrelated production fixes.
 
-The production rollback was a normal revert, preserving shared history and the office source on its development branch. Browser mode preferences do not control release state. Production must serve Classic in initial HTML without office controls.
+The old office was reverted on main through normal history. A later release must deliberately integrate the reviewed result; an ordinary merge may not restore a reverted change. Complete character, visual, mobile, accessibility, SEO and performance acceptance first. Keep `NEXT_PUBLIC_DIGITAL_HQ_PREVIEW` out of production. Browser preferences do not control release state.
 
-## Release later
+## Restore a source version
 
-Review the final design, keyboard/device coverage, performance and existing security findings before authorizing publication. The original office commit was reverted on main; a later release must deliberately restore it and integrate refinements. An ordinary merge must not be assumed to undo a revert. Review the resulting diff and run release checks before publishing.
-
-Until then, production should contain portrait-hero, one Cebu Web Developer H1 and no office controls. Content publishing continues to use Classic source from main.
+Save new work before `git switch feature/interactive-office` to revisit the archived office, or `git switch main` for production source. Switching does not deploy. Do not reset shared history or delete stashes to switch concepts. Existing exported output can be stale and requires rebuilding/review before release.

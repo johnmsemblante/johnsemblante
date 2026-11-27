@@ -1,6 +1,8 @@
+> **Digital HQ continuation:** read the [27 November handoff](docs/handoffs/2026-11-27-digital-hq.md) and [test-preview workflow](docs/digital-hq-preview.md). Continue on `feature/digital-hq-interactive-portfolio`; do not follow the main/live release steps for this unfinished feature.
+
 # John Semblante — Portfolio & Ventures
 
-**Development branch:** feature/interactive-office is pushed for work across computers. Production at johnsemblante.com stays Classic on main. Feature pushes do not deploy. See [branch setup and release separation](docs/production-classic.md).
+**Development branch:** feature/digital-hq-interactive-portfolio is the new local Digital HQ direction. The abandoned office is preserved on feature/interactive-office. Production stays Classic on main; feature pushes do not deploy. See [branch setup and release separation](docs/production-classic.md).
 
 A portfolio for John Clark Semblante, a Cebu web developer whose professional title is WordPress/Full Stack Developer, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
@@ -10,7 +12,7 @@ A portfolio for John Clark Semblante, a Cebu web developer whose professional ti
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
-On the development branch, Home is a full-screen office with room navigation, the shared Classic logo and a top-right Interactive / Classic switch. Classic restores the complete portrait homepage. See [workspace maintenance](docs/interactive-workspace.md) and [current checks](docs/review/interactive-office-immersive.md).
+On the development branch, Home is a character-centered Digital HQ with real 3D objects, an automatically started Fiber renderer and the original branding. Classic restores the complete portrait homepage. The temporary rig is development-only; production likeness remains pending. See [maintenance](docs/digital-hq.md), [character contract](docs/digital-hq-character.md) and [current checks](docs/review/digital-hq-background-autostart.md).
 
 ## Free online tools
 

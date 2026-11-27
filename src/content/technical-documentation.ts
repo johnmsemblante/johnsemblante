@@ -4,15 +4,59 @@ const updated = "2026-11-19";
 
 export const technicalGuides: DocumentationGuide[] = [
   {
-    id: "interactive-workspace-renderer", title: "How the local interactive homepage renders", category: "Interface", updated: "2026-11-27",
-    summary: "Review progressive loading, original batched scene assets, camera navigation and fallback lifecycle.",
-    tags: ["Three.js", "WebGL", "office", "homepage", "quality", "performance", "Classic"],
-    sections: [
-      { heading: "Release boundary", paragraphs: ["feature/interactive-office is a pushed development branch for continuing work across computers. Production main stays Classic. The publishing workflow filters pushes to main and the publish job also requires refs/heads/main, including manual runs. A later release must deliberately restore the reverted office change and integrate reviewed refinements; an ordinary merge should not be assumed to undo a revert. See docs/production-classic.md before publishing."] },
-      { heading: "HTML first and one URL", paragraphs: ["The server homepage passes the complete traditional homepage as a Classic slot and derives room panels from existing public build sources. HomeExperience renders one H1. PortfolioFrame omits header, footer and chat only on the interactive root route; destination pages and Classic retain their shell. SiteWordmark supplies identical logo markup to both modes. The mode switch floats top right. Metadata and JSON-LD remain shared, while lower homepage sections render only in Classic. Room controls are real destination anchors that open panels for ordinary clicks and retain modified-click and no-JavaScript navigation.", "Responsive preload hints prioritize the matching office preview. HTML controls render before the dynamic Three.js import. Desktop pointer exploration or room selection starts that import in an idle callback. Phones, data saving, slow connections and reduced motion default to the preview with optional low-tier 3D. Classic does not request it."] },
-      { heading: "Assets and rendering", paragraphs: ["model.ts builds original furniture, a compact building plinth, glass partitions, interior plants and seeded canvas textures. The exterior court and roads are removed. The recentered overview measured 75 draw calls and 267,508 triangles at High. Construction yields, shaders compile asynchronously and merged source buffers are released. renderer.ts projects HTML anchors, supports floor picking, rotation, zoom and reset, and eases bounded mouse tilt plus room-focus tilt. Reduced motion forces both tilts to zero. No wheel listener intercepts scrolling.", "High, Medium and Low cap resolution and shadows. Slow frames downgrade quality. On-demand rendering stops when tilt and camera settle and pauses in a hidden tab. Cleanup cancels scheduling, removes observers/listeners, disposes GPU resources and releases the context. Context loss retains the preview."] },
-      { heading: "Maintain and verify", steps: ["Update source room definitions or scene models without adding them to admin Ventures. Regenerate the desktop and mobile preview variants with scripts/render-office-preview.cjs and update the preview anchor percentages in rooms.ts if needed.", "Run office, SEO and handbook tests, TypeScript and the production build. Compare static HTML and sitemap with the baseline, then check keyboard panels, mode persistence, mobile, reduced motion, context loss and repeated mount/unmount in a production browser."] },
-    ], sources: ["docs/interactive-workspace.md", "docs/production-classic.md", "docs/review/interactive-office-immersive.md", "src/components/portfolio-frame.tsx", "src/components/office/renderer.ts", "scripts/render-office-preview.cjs"],
+    "id": "interactive-workspace-renderer",
+    "title": "How Digital HQ renders and loads",
+    "category": "Interface",
+    "updated": "2026-11-27",
+    "summary": "Review React Three Fiber scene ownership, source-managed navigation, character loading and fallback cleanup.",
+    "tags": [
+      "Three.js",
+      "React Three Fiber",
+      "WebGL",
+      "Digital HQ",
+      "quality",
+      "performance",
+      "Classic"
+    ],
+    "sections": [
+      {
+        "heading": "Release boundary",
+        "paragraphs": [
+          "feature/digital-hq-interactive-portfolio replaces the old office presentation locally. feature/interactive-office preserves the previous implementation. Production main and the existing Firebase workflow are unchanged. Only the owner-authorized digital-hq test channel may receive the dedicated preview build. The preview script checks branch/source commit, enables the temporary character explicitly and derives a Hosting-only noindex configuration. Live publication remains prohibited. See docs/digital-hq-preview.md."
+        ]
+      },
+      {
+        "heading": "HTML first and one URL",
+        "paragraphs": [
+          "HomeExperience renders either the original Classic slot or the Digital HQ presentation, with one H1. The mode store retains portfolio-home-mode and catches unavailable local storage. PortfolioFrame hides the conventional shell only for the interactive root route. SiteWordmark is the same original logo component in both modes. Metadata, JSON-LD and canonical routes are shared.",
+          "A real-scene AVIF/WebP preview and eight real anchors arrive before JavaScript. After hydration and remembered-mode resolution, Interactive automatically imports the Canvas without an entry button. Classic and unrelated routes do not request the Three.js/Fiber chunks. Phase 1 panels adapt public snapshot data and link to existing full pages. No game engine or duplicated tool/form logic is embedded."
+        ]
+      },
+      {
+        "heading": "Scene and animation lifetime",
+        "paragraphs": [
+          "objects.ts defines identities, physical models, transforms, projected anchors, camera views, hover and selection intents, character states, source names and canonical destinations. environment.ts builds original bevelled procedural assets, batches geometry per material/object and generates small seeded canvas textures. lighting.ts is shared with the preview renderer. background-config.ts supplies the local architectural matte URL to the HTML composition and renderer capture; background.ts builds curved foliage and the shadow receiver. Construction yields between scene groups and detailed rows, checks cancellation, and prewarms shaders with compileAsync before revealing the Canvas. The generated room/city plate replaces the old procedural skyline and wall.",
+          "canvas.ts owns a demand-driven React Three Fiber Canvas, bounded perspective camera interpolation, raycast object selection, projected HTML labels and quality tiers. Visible startup has a 25-second timeout with a Retry 3D fallback. The timeout pauses while hidden. Hidden/offscreen scenes stop. Low quality and reduced motion settle on demand; a visible animated rig keeps frames running at higher tiers. One shadow-casting key light is used. Disposal releases model buffers, materials, textures, skeletons, animation bindings and the canvas context.",
+          "character.ts loads local GLB assets and creates one AnimationMixer per model. Named supported clips crossfade and return to idle; unknown actions use idle. The temporary skinned preview supports seated idle, a wave and introduction. Development/explicit preview gating prevents silently shipping it. See the character asset contract before configuring a production GLB."
+        ]
+      },
+      {
+        "heading": "Maintain and verify",
+        "steps": [
+          "Edit source configuration without creating admin collections. Regenerate previews using scripts/render-digital-hq-preview.cjs with an installed Playwright package. Match preview coordinates to the generated scene metadata. Preserve both production and development preview variants.",
+          "Run test:digital-hq, relevant existing tests, handbook/dashboard tests, TypeScript and build:prepared. Use scripts/check-digital-hq-browser.cjs on the export for four-size screenshots, keyboard focus, mode persistence, context loss and route isolation. Compare metadata and local Lighthouse metrics with the baseline; do not describe lab scores as field Web Vitals."
+        ]
+      }
+    ],
+    "sources": [
+      "docs/digital-hq.md",
+      "docs/digital-hq-background.md",
+      "docs/digital-hq-character.md",
+      "docs/production-classic.md",
+      "src/components/digital-hq/canvas.tsx",
+      "src/components/digital-hq/character.ts",
+      "scripts/render-digital-hq-preview.cjs"
+    ]
   },
   {
     id: "chat-storage", title: "How visitor chat and the inbox work", category: "Integrations", updated: "2026-11-24",
@@ -54,11 +98,11 @@ export const technicalGuides: DocumentationGuide[] = [
     ], sources: ["src/lib/negosyo/plan.ts", "src/lib/negosyo/finance.ts", "src/components/negosyo/calculator.tsx", "docs/negosyo-calculator.md"],
   },
   {
-    id: "homepage-portrait", title: "How the homepage portrait loads", category: "Interface", updated: "2026-11-26",
+    id: "homepage-portrait", title: "How the homepage portrait loads", category: "Interface", updated: "2026-11-27",
     summary: "Understand how the homepage serves a static responsive portrait.",
     tags: ["portrait", "responsive image", "AVIF", "WebP"],
     sections: [
-      { heading: "Responsive artwork", paragraphs: ["Classic Mode renders a picture element with 400px and 640px AVIF candidates and a transparent WebP fallback. The portrait has a priority option; the homepage Classic slot disables explicit preload so Interactive does not download it. Width and height reserve space when Classic displays the artwork. The office has its own responsive office preview and isolated renderer."] },
+      { heading: "Responsive artwork", paragraphs: ["Classic Mode renders a picture element with 400px and 640px AVIF candidates and a transparent WebP fallback. The portrait has a priority option; the homepage Classic slot disables explicit preload so Interactive does not download it. Width and height reserve space when Classic displays the artwork. Digital HQ has its own real-scene preview and dynamically loaded Fiber renderer."] },
     ],
     sources: ["src/components/hero-portrait.tsx", "src/app/portrait-hero.css", "docs/hero-portrait.md"],
   },

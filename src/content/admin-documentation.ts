@@ -9,17 +9,84 @@ export type DocumentationGuide = {
 const reviewed = "2026-11-13";
 export const documentationGuides: DocumentationGuide[] = [
   {
-    id: "interactive-workspace", title: "Explore and maintain the local interactive homepage preview", category: "Content management", updated: "2026-11-27",
-    summary: "Switch between the office workspace and Classic homepage, explore rooms, and maintain source-managed visuals.",
-    tags: ["homepage", "office", "3D", "Classic", "Interactive", "preview", "mobile", "WebGL"],
-    sources: ["docs/interactive-workspace.md", "docs/production-classic.md", "src/components/office/home-experience.tsx", "src/components/office/rooms.ts"],
+    id: "digital-hq-test-preview", title: "Review the Digital HQ test page", category: "Publishing", updated: "2026-11-27",
+    summary: "Review the feature branch on a separate temporary Firebase Hosting preview without changing the live portfolio.",
+    tags: ["Digital HQ", "test", "preview", "branch", "deployment", "handoff"],
+    sources: ["docs/digital-hq-preview.md", "docs/handoffs/2026-11-27-digital-hq.md", "scripts/digital-hq-preview.cjs"],
     sections: [
-      { heading: "Development branch only", paragraphs: ["This guide applies to feature/interactive-office, which can be pushed and pulled between computers. Production uses the Classic portrait homepage from main. Feature pushes do not trigger production publishing, and the publishing job rejects other branch refs. Keep refinements on this branch until publication is approved. Do not deploy a development out folder. See docs/production-classic.md for setup on another computer."] },
-      { heading: "Explore the workspace", steps: ["Open Home. The office fills the page without the normal header, footer, chat or theme switch. Select a floating room link on desktop, or a room link beneath the office preview on your phone.", "Use the panel links to open the existing Works, About, Ventures, Tools, Neon Dash, Blog or Contact page. Close with the close button, Back to the workspace, Escape or the backdrop to return to the overview. Destination pages keep their usual navigation.", "Use the bottom-right camera buttons to rotate, zoom and reset. Moving the mouse gently tilts the scene; opening a room also tilts and focuses the camera. Reduced motion suppresses tilt. Normal page scrolling does not zoom the office. Choose High, Medium or Low for rendering quality."] },
-      { heading: "Choose a presentation", paragraphs: ["Interactive is the default on this development branch. On suitable desktops, pointer exploration or selecting a room starts live 3D; the preview and room panels work immediately. Enable 3D view also starts it. The Interactive / Classic switch floats at the top right. Classic restores the complete portrait homepage, header, footer, theme switch and normal sections at the same URL. The choice stays in this browser; clearing site data restores the default. With blocked storage, it lasts for the current page session.", "Phones, reduced-motion preferences, data saving and detected slow connections use a lightweight office preview with functional room links. Enable 3D view is optional. If graphics cannot start, the preview remains usable. Classic works without the 3D engine."] },
-      { heading: "Update the homepage", paragraphs: ["Room panels use public content from the last successful build snapshot. Edit projects in Works, ventures in Ventures and articles in Blog. Tools and games remain source-managed. Classic contains the usual homepage sections and their live readers; Interactive uses rooms as its navigation and has no sections below the office. Production content publishing continues to use main and does not release this branch.", "Pages edits the Home name, title and professional title shown in both modes. The original introduction and remaining hero fields appear in Classic. The shared js. wordmark, building layout, lighting and preview images require source updates. The outdoor basketball court is removed. Regenerate previews after a scene or camera change using the technical guide."] },
-      { heading: "If something looks wrong", paragraphs: ["Try Classic if 3D is slow or unavailable. If room content looks old, confirm the existing automated build and deployment completed. A content-refresh warning means the existing live content connection failed; the last built public copy remains available. On Home the retry notice overlays the page so it does not move the hero.", "Review desktop, phone, keyboard and reduced-motion layouts after a source release. Test mode persistence, a room link, Escape and return to overview. No game progress, contact settings or database migration is involved."] },
-    ], links: [{ label: "Open Home", href: "/" }],
+      { heading: "Open and review", steps: ["Use the latest test-page URL recorded in the repository handoff note. Open it in a fresh browser session to see Interactive start automatically. A remembered Classic choice in this browser is respected.", "Compare the room, foreground objects and lighting against the full supplied mockup. Test the eight destinations, Classic, Help and camera controls on desktop and phone.", "Record requested changes on feature/digital-hq-interactive-portfolio. The handoff note lists the current checks, unfinished character and next steps for another computer."] },
+      { heading: "Update the test page", paragraphs: ["Ask the developer to refresh public content, run checks, commit the feature branch, build with the dedicated preview command and deploy to channel digital-hq. Feature pushes alone do not update this test page. The build receipt identifies the deployed source commit.", "The channel expires after 30 days unless renewed by another deployment. Its link is public, with indexing disabled; it is not a private staging database. It uses existing backend resources, so ordinary content changes or form submissions can affect real services. Do not enter test records through the preview."] },
+      { heading: "Limits and troubleshooting", paragraphs: ["The character is temporary and mobile startup remains an optimization task. Graphics fallback and Classic remain available. Preview hosting does not grant production-release approval.", "If the link expires, ask for a new test deployment. Firebase Auth domain settings are deliberately not changed by this workflow; sign-in and origin-restricted integrations may be unavailable on the temporary hostname. Use the established live admin address for content administration."] },
+    ],
+  },
+  {
+    "id": "interactive-workspace",
+    "title": "Explore and maintain the Digital HQ preview",
+    "category": "Content management",
+    "updated": "2026-11-27",
+    "summary": "Explore the new character-centered workspace, switch to Classic and maintain its public content.",
+    "tags": [
+      "homepage",
+      "Digital HQ",
+      "3D",
+      "Classic",
+      "Interactive",
+      "preview",
+      "mobile",
+      "WebGL"
+    ],
+    "sources": [
+      "docs/digital-hq.md",
+      "docs/digital-hq-background.md",
+      "docs/digital-hq-character.md",
+      "docs/production-classic.md",
+      "src/components/digital-hq/home-experience.tsx",
+      "src/components/digital-hq/objects.ts"
+    ],
+    "sections": [
+      {
+        "heading": "Development branch only",
+        "paragraphs": [
+          "Work continues on feature/digital-hq-interactive-portfolio. The abandoned office remains committed on feature/interactive-office. Production main stays Classic. Feature pushes and manual workflow runs on feature refs do not publish. The owner authorized only the separate digital-hq Firebase test channel on 27 November 2026. Use its dedicated preview workflow; do not deploy this branch to the live site. The branch was clean before it was created, so no new stash was needed."
+        ]
+      },
+      {
+        "heading": "Explore Digital HQ",
+        "steps": [
+          "Open Home. Interactive fills the screen with the original js. wordmark, introduction and eight object labels. Select My Works, Skills, Ventures, Blog, Tools, Games, Contact or About Me. The labels and Help guide work before 3D starts.",
+          "The live 3D workspace starts automatically. Drag gently to rotate, use the camera buttons to zoom, or choose Reset camera. The logo resets the view. High, Medium and Low change rendering resolution and shadows. Normal page scrolling remains available.",
+          "Open a section and follow its real links to existing content. Phase 1 uses previews and the existing full pages; full interactive archives and embedded tools are later phases. Close with Escape, Close section, Back to Digital HQ or the backdrop. Destination pages keep their existing navigation; the logo returns home.",
+          "Use How to explore Digital HQ for the keyboard guide and all destinations. Tab and Enter work without canvas picking. The sound button enables short optional interface tones; it starts muted. Fullscreen depends on browser support."
+        ]
+      },
+      {
+        "heading": "Choose a presentation",
+        "paragraphs": [
+          "Interactive is the initial presentation on this development branch. The Interactive / Classic control restores the complete original homepage at the same URL. The choice persists in this browser; blocked storage keeps it only for the current page session. Clear site data to reset it. Classic unmounts the scene and does not load its engine on a fresh visit.",
+          "The static preview is an actual render of the scene and stays visible while 3D starts automatically. No Enter 3D workspace button is needed. Phones receive a centered composition, a low rendering tier and a touch-friendly navigation grid. Reduced motion disables camera easing and decorative animation. If graphics fail, the preview, labels and content panels still work; Retry 3D attempts a new context."
+        ]
+      },
+      {
+        "heading": "Character status",
+        "paragraphs": [
+          "A clearly labeled temporary rig appears only in development or an explicitly configured preview build. It is an articulated 3D figure, not an approved facial likeness. Ordinary production builds omit it and use a matching empty-chair preview until the approved model is supplied. The temporary figure is allowed on the explicit test preview only. Production release still requires separate approval and an approved model.",
+          "The character, furniture, camera, reference-based sunset room background and lighting are source-managed. The supplied Digital HQ mockup remains the reference for every enhancement. The existing portfolio portrait is the identity reference. A modeler must supply an optimized rigged GLB for the final character. No portrait upload, paid generation service or new admin editor is used."
+        ]
+      },
+      {
+        "heading": "Maintain and troubleshoot",
+        "paragraphs": [
+          "Edit public project records in Works, ventures in Ventures and articles in Blog. Panels reflect the last successful public build snapshot. Tools and games remain source-managed and separate from admin Ventures. Home name, headline and professional title continue to use Pages; the remaining original Hero fields control Classic.",
+          "Scene changes require new desktop and mobile previews. Ask the developer to regenerate them from the actual scene, review the four viewport sizes, then run the documented checks. A page-content connection failure keeps the last built copy and displays the existing retry notice. Use Classic if graphics are slow. No game saves, contact backend or authentication settings change."
+        ]
+      }
+    ],
+    "links": [
+      {
+        "label": "Open Home",
+        "href": "/"
+      }
+    ]
   },
   {
     id: "visitor-chat", title: "Reply to visitor chats and offline messages", category: "Integrations", updated: "2026-11-24",
@@ -122,19 +189,19 @@ export const documentationGuides: DocumentationGuide[] = [
     sections: [
       { heading: "Make a page change", steps: ["Open Pages and select Home, About, Work, Blog, Ventures or Contact.", "Use the editor search to find a field by section or original text. Edit its text, image or link. For an image, supply the required description.", "Optionally add gallery images or edit the page meta title and description. Blank metadata fields keep their existing defaults.", "Choose Save page. Pages has no draft status: saving publishes the overrides.", "Review the public page, then confirm the automated publishing build succeeds for updated initial HTML and search previews."] },
       { heading: "Defaults and boundaries", paragraphs: ["Reset to code default removes that field’s saved override. Other saved fields remain. Closing unsaved edits prompts before discarding; active uploads block closing or saving.", "Use Blog for articles, Works for project records and Ventures for individual venture sites. Shared navigation/footer, form behavior and free tools remain code-managed. If another tab changed the same record, a conflict prevents overwriting its newer revision; keep your text before reloading."] },
-      { heading: "Homepage presentations", paragraphs: ["Production remains Classic. The feature/interactive-office development branch defaults to a full-screen office with a top-right Classic switch. Home name, title and professional title apply to both modes. Introduction, location, craft labels, specialties, experience lines, buttons and footer caption control Classic. The location suffix appears beside Based in Cebu in Classic.", "In Pages, open Home and expand Hero to edit the original fields. Open Online tools to edit the Classic section heading and directory link. Room definitions, tool listings, office visuals and portrait artwork remain source-managed. Retired Home browser_illustration fields remain ignored, not deleted.", "Classic keeps services, project thumbnails, tool and venture logos, Working together, articles and the FAQ with their existing live readers. Interactive replaces those sections and the conventional shell with office room navigation. Room panels reflect the last successful build snapshot. Update thumbnails in Works, Ventures or Blog. See the interactive homepage guide for branch and maintenance instructions."] },
+      { heading: "Homepage presentations", paragraphs: ["Production remains Classic. The feature/digital-hq-interactive-portfolio development branch defaults to Digital HQ with a top-right Classic switch. Home name, title and professional title apply to both modes. Introduction, location, craft labels, specialties, experience lines, buttons and footer caption control Classic. The location suffix appears beside Based in Cebu in Classic.", "In Pages, open Home and expand Hero to edit the original fields. Open Online tools to edit the Classic section heading and directory link. Object definitions, tool listings, Digital HQ visuals and portrait artwork remain source-managed. Retired Home browser_illustration fields remain ignored, not deleted.", "Classic keeps services, project thumbnails, tool and venture logos, Working together, articles and the FAQ with their existing live readers. Interactive replaces those sections and the conventional shell with Digital HQ object navigation. Digital HQ panels reflect the last successful build snapshot. Update thumbnails in Works, Ventures or Blog. See the interactive homepage guide for branch and maintenance instructions."] },
       { heading: "Review saved copy after a site update", paragraphs: ["Home, Work and Contact have revised defaults for services, examples and inquiries. Saved overrides still take precedence. Review those fields in Pages and choose Reset to code default if you want the revised wording. Review any saved blog, project and venture copy separately; a source release does not edit those records.", "The public Work collection shows three cards across on wide screens and reduces to two or one as the screen narrows. No editor setting or project change is needed."] },
       { heading: "Update the development story", paragraphs: ["In Pages, open About and expand AI-assisted development to update the ChatGPT, Cursor and Claude workflow story. Open Work and expand Independent builds to update the Next.js portfolio and desktop app examples. On the public Work page, the independent-build cards sit above the project listing and the confidential-work spotlight sits below it. These are landing-page sections, not Works project records. Update the beta status only as it changes, and keep internal project details and access information out of public copy.", "Project cards show their full details and action links without needing to hover. Project details are still edited in Works."] },
       { heading: "Other sketch portraits", paragraphs: ["The About page has its own editable portrait Image field. Use transparent WebP or PNG replacements and review desktop and phone layouts. Their multiply blending can change the appearance of colored photographs. Reset to code default restores the selected field's sketch; these fields do not change the animated hero."] },
     ], links: [{ label: "Open Pages", href: "/adminauth/pages/" }],
   },
   {
-    id: "hero-portrait", title: "Maintain the homepage portrait", category: "Content management", updated: "2026-11-26",
+    id: "hero-portrait", title: "Maintain the homepage portrait", category: "Content management", updated: "2026-11-27",
     summary: "Review the responsive graphite portrait on desktop and mobile.",
     tags: ["portrait", "hero", "sketch", "responsive image", "AVIF"],
     sources: ["docs/hero-portrait.md", "src/components/hero-portrait.tsx", "src/app/portrait-hero.css"],
     sections: [
-      { heading: "Review the portrait", steps: ["Open Home and choose Classic in the header on desktop and mobile. Check that the full sketch is visible and has space above the hair and below the shoulders. Interactive uses its own office preview and does not preload the portrait."] },
+      { heading: "Review the portrait", steps: ["Open Home and choose Classic in the header on desktop and mobile. Check that the full sketch is visible and has space above the hair and below the shoulders. Interactive uses its own Digital HQ preview and does not preload the portrait."] },
       { heading: "Maintain the portrait", paragraphs: ["When replacing the transparent john-doodle-sketch.webp artwork, regenerate the matching 400px and 640px AVIF copies for the homepage. The standalone About portrait has its own Pages field."] },
     ],
   },

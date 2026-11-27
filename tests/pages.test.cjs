@@ -157,7 +157,7 @@ test('every Home editor field changes its intended Classic or shared public text
     '@/lib/build-ventures': { buildVentures: () => [] },
     '@/content/blog': { publishedPosts: () => [] },
     '@/lib/build-blog': { buildBlogPosts: () => [] },
-    '@/components/office/home-experience': { HomeExperience: ({classic}) => classic },
+    '@/components/digital-hq/home-experience': { HomeExperience: ({classic}) => classic },
   });
   const Home = loadHome('src/app/(portfolio)/page.tsx').default;
   const html = renderToStaticMarkup(React.createElement(Home));
@@ -166,7 +166,7 @@ test('every Home editor field changes its intended Classic or shared public text
 
 test('the portfolio shell restores all chrome in Classic and on destination pages',()=>{
   let pathname='/', mode='interactive';
-  const Frame=loader({'next/navigation':{usePathname:()=>pathname},'./office/mode':{useOfficeMode:()=>mode}})('src/components/portfolio-frame.tsx').PortfolioFrame;
+  const Frame=loader({'next/navigation':{usePathname:()=>pathname},'./digital-hq/mode':{usePortfolioMode:()=>mode}})('src/components/portfolio-frame.tsx').PortfolioFrame;
   const render=()=>renderToStaticMarkup(React.createElement(Frame,{header:'HEADER',footer:'FOOTER',chat:'CHAT'},'CONTENT'));
   assert.ok(!render().includes('HEADER'));assert.ok(!render().includes('FOOTER'));assert.ok(!render().includes('CHAT'));assert.ok(render().includes('CONTENT'));
   mode='classic';for(const text of ['HEADER','FOOTER','CHAT'])assert.ok(render().includes(text));
@@ -187,6 +187,6 @@ test('the immersive homepage shares managed headings and leaves traditional sect
   const html=renderToStaticMarkup(React.createElement(loadHome('src/app/(portfolio)/page.tsx').default));
   for(const field of shared)assert.ok(html.includes(record.values[field.key]),field.key);
   assert.equal((html.match(/<h1\b/g)||[]).length,1);
-  assert.ok(html.includes('office-topbar'));assert.ok(html.includes('Explore office rooms'));
+  assert.ok(html.includes('hq-brand'));assert.ok(html.includes('Explore Digital HQ'));
   assert.ok(!html.includes('office-original-intro'));assert.ok(!html.includes('services-title'));
 });

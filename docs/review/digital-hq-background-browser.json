@@ -1,0 +1,43 @@
+{
+  "reviewed": "2026-11-27",
+  "checks": [
+    "1920x1080: automatic 3D, responsive layout, one H1, no overflow or overlapping labels",
+    "1440x900: automatic 3D, responsive layout, one H1, no overflow or overlapping labels",
+    "768x1024: automatic 3D, responsive layout, one H1, no overflow or overlapping labels",
+    "390x844: automatic 3D, responsive layout, one H1, no overflow or overlapping labels",
+    "original wordmark, eight crawlable destinations, immersive shell and automatic renderer startup",
+    "all eight sections open by keyboard, contain focus, Escape closes and restores focus",
+    "accessible help navigation guide",
+    "physical SD card raycasting opens its content panel",
+    "hidden-tab rendering pauses",
+    "Classic persistence, original homepage shell, one H1 and unloaded scene",
+    "repeat mode switching creates one canvas",
+    "context loss falls back to usable HTML navigation",
+    "unsupported WebGL and reduced motion retain functional content navigation",
+    "fresh internal route does not request Digital HQ renderer",
+    "switching to Classic cancels pending scene construction and shader warmup"
+  ],
+  "errors": [],
+  "accessibility": [
+    {
+      "label": "1920",
+      "violations": []
+    },
+    {
+      "label": "1440",
+      "violations": []
+    },
+    {
+      "label": "768",
+      "violations": []
+    },
+    {
+      "label": "390",
+      "violations": []
+    },
+    {
+      "label": "works panel",
+      "violations": []
+    }
+  ]
+}
