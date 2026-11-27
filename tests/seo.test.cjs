@@ -32,9 +32,6 @@ test('homepage includes managed and source article previews in publication order
     '@/components/development-services': { DevelopmentServices: noop }, '@/components/hero-portrait': { HeroPortrait: noop },
     '@/components/workflow': { Workflow: noop }, '@/components/project-grid': { ProjectGrid: noop },
     '@/components/home-tools-showcase': { HomeToolsShowcase: noop },
-    '@/components/office/home-experience': { HomeExperience: ({classic}) => classic },
-    '@/lib/build-office-content': { buildOfficeContent: () => ({}) },
-    '@/config/tool-ventures': { publishedTools: [] },
     '@/ventures/cards': { VentureCards: noop }, '@/components/project-questions': { ProjectQuestions: noop },
   };
   mocks['@/components/live-home-content'] = load('src/components/live-home-content.tsx', {

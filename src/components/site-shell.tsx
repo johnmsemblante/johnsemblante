@@ -11,7 +11,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return <div className="portfolio-shell">
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header">
-      <Link href="/" className="wordmark" title="John Semblante home">js<span>.</span><span className="office-brand">John Semblante<small>{profile.title}</small></span></Link>
+      <Link href="/" className="wordmark" aria-label="John Semblante home">js<span>.</span></Link>
       <SiteNavigation ventureLinks={ventureLinks} />
     </header>
     <main id="main" tabIndex={-1}><PortfolioBreadcrumbs routes={breadcrumbRoutes} />{children}</main>

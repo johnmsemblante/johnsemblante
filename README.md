@@ -8,8 +8,6 @@ A portfolio for John Clark Semblante, a Cebu web developer whose professional ti
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
-Home opens as an interactive isometric workspace on suitable desktop browsers, with a matching static office and room navigation on phones or constrained devices. **Classic** in the header preserves the original portrait homepage at `/`. Room content uses existing public sources; the model and configuration remain source-managed. See the [workspace maintenance guide](docs/interactive-workspace.md) and [validation record](docs/review/interactive-workspace-validation.md).
-
 ## Free online tools
 
 The [QR Code Generator](/tools/qr-code-generator/) supports links, text, Wi-Fi, email and phone QR codes with local PNG/SVG downloads. Tools are source-managed and appear publicly on Ventures; they are excluded from admin editing and database records. See [code-managed tools](docs/code-managed-tools.md) for architecture, validation, future tools and release commands. Run `npm.cmd run test:qr` for payload and separation checks.
@@ -28,7 +26,7 @@ Public content refreshes on load, focus and while visible. The admin Overview in
 
 Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
 
-The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante**. Interactive Mode uses the H1 **Cebu Web Developer & creative technologist.**; Classic retains **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
+The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante** and H1 **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
 ### Editing public copy
 

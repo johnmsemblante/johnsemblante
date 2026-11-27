@@ -1,7 +1,5 @@
 # Pages administration
 
-Home now defaults to the [interactive office](interactive-workspace.md); Classic in the header restores the original portrait hero at the same URL. Existing name, title, professional title and introduction fields serve both modes. Other original Hero fields still control Classic. The new office layout, visual copy, rooms, preview and quality behavior are source-managed, outside Pages and admin Ventures. Its public room panels/counts use the last successful build snapshot; shared sections below it retain their live readers. The existing refresh/retry warning is an overlay on Home to prevent a late network failure shifting the hero. Other routes keep their original notice placement.
-
 The public Work collection shows full project details and action links inline at every width. It uses three cards per row on desktop, two at 767px and below, and one at 567px and below. This does not change filters, project records, or the homepage grid.
 
 The Home, Work and Contact copy defaults describe services, project examples and what to include in an inquiry. If a saved override still shows older copy, review it in Pages and edit it or choose **Reset to code default**. The audit preserves existing override keys through `src/content/page-field-aliases.json`; it does not rewrite saved content or metadata.
