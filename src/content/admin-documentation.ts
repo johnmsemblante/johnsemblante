@@ -9,6 +9,16 @@ export type DocumentationGuide = {
 const reviewed = "2026-11-13";
 export const documentationGuides: DocumentationGuide[] = [
   {
+    id: "production-homepage", title: "Keep the Classic homepage live while previewing the redesign", category: "Publishing & SEO", updated: "2026-11-27",
+    summary: "Keep unfinished interactive office work separate from the production website.",
+    tags: ["homepage", "Classic", "interactive", "preview", "branch", "production"], sources: ["docs/production-classic.md", "docs/automatic-publishing.md"],
+    sections: [
+      { heading: "Current public homepage", paragraphs: ["Production serves the original Classic portrait homepage. The unfinished interactive office is kept on the local interactive-office-wip development branch. Visitors should not see an Interactive switch or an office renderer on the public site.", "A browser presentation preference does not roll back the site for other visitors. The production source must remain Classic, including its initial HTML."] },
+      { heading: "Keep the preview local", steps: ["Continue office design work on the local preview branch and review it locally.", "Keep unfinished office changes off main. A push to main can publish automatically, and scheduled content builds also use main.", "Use the existing production workflow for approved fixes. Do not upload a development export left in the local out folder.", "Publish the office only after the final design and release checks are explicitly approved."] },
+      { heading: "Confirm a production update", paragraphs: ["Wait for a successful publishing run, then reload the live homepage. It should display the portrait and the original navigation without office mode controls. A queued or failed run has not restored production."] },
+    ], links: [{ label: "Open production", href: "https://johnsemblante.com/" }, { label: "Publishing runs", href: "https://github.com/johnmsemblante/johnsemblante/actions/workflows/publish-site.yml" }],
+  },
+  {
     id: "visitor-chat", title: "Reply to visitor chats and offline messages", category: "Integrations", updated: "2026-11-24",
     summary: "Use the Messages inbox to reply live, review messages received while away and follow up by email.",
     tags: ["chat", "visitor", "inbox", "offline", "availability"], sources: ["docs/visitor-chat.md"],

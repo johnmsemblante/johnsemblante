@@ -8,6 +8,8 @@ A portfolio for John Clark Semblante, a Cebu web developer whose professional ti
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
+Production uses the Classic portrait homepage while the interactive office is being finalized locally on `interactive-office-wip`. Keep unfinished office changes off `main`. See [production versus local preview](docs/production-classic.md).
+
 ## Free online tools
 
 The [QR Code Generator](/tools/qr-code-generator/) supports links, text, Wi-Fi, email and phone QR codes with local PNG/SVG downloads. Tools are source-managed and appear publicly on Ventures; they are excluded from admin editing and database records. See [code-managed tools](docs/code-managed-tools.md) for architecture, validation, future tools and release commands. Run `npm.cmd run test:qr` for payload and separation checks.
@@ -285,7 +287,7 @@ git commit -m "Describe the website changes"
 git push origin main
 ```
 
-Inspect `git status` before staging to avoid including unrelated files. If there are no changes, skip the add/commit steps. Pushing to GitHub does **not** automatically deploy this project.
+Inspect `git status` before staging to avoid including unrelated files. If there are no changes, skip the add/commit steps. Pushing to `main` automatically runs the existing GitHub publishing workflow and deploys after a successful build. Keep unfinished local preview work on its separate branch.
 
 Replace `<reviewed-files>` with the actual paths being released. A normal frontend/documentation release deploys Hosting only. Deploy Firestore rules/indexes, Auth configuration or the Cloudflare Worker separately only when those components changed; see the admin guide. A README update alone does not require backend deployment.
 

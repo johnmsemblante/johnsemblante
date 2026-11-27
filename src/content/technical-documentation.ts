@@ -62,14 +62,14 @@ export const technicalGuides: DocumentationGuide[] = [
     sources: ["src/app/layout.tsx", "src/components/portfolio-cursor.tsx", "src/components/portfolio-cursor.css"],
   },
   {
-    id: "static-publishing", title: "From source and published content to Firebase Hosting", category: "Architecture", updated,
+    id: "static-publishing", title: "From source and published content to Firebase Hosting", category: "Architecture", updated: "2026-11-27",
     summary: "Trace the Next.js static export through the production workflow.",
     tags: ["App Router", "GitHub Actions", "snapshots", "deployment", "SEO"],
     sections: [
       { heading: "Build inputs", paragraphs: ["The App Router defines layouts and pages in src/app. The content sync scripts read published Blog, Works, Pages and Ventures data before Next.js builds. The export includes initial page HTML and metadata that can be read by crawlers before browser JavaScript runs."] },
-      { heading: "Release and verification", paragraphs: ["A push to main runs the publish workflow. It validates configuration, installs dependencies, syncs content, builds the static site, writes a public deployment receipt and deploys to the live Firebase Hosting channel. Scheduled runs compare a content fingerprint to avoid redundant builds.", "When a content change appears in the browser but the initial HTML still shows the old value, check the sync, build and deployment steps for the same run. Run the live SEO audit to check the sitemap, redirects and canonical pages."] },
+      { heading: "Release and verification", paragraphs: ["A push to main runs the publish workflow. It validates configuration, installs dependencies, syncs content, builds the static site, writes a public deployment receipt and deploys to the live Firebase Hosting channel. Scheduled runs compare a content fingerprint to avoid redundant builds.", "Production currently uses the Classic portrait homepage. Unfinished office work stays on the local interactive-office-wip branch. Main contains the production rollback, so later scheduled content builds cannot reintroduce that unfinished layout. A future office release must deliberately account for the reverted commit and integrate reviewed changes.", "When a content change appears in the browser but the initial HTML still shows the old value, check the sync, build and deployment steps for the same run. Run the live SEO audit to check the sitemap, redirects and canonical pages."] },
     ],
-    sources: ["next.config.ts", ".github/workflows/publish-site.yml", "scripts/content-deployment.cjs", "scripts/check-live-seo.mjs"],
+    sources: ["next.config.ts", ".github/workflows/publish-site.yml", "scripts/content-deployment.cjs", "scripts/check-live-seo.mjs", "docs/production-classic.md"],
   },
   {
     id: "dashboard-access", title: "How admin routes share navigation and access control", category: "Architecture", updated,
