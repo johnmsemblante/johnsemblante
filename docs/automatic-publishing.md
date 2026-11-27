@@ -1,5 +1,7 @@
 # Automatic publishing on Firebase Spark
 
+Production currently uses the Classic homepage from `main`. This checkout's interactive office is a local preview on `interactive-office-wip`. Pushes to `main` and scheduled content runs can publish automatically; keep unfinished office changes off that branch and never deploy this preview's existing `out/` folder. See [production versus local preview](production-classic.md).
+
 The site remains a static Next.js export hosted on Firebase Spark. No Cloud Run, billing account, Cloud Functions, Cloudflare publishing endpoint or browser deployment token is required.
 
 After a save in Blog, Works, Ventures or Pages, GitHub Actions checks the current public Firestore content on a five-minute schedule. Changed content triggers a build and live Firebase Hosting deployment. New clean URLs, initial article HTML, canonical/Open Graph metadata and sitemap entries are generated together. The existing database view is available immediately while a new clean page waits for deployment. Existing exported HTML is only changed or removed after a successful deployment.

@@ -1,5 +1,7 @@
 # John Semblante — Portfolio & Ventures
 
+**Local preview branch:** this checkout preserves the unfinished interactive office. Production at johnsemblante.com uses the Classic portrait homepage from `main`. Keep office refinements on `interactive-office-wip`; do not merge or push them to `main` until approved. See [production versus local preview](docs/production-classic.md).
+
 A portfolio for John Clark Semblante, a Cebu web developer whose professional title is WordPress/Full Stack Developer, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
 - **Live website:** https://johnsemblante.com/
@@ -287,7 +289,7 @@ git commit -m "Describe the website changes"
 git push origin main
 ```
 
-Inspect `git status` before staging to avoid including unrelated files. If there are no changes, skip the add/commit steps. Pushing to GitHub does **not** automatically deploy this project.
+Inspect `git status` before staging to avoid including unrelated files. If there are no changes, skip the add/commit steps. Pushing to `main` automatically runs the existing GitHub publishing workflow and deploys after a successful build. Keep unfinished local preview work on its separate branch.
 
 Replace `<reviewed-files>` with the actual paths being released. A normal frontend/documentation release deploys Hosting only. Deploy Firestore rules/indexes, Auth configuration or the Cloudflare Worker separately only when those components changed; see the admin guide. A README update alone does not require backend deployment.
 

@@ -1,6 +1,8 @@
 # Interactive homepage workspace
 
-The homepage now opens as an isometric office. **Interactive / Classic** in the existing header switches presentation at `/`, without a reload or a second indexable URL. Classic preserves the former portrait hero; services, works, tools, ventures, workflow, writing and questions remain the shared homepage sections. No deployment has been performed for this change.
+This guide describes the local `interactive-office-wip` preview. Production has been restored to the Classic portrait homepage from `main`; see [branch and release separation](production-classic.md). Keep office refinements local until the final design is approved.
+
+In this local preview, the homepage opens as an isometric office. **Interactive / Classic** in the header switches presentation at `/`, without a reload or a second indexable URL. Classic preserves the portrait hero; services, works, tools, ventures, workflow, writing and questions remain shared.
 
 ## Owner workflow
 
