@@ -6,23 +6,23 @@ const args = process.argv.slice(2), index = args.indexOf('--playwright');
 if (index < 0 || !args[index + 1]) throw Error('Supply --playwright <installed package path>.');
 const { chromium } = require(path.resolve(args[index + 1]));
 const output = path.resolve('tmp/digital-hq/render'); fs.mkdirSync(output, { recursive: true });
-for (const name of ['assets', 'environment', 'objects', 'character', 'character-config', 'lighting', 'background', 'background-config']) {
+for (const name of ['studio-props', 'assets', 'environment', 'objects', 'character', 'character-config', 'lighting', 'background', 'background-config']) {
   const source = fs.readFileSync(`src/components/digital-hq/${name}.ts`, 'utf8');
   const compiled = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText
     .replace(/from "\.\/(assets|objects|character-config|background)"/g, 'from "./$1.js"').replace(/process.env.NODE_ENV/g, '"development"').replace(/process.env.NEXT_PUBLIC_DIGITAL_HQ_PREVIEW/g, '"false"');
   fs.writeFileSync(path.join(output, name + '.js'), compiled);
 }
 fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html><html><head><style>html,body{margin:0;background:#171927}canvas{display:block}</style><script type="importmap">{"imports":{"three":"/vendor/build/three.module.js","three/addons/":"/vendor/examples/jsm/"}}</script></head><body><script type="module">
-import * as T from 'three'; import { buildEnvironment } from './environment.js'; import { buildPreviewCharacter } from './character.js'; import { hqObjects, overview } from './objects.js'; import { buildLighting } from './lighting.js'; import { HQ_BACKGROUND_URL } from './background-config.js';
+import * as T from 'three'; import { loadStudioProps } from './studio-props.js'; import { buildEnvironment } from './environment.js'; import { buildPreviewCharacter } from './character.js'; import { hqObjects, overview } from './objects.js'; import { buildLighting } from './lighting.js'; import { HQ_BACKGROUND_URL } from './background-config.js';
 document.body.style.backgroundImage='url('+HQ_BACKGROUND_URL+')';document.body.style.backgroundPosition='center';document.body.style.backgroundSize='cover';const background=new Image();background.src=HQ_BACKGROUND_URL;await background.decode();
 const renderer=new T.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(1);renderer.setSize(innerWidth,innerHeight);renderer.setClearColor('#000000',0);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;document.body.appendChild(renderer.domElement);
-const scene=new T.Scene();const environment=await buildEnvironment();scene.add(environment.root,buildLighting(true).root);if(location.search.includes('character=1'))scene.add(buildPreviewCharacter().root);
+const scene=new T.Scene();const environment=await buildEnvironment();await loadStudioProps(environment.root,environment.objects.get("blog"),new AbortController().signal,()=>{});const lights=buildLighting(true,scene);await lights.ready;scene.add(environment.root,lights.root);if(location.search.includes('character=1'))scene.add(buildPreviewCharacter().root);
 const camera=new T.PerspectiveCamera(43,innerWidth/innerHeight,.1,100);const target=new T.Vector3(...overview.target);camera.position.set(...overview.position).sub(target).multiplyScalar(Math.max(1,1.64/(innerWidth/innerHeight))).add(target);camera.lookAt(target);camera.updateMatrixWorld();await renderer.compileAsync(scene,camera);renderer.render(scene,camera);
 window.metadata={anchors:Object.fromEntries(hqObjects.map(item=>{const v=new T.Vector3(...item.anchor).project(camera);return[item.id,[(v.x*.5+.5)*100,(-v.y*.5+.5)*100]]})),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures};window.ready=true;
 </script></body></html>`);
 const vendor = path.resolve('node_modules/three');
 const server = http.createServer((req, res) => {
-  const url = new URL(req.url, 'http://localhost'), isVendor = url.pathname.startsWith('/vendor/'), isAsset = url.pathname.startsWith('/images/');
+  const url = new URL(req.url, 'http://localhost'), isVendor = url.pathname.startsWith('/vendor/'), isAsset = (url.pathname.startsWith('/images/')||url.pathname.startsWith('/models/'));
   const root = isVendor ? vendor : isAsset ? path.resolve('public') : output, file = path.resolve(root, isVendor ? url.pathname.slice(8) : url.pathname.slice(1) || 'index.html');
   if (!file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
   try { const body = fs.readFileSync(file); res.setHeader('Content-Type', file.endsWith('.js') ? 'text/javascript' : file.endsWith('.webp') ? 'image/webp' : 'text/html'); res.end(body); } catch { res.writeHead(404).end(); }

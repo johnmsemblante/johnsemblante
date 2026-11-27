@@ -21,7 +21,7 @@ Both the rendered loading previews and the live composition use the same plate a
 
 ## Automatic live 3D
 
-Interactive starts the dynamically imported Canvas automatically after hydration. A zero-delay scheduled task lets the remembered Classic mode resolve first and cancels when the HQ unmounts. The **Enter 3D workspace** button is removed. Loading progress appears as status text; camera controls appear when the first scene frame is ready. The preview stays visible throughout startup. Geometry construction yields between furniture groups, keyboard rows and shelf rows, and shaders compile asynchronously before the live scene is revealed. Switching to Classic cancels pending construction and releases its resources.
+Interactive starts the dynamically imported Canvas automatically after hydration. A zero-delay scheduled task lets the remembered Classic mode resolve first and cancels when the HQ unmounts. The **Enter 3D workspace** button is removed. Loading progress appears as status text; camera controls appear when the first scene frame is ready. The hero shows its solid background until the first live frame is ready. The static scene image is reserved for failure and no-JavaScript visits. Geometry construction yields between furniture groups, keyboard rows and shelf rows, and shaders compile asynchronously before the live scene is revealed. Switching to Classic cancels pending construction and releases its resources.
 
 First-time visitors still default to Interactive. A deliberately saved Classic choice remains respected; choosing Interactive then starts 3D automatically too. Classic and unrelated routes should not request the renderer. The original mode storage key and game/form storage are unchanged.
 

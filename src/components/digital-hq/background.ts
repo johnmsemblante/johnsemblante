@@ -4,7 +4,7 @@ import { AssetBuilder, canvasTexture } from "./assets";
 // A reference-derived architectural matte behind real, separately rendered objects.
 // Keeping the distant city in HTML avoids a large GPU texture or a second engine.
 
-function leaf(length: number, width: number) {
+export function leaf(length: number, width: number) {
   const positions: number[] = [], uvs: number[] = [], indices: number[] = [];
   const rows = 10;
   for (let row = 0; row <= rows; row++) {

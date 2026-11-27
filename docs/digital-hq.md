@@ -35,20 +35,32 @@ Implementation sequence: baseline build/SEO capture; preserve Classic; replace o
 
 `environment.ts` creates an elliptical layered platform, custom bevelled curved desk, padded gaming chair, laptop, monitors, keyboard, mouse, lamp, coffee, books, plants, miniature city, rocket, SD card, shelf, toolbox, arcade and phone. Rounded/extruded geometry, seeded wood/screen textures and material batching provide the first art pass. The current background uses a locally hosted reference-derived room/city plate behind the transparent 3D canvas, with modeled hanging greenery and a real shadow receiver. See [background maintenance](digital-hq-background.md). `assets.ts` batches static parts and disposes shared GPU resources. `lighting.ts` supplies the same lighting to previews and the live scene; only the key casts shadows.
 
-`canvas.tsx` uses React Three Fiber, a perspective camera, bounded drag/yaw and zoom, pointer parallax, raycast selection, small hover lifts/tilts and selection focus. No wheel handler captures page scrolling. `character.ts` handles local GLB loading, one mixer, named states, crossfades, interruption and return to idle. See [character requirements](digital-hq-character.md).
+`canvas.tsx` uses React Three Fiber, a perspective camera, bounded button-controlled rotation and zoom, mouse-hover parallax across the hero, raycast selection, small hover lifts/tilts and selection focus. No wheel handler captures page scrolling. `character.ts` handles local GLB loading, one mixer, named states, crossfades, interruption and return to idle. See [character requirements](digital-hq-character.md).
 
 `home-experience.tsx` owns optional audio, fullscreen, HTML labels, native dialogs, focus restoration and fallback. Panels derive from `build-hq-content.ts`; they do not duplicate records or tool/form logic. In Phase 1, full content, tools, forms and Neon Dash open their original canonical pages. Their existing logo returns to HQ without changing the saved mode. Embedded experiences and history-aware section navigation are deferred.
 
+## Phase 1 foreground art pass
+
+The approved mockup guides the tighter overview framing, seated hand-at-chin pose, recessed gaming-chair cushions, curved hardwood desktop with a warm edge light and foreground props. The camera, titled books, RGB keyboard, mouse, mug, color puzzle, notebook, veined plants and illuminated miniature city are modeled in the live scene. The laptop hinges away from the seat and its screen and keyboard face the figure. The left-side monitors turn inward across the desk. The project archive sits beside the desk so its physical target remains reachable.
+
+The figure remains a temporary articulated mesh with hand-built facial features and curls. Use the existing portrait and the full mockup when approving a portrait-based rigged GLB. Regenerate the static fallback variants after changing the overview or scene geometry. The 1920?1080 high-tier fixture after the desk refinement measured 271 draw calls and about 276,000 triangles without the figure, or 293 calls and about 380,000 triangles with it, including shadows. These counts are local scene measurements.
+
+The next foreground pass adds a fluted walnut desk base, a raised rocket with shaped fins, a mapped shelf globe, a dedicated arcade marquee, a docked handset and individually lit tower windows. The laptop and mug carry a small studio monogram. Lighting generates a local reflection map for the window and studio light panels. Both the live scene and fallback captures use this map.
+
+### Desk texture sources
+
+The owner-supplied `Modern Laptop Components Asset Sheet-1.png` is the source for `public/images/digital-hq/materials/laptop-display.webp` (261 ? 149 crop at x51, y686) and `laptop-deck.webp` (244 ? 143 crop at x371, y685). The WebP files total about 20 KB and are the only asset-sheet files required at runtime. The live renderer loads them locally and uses solid surface materials if a request fails. The other four owner-supplied sheets informed the modeled shapes and finishes. The fallback image generator uses the same local geometry and textures as the live scene.
+
 ## Loading and fallback
 
-1. Initial HTML includes branding, verified professional positioning, one H1, an actual scene AVIF/WebP preview and eight real links.
+1. Initial HTML includes branding, verified professional positioning, one H1 and eight real links. The AVIF/WebP scene preview is reserved for failure and no-JavaScript visits.
 2. Labels and panels work after hydration. Without JavaScript their hrefs reach the existing pages.
-3. Interactive automatically loads the dynamic Canvas after hydration and mode resolution. There is no entry button or global loading wall. Remembered Classic visits and unrelated routes do not request the Fiber/Three.js renderer.
+3. Interactive automatically loads the dynamic Canvas after hydration and mode resolution. The loading status and navigation stay visible while the Canvas warms up. The first visible scene is the live frame. Remembered Classic visits and unrelated routes do not request the Fiber/Three.js renderer.
 4. High/Medium/Low cap DPR at 1.5/1.2/1. Low omits shadows. Device constraints choose the initial tier; sustained slow CPU frame work can downgrade it. This heuristic is not a GPU benchmark.
 5. Hidden/offscreen scenes stop scheduling. Low/reduced-motion scenes settle on demand. A visible animated rig keeps frames running only at higher tiers. No per-frame React state updates are used.
 6. Initialization/context loss unmounts live rendering; preview, dialogs and Classic remain usable. Retry creates a fresh canvas. Unmounting cancels loading, removes observers/listeners, disposes buffers/textures/skeletons/animation bindings and releases the context.
 
-Sound starts muted and uses short, original, gesture-triggered synthesized tones. It is locally remembered, suspends when hidden and closes when leaving HQ. Fullscreen failures retain the normal viewport. Mobile uses a center crop, automatic low-tier live 3D and a two-column touch grid; tablet uses four columns. Native modal focus containment, visible focus, Escape and real links support keyboard use. Reduced motion disables camera interpolation/parallax and character updates. Initial server HTML cannot read local storage and uses Interactive on this branch.
+Sound starts muted and uses short, original, gesture-triggered synthesized tones. It is locally remembered, suspends when hidden and closes when leaving HQ. Fullscreen failures retain the normal viewport. Mobile uses a center crop, automatic low-tier live 3D and a two-column touch grid; tablet uses four columns. Native modal focus containment, visible focus, Escape and real links support keyboard use. Hover tilt eases back to center when the mouse leaves the hero and is skipped during dialogs. Touch uses the camera controls and links. Reduced motion disables camera interpolation, hover tilt and character updates. Initial server HTML cannot read local storage and uses Interactive on this branch.
 
 ## Regenerate and verify
 

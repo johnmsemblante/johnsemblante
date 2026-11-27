@@ -7,7 +7,7 @@ const { chromium } = require(path.resolve(arg('--playwright')));
 const url = arg('--url') || 'http://127.0.0.1:3100', output = path.resolve(arg('--output') || 'tmp/digital-hq/browser'); fs.mkdirSync(output, { recursive: true });
 const report = { checks: [], errors: [], accessibility: [], resources: [] };
 const passed = name => { report.checks.push(name); console.log('PASS ' + name); };
-async function loaded(page) { await page.goto(url, { waitUntil: 'domcontentloaded' }); await page.locator('.hq').waitFor(); await page.locator('.hq-preview img').evaluate(img => img.decode()); await page.evaluate(() => document.fonts.ready); await page.waitForFunction(() => document.documentElement.dataset.homePresentation === 'interactive'); }
+async function loaded(page) { await page.goto(url, { waitUntil: 'domcontentloaded' }); await page.locator('.hq').waitFor(); await page.evaluate(() => document.fonts.ready); await page.waitForFunction(() => document.documentElement.dataset.homePresentation === 'interactive'); }
 async function ready(page) { await page.waitForFunction(() => document.querySelector('.hq')?.dataset.live === 'true', null, { timeout: 60000 }); await page.waitForTimeout(1400); }
 async function screenshot(page, name) { await page.addStyleTag({ content: 'nextjs-portal{display:none}' }); await page.screenshot({ path: path.join(output, name + '.png') }); }
 async function accessibility(page, label) { if (!arg('--axe')) return; await page.addScriptTag({ path: path.resolve(arg('--axe')) }); const result = await page.evaluate(() => window.axe.run({ include: [['.hq']] }, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } })); report.accessibility.push({ label, violations: result.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })) }); }
@@ -17,7 +17,7 @@ async function accessibility(page, label) { if (!arg('--axe')) return; await pag
     for (const [width, height] of [[1920, 1080], [1440, 900], [768, 1024], [390, 844]]) {
       const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, isMobile: width < 760, hasTouch: width < 1100 });
       const page = await context.newPage(); page.on('pageerror', e => report.errors.push(e.message));
-      await loaded(page); assert.equal(await page.getByRole('button', { name: 'Enter 3D workspace', exact: true }).count(), 0); await ready(page); assert.equal(await page.locator('.hq-canvas canvas').count(), 1); await screenshot(page, `${width}-live`);
+      await loaded(page); assert.equal(await page.getByRole('button', { name: 'Enter 3D workspace', exact: true }).count(), 0); await ready(page); assert.equal(await page.locator('.hq-canvas canvas').count(), 1); assert.equal(await page.locator('.hq-preview img').count(), 0); await screenshot(page, `${width}-live`);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false); assert.equal(await page.locator('h1').count(), 1);
       await accessibility(page, String(width));
       const rectangles = await page.locator('.hq-hotspot').evaluateAll(nodes => nodes.map(n => { const r = n.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; }));
@@ -45,7 +45,15 @@ async function accessibility(page, label) { if (!arg('--axe')) return; await pag
     await page.getByRole('button', { name: 'How to explore Digital HQ' }).click(); await page.getByRole('heading', { name: 'A little look around.' }).waitFor(); assert.equal(await page.locator('.hq-help nav a').count(), 8); await page.keyboard.press('Escape'); passed('accessible help navigation guide');
     await ready(page); const liveScripts = new Set(scripts);
     report.resources = await page.evaluate(() => performance.getEntriesByType('resource').filter(r => r.name.startsWith(location.origin)).map(r => ({ url: new URL(r.name).pathname, bytes: r.decodedBodySize, type: r.initiatorType })));
-    await page.mouse.click(370, 585); await page.locator('#hq-section-panel').waitFor({ state: 'visible' }); await page.keyboard.press('Escape'); passed('physical SD card raycasting opens its content panel');
+    assert.ok(report.resources.every(resource => !/\/(preview|workspace)(-mobile)?\.(avif|webp)$/.test(resource.url)), 'successful startup must skip static scene images');
+    const hotspot = page.locator('.hq-hotspot-about');
+    const neutralX = await hotspot.evaluate(link => parseFloat(link.style.left));
+    await page.mouse.move(1380, 780);
+    await page.waitForFunction(x => Math.abs(parseFloat(document.querySelector('.hq-hotspot-about').style.left) - x) > 3, neutralX);
+    await page.mouse.move(-1, -1);
+    await page.waitForFunction(x => Math.abs(parseFloat(document.querySelector('.hq-hotspot-about').style.left) - x) < 1, neutralX);
+    passed('mouse hover moves the camera without dragging and leaving recenters it');
+    await page.mouse.click(223, 493); await page.locator('#hq-section-panel').waitFor({ state: 'visible' }); await page.keyboard.press('Escape'); passed('physical SD card raycasting opens its content panel');
     await page.getByRole('button', { name: 'Zoom in', exact: true }).click(); await page.getByRole('button', { name: 'Rotate left', exact: true }).click(); await page.getByRole('button', { name: 'Reset camera', exact: true }).click();
     await page.evaluate(() => { Object.defineProperty(document, 'hidden', { value: true, configurable: true }); document.dispatchEvent(new Event('visibilitychange')); }); await page.waitForTimeout(150); const draws = await page.evaluate(() => window.hqTest.draws); await page.waitForTimeout(200); assert.equal(await page.evaluate(() => window.hqTest.draws), draws); await page.evaluate(() => { Object.defineProperty(document, 'hidden', { value: false, configurable: true }); document.dispatchEvent(new Event('visibilitychange')); }); passed('hidden-tab rendering pauses');
     await page.getByRole('button', { name: 'Classic', exact: true }).click(); await page.locator('.portrait-hero').waitFor(); await page.waitForTimeout(700); assert.ok(await page.evaluate(() => window.hqTest.lost) >= 1); assert.equal(await page.locator('.hq-canvas canvas').count(), 0); assert.equal(await page.locator('h1').count(), 1); assert.equal(await page.locator('.site-header,.site-footer').count(), 2); await screenshot(page, 'classic');
@@ -59,7 +67,7 @@ async function accessibility(page, label) { if (!arg('--axe')) return; await pag
     await context.close();
     const fallback = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 390, height: 844 } }); const fallbackPage = await fallback.newPage();
     await fallbackPage.addInitScript(() => { const original = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.getContext = function(type, ...args) { return /^webgl/.test(type) ? null : original.call(this, type, ...args); }; });
-    await loaded(fallbackPage); await fallbackPage.waitForFunction(() => document.querySelector('.hq-status')?.textContent.includes('Preview mode'), null, {timeout:30000}); await fallbackPage.locator('.hq-hotspot-work').click(); await fallbackPage.locator('#hq-section-panel').waitFor({ state: 'visible' }); passed('unsupported WebGL and reduced motion retain functional content navigation'); await fallback.close();
+    await loaded(fallbackPage); await fallbackPage.waitForFunction(() => document.querySelector('.hq-status')?.textContent.includes('Preview mode'), null, {timeout:30000}); await fallbackPage.locator('.hq-preview img').evaluate(img => img.decode()); await fallbackPage.locator('.hq-hotspot-work').click(); await fallbackPage.locator('#hq-section-panel').waitFor({ state: 'visible' }); passed('unsupported WebGL and reduced motion retain functional content navigation'); await fallback.close();
     const about = await browser.newContext(); const aboutPage = await about.newPage(), aboutScripts = []; aboutPage.on('request', r => { if (r.resourceType() === 'script') aboutScripts.push(new URL(r.url()).pathname); }); await aboutPage.goto(url + '/about/', { waitUntil: 'domcontentloaded' }); await aboutPage.locator('.site-header').waitFor(); await aboutPage.waitForTimeout(1000); assert.ok(rendererChunks.every(script => !aboutScripts.includes(script))); passed('fresh internal route does not request Digital HQ renderer'); await about.close();
     const pending = await browser.newContext({viewport:{width:1440,height:900}}); const pendingPage = await pending.newPage();
     pendingPage.on('pageerror', e => report.errors.push(e.message)); await loaded(pendingPage);

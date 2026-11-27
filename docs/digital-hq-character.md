@@ -2,7 +2,7 @@
 
 Reviewed 27 November 2026. No production character GLB is supplied. `public/images/profile/john-home-black-smile.webp` is the existing identity reference inspected for Phase 1. A portrait does not automatically produce a rig and is never used as the final character billboard.
 
-The temporary procedural figure has a real Three.js Skeleton and rigid-weight SkinnedMesh segments. It demonstrates model lifetime, seated idle, wave and introduction. Dark clothing, curly hair and chin hair are reference cues, not an approved likeness. Its visible notice identifies that limitation. Ordinary production builds omit this rig and select the matching empty-chair preview.
+The temporary procedural figure has a real Three.js Skeleton and rigid-weight SkinnedMesh segments. It demonstrates model lifetime, seated idle, wave and introduction. The foreground pass adds a folded hand under the chin, a wristwatch, shaped eyelids, layered curls and hoodie detailing. The approved mockup guides the pose and styling. Likeness approval still requires the final portrait-based asset. Its visible notice identifies that limitation. Ordinary production builds omit this rig and select the matching empty-chair preview.
 
 ## Deliver to the developer
 

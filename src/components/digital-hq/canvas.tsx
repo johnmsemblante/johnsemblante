@@ -3,6 +3,9 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import * as T from "three";
+import { StudioFinish } from "./studio-finish";
+import { loadStudioProps } from "./studio-props";
+import { disposeObject } from "./assets";
 import { buildEnvironment } from "./environment";
 import { loadCharacter, type CharacterState } from "./character";
 import { characterConfig, previewCharacterEnabled } from "./character-config";
@@ -11,7 +14,7 @@ import { hqObjects, overview, type Quality, type SectionId } from "./objects";
 
 export type HQHandle = {
   select: (id: SectionId | null) => void; highlight: (id: SectionId | null) => void;
-  tilt: (x: number, y: number) => void; rotate: (amount: number) => void;
+  tilt: (x: number, y: number) => void;
   control: (action: "left" | "right" | "in" | "out" | "reset") => void;
 };
 type Props = {
@@ -23,7 +26,8 @@ type Props = {
 };
 
 function World(props: Props) {
-  const { camera, gl, size, invalidate } = useThree();
+  const { scene, camera, gl, size, invalidate } = useThree();
+  const shadowLight = useRef<T.DirectionalLight | null>(null);
   const environment = useRef<Awaited<ReturnType<typeof buildEnvironment>> | null>(null);
   const character = useRef<Awaited<ReturnType<typeof loadCharacter>>>(null);
   const [assets, setAssets] = useState<T.Group | null>(null);
@@ -43,7 +47,9 @@ function World(props: Props) {
       const built = await buildEnvironment(controller.signal);
       if (disposed) { built.dispose(); return; }
       model = built; environment.current = built;
-      lights = buildLighting(true);
+      lights = buildLighting(true, scene);
+      shadowLight.current = lights.key;
+      void lights.ready.then(() => { if (!disposed) wake(); });
       const all = new T.Group(); all.add(built.root, lights.root);
       void loadCharacter({ url: characterConfig.modelUrl, preview: previewCharacterEnabled, signal: controller.signal, reducedMotion: latest.current.reducedMotion }).then(result => {
         if (disposed) { result?.dispose(); return; }
@@ -55,7 +61,6 @@ function World(props: Props) {
         select(id) { focus.current = id; const item = hqObjects.find(o => o.id === id); character.current?.animation.play((item?.character ?? "idle") as CharacterState); wake(); },
         highlight(id) { hover.current = id; wake(.7); },
         tilt(x, y) { if (latest.current.reducedMotion) return; pointer.current.set(T.MathUtils.clamp(x, -1, 1), T.MathUtils.clamp(y, -1, 1)); wake(.7); },
-        rotate(amount) { if (latest.current.reducedMotion) return; yaw.current = T.MathUtils.clamp(yaw.current + amount, -.25, .25); wake(); },
         control(action) { if (action === "reset") { focus.current = null; pointer.current.set(0, 0); yaw.current = 0; zoom.current = 1; character.current?.animation.play("idle"); }
           if (action === "left") yaw.current = Math.max(-.25, yaw.current - .08);
           if (action === "right") yaw.current = Math.min(.25, yaw.current + .08);
@@ -64,6 +69,8 @@ function World(props: Props) {
       };
       props.api.current.select(latest.current.selected);
       const warmup = new T.Scene(); warmup.add(all);
+      warmup.environment = scene.environment;
+      warmup.environmentIntensity = scene.environmentIntensity;
       await gl.compileAsync(warmup, camera);
       warmup.remove(all);
       if (disposed) return;
@@ -73,19 +80,43 @@ function World(props: Props) {
     // Assets have one lifetime per mounted Canvas; callbacks are read through latest.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gl]);
+  const economical = props.quality === "low" || props.quality === "medium";
+  useEffect(() => {
+    const shelf = environment.current?.objects.get("blog");
+    if (!assets || !shelf) return;
+    const controller = new AbortController();
+    const foreground = new T.Group(), books = new T.Group();
+    assets.add(foreground); shelf.add(books);
+    void loadStudioProps(foreground, books, controller.signal, invalidate, economical);
+    return () => {
+      controller.abort();
+      foreground.removeFromParent(); books.removeFromParent();
+      disposeObject(foreground); disposeObject(books);
+    };
+  }, [assets, economical, invalidate]);
+  useEffect(() => {
+    const light = shadowLight.current;
+    if (!light) return;
+    const resolution = props.quality === "ultra" ? 2048 : 1024;
+    if (light.shadow.mapSize.x !== resolution) {
+      light.shadow.mapSize.set(resolution, resolution);
+      light.shadow.map?.dispose(); light.shadow.map = null;
+    }
+    invalidate();
+  }, [assets, props.quality, invalidate]);
   useEffect(() => { props.api.current?.select(props.selected); }, [props.selected, props.api]);
   useEffect(() => { wake(); }, [size.width, size.height, props.quality, props.active]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useFrame((_, delta) => {
     if (!environment.current || !assets || !latest.current.active) return;
-    const began = performance.now(), reduced = latest.current.reducedMotion;
+    const reduced = latest.current.reducedMotion;
     const section = hqObjects.find(o => o.id === focus.current);
     desiredPosition.current.set(...(section?.camera.position ?? overview.position));
     desiredTarget.current.set(...(section?.camera.target ?? overview.target));
     const fit = size.width < 760 ? .78 : Math.max(1, 1.64 / (size.width / size.height));
     desiredPosition.current.sub(desiredTarget.current).multiplyScalar(fit * zoom.current).applyAxisAngle(T.Object3D.DEFAULT_UP, yaw.current).add(desiredTarget.current);
-    if (!reduced) { desiredPosition.current.x += pointer.current.x * .22; desiredPosition.current.y -= pointer.current.y * .12; }
-    const ease = reduced ? 1 : 1 - Math.exp(-Math.min(delta, .05) * 7);
+    if (!reduced) { desiredPosition.current.x += pointer.current.x * .42; desiredPosition.current.y -= pointer.current.y * .24; }
+    const ease = reduced || !ready.current ? 1 : 1 - Math.exp(-Math.min(delta, .05) * 7);
     camera.position.lerp(desiredPosition.current, ease); target.current.lerp(desiredTarget.current, ease); camera.lookAt(target.current); camera.updateMatrixWorld();
     let moving = camera.position.distanceToSquared(desiredPosition.current) > .00001 || target.current.distanceToSquared(desiredTarget.current) > .00001;
     for (const item of hqObjects) {
@@ -106,7 +137,7 @@ function World(props: Props) {
     // frames alive at higher quality only while the scene is visible.
     if (!reduced && latest.current.quality !== "low" && character.current) moving = true;
     if (moving || performance.now() < awakeUntil.current) invalidate();
-    if (performance.now() - began > 36) slowFrames.current++; else slowFrames.current = Math.max(0, slowFrames.current - 1);
+    if (delta > .046 && delta < .24) slowFrames.current++; else slowFrames.current = Math.max(0, slowFrames.current - 1);
     if (slowFrames.current > 24 && latest.current.quality !== "low") { slowFrames.current = 0; latest.current.onQuality("low"); }
   });
   function findSection(object: T.Object3D | null): SectionId | null {
@@ -118,9 +149,9 @@ function World(props: Props) {
 }
 
 export default function DigitalHQCanvas(props: Props) {
-  return <Canvas frameloop={props.active ? "demand" : "never"} shadows={props.quality === "high" ? { type: T.PCFShadowMap } : false} dpr={[1, props.quality === "high" ? 1.5 : props.quality === "medium" ? 1.2 : 1]} camera={{ position: [...overview.position], fov: 43, near: .1, far: 100 }} gl={{ antialias: true, alpha: true, powerPreference: "low-power", toneMapping: T.ACESFilmicToneMapping, toneMappingExposure: 1.1 }} onCreated={({ gl }) => {
+  return <Canvas frameloop={props.active ? "demand" : "never"} shadows={(props.quality === "high" || props.quality === "ultra") ? { type: T.PCFShadowMap } : false} dpr={[1, props.quality === "ultra" ? 2 : props.quality === "high" ? 1.5 : props.quality === "medium" ? 1.2 : 1]} camera={{ position: [...overview.position], fov: 43, near: .1, far: 100 }} gl={{ antialias: true, alpha: true, powerPreference: "low-power", toneMapping: T.ACESFilmicToneMapping, toneMappingExposure: 1.1 }} onCreated={({ gl }) => {
     gl.setClearColor("#000000", 0);
     const lost = (event: Event) => { event.preventDefault(); props.onFailure(); };
     gl.domElement.addEventListener("webglcontextlost", lost, { once: true });
-  }} fallback={<span>3D is unavailable. All Digital HQ links remain available.</span>}><World {...props}/></Canvas>;
+  }} fallback={<span>3D is unavailable. All Digital HQ links remain available.</span>}><World {...props}/>{props.quality === "ultra" && <StudioFinish/>}</Canvas>;
 }

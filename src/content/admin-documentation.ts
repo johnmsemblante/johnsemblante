@@ -54,7 +54,7 @@ export const documentationGuides: DocumentationGuide[] = [
         "heading": "Explore Digital HQ",
         "steps": [
           "Open Home. Interactive fills the screen with the original js. wordmark, introduction and eight object labels. Select My Works, Skills, Ventures, Blog, Tools, Games, Contact or About Me. The labels and Help guide work before 3D starts.",
-          "The live 3D workspace starts automatically. Drag gently to rotate, use the camera buttons to zoom, or choose Reset camera. The logo resets the view. High, Medium and Low change rendering resolution and shadows. Normal page scrolling remains available.",
+          "The live 3D workspace starts automatically. Move your mouse over the workspace to tilt the view. Use the camera buttons to rotate, zoom or reset. The logo resets the view. High, Medium and Low change rendering resolution and shadows. Normal page scrolling remains available.",
           "Open a section and follow its real links to existing content. Phase 1 uses previews and the existing full pages; full interactive archives and embedded tools are later phases. Close with Escape, Close section, Back to Digital HQ or the backdrop. Destination pages keep their existing navigation; the logo returns home.",
           "Use How to explore Digital HQ for the keyboard guide and all destinations. Tab and Enter work without canvas picking. The sound button enables short optional interface tones; it starts muted. Fullscreen depends on browser support."
         ]
@@ -63,14 +63,14 @@ export const documentationGuides: DocumentationGuide[] = [
         "heading": "Choose a presentation",
         "paragraphs": [
           "Interactive is the initial presentation on this development branch. The Interactive / Classic control restores the complete original homepage at the same URL. The choice persists in this browser; blocked storage keeps it only for the current page session. Clear site data to reset it. Classic unmounts the scene and does not load its engine on a fresh visit.",
-          "The static preview is an actual render of the scene and stays visible while 3D starts automatically. No Enter 3D workspace button is needed. Phones receive a centered composition, a low rendering tier and a touch-friendly navigation grid. Reduced motion disables camera easing and decorative animation. If graphics fail, the preview, labels and content panels still work; Retry 3D attempts a new context."
+          "The workspace shows a loading status until the first 3D frame is ready. The static scene is available when 3D fails or JavaScript is disabled. Phones receive a centered composition, a low rendering tier and a touch-friendly navigation grid. Reduced motion disables hover tilt, camera easing and decorative animation. If graphics fail, the preview, labels and content panels still work; Retry 3D attempts a new context."
         ]
       },
       {
         "heading": "Character status",
         "paragraphs": [
           "A clearly labeled temporary rig appears only in development or an explicitly configured preview build. It is an articulated 3D figure, not an approved facial likeness. Ordinary production builds omit it and use a matching empty-chair preview until the approved model is supplied. The temporary figure is allowed on the explicit test preview only. Production release still requires separate approval and an approved model.",
-          "The character, furniture, camera, reference-based sunset room background and lighting are source-managed. The supplied Digital HQ mockup remains the reference for every enhancement. The existing portfolio portrait is the identity reference. A modeler must supply an optimized rigged GLB for the final character. No portrait upload, paid generation service or new admin editor is used."
+          "The character, furniture, camera, reference-based sunset room background and lighting are source-managed. The supplied Digital HQ mockup remains the reference for every enhancement. The model uses the mockup?s seated hand-at-chin pose in development and test previews. The desk has a curved wood surface and an illuminated edge, with modeled books, a camera, an RGB keyboard and a miniature city. The laptop faces the seated figure. From the default view, look for the monogram on its outer lid, the fluted desk base, the raised Ventures rocket and the illuminated About skyline. Check the static preview after changing these models. The existing portfolio portrait is the identity reference. A modeler must supply an optimized rigged GLB for the final character. No portrait upload, paid generation service or new admin editor is used."
         ]
       },
       {

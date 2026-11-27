@@ -5,12 +5,11 @@
 .hq button { border:1px solid #a8a4c04d; background:#242638d9; }
 .hq a:focus-visible,.hq button:focus-visible,.hq select:focus-visible { outline:3px solid #9ae6f1; outline-offset:5px; }
 .hq-visual,.hq-preview,.hq-canvas { position:absolute; inset:0; }
-.hq-visual { background-color:#171927; background-position:center; background-size:cover; background-repeat:no-repeat; }
-.hq-preview { margin:0; transition:opacity .55s; }
+.hq-visual { background-color:#171927; }
+.hq-preview { margin:0; }
 .hq-preview img { display:block; width:100%; height:100%; object-fit:cover; }
-.hq-canvas { opacity:0; transition:opacity .6s; touch-action:pan-y; }
-.hq[data-live="true"] .hq-canvas { opacity:1; }
-.hq[data-live="true"] .hq-preview { opacity:0; pointer-events:none; }
+.hq-canvas { opacity:0; pointer-events:none; touch-action:pan-y; background-position:center; background-size:cover; background-repeat:no-repeat; }
+.hq[data-live="true"] .hq-canvas { opacity:1; pointer-events:auto; }
 .hq-shade { position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,#121422d9 0%,#16182765 19%,transparent 36%),linear-gradient(0deg,#121422e8 0%,transparent 17%,transparent 85%,#1416256b); }
 .hq-brand { position:absolute; left:3.7%; top:4.8%; display:flex; align-items:center; gap:22px; z-index:3; }
 .hq-brand .wordmark { color:#faf7f2; font-size:58px; line-height:1.1; letter-spacing:-7px; }
@@ -113,7 +112,7 @@
   .hq-panel { inset:auto 10px 10px; width:calc(100% - 20px); max-height:86dvh; border-radius:20px; } .hq-panel-inner { padding:22px; } .hq-panel h2 { font-size:34px; } .hq-content-card img { width:70px; height:65px; }
   .hq-help { inset:50% auto auto 50%; max-height:calc(100dvh - 30px); } .hq-help nav { gap:8px; } .hq-help nav a { padding:9px 11px; font-size:13px; }
 }
-@media (prefers-reduced-motion:reduce) { .hq-preview,.hq-canvas,.hq-hotspot { transition:none; } }
+@media (prefers-reduced-motion:reduce) { .hq-hotspot { transition:none; } }
 /* Readable controls and captions at every viewport. */
 .hq-brand>div>span,.hq-hotspot small,.hq-kicker,.hq-character-note,.hq-panel-top>span { font-size:12px; }
 .hq .hq-mode button,.hq .hq-retry,.hq-quality select { font-size:14px; }
