@@ -1,6 +1,6 @@
 # Pages administration
 
-Home now defaults to the [interactive office](interactive-workspace.md); Classic in the header restores the original portrait hero at the same URL. Existing name, title, professional title and introduction fields serve both modes. Other original Hero fields still control Classic. The new office layout, visual copy, rooms, preview and quality behavior are source-managed, outside Pages and admin Ventures. Its public room panels/counts use the last successful build snapshot; shared sections below it retain their live readers. The existing refresh/retry warning is an overlay on Home to prevent a late network failure shifting the hero. Other routes keep their original notice placement.
+Production remains Classic. On feature/interactive-office, Home defaults to the [full-screen office](interactive-workspace.md), with a top-right Classic switch restoring the complete portrait homepage. Name, title and professional title fields serve both modes; the introduction and remaining Hero fields control Classic. The office layout, rooms, preview and quality are source-managed. Panels use the last build snapshot. Classic sections retain their live readers. Interactive omits the normal shell and lower sections. The existing Home refresh/retry warning remains an overlay.
 
 The public Work collection shows full project details and action links inline at every width. It uses three cards per row on desktop, two at 767px and below, and one at 567px and below. This does not change filters, project records, or the homepage grid.
 

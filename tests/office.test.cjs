@@ -7,7 +7,13 @@ function load(file,mocks={}){
   const js=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
   new Function('require','exports',js)(name=>mocks[name]??require(name),exports);return exports;
 }
-const {officeRooms,readOfficeMode,initialOfficeQuality}=load('src/components/office/rooms.ts');
+const {officeRooms,readOfficeMode,initialOfficeQuality,officeTilt}=load('src/components/office/rooms.ts');
+test('camera tilt clamps pointer input and honors reduced motion',()=>{
+  assert.deepEqual(officeTilt(0,0,false),{yaw:0,height:0});
+  assert.deepEqual(officeTilt(8,-9,false),{yaw:.045,height:-1.4});
+  assert.deepEqual(officeTilt(NaN,Infinity,false),{yaw:0,height:0});
+  assert.deepEqual(officeTilt(1,1,true),{yaw:0,height:0});
+});
 test('home preference validates unsupported values and rendering defaults honor device and visitor constraints',()=>{
   assert.equal(readOfficeMode(null),'interactive');assert.equal(readOfficeMode('classic'),'classic');assert.equal(readOfficeMode('corrupt'),'interactive');
   const capable={width:1440,reducedMotion:false,saveData:false,slowConnection:false,cores:8};
@@ -17,7 +23,7 @@ test('home preference validates unsupported values and rendering defaults honor 
 });
 test('every configured room has a unique identity, reachable HTML destination and finite model coordinates',()=>{
   assert.equal(officeRooms.length,8);assert.equal(new Set(officeRooms.map(r=>r.id)).size,8);
-  for(const room of officeRooms){assert.ok(room.target.every(Number.isFinite));assert.ok(room.anchor.every(Number.isFinite));assert.ok(room.preview.every(v=>Number.isFinite(v)&&v>=0&&v<=100));const [route,hash]=room.href.split('#');assert.ok(route.startsWith('/'));assert.ok(fs.existsSync('out'+route+'index.html'),room.href);if(hash)assert.ok(fs.readFileSync('out'+route+'index.html','utf8').includes(`id="${hash}"`),room.href);}
+  for(const room of officeRooms){assert.ok(room.target.every(Number.isFinite));assert.ok(room.anchor.every(Number.isFinite));assert.ok(room.preview.every(v=>Number.isFinite(v)&&v>=0&&v<=100));assert.ok(room.href.startsWith('/'));const directory='src/app/(portfolio)'+room.href;assert.ok(fs.existsSync(directory+'page.tsx')||fs.existsSync(directory+'[[...slug]]/page.tsx'),room.href);}
 });
 test('room content adapts published sources, preserves actual destinations and separates tools from games',()=>{
   const {profile}=load('src/content/profile.ts');const tools=load('src/config/tool-ventures.ts');

@@ -1,6 +1,6 @@
 # John Semblante — Portfolio & Ventures
 
-**Local preview branch:** this checkout preserves the unfinished interactive office. Production at johnsemblante.com uses the Classic portrait homepage from `main`. Keep office refinements on `interactive-office-wip`; do not merge or push them to `main` until approved. See [production versus local preview](docs/production-classic.md).
+**Development branch:** feature/interactive-office is pushed for work across computers. Production at johnsemblante.com stays Classic on main. Feature pushes do not deploy. See [branch setup and release separation](docs/production-classic.md).
 
 A portfolio for John Clark Semblante, a Cebu web developer whose professional title is WordPress/Full Stack Developer, covering WordPress development services, with public projects, confidential experience summaries, independent pages for Lazy Barista, Golden Travel and Tours, and Lapse Hub, and a blog for development notes.
 
@@ -10,7 +10,7 @@ A portfolio for John Clark Semblante, a Cebu web developer whose professional ti
 - **Production branch:** `main`
 - **Architecture:** Next.js App Router, TypeScript, Tailwind CSS, and a static export hosted on Firebase Hosting.
 
-Home opens as an interactive isometric workspace on suitable desktop browsers, with a matching static office and room navigation on phones or constrained devices. **Classic** in the header preserves the original portrait homepage at `/`. Room content uses existing public sources; the model and configuration remain source-managed. See the [workspace maintenance guide](docs/interactive-workspace.md) and [validation record](docs/review/interactive-workspace-validation.md).
+On the development branch, Home is a full-screen office with room navigation, the shared Classic logo and a top-right Interactive / Classic switch. Classic restores the complete portrait homepage. See [workspace maintenance](docs/interactive-workspace.md) and [current checks](docs/review/interactive-office-immersive.md).
 
 ## Free online tools
 
@@ -30,7 +30,7 @@ Public content refreshes on load, focus and while visible. The admin Overview in
 
 Run `npm run test:seo`, `npm run build`, and `npm run audit:seo` before deploying. `npm run sync:blog` refreshes the public snapshot for local development; it reads anonymously using the public project ID, with no admin credentials. See the guide for the complete workflow and limitations.
 
-The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante**. Interactive Mode uses the H1 **Cebu Web Developer & creative technologist.**; Classic retains **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
+The homepage targets **Cebu Web Developer**, with the title **Cebu Web Developer | John Clark Semblante**. Both modes use the H1 **Cebu Web Developer**. The professional role remains **WordPress/Full Stack Developer**. `homePageTitle`, the professional title, and profile copy are maintained in `src/content/profile.ts`; the default description is in `src/content/site.ts`. See the [positioning and keyword plan](docs/seo.md#current-positioning-and-keyword-plan) for target search phrases, page mapping and editing guidance.
 
 ### Editing public copy
 

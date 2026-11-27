@@ -20,7 +20,6 @@ import { site } from "@/content/site";
 import { HomeToolsShowcase } from "@/components/home-tools-showcase";
 import { HomeExperience } from "@/components/office/home-experience";
 import { buildOfficeContent } from "@/lib/build-office-content";
-import { publishedTools } from "@/config/tool-ventures";
 
 const homeTitle = homePageTitle;
 export const metadata = withPageMetadata("home", { ...pageMetadata(homeTitle, site.description, "/"), title: { absolute: homeTitle } });
@@ -35,12 +34,7 @@ export default function Home() {
   const ventures = buildVentures(true);
   return <PageContent id="home" initial={buildPage("home")} stableNotice>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(websiteSchema()) }} />
-    <HomeExperience content={buildOfficeContent(projects, ventures, writing)} stats={[
-      { value: projects.length, label: "Projects", icon: "code" },
-      { value: ventures.length, label: "Ventures", icon: "layers" },
-      { value: publishedTools.filter(tool => tool.category !== "Free browser game").length, label: "Free tools", icon: "tool" },
-      { value: publishedTools.filter(tool => tool.category === "Free browser game").length, label: "Game", icon: "game" },
-    ]} classic={<section className="hero portrait-hero" aria-labelledby="home-hero-title">
+    <HomeExperience content={buildOfficeContent(projects, ventures, writing)} classic={<><section className="hero portrait-hero" aria-labelledby="home-hero-title">
       <div className="portrait-hero-intro">
         <p className="eyebrow"><PageText scope="home_1" fallback={profile.fullName} /></p>
         <h1 id="home-hero-title"><PageText scope="home_3" fallback={"Cebu Web Developer"} /></h1>
@@ -54,7 +48,7 @@ export default function Home() {
         <div className="portrait-hero-story"><p className="lede"><PageText scope="home_5" fallback={profile.homeSummary} /></p><Button href="/contact/" secondary><PageText scope="home_6" fallback={"Discuss your project"} /></Button></div>
       </div>
       <div className="portrait-hero-footer"><PageLink scope="home_scroll_url" href="#services-title"><PageText scope="home_scroll" fallback="Scroll to explore" /> <span aria-hidden="true">↓</span></PageLink><span><PageText scope="home_footer" fallback="Development &amp; ventures" /></span></div>
-    </section>} />
+    </section>
     <DevelopmentServices />
     <section className="section home-works">
       <div className="section-heading"><h2><PageText scope="home_works_title" fallback="Works" /></h2><PageLink scope="home_17" className="text-link" href="/work/"><PageText scope="home_18" fallback="View all work " /><Arrow /></PageLink></div>
@@ -70,5 +64,6 @@ export default function Home() {
       <LiveHomeWriting initial={writing} source={publishedPosts().map(({slug,title,excerpt,category,publishedAt,featuredImage,featuredImageAlt})=>({slug,title,excerpt,category,publishedAt,featuredImage,featuredImageAlt}))} />
     </section>
     <ProjectQuestions />
+    </>} />
   </PageContent>;
 }

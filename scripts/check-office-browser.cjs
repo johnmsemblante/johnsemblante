@@ -1,4 +1,4 @@
-// Production browser checks. Requires an existing local Playwright installation.
+// Development or export browser checks. Requires an existing local Playwright installation.
 // node scripts/check-office-browser.cjs --playwright <directory> [--url http://127.0.0.1:3100] [--axe <axe.min.js>]
 const fs=require('node:fs');
 const path=require('node:path');
@@ -19,8 +19,8 @@ async function instruments(context){await context.addInitScript(()=>{
 async function loaded(page){await page.goto(url,{waitUntil:'domcontentloaded'});await page.locator('.office-hero').waitFor();await page.locator('.office-preview img').evaluate(image=>image.decode());await page.evaluate(()=>document.fonts.ready);await page.waitForFunction(()=>document.documentElement.dataset.homePresentation==='interactive');}
 async function ready(page){await page.mouse.move(101,201);await page.waitForFunction(()=>document.querySelector('.office-hero')?.dataset.live==='true',{},{timeout:30000});}
 async function noOverflow(page){assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'document overflow');}
-async function shot(page,name){await page.screenshot({path:path.join(output,name+'.png')});report.screens.push(name+'.png');}
-async function axe(page,label){if(!arg('--axe'))return;await page.addScriptTag({path:path.resolve(arg('--axe'))});const results=await page.evaluate(()=>window.axe.run({include:[['.office-hero'],['.site-header']]},{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}}));report.accessibility.push({label,violations:results.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});}
+async function shot(page,name){await page.waitForTimeout(1000);await page.addStyleTag({content:'nextjs-portal { display:none; }'});await page.screenshot({path:path.join(output,name+'.png')});report.screens.push(name+'.png');}
+async function axe(page,label){if(!arg('--axe'))return;await page.addScriptTag({path:path.resolve(arg('--axe'))});const results=await page.evaluate(()=>window.axe.run({include:[['.office-hero']]},{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}}));report.accessibility.push({label,violations:results.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}))});}
 (async()=>{
   const browser=await chromium.launch({executablePath:process.env.OFFICE_BROWSER||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});
   try{
@@ -33,6 +33,11 @@ async function axe(page,label){if(!arg('--axe'))return;await page.addScriptTag({
     const rectangles=await page.locator('.office-hotspot').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return{x:r.x,y:r.y,w:r.width,h:r.height};}));
     for(let i=0;i<rectangles.length;i++)for(let j=i+1;j<rectangles.length;j++){const a=rectangles[i],b=rectangles[j];assert.ok(a.x+a.w<=b.x||b.x+b.w<=a.x||a.y+a.h<=b.y||b.y+b.h<=a.y,'overlapping desktop hotspots');}
     await shot(page,'workspace-desktop');await axe(page,'desktop');passed('desktop overview, one H1, one canvas, anchored labels without overlap');
+    const beforeTilt=await page.locator('.office-hotspot-work').boundingBox();
+    await page.mouse.move(1450,680);await page.waitForTimeout(1200);
+    const afterTilt=await page.locator('.office-hotspot-work').boundingBox();
+    assert.ok(Math.hypot(afterTilt.x-beforeTilt.x,afterTilt.y-beforeTilt.y)>1,'pointer tilt moves projected room anchors');
+    await page.mouse.move(101,201);passed('pointer navigation tilts the live camera and projected room links');
     const rooms=['about','work','ventures','tools','arcade','blog','skills','contact'];
     for(const id of rooms){const trigger=page.locator('.office-hotspot-'+id);await trigger.focus();await page.keyboard.press('Enter');const panel=page.locator('#office-room-panel');assert.equal(await panel.evaluate(e=>e.open),true);assert.ok(await panel.locator('a[href]').count()>0);await page.keyboard.press('Tab');assert.equal(await page.evaluate(()=>!!document.activeElement.closest('dialog')),true);if(id==='work'){await page.waitForTimeout(900);await shot(page,'workspace-works-panel');await axe(page,'works panel');}await page.keyboard.press('Escape');assert.equal(await panel.evaluate(e=>e.open),false);assert.equal(await trigger.evaluate(e=>e===document.activeElement),true);}
     passed('all eight panels, keyboard opening/closing, contained focus and focus restoration');
@@ -40,7 +45,11 @@ async function axe(page,label){if(!arg('--axe'))return;await page.addScriptTag({
     await page.getByRole('button',{name:'Zoom in',exact:true}).click();await page.getByRole('button',{name:'Rotate workspace left',exact:true}).click();await page.getByRole('button',{name:'Reset workspace view',exact:true}).click();await page.waitForTimeout(1200);
     const idle=await page.evaluate(()=>window.officeTest.draws);await page.waitForTimeout(400);assert.equal(await page.evaluate(()=>window.officeTest.draws),idle);passed('camera controls settle and stop drawing while idle');
     await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:true,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});const hidden=await page.evaluate(()=>window.officeTest.draws);await page.getByRole('button',{name:'Zoom in',exact:true}).click();await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>window.officeTest.draws),hidden);await page.evaluate(()=>{Object.defineProperty(document,'hidden',{value:false,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});await page.waitForTimeout(900);assert.ok(await page.evaluate(()=>window.officeTest.draws)>hidden);passed('simulated hidden-tab visibility pauses and resumes rendering');
-    await page.locator('#services-title').scrollIntoViewIfNeeded();await page.waitForTimeout(300);const outside=await page.evaluate(()=>window.officeTest.draws);await page.waitForTimeout(300);assert.equal(await page.evaluate(()=>window.officeTest.draws),outside);await page.evaluate(()=>scrollTo(0,0));passed('offscreen scene does not draw continuously');
+    assert.equal(await page.locator('.site-header,.site-footer,#services-title').count(),0);
+    assert.equal(await page.locator('.office-topbar .wordmark').innerText(),'js.');
+    assert.equal(await page.getByRole('button',{name:/theme/i}).count(),0);
+    assert.equal(await page.locator('.office-labels a[href]').count(),8);
+    passed('immersive office replaces traditional shell, uses the shared logo and exposes eight real navigation links');
     await page.getByRole('button',{name:'Classic',exact:true}).click();assert.equal(await page.locator('.office-canvas canvas').count(),0);assert.equal(await page.locator('h1').count(),1);assert.equal(await page.locator('.portrait-hero').count(),1);assert.ok(await page.evaluate(()=>window.officeTest.lost)>=1);await shot(page,'workspace-classic');
     const interactiveScripts=[...scripts];scripts.clear();await page.reload({waitUntil:'domcontentloaded'});await page.locator('.portrait-hero').waitFor();await page.waitForTimeout(2000);assert.equal(await page.locator('canvas').count(),0);
     report.engineScripts=interactiveScripts.filter(script=>!scripts.has(script)&&script.includes('/_next/'));assert.ok(report.engineScripts.length>0);passed('Classic preference survives reload, releases WebGL and skips renderer chunks');
@@ -70,7 +79,7 @@ async function axe(page,label){if(!arg('--axe'))return;await page.addScriptTag({
 
     const scriptsBlocked=await browser.newContext({viewport:{width:1440,height:900}});for(const script of report.engineScripts)await scriptsBlocked.route('**'+script,route=>route.abort());const fp=await scriptsBlocked.newPage();await loaded(fp);await fp.mouse.move(101,201);await fp.getByRole('status').filter({hasText:'Preview mode'}).waitFor({timeout:30000});assert.equal(await fp.locator('.office-canvas canvas').count(),0);await scriptsBlocked.close();passed('failed renderer chunk download preserves the homepage');
 
-    const noJS=await browser.newContext({javaScriptEnabled:false,viewport:{width:1440,height:900}});const jp=await noJS.newPage();await jp.goto(url);assert.equal(await jp.locator('h1').count(),1);for(const href of ['/work/','/about/','/ventures/','/tools/','/games/neon-dash/','/blog/','/contact/'])assert.ok(await jp.locator(`a[href="${href}"]`).count(),href);await noJS.close();passed('no-JavaScript HTML preserves the heading, introduction, links and shared content');
+    const noJS=await browser.newContext({javaScriptEnabled:false,viewport:{width:1440,height:900}});const jp=await noJS.newPage();await jp.goto(url);assert.equal(await jp.locator('h1').count(),1);for(const href of ['/work/','/about/','/ventures/','/tools/','/games/neon-dash/','/blog/','/contact/'])assert.ok(await jp.locator(`a[href="${href}"]`).count(),href);await noJS.close();passed('no-JavaScript HTML preserves one heading and all room destination links');
     assert.deepEqual(report.errors,[]);
     const violations=report.accessibility.flatMap(result=>result.violations);assert.deepEqual(violations,[],'workspace accessibility violations');
     passed('no uncaught homepage errors and no scoped axe WCAG A/AA violations');

@@ -164,9 +164,18 @@ test('every Home editor field changes its intended Classic or shared public text
   for (const field of fields.home) assert.ok(html.includes(record.values[field.key]), field.key);
 });
 
-test('the interactive homepage uses the same managed title, professional title and visible introduction', () => {
+test('the portfolio shell restores all chrome in Classic and on destination pages',()=>{
+  let pathname='/', mode='interactive';
+  const Frame=loader({'next/navigation':{usePathname:()=>pathname},'./office/mode':{useOfficeMode:()=>mode}})('src/components/portfolio-frame.tsx').PortfolioFrame;
+  const render=()=>renderToStaticMarkup(React.createElement(Frame,{header:'HEADER',footer:'FOOTER',chat:'CHAT'},'CONTENT'));
+  assert.ok(!render().includes('HEADER'));assert.ok(!render().includes('FOOTER'));assert.ok(!render().includes('CHAT'));assert.ok(render().includes('CONTENT'));
+  mode='classic';for(const text of ['HEADER','FOOTER','CHAT'])assert.ok(render().includes(text));
+  mode='interactive';pathname='/about/';for(const text of ['HEADER','FOOTER','CHAT'])assert.ok(render().includes(text));
+});
+
+test('the immersive homepage shares managed headings and leaves traditional sections in Classic', () => {
   const record=model.emptyPage();
-  const shared=fields.home.filter(field=>/^home_(3|4|5)_/.test(field.key));
+  const shared=fields.home.filter(field=>/^home_(1|3|4)_/.test(field.key));
   for(const field of shared)record.values[field.key]='shared-office-'+field.key;
   const loadHome=loader({
     'next/link': {__esModule:true,default:({href,children})=>React.createElement('a',{href},children)},
@@ -177,5 +186,7 @@ test('the interactive homepage uses the same managed title, professional title a
   });
   const html=renderToStaticMarkup(React.createElement(loadHome('src/app/(portfolio)/page.tsx').default));
   for(const field of shared)assert.ok(html.includes(record.values[field.key]),field.key);
-  assert.equal((html.match(/<h1\b/g)||[]).length,1);assert.ok(html.includes('office-original-intro'));
+  assert.equal((html.match(/<h1\b/g)||[]).length,1);
+  assert.ok(html.includes('office-topbar'));assert.ok(html.includes('Explore office rooms'));
+  assert.ok(!html.includes('office-original-intro'));assert.ok(!html.includes('services-title'));
 });

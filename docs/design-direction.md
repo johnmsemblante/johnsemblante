@@ -1,10 +1,10 @@
 # Visual direction
 
-## Interactive workspace, 26 November 2026
+## Interactive workspace, 27 November 2026
 
-The default homepage is an original isometric office inspired by the supplied architectural reference: a warm cutaway interior, detailed modular furniture, glass partitions, an arcade, library, workstations, meeting room and an outdoor basketball court. The surrounding road, trees and street lighting frame the office. The scene and header use a fixed dark palette; the existing theme preference continues to control shared content and other pages. Classic in the same header preserves the portrait presentation at `/`.
+The development branch presents a full-screen warm cutaway office with workstations, glass partitions, arcade, library and meeting room on a compact plinth. The exterior court, roads and cars are removed. The shared js. logo sits top left and Interactive / Classic floats top right. Interactive omits the standard header, footer, chat, theme switch and lower sections; Classic restores the complete portrait homepage. Production remains Classic.
 
-The same eight HTML room controls float over the desktop scene and reflow into a touch-friendly grid on smaller screens. A matching AVIF preview with WebP fallback renders first. Live 3D starts with desktop exploration or explicit enablement. Original homepage sections remain below the hero. See [workspace maintenance](interactive-workspace.md) and [actual validation/screenshots](review/interactive-workspace-validation.md). The procedural scene does not reproduce the reference's offline global illumination or bespoke artist-made assets; the validation record identifies those visual gaps.
+Eight HTML destination links float above desktop rooms and reflow into a grid below the smaller-screen preview. Desktop exploration enables live 3D with subtle bounded pointer and room-focus tilt. Reduced motion suppresses tilt. AVIF/WebP previews and real links work without WebGL. See [maintenance](interactive-workspace.md) and [current checks](review/interactive-office-immersive.md). The procedural scene does not reproduce the reference's offline lighting or bespoke artist-made assets.
 
 ## Light and dark appearance
 

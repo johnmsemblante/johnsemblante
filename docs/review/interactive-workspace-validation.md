@@ -1,5 +1,7 @@
 # Interactive workspace validation, 26 November 2026
 
+Historical record for the 26 November design. The [27 November immersive revision](interactive-office-immersive.md) changes the shell, geometry and content exposure; measurements below describe the older layout.
+
 The homepage implementation is complete for local review. It includes a real, explorable Three.js office, eight room panels, the preserved Classic hero, adaptive previews and the existing server-rendered content. This record covers local implementation and validation; no deployment was performed.
 
 The result is an original stylized interpretation of the reference. Reference-level art fidelity and all performance targets are not claimed. Mobile Lighthouse LCP remains above the requested target, and the existing Next.js security advisory needs maintenance before release.

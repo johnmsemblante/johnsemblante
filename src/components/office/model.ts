@@ -165,14 +165,10 @@ export async function buildOfficeModel(signal?:AbortSignal) {
     for(const a of [-1,1]){tube([new T.Vector3(a*.2,1.17,0),new T.Vector3(a*.3,.96,-.25),new T.Vector3(a*.23,1.14,-.5)],.075,m.exterior);sphere(a*.23,1.14,-.5,.08,.07,.08,skin);box(a*.13,.68,-.17,.16,.18,.62,m.black,.06);box(a*.13,.45,-.42,.16,.46,.17,m.black,.04);}
   });}
   await checkpoint();
-  // Architectural plinth, road and surrounding pavement.
-  box(-5,-.67,-5,58,1.1,49,m.asphalt,.35);
-  box(-5,-.15,-5,48,.55,38,m.pavement,.2);
+  // Compact architectural plinth for the building-only overview.
+  box(0,-.32,0,30.1,.32,18.4,m.black,.2);
+  box(0,-.08,0,29.5,.35,17.8,m.exterior,.12);
   box(0,-.02,0,28.5,.45,16.6,m.exterior,.08);box(0,.23,0,28,.08,16,m.floor,.01);
-  for(let x=-27;x<24;x+=2.5)for(const z of [-13.2,13.1])box(x,.145,z,.025,.008,1.8,m.grout,0);
-  for(let x=-26;x<26;x+=5)box(x,-.106,17.1,2.3,.012,.12,m.marking,0);
-  for(let x=-25;x<25;x+=3.2){box(x,.14,-11.5,.07,.012,3.2,m.marking,0);}
-  for(let z=13.5;z<19;z+=.65)box(-27,-.104,z,3.5,.01,.31,m.marking,0);
   wall(0,-8,28);wall(-14,-3,10,Math.PI/2);
   box(0,.63,8.1,28.3,.95,.2,m.exterior);box(0,1.13,8.1,28.4,.07,.25,m.wallEdge);
   box(14.1,.63,0,.2,.95,16.4,m.exterior);box(14.1,1.13,0,.25,.07,16.5,m.wallEdge);
@@ -256,52 +252,6 @@ export async function buildOfficeModel(signal?:AbortSignal) {
     plant(0,0,.35,1.23);
   });
   plant(13.2,.1,1.1);plant(9.1,7.25,1.05);
-  await checkpoint();
-  // Exterior street lighting. Emission and ground pools avoid per-lamp shadow maps.
-  const glow=canvasTexture(64,64,c=>{const g=c.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,"#ffc67a55");g.addColorStop(.3,"#ffb45320");g.addColorStop(1,"#ffb45300");c.fillStyle=g;c.fillRect(0,0,64,64);});
-  const glowMat=new T.MeshBasicMaterial({map:glow,transparent:true,depthWrite:false,blending:T.AdditiveBlending});
-  function lamp(x:number,z:number){cylinder(x,1.85,z,.04,.065,3.5,m.black);cylinder(x,.18,z,.18,.23,.12,m.metal);box(x,3.61,z,.62,.08,.42,m.black);box(x,3.56,z,.5,.035,.31,m.warm);const g=new T.PlaneGeometry(4.5,4.5);add(g,glowMat,x,.16,z,new T.Euler(-Math.PI/2,0,0));}
-  for(let x=-22;x<20;x+=6)lamp(x,11.4);lamp(-25,4);lamp(-25,-7);
-  function tree(x:number,z:number,s=1){
-    box(x,.24,z,2.05,.12,2.05,m.exterior);box(x,.32,z,1.8,.1,1.8,m.soil);cylinder(x,1.65*s,z,.11*s,.19*s,2.8*s,m.bark);
-    for(let i=0;i<100;i++){const a=random()*Math.PI*2,el=Math.acos(2*random()-1),r=Math.cbrt(random())*1.1*s;const px=x+Math.cos(a)*Math.sin(el)*r,py=3.2*s+Math.cos(el)*r*1.15,pz=z+Math.sin(a)*Math.sin(el)*r;const leaf=.17+random()*.2;sphere(px,py,pz,leaf*s,leaf*1.25*s,leaf*s,[m.leaf,m.leafLight,m.leafDark][i%3]);}
-    shadow(x,z,4*s,4*s,.15);
-  }
-  tree(-19,10.4,1.1);await checkpoint();tree(-5.5,10.5,1.1);await checkpoint();tree(6.9,10.5,1);await checkpoint();tree(17,6,1.05);await checkpoint();tree(-25,-6,1.1);
-  await checkpoint();
-  // Outdoor hardwood basketball court, markings, mesh fence and two hoops.
-  place(-20,0,-12,0,()=>{
-    box(0,.21,0,10,.2,18,m.darkWood,.02);
-    for(let z=-8.85;z<9;z+=.26)box((random()-.5)*.03,.319,z,9.88,.012,.23,z%1>.5?m.wood:m.oak,0);
-    const line=material("#e9d9c4");
-    const courtLine=(x:number,z:number,w:number,d:number)=>box(x,.34,z,w,.012,d,line,0);
-    courtLine(-4.5,0,.055,17);courtLine(4.5,0,.055,17);courtLine(0,-8.5,9,.055);courtLine(0,8.5,9,.055);courtLine(0,0,9,.055);
-    const circle=(x:number,z:number,r:number,start=0,length=Math.PI*2)=>{const g=new T.TorusGeometry(r,.025,4,64,length);g.rotateZ(start);add(g,line,x,.35,z,new T.Euler(-Math.PI/2,0,0));};
-    circle(0,0,1.3);
-    for(const end of [-1,1]){
-      courtLine(-1.65,end*6.5,.055,4);courtLine(1.65,end*6.5,.055,4);courtLine(0,end*4.5,3.3,.055);circle(0,end*4.5,1.65, end===1?0:Math.PI,Math.PI);
-      circle(0,end*7.4,4, end===1?0:Math.PI,Math.PI);
-      cylinder(0,1.7,end*8.6,.06,.09,2.8,m.black);box(0,2.7,end*8.3,1.9,1.18,.07,m.white,.02);box(0,2.63,end*8.25,.65,.46,.015,m.red,0);
-      const hoop=new T.TorusGeometry(.31,.028,6,20);add(hoop,m.red,0,2.33,end*7.92,new T.Euler(Math.PI/2,0,0));
-      for(let i=0;i<10;i++){const a=i*Math.PI/5;tube([new T.Vector3(Math.cos(a)*.3,2.32,end*7.92+Math.sin(a)*.3),new T.Vector3(Math.cos(a+.25)*.2,1.89,end*7.92+Math.sin(a+.25)*.2)],.009,m.white);}
-    }
-    for(const x of [-5,5]){
-      for(let z=-9;z<=9;z+=3){cylinder(x,1.9,z,.035,.035,3.5,m.black);}
-      for(let y=.5;y<3.7;y+=.24)box(x,y,0,.013,.01,18,m.metal,0);
-      for(let z=-9;z<9;z+=.24)box(x,2,z,.012,3.4,.01,m.metal,0);
-      box(x,3.7,0,.06,.06,18,m.black);
-    }
-    sphere(2,.52,-1,.2,.2,.2,m.pot);shadow(2,-1,.8,.8,.34);
-  });
-  // Parked compact vehicles, shaped bodywork and wheels.
-  await checkpoint();
-  function car(x:number,z:number,color:T.Material){place(x,0,z,0,()=>{
-    shadow(0,0,4,6,.16);box(0,.73,0,1.8,.65,3.65,color,.2);box(0,1.2,-.1,1.55,.65,1.95,color,.24);
-    box(0,1.38,-.1,1.57,.38,1.63,m.black,.1);box(0,1.61,-.1,1.55,.11,1.62,color,.07);
-    for(const a of [-1,1])for(const b of [-1,1]){add(new T.CylinderGeometry(.32,.32,.16,16),m.black,a*.91,.48,b*1.15,new T.Euler(0,0,Math.PI/2));add(new T.CylinderGeometry(.17,.17,.17,12),m.silver,a*.92,.48,b*1.15,new T.Euler(0,0,Math.PI/2));}
-    for(const a of [-1,1]){box(a*.6,.82,1.84,.4,.16,.025,m.warm);box(a*.6,.82,-1.84,.4,.12,.025,m.red);}
-  });}
-  car(-8,-11.6,m.red);car(2,-11.6,m.exterior);
   await checkpoint();
   // Merge static meshes: furniture detail does not multiply renderer draw calls.
   for(const [mat,geometries] of batches){

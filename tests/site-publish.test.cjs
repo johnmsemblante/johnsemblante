@@ -11,6 +11,12 @@ function load(file, dependencies = {}) {
   }).outputText)(name => dependencies[name] ?? require(name), output);
   return output;
 }
+
+test('production publishing excludes feature pushes and guards manual branch selection',()=>{
+  const workflow=fs.readFileSync('.github/workflows/publish-site.yml','utf8');
+  assert.match(workflow,/push:\s+branches: \[main\]/);
+  assert.match(workflow,/publish:\s+if: github.ref == 'refs\/heads\/main'/);
+});
 test('saved-content notices stay local and preserve unrelated browser state', () => {
   const previous = global.window;
   const target = new EventTarget();

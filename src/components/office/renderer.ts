@@ -1,6 +1,6 @@
 import * as T from "three";
 import { buildOfficeModel } from "./model";
-import { officeRooms, type RoomId } from "./rooms";
+import { officeOverview, officeRooms, officeTilt, type RoomId } from "./rooms";
 
 export type OfficeQuality = "high" | "medium" | "low";
 export type OfficeRenderer = Awaited<ReturnType<typeof createOfficeRenderer>>;
@@ -32,7 +32,8 @@ export async function createOfficeRenderer(host: HTMLElement, options: {
   const camera = new T.OrthographicCamera(-25,25,15,-15,.1,160);
   let width=1,height=1,disposed=false,active=true,initialized=false,raf=0,settled=0;
   let quality=options.quality, yaw=0,zoom=1,chosen: RoomId|null=null;
-  const target = new T.Vector3(-5,3,0), desiredTarget=target.clone();
+  const target = new T.Vector3(...officeOverview.target), desiredTarget=target.clone();
+  let tiltYaw=0,tiltHeight=0,wantedTiltYaw=0,wantedTiltHeight=0,focusYaw=0,focusHeight=0,wantedFocusYaw=0,wantedFocusHeight=0;
   let currentZoom=1;
   const raycaster=new T.Raycaster();
   const floor=new T.Plane(new T.Vector3(0,1,0),-.3);
@@ -45,18 +46,21 @@ export async function createOfficeRenderer(host: HTMLElement, options: {
     const start=performance.now();
     const immediate=options.reducedMotion;
     target.lerp(desiredTarget,immediate?1:.115);currentZoom=T.MathUtils.lerp(currentZoom,zoom,immediate?1:.115);
-    const angle=-.68+yaw;camera.position.set(target.x+Math.sin(angle)*57,38,target.z+Math.cos(angle)*57);camera.lookAt(target);
+    tiltYaw=T.MathUtils.lerp(tiltYaw,wantedTiltYaw,immediate?1:.09);tiltHeight=T.MathUtils.lerp(tiltHeight,wantedTiltHeight,immediate?1:.09);
+    focusYaw=T.MathUtils.lerp(focusYaw,wantedFocusYaw,immediate?1:.115);focusHeight=T.MathUtils.lerp(focusHeight,wantedFocusHeight,immediate?1:.115);
+    updateCamera();
     camera.zoom=currentZoom;camera.updateProjectionMatrix();camera.updateMatrixWorld();
     renderer.render(scene,camera);project();
     // Lower sustained slow frames once. This changes resolution/shadows, never content.
     if(time && quality!=="low"){
       settled=performance.now()-start>48?settled+1:0;if(settled>8){quality="low";renderer.setPixelRatio(1);renderer.shadowMap.enabled=false;renderer.setSize(width,height,false);options.qualityChanged?.("low");}
     }
-    if(target.distanceTo(desiredTarget)>.001||Math.abs(currentZoom-zoom)>.001)request();
+    if(target.distanceTo(desiredTarget)>.001||Math.abs(currentZoom-zoom)>.001||Math.abs(tiltYaw-wantedTiltYaw)>.0001||Math.abs(tiltHeight-wantedTiltHeight)>.001||Math.abs(focusYaw-wantedFocusYaw)>.0001||Math.abs(focusHeight-wantedFocusHeight)>.001)request();
   }
+  function updateCamera(){const angle=-.68+yaw+tiltYaw+focusYaw;camera.position.set(target.x+Math.sin(angle)*57,target.y+38+tiltHeight+focusHeight,target.z+Math.cos(angle)*57);camera.lookAt(target);}
   function request(){if(!disposed&&initialized&&active&&!raf)raf=requestAnimationFrame(draw);}
   function resize(){const bounds=host.getBoundingClientRect();width=Math.max(1,bounds.width);height=Math.max(1,bounds.height);
-    const aspect=width/height;const frame=aspect<1.4?34:27;
+    const aspect=width/height;const frame=Math.max(officeOverview.frameHeight,officeOverview.frameWidth/aspect);
     camera.left=-frame*aspect/2;camera.right=frame*aspect/2;camera.top=frame/2;camera.bottom=-frame/2;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,quality==="high"?1.5:quality==="medium"?1.2:1));renderer.setSize(width,height);request();
   }
@@ -74,23 +78,24 @@ export async function createOfficeRenderer(host: HTMLElement, options: {
     for(const room of officeRooms){const d=Math.hypot(point.x-room.target[0],point.z-room.target[2]);if(d<distance){distance=d;nearest=room.id;}}
     return nearest;
   }
-  resize();camera.position.set(target.x+Math.sin(-.68)*57,41,target.z+Math.cos(-.68)*57);camera.lookAt(target);camera.updateMatrixWorld();
+  resize();updateCamera();camera.updateMatrixWorld();
   try {await renderer.compileAsync(scene,camera);}catch(error){model.dispose();resizeObserver.disconnect();visibility.disconnect();document.removeEventListener("visibilitychange",tabVisibility);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();throw error;}
   initialized=true;
   if(options.signal?.aborted){model.dispose();resizeObserver.disconnect();visibility.disconnect();document.removeEventListener("visibilitychange",tabVisibility);renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();throw new DOMException("Office loading cancelled","AbortError");}
   draw();
   return {
-    select(id:RoomId|null){chosen=id;const room=officeRooms.find(r=>r.id===id);desiredTarget.set(...(room?room.target:[-5,3,0]) as [number,number,number]);if(room){desiredTarget.x+=3;desiredTarget.y=1.5;zoom=1.65;}else{zoom=1;yaw=0;}highlight(id);request();},
+    select(id:RoomId|null){chosen=id;const room=officeRooms.find(r=>r.id===id);desiredTarget.set(...(room?room.target:officeOverview.target) as [number,number,number]);wantedFocusYaw=room&&!options.reducedMotion?room.target[0]/14*.06:0;wantedFocusHeight=room&&!options.reducedMotion?2.5:0;if(room){desiredTarget.x+=3;desiredTarget.y=1.5;zoom=1.65;}else{zoom=1;yaw=0;}highlight(id);request();},
+    tilt(x:number,y:number){const next=officeTilt(x,y,options.reducedMotion);if(wantedTiltYaw===next.yaw&&wantedTiltHeight===next.height)return;wantedTiltYaw=next.yaw;wantedTiltHeight=next.height;request();},
     highlight,pick,
     control(action:"left"|"right"|"in"|"out"|"reset"){
-      if(action==="reset"){chosen=null;desiredTarget.set(-5,3,0);yaw=0;zoom=1;highlight(null);}
+      if(action==="reset"){chosen=null;desiredTarget.set(...officeOverview.target);yaw=0;zoom=1;wantedFocusYaw=0;wantedFocusHeight=0;wantedTiltYaw=0;wantedTiltHeight=0;highlight(null);}
       if(action==="left")yaw=Math.max(-.3,yaw-.12);
       if(action==="right")yaw=Math.min(.3,yaw+.12);
       if(action==="in")zoom=Math.min(2.2,zoom+.18);
       if(action==="out")zoom=Math.max(.82,zoom-.18);request();
     },
     quality(next:OfficeQuality){quality=next;renderer.shadowMap.enabled=next==="high";resize();},
-    info(){return {drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,quality};},
+    info(){return {drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,quality,tilt:[tiltYaw,tiltHeight],focusTilt:[focusYaw,focusHeight]};},
     dispose(){if(disposed)return;disposed=true;if(raf)cancelAnimationFrame(raf);resizeObserver.disconnect();visibility.disconnect();document.removeEventListener("visibilitychange",tabVisibility);renderer.domElement.removeEventListener("webglcontextlost",lost);model.dispose();key.shadow.map?.dispose();renderer.renderLists.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();},
   };
 }
